@@ -24,8 +24,7 @@ class PersonSpouseSeeder extends Seeder
                 'status' => 'Active',
                 'marrage_date' => '2015-06-15 00:00:00',
                 'divorce_date' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => now(),                
             ],
             [
                 'creator_id' => 1,
@@ -36,8 +35,7 @@ class PersonSpouseSeeder extends Seeder
                 'status' => 'Active',
                 'marrage_date' => '1970-10-22 00:00:00',
                 'divorce_date' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at' => now(),               
             ],
             // [
             //     'person_id' => 5,

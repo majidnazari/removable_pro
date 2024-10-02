@@ -35,6 +35,8 @@ class DatabaseSeeder extends Seeder
             ScoreSeeder::class,
             PersonScoreSeeder::class,
             PersonSubscriptionSeeder::class,
+            ClanSeeder::class,
+            ClanMemberSeeder::class,
 
         ]);
     }
