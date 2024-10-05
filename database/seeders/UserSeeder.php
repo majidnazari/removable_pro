@@ -17,18 +17,18 @@ class UserSeeder extends Seeder
     {
         //
 
-        $data=[
+        $data = [
             [
-                "creator_id" =>1,
-                "editor_id" =>null,
-                "user_name" => "majid_nazari@",
+                //"creator_id" => 1,
+               // "editor_id" => null,
+                "name" => "majid",
                 "email" => "majidnazarister@gmail.com",
                 "password" => Hash::make("12345678@"),
                 "status" => "Active",
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-           
+
         ];
 
         User::insert($data);

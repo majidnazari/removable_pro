@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,14 +14,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('creator_id'); // foreign key for the user
-            $table->unsignedBigInteger('editor_id')->nullable();
-            
-            $table->string('user_name')->unique();
+            // $table->unsignedBigInteger('creator_id'); // foreign key for the user
+            // $table->unsignedBigInteger('editor_id')->nullable();
+
+            $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('status',["Active","Inactive","Suspend","None"])->default("None");
+            $table->enum('status', ["Active", "Inactive", "Suspend", "None"])->default("None");
 
             $table->rememberToken();
             $table->timestamps();
