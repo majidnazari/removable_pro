@@ -21,8 +21,9 @@ class UserSeeder extends Seeder
             [
                 //"creator_id" => 1,
                // "editor_id" => null,
-                "name" => "majid",
-                "email" => "majidnazarister@gmail.com",
+                "mobile" => "09372120890",
+                "mobile_is_veryfied" => true,
+                //"email" => "majidnazarister@gmail.com",
                 "password" => Hash::make("12345678@"),
                 "status" => "Active",
                 'created_at' => now(),

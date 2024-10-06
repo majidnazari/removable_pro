@@ -17,10 +17,14 @@ return new class extends Migration {
             // $table->unsignedBigInteger('creator_id'); // foreign key for the user
             // $table->unsignedBigInteger('editor_id')->nullable();
 
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            //$table->string('name');
+            $table->string('mobile')->unique();
+            //$table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string(column: 'sent_code')->nullable();
+            $table->string(column: 'expired_at')->nullable();
+            $table->boolean(column: 'mobile_is_veryfied')->default(false);
+
             $table->enum('status', ["Active", "Inactive", "Suspend", "None"])->default("None");
 
             $table->rememberToken();

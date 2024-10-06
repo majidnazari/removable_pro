@@ -3,25 +3,23 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('subscriptions', function (Blueprint $table) {
+        Schema::create('provinces', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('country_id');
+
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->string('title');
-            $table->integer('day_number');
-            $table->integer('volume_amount')->comment("(MB)");
-            $table->string('description')->nullable();
-            $table->enum('status',["Active","InActive","None"])->default("Active");
+            $table->string('code')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subscriptions');
+        Schema::dropIfExists('provinces');
     }
 };

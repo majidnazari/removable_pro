@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
 
         $this->Call([
             UserSeeder::class,
@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             SubscriptionSeeder::class,
             PersonSeeder::class,
+            PersonDetailSeeder::class,
             PersonSpouseSeeder::class,
             FavoriteSeeder::class,
             GroupViewSeeder::class,
@@ -34,9 +35,17 @@ class DatabaseSeeder extends Seeder
             FamilyEventSeeder::class,
             ScoreSeeder::class,
             PersonScoreSeeder::class,
-            PersonSubscriptionSeeder::class,
+            UserSubscriptionSeeder::class,
             ClanSeeder::class,
             ClanMemberSeeder::class,
+            VolumeExtraSeeder::class,
+            UserVolumeExtraSeeder::class,
+
+            CountrySeeder::class,
+            ProvinceSeeder::class,
+            CitySeeder::class,
+            AreaSeeder::class,
+            AddressSeeder::class,
 
         ]);
     }
