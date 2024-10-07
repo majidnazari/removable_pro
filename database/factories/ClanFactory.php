@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\clan>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Clan>
  */
 class ClanFactory extends Factory
 {

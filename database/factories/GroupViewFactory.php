@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Group_view>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GroupView>
  */
 class GroupViewFactory extends Factory
 {

@@ -9,5 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Score extends Model
 {
+    protected $fillable = ['title', 'status'];
     use HasFactory,SoftDeletes;
+  
 }

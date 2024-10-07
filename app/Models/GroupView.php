@@ -9,5 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GroupView extends Model
 {
+    protected $fillable = ['title', 'status'];
     use HasFactory,SoftDeletes;
 }

@@ -9,5 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Favorite extends Model
 {
+    protected $fillable = ['creator_id', 'editor_id', 'person_id', 'image', 'title', 'description', 'star', 'status'];
     use HasFactory,SoftDeletes;
 }

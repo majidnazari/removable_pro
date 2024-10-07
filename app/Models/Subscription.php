@@ -9,5 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subscription extends Model
 {
+    protected $fillable = ['title', 'day_number', 'volume_amount', 'description', 'status'];
     use HasFactory,SoftDeletes;
+
 }

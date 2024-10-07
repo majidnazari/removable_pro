@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Person_subscription>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserSubscription>
  */
-class PersonSubscriptionFactory extends Factory
+class UserSubscriptionFactory extends Factory
 {
     /**
      * Define the model's default state.
