@@ -12,7 +12,7 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable,SoftDeletes,HasApiTokens;
+    use HasFactory, Notifiable, SoftDeletes, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -42,6 +42,61 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    
+
+    }
+
+    public function persons()
+    {
+        return $this->hasMany(person::class, 'user_id');
+    }
+
+    public function person_creates()
+    {
+        return $this->hasMany(person::class, 'creator_id');
+    }
+    public function person_edites()
+    {
+        return $this->hasMany(person::class, 'editor_id');
+    }
+
+    public function person_spouse_creates()
+    {
+        return $this->hasMany(personSpouse::class, 'creator_id');
+    }
+    public function person_spouse_edites()
+    {
+        return $this->hasMany(personSpouse::class, 'editor_id');
+    }
+
+    public function person_child_creates()
+    {
+        return $this->hasMany(personChild::class, 'creator_id');
+    }
+    public function person_child_edites()
+    {
+        return $this->hasMany(personChild::class, 'editor_id');
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(UserSubscription::class, 'user_id');
+    }
+
+    public function favorite_creates()
+    {
+        return $this->hasMany(Favorite::class, 'creator_id');
+    }
+    public function favorite_edites()
+    {
+        return $this->hasMany(Favorite::class, 'editor_id');
+    }
+
+    public function memory_creates()
+    {
+        return $this->hasMany(Memory::class, 'creator_id');
+    }
+    public function memory_edites()
+    {
+        return $this->hasMany(Memory::class, 'editor_id');
     }
 }

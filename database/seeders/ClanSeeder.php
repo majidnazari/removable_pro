@@ -20,8 +20,8 @@ class ClanSeeder extends Seeder
             [
                 "creator_id" => 1,
                 "title" => "نظری",
-                "clan_exact_family_name" => "نظری نژاد جوریابی",
-                "clan_code" => "CL001",
+                "Clan_exact_family_name" => "نظری نژاد جوریابی",
+                "Clan_code" => "CL001",
                 'created_at' => now(),
             ]
         ];

@@ -9,6 +9,11 @@ class Province extends Model
 {
     protected $fillable = ['country_id', 'title', 'code'];
     use HasFactory;
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
    
 }
 

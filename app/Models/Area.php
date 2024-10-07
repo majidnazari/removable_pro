@@ -10,4 +10,9 @@ class Area extends Model
     protected $fillable = ['city_id', 'title', 'code'];
     use HasFactory;
 
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
+
 }

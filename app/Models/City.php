@@ -10,6 +10,10 @@ class City extends Model
     protected $fillable = ['province_id', 'title', 'code'];
     use HasFactory;
 
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
    
 }
 

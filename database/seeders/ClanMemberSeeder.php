@@ -18,13 +18,13 @@ class ClanMemberSeeder extends Seeder
         $data = [
             [
                 "creator_id" => 1,
-                "clan_id" => 1,
+                "Clan_id" => 1,
                 "family_code" => "FA001",                
                 'created_at' => now(),
             ],
             [
                 "creator_id" => 1,
-                "clan_id" => 1,
+                "Clan_id" => 1,
                 "family_code" => "FA002",                
                 'created_at' => now(),
             ],

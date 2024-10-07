@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\ClanMember;
+use App\Models\FamilyBoard;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class ClanMemberPolicy
+class FamilyBoardPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class ClanMemberPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, ClanMember $ClanMember): bool
+    public function view(User $user, FamilyBoard $familyBoard): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class ClanMemberPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, ClanMember $ClanMember): bool
+    public function update(User $user, FamilyBoard $familyBoard): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class ClanMemberPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, ClanMember $ClanMember): bool
+    public function delete(User $user, FamilyBoard $familyBoard): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class ClanMemberPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, ClanMember $ClanMember): bool
+    public function restore(User $user, FamilyBoard $familyBoard): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class ClanMemberPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, ClanMember $ClanMember): bool
+    public function forceDelete(User $user, FamilyBoard $familyBoard): bool
     {
         //
     }

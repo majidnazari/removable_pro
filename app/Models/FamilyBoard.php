@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class PersonSpouse extends Model
+class FamilyBoard extends Model
 {
-    protected $fillable = ['person_id', 'spouse_id', 'creator_id', 'editor_id', 'marrage_status', 'spouse_status', 'status', 'marrage_date', 'divorce_date'];
     use HasFactory,SoftDeletes;
+    protected $fillable = [ 'category_id', 'creator_id', 'editor_id', 'title', 'descriptions','status'];
 
     public function creator()
     {
@@ -22,13 +22,10 @@ class PersonSpouse extends Model
         return $this->belongsTo(User::class, 'editor_id');
     }
 
-    public function itself()
+    public function category()
     {
-        return $this->belongsTo(Person::class, 'person_id');
+        return $this->belongsTo(CategoryContent::class, 'category_content_id');
     }
+   
 
-    public function spouse()
-    {
-        return $this->belongsTo(Person::class, 'spouse_id');
-    }
 }

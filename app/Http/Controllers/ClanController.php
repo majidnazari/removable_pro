@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreclanRequest;
-use App\Http\Requests\UpdateclanRequest;
-use App\Models\clan;
+use App\Http\Requests\StoreClanRequest;
+use App\Http\Requests\UpdateClanRequest;
+use App\Models\Clan;
 
 class ClanController extends Controller
 {
@@ -27,7 +27,7 @@ class ClanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreclanRequest $request)
+    public function store(StoreClanRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ClanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(clan $clan)
+    public function show(Clan $Clan)
     {
         //
     }
@@ -43,7 +43,7 @@ class ClanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(clan $clan)
+    public function edit(Clan $Clan)
     {
         //
     }
@@ -51,7 +51,7 @@ class ClanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateclanRequest $request, clan $clan)
+    public function update(UpdateClanRequest $request, Clan $Clan)
     {
         //
     }
@@ -59,7 +59,7 @@ class ClanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(clan $clan)
+    public function destroy(Clan $Clan)
     {
         //
     }

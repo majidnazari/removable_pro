@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreClanMemberRequest;
-use App\Http\Requests\UpdateClanMemberRequest;
-use App\Models\ClanMember;
+use App\Http\Requests\StoreFamilyBoardRequest;
+use App\Http\Requests\UpdateFamilyBoardRequest;
+use App\Models\FamilyBoard;
 
-class ClanMemberController extends Controller
+class FamilyBoardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class ClanMemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreClanMemberRequest $request)
+    public function store(StoreFamilyBoardRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ClanMemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ClanMember $ClanMember)
+    public function show(FamilyBoard $familyBoard)
     {
         //
     }
@@ -43,7 +43,7 @@ class ClanMemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ClanMember $ClanMember)
+    public function edit(FamilyBoard $familyBoard)
     {
         //
     }
@@ -51,7 +51,7 @@ class ClanMemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateClanMemberRequest $request, ClanMember $ClanMember)
+    public function update(UpdateFamilyBoardRequest $request, FamilyBoard $familyBoard)
     {
         //
     }
@@ -59,7 +59,7 @@ class ClanMemberController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ClanMember $ClanMember)
+    public function destroy(FamilyBoard $familyBoard)
     {
         //
     }

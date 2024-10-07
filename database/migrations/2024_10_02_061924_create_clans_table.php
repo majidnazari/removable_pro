@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clans', function (Blueprint $table) {
+        Schema::create('Clans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
@@ -20,8 +20,8 @@ return new class extends Migration
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade'); 
 
             $table->string('title');
-            $table->string('clan_exact_family_name');
-            $table->string('clan_code'); //like start from clan001  to clan00n
+            $table->string('Clan_exact_family_name');
+            $table->string('Clan_code'); //like start from Clan001  to Clan00n
 
             $table->timestamps();
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clans');
+        Schema::dropIfExists('Clans');
     }
 };

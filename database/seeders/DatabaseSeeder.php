@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             AreaSeeder::class,
             AddressSeeder::class,
+            FamilyBoardSeeder::class
 
         ]);
     }
