@@ -19,7 +19,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['mobile', 'password', 'sent_code', 'expired_at', 'mobile_is_veryfied', 'status', 'remember_token', 'avatar'];
+    protected $fillable = ['mobile','email','email_verified_at','password', 'sent_code', 'expired_at', 'mobile_is_veryfied', 'status', 'remember_token', 'avatar'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,6 +43,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
 
+    }
+    public function findForPassport($username)
+    {
+        return $this->where('mobile', $username)->first();
     }
 
     public function persons()

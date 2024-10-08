@@ -30,8 +30,9 @@ return [
     | the default location
     |
     */
+    // 'schema' => null,
     'schema' => base_path('graphql/auth.graphql'),
-    //'schema' => null,
+
     /*
     |--------------------------------------------------------------------------
     | Username Column
@@ -43,7 +44,7 @@ return [
     | See https://laravel.com/docs/7.x/passport#customizing-the-username-field
     |
     */
-    'username' => 'email',
+    'username' => 'mobile',
     /*
     |--------------------------------------------------------------------------
     | Migrations

@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
                // "editor_id" => null,
                 "mobile" => "09372120890",
                 "mobile_is_veryfied" => true,
-                //"email" => "majidnazarister@gmail.com",
+                "email" => "majidnazarister@gmail.com",
                 "password" => Hash::make("12345678@"),
                 "status" => "Active",
                 'created_at' => now(),

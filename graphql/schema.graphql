@@ -7,6 +7,7 @@ type Query {
     user(
       "Search by primary key."
       id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
+      mobile: String @where(operator: "like")
 
       "Search by email address."
       email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
@@ -15,7 +16,7 @@ type Query {
     "List multiple users."
     users(
       "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-      name: String @where(operator: "like")
+      mobile: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
 }
 
@@ -25,10 +26,10 @@ type User {
     id: ID!
 
     "Non-unique name."
-    name: String!
+    mobile: String!
 
     "Unique email address."
-    email: String!
+    email: String
 
     "When the email was verified."
     email_verified_at: DateTime

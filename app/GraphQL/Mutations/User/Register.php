@@ -24,27 +24,32 @@ class Register extends BaseAuthResolver
      */
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        Log::info("the inside of resolve is running");
+        // Log::info("the inside of resolve is running");
         $model = $this->createAuthModel($args);
 
         $this->validateAuthModel($model);
 
-        if ($model instanceof MustVerifyEmail) {
-            $model->sendEmailVerificationNotification();
+        // if ($model instanceof MustVerifyEmail) {
+        //     $model->sendEmailVerificationNotification();
 
-            event(new Registered($model));
+        //     event(new Registered($model));
 
-            return [
-                'tokens' => [],
-                'status' => 'MUST_VERIFY_EMAIL',
-            ];
-        }
+        //     return [
+        //         'tokens' => [],
+        //         'status' => 'MUST_VERIFY_EMAIL',
+        //     ];
+        // }
         $credentials = $this->buildCredentials([
             'username' => $args[config('lighthouse-graphql-passport.username')],
             'password' => $args['password'],
         ]);
         $user = $model->where(config('lighthouse-graphql-passport.username'), $args[config('lighthouse-graphql-passport.username')])->first();
+        // Log::info("the model of fetched is" . json_encode($user));
+        // Log::info("the makeRequest and credentials is" . json_encode($credentials));
+
         $response = $this->makeRequest($credentials);
+        //Log::info("the response  is:" . json_encode($response));
+
         $response['user'] = $user;
         event(new Registered($user));
 
