@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
+use Carbon\Carbon;
 use Log;
 
 class Register extends BaseAuthResolver
@@ -25,7 +26,13 @@ class Register extends BaseAuthResolver
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         // Log::info("the inside of resolve is running");
+        $code=rand(0,99999999);
+        $code_expired_at=Carbon::now()->addMinutes(2)->format("Y-m-d H:i:s");
+        $args['sent_code']=$code;
+        $args['code_expired_at']=$code_expired_at;
         $model = $this->createAuthModel($args);
+
+        Log::info("the user is:" . json_encode($model));
 
         $this->validateAuthModel($model);
 
@@ -47,14 +54,15 @@ class Register extends BaseAuthResolver
         // Log::info("the model of fetched is" . json_encode($user));
         // Log::info("the makeRequest and credentials is" . json_encode($credentials));
 
-        $response = $this->makeRequest($credentials);
+       // $response = $this->makeRequest($credentials);
         //Log::info("the response  is:" . json_encode($response));
 
         $response['user'] = $user;
         event(new Registered($user));
 
         return [
-            'tokens' => $response,
+            //'tokens' => $response,
+            'user_id' => $user->id,
             'status' => 'SUCCESS',
         ];
     }

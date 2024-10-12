@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
-            $table->unsignedBigInteger('person_id'); // foreign key favorite
+            $table->unsignedBigInteger('person_id')->index(); // foreign key favorite
 
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');

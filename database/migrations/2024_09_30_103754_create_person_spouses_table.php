@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('person_spouses', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('person_id'); // foreign key
-            $table->unsignedBigInteger('spouse_id'); // foreign key for the spouse
+            $table->unsignedBigInteger('person_id')->index(); // foreign key
+            $table->unsignedBigInteger('spouse_id')->index(); // foreign key for the spouse
             $table->unsignedBigInteger('creator_id'); // foreign key for the spouse
             $table->unsignedBigInteger('editor_id')->nullable();
             

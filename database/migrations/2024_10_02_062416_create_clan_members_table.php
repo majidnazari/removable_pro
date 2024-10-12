@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('creator_id'); 
             $table->unsignedBigInteger('editor_id')->nullable();
-            $table->unsignedBigInteger('Clan_id');
-            $table->string('family_code');
+            $table->unsignedBigInteger('Clan_id')->index();
+            $table->string('node_code')->index();
 
             $table->foreign('creator_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');

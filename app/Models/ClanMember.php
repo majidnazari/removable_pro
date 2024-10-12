@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClanMember extends Model
 {
-    protected $fillable = ['creator_id', 'editor_id', 'Clan_id', 'family_code'];
+    protected $fillable = ['creator_id', 'editor_id', 'Clan_id', 'node_code'];
     use HasFactory;
 
     public function creator()

@@ -19,7 +19,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['mobile','email','email_verified_at','password', 'sent_code', 'expired_at', 'mobile_is_veryfied', 'status', 'remember_token', 'avatar'];
+    protected $fillable = ['country_code', 'mobile', 'email', 'email_verified_at', 'mobile_is_veryfied', 'password', 'sent_code', 'code_expired_at', 'today_attemp', 'date_attemp', 'total_attemp', 'expire_blocked_time', 'number_of_blocked_times', 'status', 'remember_token', 'avatar'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,7 +46,7 @@ class User extends Authenticatable
     }
     public function findForPassport($username)
     {
-        return $this->where('mobile', $username)->first();
+        return $this->where('mobile', $username)->where('status','Active')->where('mobile_is_veryfied',1)->first();
     }
 
     public function persons()
@@ -102,5 +102,13 @@ class User extends Authenticatable
     public function memory_edites()
     {
         return $this->hasMany(Memory::class, 'editor_id');
+    }
+    public function mobiles()
+    {
+        return $this->hasMany(UserMobile::class, 'user_id');
+    }
+    public function answer()
+    {
+        return $this->hasOne(UserAnswer::class, 'user_id');
     }
 }

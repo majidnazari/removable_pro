@@ -41,6 +41,12 @@ type ForgotPasswordResponse {
 type RegisterResponse {
     tokens: AuthPayload
     status: RegisterStatuses!
+    user_id: Int
+}
+type VerifyMobileResponse {
+    
+    Code: String!
+    Message: String!
 }
 
 type UpdatePasswordResponse {
@@ -66,10 +72,24 @@ input NewPasswordWithCodeInput {
 
 input RegisterInput {
     mobile: String! @rules(apply: [ "required", "string", "unique:users,mobile"])
+    question: ID! @rules(apply: [ "required"])
+    answer: String @rules(apply: [ "required"])
     # email: String! @rules(apply: ["required", "email", "unique:users,email"])
     password: String! @rules(apply: ["required", "confirmed", "min:8"])
     password_confirmation: String!
 }
+
+input RegisterMobileInput {
+    country_code: String! @rules(apply: [ "required", "string"]),
+    mobile: String! @rules(apply: [ "required", "string", "unique:users,mobile"])
+   
+}
+
+input VerifyMobileInput {
+    user_id:ID!
+    code: String!
+}
+
 
 input SocialLoginInput {
     provider: String! @rules(apply: ["required"])
@@ -93,6 +113,8 @@ extend type Mutation {
     #forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve")
     #updateForgottenPassword(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve")
     register(input: RegisterInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve")
+    registerMobile(input: RegisterMobileInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@resolve") 
+    VerifyMobile(input: VerifyMobileInput @spread): VerifyMobileResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@VerifyMobileresolve") 
     #socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")
     #verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     #updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])

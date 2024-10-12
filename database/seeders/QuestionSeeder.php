@@ -4,9 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\ClanMember;
 
-class ClanMemberSeeder extends Seeder
+use App\Models\Question;
+
+class QuestionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,19 +18,19 @@ class ClanMemberSeeder extends Seeder
 
         $data = [
             [
-                "creator_id" => 1,
-                "Clan_id" => 1,
-                "node_code" => "FA001",                
+                "title" => 'معلم اول دبستان',
+                "description" => '',
+                "status" => "Active",                
                 'created_at' => now(),
             ],
             [
-                "creator_id" => 1,
-                "Clan_id" => 1,
-                "node_code" => "FA002",                
+                "title" => 'نام پدر بزرگ پدری',
+                "description" => '',
+                "status" => "Active",                
                 'created_at' => now(),
             ],
         ];
 
-        ClanMember::insert($data);
+        Question::insert($data);
     }
 }

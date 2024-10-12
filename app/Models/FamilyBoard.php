@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FamilyBoard extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = [ 'category_id', 'creator_id', 'editor_id', 'title', 'descriptions','status'];
+    protected $fillable = ['creator_id', 'editor_id', 'category_content_id', 'title', 'selected_date', 'file_path', 'description', 'status'];
 
     public function creator()
     {

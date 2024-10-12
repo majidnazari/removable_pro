@@ -20,10 +20,10 @@ return new class extends Migration {
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade'); 
 
-            $table->string('node_code')->unique();
+            $table->string('node_code')->unique()->index();
             //$table->string('family_code'); // like FA001 a code for each family node that can be used in Clan or other somewhere. and it is the same for me and my parrents and my children.
-            $table->integer('node_level_x')->default(1);
-            $table->integer('node_level_y')->default(1);
+            $table->integer('node_level_x')->default(1)->index();
+            $table->integer('node_level_y')->default(1)->index();
             //$table->string('naslan_id')->nullable()->unique();
             //$table->string('referal_code')->nullable()->unique();
             $table->string('first_name')->nullable();

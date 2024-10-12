@@ -46,7 +46,12 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             AreaSeeder::class,
             AddressSeeder::class,
-            FamilyBoardSeeder::class
+            FamilyBoardSeeder::class,
+
+            QuestionSeeder::class,
+            UserAnswerSeeder::class,
+            UserMobileSeeder::class,
+            IpTrackingSeeder::class
 
         ]);
     }

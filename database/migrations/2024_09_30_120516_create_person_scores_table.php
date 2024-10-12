@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('creator_id'); 
             $table->unsignedBigInteger('editor_id')->nullable();
-            $table->unsignedBigInteger('person_id');
-            $table->unsignedBigInteger('score_id');
+            $table->unsignedBigInteger('person_id')->index();
+            $table->unsignedBigInteger('score_id')->index();
 
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('score_id')->references('id')->on('scores')->onDelete('cascade');

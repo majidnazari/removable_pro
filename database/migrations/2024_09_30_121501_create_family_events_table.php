@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('family_events', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('person_id');
-            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('person_id')->index();
+            $table->unsignedBigInteger('event_id')->index();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
 

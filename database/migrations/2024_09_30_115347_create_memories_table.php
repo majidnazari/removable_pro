@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('memories', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('person_id');
-            $table->unsignedBigInteger('category_content_id');
-            $table->unsignedBigInteger('group_view_id');
+            $table->unsignedBigInteger('person_id')->index();
+            $table->unsignedBigInteger('category_content_id')->index();
+            $table->unsignedBigInteger('group_view_id')->index();
 
             $table->unsignedBigInteger('creator_id'); 
             $table->unsignedBigInteger('editor_id')->nullable();
