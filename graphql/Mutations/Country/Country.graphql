@@ -1,0 +1,4 @@
+
+    createCountry(input: CreateCountryInput! @spread): Country @field(resolver: "App\\GraphQL\\Mutations\\Country\\CreateCountry@resolveCountry") 
+    updateCountry(id: ID!, input: UpdateCountryInput! @spread): Country @field(resolver: "App\\GraphQL\\Mutations\\Country\\UpdateCountry@resolveCountry") 
+    deleteCountry(id: ID!): Country @field(resolver: "App\\GraphQL\\Mutations\\Country\\DeleteCountry@resolveCountry") 

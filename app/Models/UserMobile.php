@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class UserMobile extends Model
 {
     protected $fillable = ['creator_id', 'user_id', 'mobile'];
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     public function creator()
     {

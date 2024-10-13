@@ -1,0 +1,8 @@
+
+    
+    getcountry(id: ID!): Country @field(resolver: "App\\GraphQL\\Queries\\Country\\GetCountry@resolveCountry") 
+    getcountries(
+        first: Int, 
+        page: Int, 
+        # filter: CountryFilterInput
+    ): [Country!]! @paginate(builder: "App\\GraphQL\\Queries\\Country\\GetCountries@resolveCountry")

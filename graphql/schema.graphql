@@ -1,3 +1,6 @@
+
+#import Types/Country/type.graphql
+
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
@@ -18,6 +21,8 @@ type Query {
       "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
       mobile: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
+
+    #import Queries/Country/Country.graphql
 }
 
 "Account of a person who utilizes this application."
@@ -39,4 +44,23 @@ type User {
 
     "When the account was last updated."
     updated_at: DateTime!
+}
+
+
+extend type Mutation {
+    login(input: LoginInput @spread): AuthPayload! @field(resolver: "App\\GraphQL\\Mutations\\User\\Login@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve")
+    # refreshToken(input: RefreshTokenInput @spread): RefreshTokenPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve")
+    logout: LogoutResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Logout@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Logout@resolve")
+    #forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve")
+    #updateForgottenPassword(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve")
+    register(input: RegisterInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve")
+    registerMobile(input: RegisterMobileInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@resolve") 
+    VerifyMobile(input: VerifyMobileInput @spread): VerifyMobileResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@VerifyMobileresolve") 
+    CompleteUserRegistration(input: CompleteUserRegistrationInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@CompleteUserRegistrationresolve") 
+    #socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")
+    #verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
+    #updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
+
+   #import Mutations/Country/Country.graphql
+
 }

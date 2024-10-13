@@ -1,0 +1,22 @@
+
+
+type Country {
+    id: ID!
+    title: String!
+    code: String!
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateCountryInput {
+    title: String!
+    code: String!
+
+}
+
+input UpdateCountryInput {
+
+    title: String!
+    code: String!
+
+}

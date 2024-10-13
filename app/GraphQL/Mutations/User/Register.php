@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\UserAnswer;
+use DB;
 use Log;
 
 class Register extends BaseAuthResolver
@@ -85,4 +88,42 @@ class Register extends BaseAuthResolver
 
         return $this->getAuthModelFactory()->create($input);
     }
+
+
+
+    public function CompleteUserRegistrationresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    {
+
+        $user=User::where('id',$args['user_id'])->where('status','Active')->first();
+        if(!$user)
+        {
+            throw new \RuntimeException('User not found');
+        }
+
+        $user_answers_model=[
+            "creator_id" =>$args['user_id'],
+            "user_id" =>$args['user_id'],
+            "question_id" =>$args['question_id'],
+            "answer" =>$args["answer"],
+
+        ];
+
+    
+        // Create the user question record, associating it with the user.
+        $user_answers=UserAnswer::create($user_answers_model); // Assuming 'user_id' is the foreign key.
+        $credentials = $this->buildCredentials([
+            'username' => $args[config('lighthouse-graphql-passport.username')],
+            'password' => $args['password'],
+        ]);
+        $response = $this->makeRequest($credentials);
+        event(new Registered($user));
+
+        return [
+            'tokens' => $response,
+            'user_id' => $user->id,
+            'status' => 'SUCCESS',
+        ];
+       
+    }
+
 }
