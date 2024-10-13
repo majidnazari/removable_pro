@@ -1,0 +1,22 @@
+type Province {
+    id: ID!
+    country_id: ID!
+    title: String!
+    code: String!
+    created_at: DateTime
+    updated_at: DateTime
+
+    country: Country
+}
+
+input CreateProvinceInput {
+    country_id: ID!
+    title: String!
+    code: String!
+}
+
+input UpdateProvinceInput {
+    country_id: ID
+    title: String
+    code: String
+}

@@ -1,0 +1,7 @@
+
+getProvince(id: ID!): Province @field(resolver: "App\\GraphQL\\Queries\\Province\\GetProvince@resolveProvince") 
+    getProvinces(
+        first: Int, 
+        page: Int, 
+        # filter: ProvinceFilterInput
+    ): [Province!]! @paginate(builder: "App\\GraphQL\\Queries\\Province\\GetProvinces@resolveProvince")

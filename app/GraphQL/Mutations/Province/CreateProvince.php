@@ -1,8 +1,8 @@
 <?php
 
-namespace App\GraphQL\Mutations\Country;
+namespace App\GraphQL\Mutations\Province;
 
-use App\Models\Country;
+use App\Models\Province;
 use GraphQL\Type\Definition\ResolveInfo;
 use App\Models\GroupUser;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +13,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Log;
 
-final class CreateCountry
+final class CreateProvince
 {
     /**
      * @param  null  $_
@@ -23,21 +23,22 @@ final class CreateCountry
     {
         // TODO implement the resolver
     }
-    public function resolveCountry($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveProvince($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
 
         //Log::info("the args are:" . json_encode($args));
         //$user_id=auth()->guard('api')->user()->id;
-        $CountryResult=[
+        $ProvinceResult=[
+            "country_id" => $args['country_id'],
             "title" => $args['title'],
             "code" => $args['code']            
         ];
-        $is_exist= Country::where('title',$args['title'])->where('code',$args['code'])->first();
+        $is_exist= Province::where('title',$args['title'])->where('code',$args['code'])->first();
         if($is_exist)
          {
-                 return Error::createLocatedError("Country-CREATE-RECORD_IS_EXIST");
+                 return Error::createLocatedError("Province-CREATE-RECORD_IS_EXIST");
          }
-        $CountryResult_result=Country::create($CountryResult);
-        return $CountryResult_result;
+        $ProvinceResult_result=Province::create($ProvinceResult);
+        return $ProvinceResult_result;
     }
 }
