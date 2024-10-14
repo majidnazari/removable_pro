@@ -1,0 +1,4 @@
+
+createCity(input: CreateCityInput! @spread): City @field(resolver: "App\\GraphQL\\Mutations\\City\\CreateCity@resolveCity") 
+    updateCity(id: ID!, input: UpdateCityInput! @spread): City @field(resolver: "App\\GraphQL\\Mutations\\City\\UpdateCity@resolveCity") 
+    deleteCity(id: ID!): City @field(resolver: "App\\GraphQL\\Mutations\\City\\DeleteCity@resolveCity") 

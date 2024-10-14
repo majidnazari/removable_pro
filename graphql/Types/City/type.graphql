@@ -1,0 +1,23 @@
+
+type City {
+    id: ID!
+    province_id: ID!
+    title: String!
+    code: String!
+    created_at: DateTime
+    updated_at: DateTime
+
+    province: Province
+}
+
+input CreateCityInput {
+    province_id: ID!
+    title: String!
+    code: String!
+}
+
+input UpdateCityInput {
+    province_id: ID
+    title: String
+    code: String
+}
