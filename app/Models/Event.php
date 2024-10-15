@@ -11,5 +11,10 @@ class Event extends Model
 {
     protected $fillable = ['title', 'status'];
     use HasFactory, SoftDeletes;
+
+    public function FamilyEvents()
+    {
+        return $this->hasMany(FamilyEvent::class, 'event_id');
+    }
  
 }

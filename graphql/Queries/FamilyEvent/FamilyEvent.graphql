@@ -1,0 +1,7 @@
+
+getFamilyEvent(id: ID!): FamilyEvent @field(resolver: "App\\GraphQL\\Queries\\FamilyEvent\\GetFamilyEvent@resolveFamilyEvent") 
+    getFamilyEvents(
+        first: Int, 
+        page: Int, 
+        # filter: FamilyEventFilterInput
+    ): [FamilyEvent!]! @paginate(builder: "App\\GraphQL\\Queries\\FamilyEvent\\GetFamilyEvents@resolveFamilyEvent")

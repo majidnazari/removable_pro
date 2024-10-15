@@ -16,6 +16,10 @@ class FamilyEvent extends Model
     {
         return $this->belongsTo(Person::class, 'person_id');
     }
+    public function Event()
+    {
+        return $this->belongsTo(Event::class, 'event_id');
+    }
 
     public function Creator()
     {
