@@ -1,0 +1,21 @@
+
+type CategoryContent {
+    id: ID!
+    title: String!
+    status: String
+    created_at: DateTime
+    updated_at: DateTime
+
+}
+
+input CreateCategoryContentInput {
+    
+    title: String!
+    status: String
+}
+
+input UpdateCategoryContentInput {
+   
+    title: String
+    status: String
+}
