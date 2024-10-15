@@ -1,0 +1,22 @@
+
+
+type ClanMember {
+    id: ID!
+    clan_id: String
+    node_code: String
+   
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateClanMemberInput {
+
+    clan_id: String
+    node_code: String
+}
+
+input UpdateClanMemberInput {
+
+    clan_id: String
+    node_code: String
+}
