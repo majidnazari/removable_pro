@@ -12,11 +12,11 @@ class CategoryContent extends Model
     use HasFactory , SoftDeletes;
     protected $fillable = ['title', 'status'];
 
-    public function family_boards()
+    public function FamilyBoards()
     {
         return $this->hasMany(FamilyBoard::class, 'category_content_id');
     }
-    public function memories()
+    public function Memories()
     {
         return $this->hasMany(Memory::class, 'category_content_id');
     }

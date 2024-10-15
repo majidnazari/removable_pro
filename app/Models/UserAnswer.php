@@ -12,15 +12,15 @@ class UserAnswer extends Model
     protected $fillable = ['creator_id', 'user_id', 'question_id', 'answer'];
     use HasFactory,SoftDeletes;
 
-    public function creator()
+    public function Creator()
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
-    public function user()
+    public function User()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function question()
+    public function Question()
     {
         return $this->belongsTo(Question::class, 'question_id');
     }

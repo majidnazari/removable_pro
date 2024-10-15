@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreign('clan_id')->references('id')->on('clans')->onDelete('cascade');
             
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

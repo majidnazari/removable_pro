@@ -12,11 +12,11 @@ class ClanMember extends Model
     protected $fillable = ['creator_id', 'editor_id', 'Clan_id', 'node_code'];
     use HasFactory,SoftDeletes;
 
-    public function creator()
+    public function Creator()
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
-    public function editor()
+    public function Editor()
     {
         return $this->belongsTo(User::class, 'editor_id');
     }

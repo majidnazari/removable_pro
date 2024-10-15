@@ -21,6 +21,8 @@ return new class extends Migration
 
             $table->string('mobile')->index();
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

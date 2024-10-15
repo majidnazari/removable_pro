@@ -13,20 +13,20 @@ class Person extends Model
     use HasFactory , SoftDeletes;
 
 
-    public function creator()
+    public function Creator()
     {
         return $this->belongsTo(User::class,'creator_id');
     }
-    public function editor()
+    public function Editor()
     {
         return $this->belongsTo(User::class,'editor_id');
     }
 
-    public function children()
+    public function Children()
     {
         return $this->hasMany(PersonChild::class, 'person_id');
     }
-    public function spouses()
+    public function Spouses()
     {
         return $this->hasMany(PersonSpouse::class, 'person_id');
     }
@@ -36,20 +36,20 @@ class Person extends Model
         return $this->hasMany(Address::class, 'address_id');
     }
 
-    public function memories()
+    public function Memories()
     {
         return $this->hasMany(Memory::class, 'person_id');
     }
-    public function family_events()
+    public function FamilyEvents()
     {
         return $this->hasMany(FamilyEvent::class, 'person_id');
     }
-    public function favorites()
+    public function Favorites()
     {
         return $this->hasMany(Favorite::class, 'person_id');
     }
 
-    public function scores()
+    public function Scores()
     {
         return $this->hasMany(Score::class, 'score_id');
     }

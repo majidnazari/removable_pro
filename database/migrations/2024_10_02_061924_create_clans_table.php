@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('clan_code'); //like start from Clan001  to Clan00n
 
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

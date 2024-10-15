@@ -13,7 +13,7 @@ class UserVolumeExtra extends Model
     use HasFactory,SoftDeletes;
 
 
-    public function creator()
+    public function Creator()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

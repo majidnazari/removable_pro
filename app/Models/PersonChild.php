@@ -12,16 +12,16 @@ class PersonChild extends Model
     protected $fillable = ['creator_id', 'editor_id', 'person_spouse_id', 'child_id', 'child_kind', 'child_status', 'status'];
     use HasFactory,SoftDeletes;
 
-    public function creator()
+    public function Creator()
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
-    public function editor()
+    public function Editor()
     {
         return $this->belongsTo(User::class, 'editor_id');
     }
 
-    public function marrage()
+    public function Marrage()
     {
         return $this->belongsTo(PersonSpouse::class, 'person_spouse_id');
     }

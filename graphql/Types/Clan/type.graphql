@@ -1,0 +1,25 @@
+
+
+type Clan {
+    id: ID!
+    title: String
+    Clan_exact_family_name: String
+    Clan_code: String
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateClanInput {
+    title: String!
+    Clan_exact_family_name: String!
+    Clan_code: String
+
+}
+
+input UpdateClanInput {
+
+    title: String
+    Clan_exact_family_name: String
+    Clan_code: String
+
+}

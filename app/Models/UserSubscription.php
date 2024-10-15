@@ -12,11 +12,11 @@ class UserSubscription extends Model
     protected $fillable = ['user_id', 'subscription_id', 'start_date', 'end_date', 'remain_volume', 'status'];
     use HasFactory,SoftDeletes;
 
-    public function creator()
+    public function Creator()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function subscription()
+    public function Subscription()
     {
         return $this->belongsTo(Subscription::class, 'subscription_id');
     }

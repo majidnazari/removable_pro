@@ -12,7 +12,7 @@ class PersonDetail extends Model
     protected $fillable = ['person_id', 'profile_picture', 'gendar', 'physical_condition'];
     use HasFactory,SoftDeletes;
 
-    public function person()
+    public function Person()
     {
         return $this->belongsTo(Person::class, 'person_id');
     }

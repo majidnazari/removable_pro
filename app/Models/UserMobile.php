@@ -12,11 +12,11 @@ class UserMobile extends Model
     protected $fillable = ['creator_id', 'user_id', 'mobile'];
     use HasFactory,SoftDeletes;
 
-    public function creator()
+    public function Creator()
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
-    public function user()
+    public function User()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

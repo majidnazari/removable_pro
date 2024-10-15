@@ -14,16 +14,16 @@ class Clan extends Model
 
 
 
-    public function person()
+    public function Person()
     {
         return $this->belongsTo(Person::class, 'creator_id');
     }
 
-    public function user()
+    public function User()
     {
         return $this->belongsTo(User::class, 'editor_id');
     }
-    public function members()
+    public function Members()
     {
         return $this->hasMany(ClanMember::class, 'Clan_id');
     }

@@ -49,65 +49,65 @@ class User extends Authenticatable
         return $this->where('mobile', $username)->where('status','Active')->where('mobile_is_veryfied',1)->first();
     }
 
-    public function persons()
+    public function Persons()
     {
         return $this->hasMany(person::class, 'user_id');
     }
 
-    public function person_creates()
+    public function PersonCreates()
     {
         return $this->hasMany(person::class, 'creator_id');
     }
-    public function person_edites()
+    public function PersonEdites()
     {
         return $this->hasMany(person::class, 'editor_id');
     }
 
-    public function person_spouse_creates()
+    public function PersonSpouseCreates()
     {
         return $this->hasMany(personSpouse::class, 'creator_id');
     }
-    public function person_spouse_edites()
+    public function PersonSpouseEdites()
     {
         return $this->hasMany(personSpouse::class, 'editor_id');
     }
 
-    public function person_child_creates()
+    public function PersonChildCreates()
     {
         return $this->hasMany(personChild::class, 'creator_id');
     }
-    public function person_child_edites()
+    public function PersonChildEdites()
     {
         return $this->hasMany(personChild::class, 'editor_id');
     }
 
-    public function subscriptions()
+    public function Subscriptions()
     {
         return $this->hasMany(UserSubscription::class, 'user_id');
     }
 
-    public function favorite_creates()
+    public function FavoriteCreates()
     {
         return $this->hasMany(Favorite::class, 'creator_id');
     }
-    public function favorite_edites()
+    public function FavoriteEdites()
     {
         return $this->hasMany(Favorite::class, 'editor_id');
     }
 
-    public function memory_creates()
+    public function MemoryCreates()
     {
         return $this->hasMany(Memory::class, 'creator_id');
     }
-    public function memory_edites()
+    public function MemoryEdites()
     {
         return $this->hasMany(Memory::class, 'editor_id');
     }
-    public function mobiles()
+    public function Mobiles()
     {
         return $this->hasMany(UserMobile::class, 'user_id');
     }
-    public function answer()
+    public function Answer()
     {
         return $this->hasOne(UserAnswer::class, 'user_id');
     }
