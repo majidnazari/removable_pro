@@ -1,0 +1,39 @@
+
+
+
+type FamilyBoard {
+    
+    id: ID!
+    creator_id: ID!
+    editor_id: ID
+    category_content_id: ID!
+    
+    title: String!
+    selected_date: String!
+    file_path: String!
+    description: String!
+    status: String 
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateFamilyBoardInput {
+
+    category_content_id: ID!    
+    title: String!
+    selected_date: String!
+    file_path: String!
+    description: String!
+    status: String 
+
+}
+
+input UpdateFamilyBoardInput {
+
+    category_content_id: ID!    
+    title: String!
+    selected_date: String!
+    file_path: String!
+    description: String!
+    status: String 
+}

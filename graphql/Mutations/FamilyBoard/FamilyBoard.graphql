@@ -1,0 +1,4 @@
+
+createFamilyBoard(input: CreateFamilyBoardInput! @spread): FamilyBoard @field(resolver: "App\\GraphQL\\Mutations\\FamilyBoard\\CreateFamilyBoard@resolveFamilyBoard") 
+    updateFamilyBoard(id: ID!, input: UpdateFamilyBoardInput! @spread): FamilyBoard @field(resolver: "App\\GraphQL\\Mutations\\FamilyBoard\\UpdateFamilyBoard@resolveFamilyBoard") 
+    deleteFamilyBoard(id: ID!): FamilyBoard @field(resolver: "App\\GraphQL\\Mutations\\FamilyBoard\\DeleteFamilyBoard@resolveFamilyBoard") 
