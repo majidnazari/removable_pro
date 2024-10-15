@@ -1,0 +1,23 @@
+
+
+type Event {
+    
+    id: ID!
+    title: String!
+    status: String 
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateEventInput {
+
+    title: String!
+    status: String   
+
+}
+
+input UpdateEventInput {
+
+   title: String!
+   status: String
+}

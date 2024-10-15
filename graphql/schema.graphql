@@ -7,6 +7,7 @@
 #import Types/CategoryContent/type.graphql
 #import Types/Clan/type.graphql
 #import Types/ClanMember/type.graphql
+#import Types/Event/type.graphql
 
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
@@ -37,6 +38,7 @@ type Query {
     #import Queries/CategoryContent/CategoryContent.graphql
     #import Queries/Clan/Clan.graphql
     #import Queries/ClanMember/ClanMember.graphql
+    #import Queries/Event/Event.graphql
 }
 
 "Account of a person who utilizes this application."
@@ -83,5 +85,6 @@ extend type Mutation {
    #import Mutations/CategoryContent/CategoryContent.graphql
    #import Mutations/Clan/Clan.graphql
    #import Mutations/ClanMember/ClanMember.graphql
+   #import Mutations/Event/Event.graphql
 
 }
