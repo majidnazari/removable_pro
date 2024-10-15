@@ -12,7 +12,7 @@ class Province extends Model
     protected $fillable = ['country_id', 'title', 'code'];
     use HasFactory,SoftDeletes;
 
-    public function country()
+    public function Country()
     {
         return $this->belongsTo(Country::class, 'country_id');
     }

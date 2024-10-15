@@ -2,6 +2,8 @@
 #import Types/Country/type.graphql
 #import Types/Province/type.graphql
 #import Types/City/type.graphql
+#import Types/Area/type.graphql
+#import Types/Address/type.graphql
 
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
@@ -27,6 +29,8 @@ type Query {
     #import Queries/Country/Country.graphql
     #import Queries/Province/Province.graphql
     #import Queries/City/City.graphql
+    #import Queries/Area/Area.graphql
+    #import Queries/Address/Address.graphql
 }
 
 "Account of a person who utilizes this application."
@@ -68,5 +72,7 @@ extend type Mutation {
    #import Mutations/Country/Country.graphql
    #import Mutations/Province/Province.graphql
    #import Mutations/City/City.graphql
+   #import Mutations/Area/Area.graphql
+   #import Mutations/Address/Address.graphql
 
 }

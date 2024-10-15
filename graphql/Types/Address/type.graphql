@@ -1,0 +1,62 @@
+
+type Address {
+    id: ID!
+    creator_id: ID
+    Creator: User    
+    editor_id: ID
+    Editor: User
+    person_id: ID
+    country_id: ID!
+    Country: Country
+    province_id: ID
+    province: Province
+    city_id: ID
+    City:City
+    area_id: ID
+    Area: Area
+    location_title: String
+    street_name: String
+    builder_no: String
+    floor_no: String
+    unit_no: String
+    lat: Float
+    lon: Float
+    status: String
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateAddressInput {
+    creator_id: ID
+    person_id: ID!
+    country_id: ID!
+    province_id: ID
+    city_id: ID
+    area_id: ID
+    location_title: String
+    street_name: String
+    builder_no: String
+    floor_no: String
+    unit_no: String
+    lat: Float
+    lon: Float
+    status: String
+}
+
+input UpdateAddressInput {
+   
+    editor_id: ID
+    person_id: ID
+    country_id: ID
+    province_id: ID
+    city_id: ID
+    area_id: ID
+    location_title: String
+    street_name: String
+    builder_no: String
+    floor_no: String
+    unit_no: String
+    lat: Float
+    lon: Float
+    status: String
+}

@@ -12,11 +12,14 @@ class City extends Model
     protected $fillable = ['province_id', 'title', 'code'];
     use HasFactory,SoftDeletes;
 
-    public function province()
+    public function Province()
     {
         return $this->belongsTo(Province::class, 'province_id');
     }
-   
+    public function Area()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
 }
 
     

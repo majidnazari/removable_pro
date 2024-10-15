@@ -7,40 +7,40 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class address extends Model
+class Address extends Model
 {
     protected $fillable = ['creator_id', 'editor_id', 'person_id', 'country_id', 'province_id', 'city_id', 'area_id', 'location_title', 'street_name', 'builder_no', 'floor_no', 'unit_no', 'lat', 'lon', 'status'];
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-    public function creator()
+    public function Creator()
     {
         return $this->belongsTo(User::class, 'creator_id');
     }
 
-    public function editor()
+    public function Editor()
     {
         return $this->belongsTo(User::class, 'editor_id');
     }
 
-    public function person()
+    public function Person()
     {
         return $this->belongsTo(Person::class, 'person_id');
     }
 
-    public function area()
+    public function Area()
     {
         return $this->belongsTo(Area::class, 'area_id');
     }
-    public function city()
+    public function City()
     {
         return $this->belongsTo(City::class, 'city_id');
     }
 
-    public function province()
+    public function Province()
     {
         return $this->belongsTo(Province::class, 'province_id');
     }
-    public function country()
+    public function Country()
     {
         return $this->belongsTo(Country::class, 'country_id');
     }

@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\address;
+use App\Models\Address;
 use Illuminate\Auth\Access\Response;
 
 class AddressPolicy
@@ -19,7 +19,7 @@ class AddressPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, address $address): bool
+    public function view(User $user, Address $Address): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class AddressPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, address $address): bool
+    public function update(User $user, Address $Address): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class AddressPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, address $address): bool
+    public function delete(User $user, Address $Address): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class AddressPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, address $address): bool
+    public function restore(User $user, Address $Address): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class AddressPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, address $address): bool
+    public function forceDelete(User $user, Address $Address): bool
     {
         //
     }

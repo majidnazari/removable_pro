@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('ip_trackings', function (Blueprint $table) {
             $table->id();
             $table->string('ip')->unique()->index();
-            $table->string('date_attemp')->Carbon::now()->format("Y-m-d");
+            $table->string('date_attemp')->nullable();
             $table->unsignedTinyInteger('today_attemp')->default(0);
             $table->unsignedBigInteger('total_attemp')->default(0);
             $table->enum('status', ["Active","Blocked", "Suspend", "None"])->default("Active");

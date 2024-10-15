@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Clan_members', function (Blueprint $table) {
+        Schema::create('clan_members', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creator_id'); 
             $table->unsignedBigInteger('editor_id')->nullable();
-            $table->unsignedBigInteger('Clan_id')->index();
+            $table->unsignedBigInteger('clan_id')->index();
             $table->string('node_code')->index();
 
             $table->foreign('creator_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('Clan_id')->references('id')->on('Clans')->onDelete('cascade');
+            $table->foreign('clan_id')->references('id')->on('clans')->onDelete('cascade');
             
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Clan_members');
+        Schema::dropIfExists('clan_members');
     }
 };

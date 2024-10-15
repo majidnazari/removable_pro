@@ -31,7 +31,7 @@ class Person extends Model
         return $this->hasMany(PersonSpouse::class, 'person_id');
     }
 
-    public function addresses()
+    public function Addresses()
     {
         return $this->hasMany(Address::class, 'address_id');
     }

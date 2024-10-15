@@ -1,0 +1,23 @@
+
+type Area {
+    id: ID!
+    city_id: ID!
+    title: String
+    code: String
+    created_at: DateTime
+    updated_at: DateTime
+
+    city: City
+}
+
+input CreateAreaInput {
+    city_id: ID!
+    title: String!
+    code: String!
+}
+
+input UpdateAreaInput {
+    city_id: ID
+    title: String
+    code: String
+}

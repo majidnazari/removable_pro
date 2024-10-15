@@ -1,0 +1,7 @@
+
+getArea(id: ID!): Area @field(resolver: "App\\GraphQL\\Queries\\Area\\GetArea@resolveArea") 
+    getAreas(
+        first: Int, 
+        page: Int, 
+        # filter: AreaFilterInput
+    ): [Area!]! @paginate(builder: "App\\GraphQL\\Queries\\Area\\GetAreas@resolveArea")

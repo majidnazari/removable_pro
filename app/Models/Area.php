@@ -12,7 +12,7 @@ class Area extends Model
     protected $fillable = ['city_id', 'title', 'code'];
     use HasFactory,SoftDeletes;
 
-    public function city()
+    public function City()
     {
         return $this->belongsTo(City::class, 'city_id');
     }
