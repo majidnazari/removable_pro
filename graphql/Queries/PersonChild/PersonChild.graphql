@@ -1,0 +1,7 @@
+
+getPersonChild(id: ID!): PersonChild @field(resolver: "App\\GraphQL\\Queries\\PersonChild\\GetPersonChild@resolvePersonChild") 
+    getPersonChilds(
+        first: Int, 
+        page: Int, 
+        # filter: PersonChildFilterInput
+    ): [PersonChild!]! @paginate(builder: "App\\GraphQL\\Queries\\PersonChild\\GetPersonChilds@resolvePersonChild")

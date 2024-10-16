@@ -14,6 +14,7 @@
 #import Types/GroupView/type.graphql
 #import Types/Memory/type.graphql
 #import Types/Person/type.graphql
+#import Types/PersonChild/type.graphql
 
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
@@ -51,6 +52,7 @@ type Query {
     #import Queries/GroupView/GroupView.graphql
     #import Queries/Memory/Memory.graphql
     #import Queries/Person/Person.graphql
+    #import Queries/PersonChild/PersonChild.graphql
 }
 
 "Account of a person who utilizes this application."
@@ -104,5 +106,6 @@ extend type Mutation {
    #import Mutations/GroupView/GroupView.graphql
    #import Mutations/Memory/Memory.graphql
    #import Mutations/Person/Person.graphql
+   #import Mutations/PersonChild/PersonChild.graphql
 
 }

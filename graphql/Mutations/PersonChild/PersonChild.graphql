@@ -1,0 +1,4 @@
+
+createPersonChild(input: CreatePersonChildInput! @spread): PersonChild @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\CreatePersonChild@resolvePersonChild") 
+    updatePersonChild(id: ID!, input: UpdatePersonChildInput! @spread): PersonChild @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\UpdatePersonChild@resolvePersonChild") 
+    deletePersonChild(id: ID!): PersonChild @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\DeletePersonChild@resolvePersonChild") 
