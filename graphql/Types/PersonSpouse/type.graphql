@@ -1,0 +1,61 @@
+
+enum MarrageStatus {
+    Related
+    Notrelated
+    Suspend
+    None
+}
+
+enum SpouseStatus {
+    Alive
+    Dead
+    Divorce
+    Unkown
+    None
+}
+
+enum Status {
+    Active
+    Inactive
+    None
+}
+
+type PersonSpouse {
+    id: ID!
+    person_id: ID!
+    spouse_id: ID!
+    creator_id: ID
+    editor_id: ID
+    marrage_status: MarrageStatus
+    spouse_status: SpouseStatus
+    status: Status
+    marrage_date: String
+    divorce_date: String
+    created_at: String
+    updated_at: String
+}
+
+input CreatePersonSpouseInput {
+
+    person_id: ID!
+    spouse_id: ID!
+   
+    marrage_status: MarrageStatus
+    spouse_status: SpouseStatus
+    status: Status
+    marrage_date: String
+    divorce_date: String
+}
+
+input UpdatePersonSpouseInput {
+
+    
+    person_id: ID
+    spouse_id: ID
+   
+    marrage_status: MarrageStatus
+    spouse_status: SpouseStatus
+    status: Status
+    marrage_date: String
+    divorce_date: String
+}
