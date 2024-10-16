@@ -1,0 +1,59 @@
+
+
+type Person {
+    id: ID!
+    creator_id: ID!
+    editor_id: ID
+    node_code: String
+    node_level_x: Int
+    node_level_y: Int
+    first_name: String!
+    last_name: String!
+    birth_date: String
+    death_date: String
+    is_owner: Boolean
+    status: String
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+
+    creator: User
+    editor: User
+    # children: [PersonChild]
+    # spouses: [PersonSpouse]
+    addresses: [Address]
+    memories: [Memory]
+    familyEvents: [FamilyEvent]
+    favorites: [Favorite]
+    #scores: [Score]
+}
+
+
+input CreatePersonInput {
+
+    creator_id: ID!
+    editor_id: ID
+    node_code: String
+    node_level_x: Int
+    node_level_y: Int
+    first_name: String!
+    last_name: String!
+    birth_date: String
+    death_date: String
+    is_owner: Boolean
+    status: String
+}
+
+input UpdatePersonInput {
+
+    editor_id: ID
+    node_code: String
+    node_level_x: Int
+    node_level_y: Int
+    first_name: String
+    last_name: String
+    birth_date: String
+    death_date: String
+    is_owner: Boolean
+    status: String
+}

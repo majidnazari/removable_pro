@@ -1,0 +1,7 @@
+
+getPerson(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePerson") 
+    getPersons(
+        first: Int, 
+        page: Int, 
+        # filter: PersonFilterInput
+    ): [Person!]! @paginate(builder: "App\\GraphQL\\Queries\\Person\\GetPersons@resolvePerson")
