@@ -1,0 +1,48 @@
+
+
+enum ScoreLevel {
+    Excellent
+    Verygood
+    Good
+    NotBad
+    Bad
+    None
+}
+
+enum Status {
+    Active
+    Inactive
+    None
+}
+
+type PersonScore {
+
+    id: ID!
+    creator_id: ID!
+    editor_id: ID
+    person_id: ID
+    score_id: ID
+    score_level: ScoreLevel
+    status: Status   
+
+    Person: Person
+    created_at: String
+    updated_at: String
+}
+
+input CreatePersonScoreInput {
+
+    person_id: ID
+    score_id: ID
+    score_level: ScoreLevel
+    status: Status
+}
+
+input UpdatePersonScoreInput {
+    
+    person_id: ID
+    score_id: ID
+    score_level: ScoreLevel
+    status: Status
+}
+
