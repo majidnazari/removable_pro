@@ -1,0 +1,4 @@
+
+createMemory(input: CreateMemoryInput! @spread): Memory @field(resolver: "App\\GraphQL\\Mutations\\Memory\\CreateMemory@resolveMemory") 
+    updateMemory(id: ID!, input: UpdateMemoryInput! @spread): Memory @field(resolver: "App\\GraphQL\\Mutations\\Memory\\UpdateMemory@resolveMemory") 
+    deleteMemory(id: ID!): Memory @field(resolver: "App\\GraphQL\\Mutations\\Memory\\DeleteMemory@resolveMemory") 
