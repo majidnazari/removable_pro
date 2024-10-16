@@ -1,0 +1,7 @@
+
+getFavorite(id: ID!): Favorite @field(resolver: "App\\GraphQL\\Queries\\Favorite\\GetFavorite@resolveFavorite") 
+    getFavorites(
+        first: Int, 
+        page: Int, 
+        # filter: FavoriteFilterInput
+    ): [Favorite!]! @paginate(builder: "App\\GraphQL\\Queries\\Favorite\\GetFavorites@resolveFavorite")

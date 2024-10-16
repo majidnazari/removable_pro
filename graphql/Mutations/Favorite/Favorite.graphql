@@ -1,0 +1,4 @@
+
+createFavorite(input: CreateFavoriteInput! @spread): Favorite @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\CreateFavorite@resolveFavorite") 
+    updateFavorite(id: ID!, input: UpdateFavoriteInput! @spread): Favorite @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\UpdateFavorite@resolveFavorite") 
+    deleteFavorite(id: ID!): Favorite @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\DeleteFavorite@resolveFavorite") 

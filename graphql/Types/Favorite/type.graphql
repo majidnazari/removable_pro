@@ -1,0 +1,55 @@
+
+
+type Favorite {
+    
+    id: ID!
+    creator_id: ID!
+    editor_id: ID
+    person_id: ID!
+    image: String   
+    title: String   
+    description: String   
+    star: String   
+    status: String   
+
+    
+    # title: String
+    event_date: String  
+    status: String 
+    created_at: DateTime
+    updated_at: DateTime
+
+    Creator: User
+    Editor: User
+
+    # Person: Person
+}
+
+input CreateFavoriteInput {
+
+    creator_id: ID!
+    editor_id: ID
+    person_id: ID!
+    image: String   
+    title: String   
+    description: String   
+    star: String   
+    status: String      
+    event_date: String  
+    status: String 
+
+}
+
+input UpdateFavoriteInput {
+
+    creator_id: ID!
+    editor_id: ID
+    person_id: ID!
+    image: String   
+    title: String   
+    description: String   
+    star: String   
+    status: String  
+    event_date: String  
+    status: String 
+}
