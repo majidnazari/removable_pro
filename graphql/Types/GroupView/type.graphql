@@ -1,0 +1,28 @@
+
+
+type GroupView {
+    
+    id: ID!   
+    creator_id: ID!
+    editor_id: ID
+    title: String   
+    status: String  
+    created_at: DateTime
+    updated_at: DateTime
+
+    Creator: User
+    Editor: User
+    # Person: Person
+}
+
+input CreateGroupViewInput {
+
+    title: String   
+    status: String  
+}
+
+input UpdateGroupViewInput {
+
+    title: String   
+    status: String
+}
