@@ -1,0 +1,37 @@
+enum Gendar {
+    Male
+    Female
+    None
+}
+
+enum PhysicalCondition {
+    Healthy
+    Handicapped
+    None
+}
+
+type PersonDetail {
+    id: ID!
+    person_id: ID!
+    profile_picture: String
+    gendar: Gendar
+    physical_condition: PhysicalCondition
+    created_at: String
+    updated_at: String
+}
+
+input CreatePersonDetailsInput {
+    person_id: ID!
+    profile_picture: String
+    gendar: Gendar = None
+    physical_condition: PhysicalCondition = Healthy
+}
+
+input UpdatePersonDetailsInput {
+    
+    person_id: ID!
+    profile_picture: String
+    gendar: Gendar = None
+    physical_condition: PhysicalCondition = Healthy
+}
+

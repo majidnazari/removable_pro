@@ -1,0 +1,4 @@
+
+createPersonDetail(input: CreatePersonDetailsInput! @spread): PersonDetail @field(resolver: "App\\GraphQL\\Mutations\\PersonDetails\\CreatePersonDetails@resolvePersonDetail") 
+    updatePersonDetail(id: ID!, input: UpdatePersonDetailsInput! @spread): PersonDetail @field(resolver: "App\\GraphQL\\Mutations\\PersonDetails\\UpdatePersonDetails@resolvePersonDetail") 
+    deletePersonDetail(id: ID!): PersonDetail @field(resolver: "App\\GraphQL\\Mutations\\PersonDetails\\DeletePersonDetails@resolvePersonDetail") 
