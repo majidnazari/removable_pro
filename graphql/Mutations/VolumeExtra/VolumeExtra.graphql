@@ -1,0 +1,4 @@
+
+    createVolumeExtra(input: CreateVolumeExtraInput! @spread): VolumeExtra @field(resolver: "App\\GraphQL\\Mutations\\VolumeExtra\\CreateVolumeExtra@resolveVolumeExtra") 
+    updateVolumeExtra(id: ID!, input: UpdateVolumeExtraInput! @spread): VolumeExtra @field(resolver: "App\\GraphQL\\Mutations\\VolumeExtra\\UpdateVolumeExtra@resolveVolumeExtra") 
+    deleteVolumeExtra(id: ID!): VolumeExtra @field(resolver: "App\\GraphQL\\Mutations\\VolumeExtra\\DeleteVolumeExtra@resolveVolumeExtra") 

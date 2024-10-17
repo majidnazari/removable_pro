@@ -1,0 +1,32 @@
+enum Status {
+    Active
+    Inactive
+    None
+}
+
+type VolumeExtra {
+    id: ID!
+    title: String!   
+    day_number:Int
+    description:String
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+
+}
+
+input CreateVolumeExtraInput {
+
+    title: String!
+    day_number:Int
+    description:String
+    status: Status
+}
+
+input UpdateVolumeExtraInput {
+
+    title: String!
+    day_number:Int
+    description:String
+    status: Status
+}
