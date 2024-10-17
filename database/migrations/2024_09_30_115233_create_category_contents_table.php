@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('category_contents', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->enum('status',["Active","InActive","None"])->default("Active");
+            $table->enum('status',["Active","Inactive","None"])->default("Active");
             $table->timestamps();
             $table->softDeletes();
         });

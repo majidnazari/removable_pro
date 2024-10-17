@@ -32,7 +32,7 @@ return new class extends Migration
             //$table->foreign('spouse_id')->references('id')->on('people')->onDelete('cascade')->nullable();
             $table->enum('marrage_status',["Related","Notrelated","Suspend","None"])->default("None");
             $table->enum('spouse_status',["Alive","Dead","Divorce","Unkown","None"])->default("None");
-            $table->enum('status',["Active","InActive","None"])->default("Active");
+            $table->enum('status',["Active","Inactive","None"])->default("Active");
 
             $table->datetime('marrage_date')->nullable();
             $table->datetime('divorce_date')->nullable();

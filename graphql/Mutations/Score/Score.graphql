@@ -1,0 +1,4 @@
+
+    createScore(input: CreateScoreInput! @spread): Score @field(resolver: "App\\GraphQL\\Mutations\\Score\\CreateScore@resolveScore") 
+    updateScore(id: ID!, input: UpdateScoreInput! @spread): Score @field(resolver: "App\\GraphQL\\Mutations\\Score\\UpdateScore@resolveScore") 
+    deleteScore(id: ID!): Score @field(resolver: "App\\GraphQL\\Mutations\\Score\\DeleteScore@resolveScore") 

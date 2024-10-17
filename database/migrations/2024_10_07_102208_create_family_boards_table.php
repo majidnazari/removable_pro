@@ -26,7 +26,7 @@ return new class extends Migration
             $table->datetime('selected_date');
             $table->string('file_path')->nullable();
             $table->string('description');
-            $table->enum('status',["Active","InActive","None"])->default("Active");
+            $table->enum('status',["Active","Inactive","None"])->default("Active");
 
 
             $table->timestamps();

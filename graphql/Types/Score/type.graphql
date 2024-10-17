@@ -1,0 +1,26 @@
+enum Status {
+    Active
+    Inactive
+    None
+}
+
+type Score {
+    id: ID!
+    title: String!   
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+
+}
+
+input CreateScoreInput {
+
+    title: String!
+    status: Status
+}
+
+input UpdateScoreInput {
+
+    title: String!
+    status: Status
+}

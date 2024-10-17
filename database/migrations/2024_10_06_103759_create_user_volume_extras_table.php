@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->datetime('start_date')->nullable();
             $table->datetime('end_date')->nullable();
-            $table->enum('status',["Active","InActive","None"])->default("Active");
+            $table->enum('status',["Active","Inactive","None"])->default("Active");
 
             $table->timestamps();
             $table->softDeletes();

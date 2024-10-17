@@ -1,0 +1,7 @@
+
+getScore(id: ID!): Score @field(resolver: "App\\GraphQL\\Queries\\Score\\GetScore@resolveScore") 
+    getScores(
+        first: Int, 
+        page: Int, 
+        # filter: ScoreFilterInput
+    ): [Score!]! @paginate(builder: "App\\GraphQL\\Queries\\Score\\GetScores@resolveScore")

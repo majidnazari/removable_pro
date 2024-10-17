@@ -28,7 +28,7 @@ return new class extends Migration
 
             $table->enum('child_kind',["Direct_child","Mother_child","Father_child","Adoption","None"])->default("Direct_child");
             $table->enum('child_status',["With_family","Separated","None"])->default("With_family");
-            $table->enum('status',["Active","InActive","None"])->default("Active");
+            $table->enum('status',["Active","Inactive","None"])->default("Active");
             //$table->datetime('birth_date')->nullable();
             //$table->datetime('death_date')->nullable();
             $table->timestamps();

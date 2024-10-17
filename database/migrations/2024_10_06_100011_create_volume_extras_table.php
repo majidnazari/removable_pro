@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->integer('day_number')->default(365);
             $table->string('description')->nullable();
-            $table->enum('status',["Active","InActive","None"])->default("Active");
+            $table->enum('status',["Active","Inactive","None"])->default("Active");
 
             $table->timestamps();
             $table->softDeletes();

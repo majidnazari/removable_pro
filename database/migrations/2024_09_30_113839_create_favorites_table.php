@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->string('title')->nullable();
             $table->string('description')->nullable();
             $table->enum('star', ["1", "2", "3", "4", "5"])->nullable("5");
-            $table->enum('status', ["Active", "InActive", "None"])->default("Active");
+            $table->enum('status', ["Active", "Inactive", "None"])->default("Active");
             $table->timestamps();
             $table->softDeletes();
         });

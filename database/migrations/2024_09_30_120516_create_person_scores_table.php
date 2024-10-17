@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
  
             $table->enum('score_level',["Excellent","Verygood","Good","NotBad","Bad","None"])->default("None");
-            $table->enum('status',["Active","InActive","None"])->default("Active");
+            $table->enum('status',["Active","a","None"])->default("Active");
             $table->timestamps();
             $table->softDeletes();
         });
