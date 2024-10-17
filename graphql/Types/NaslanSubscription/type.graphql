@@ -1,0 +1,38 @@
+
+
+enum Status {
+    Active
+    Inactive
+    None
+}
+
+type NaslanSubscription {
+
+    id: ID!
+    title: String!   
+    day_number: Int   
+    volume_amount: Int 
+    description: String!   
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+
+}
+
+input CreateNaslanSubscriptionInput {
+
+    title: String!   
+    day_number: Int   
+    volume_amount: Int 
+    description: String!   
+    status: Status
+}
+
+input UpdateNaslanSubscriptionInput {
+
+    title: String!   
+    day_number: Int   
+    volume_amount: Int 
+    description: String!   
+    status: Status
+}
