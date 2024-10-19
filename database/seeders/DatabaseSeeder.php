@@ -51,7 +51,8 @@ class DatabaseSeeder extends Seeder
             QuestionSeeder::class,
             UserAnswerSeeder::class,
             UserMobileSeeder::class,
-            IpTrackingSeeder::class
+            IpTrackingSeeder::class,
+            NaslanRelationshipSeeder::class,
 
         ]);
     }
