@@ -17,35 +17,35 @@ class NaslanRelationshipSeeder extends Seeder
 
         $data = [
             [
-                "title" => "پدر",
+                "title" => "Father",
                 "priority" => 1,
                 "status" => "Active",   
                          
                 'created_at' => now(),
             ],
             [
-                "title" => "مادر",
+                "title" => "Mother",
                 "priority" => 1,
                 "status" => "Active",   
                          
                 'created_at' => now(),
             ],
             [
-                "title" => "همسر",
+                "title" => "Spouse",
                 "priority" => 1,
                 "status" => "Active",   
                          
                 'created_at' => now(),
             ],
             [
-                "title" => "پسر",
+                "title" => "Son",
                 "priority" => 1,
                 "status" => "Active",   
                          
                 'created_at' => now(),
             ],
             [
-                "title" => "دختر",
+                "title" => "Daughter",
                 "priority" => 1,
                 "status" => "Active",   
                          

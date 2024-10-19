@@ -18,7 +18,7 @@ final class GetCountries
     }
     function resolveCountry($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $countries = Country::where('deleted_at', null)->where('id', -1);
+        $countries = Country::where('deleted_at', null);
         return $countries;
     }
 }
