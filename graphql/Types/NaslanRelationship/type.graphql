@@ -1,0 +1,30 @@
+enum Status {
+    Active
+    Inactive
+    None
+}
+
+
+type NaslanRelationship {
+    id: ID!
+    title: String!   
+    priority:Int
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+
+}
+
+input CreateNaslanRelationshipInput {
+
+    title: String!   
+    priority:Int
+    status: Status
+}
+
+input UpdateNaslanRelationshipInput {
+
+    title: String!   
+    priority:Int
+    status: Status
+}

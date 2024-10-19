@@ -1,0 +1,4 @@
+
+    createNaslanRelationship(input: CreateNaslanRelationshipInput! @spread): NaslanRelationship @field(resolver: "App\\GraphQL\\Mutations\\NaslanRelationship\\CreateNaslanRelationship@resolveNaslanRelationship") 
+    updateNaslanRelationship(id: ID!, input: UpdateNaslanRelationshipInput! @spread): NaslanRelationship @field(resolver: "App\\GraphQL\\Mutations\\NaslanRelationship\\UpdateNaslanRelationship@resolveNaslanRelationship") 
+    # deleteNaslanRelationship(id: ID!): NaslanRelationship @field(resolver: "App\\GraphQL\\Mutations\\NaslanRelationship\\DeleteNaslanRelationship@resolveNaslanRelationship") 
