@@ -17,14 +17,14 @@ type Person {
     updated_at: DateTime
     deleted_at: DateTime
 
-    creator: User
-    editor: User
+    Creator: User
+    Editor: User
     Children: [Person]
-    Spouses: [PersonSpouse]
-    addresses: [Address]
-    memories: [Memory]
-    familyEvents: [FamilyEvent]
-    favorites: [Favorite]
+    PersonSpouses: [PersonSpouse]
+    Addresses: [Address]
+    Memories: [Memory]
+    FamilyEvents: [FamilyEvent]
+    Favorites: [Favorite]
     #scores: [Score]
 }
 

@@ -26,6 +26,12 @@ final class DeletePersonSpouse
         {
             return Error::createLocatedError("PersonSpouse-DELETE-RECORD_NOT_FOUND");
         }
+        if ($PersonSpouseResult->PersonChild()->exists()) 
+        {
+            return Error::createLocatedError("PersonSpouse-HAS_CHILDREN!");
+
+        }
+
         $PersonSpouseResult_filled= $PersonSpouseResult->delete();  
         return $PersonSpouseResult;
 

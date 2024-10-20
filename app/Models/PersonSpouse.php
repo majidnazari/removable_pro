@@ -48,4 +48,6 @@ class PersonSpouse extends Model
             'child_id'          // Local key on the `PersonChild` table
         );
     }
+
+    
 }

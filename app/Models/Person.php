@@ -22,28 +22,14 @@ class Person extends Model
         return $this->belongsTo(User::class,'editor_id');
     }
 
-    // public function Children()
-    // {
-    //     return $this->hasManyThrough(PersonChild::class, 'child_id');
-    // }
 
-    // public function Children()
-    // {
-    //     return $this->hasManyThrough(
-    //         PersonChild::class, // The model to access (PersonChild)
-    //         PersonSpouse::class, // Intermediate table (PersonSpouse)
-    //         'person_id', // Foreign key on PersonSpouse table
-    //         'person_spouse_id', // Foreign key on PersonChild table
-    //         'id', // Local key on Person table
-    //         'id' // Local key on PersonSpouse table
-    //     );
-    // }
-   
-    public function Spouses()
+    public function PersonSpouses()
     {
-        return $this->hasMany(PersonSpouse::class, 'person_id');
-    }
+        // return $this->hasMany(PersonSpouse::class, 'person_id')->orwhere('spouse_id',$this->id);
+         return $this->hasMany(PersonSpouse::class, 'person_id');
 
+    }
+  
     public function Addresses()
     {
         return $this->hasMany(Address::class, 'address_id');
@@ -66,7 +52,41 @@ class Person extends Model
     {
         return $this->hasMany(Score::class, 'score_id');
     }
-    
+
+
+    // public function Children()
+    // {
+    //     return $this->hasMany(Person::class, 'id');
+    // }
+    // public function Children()
+    // {
+    //     return $this->hasManyThrough(
+    //         Person::class,              // Final model we want to access (child Person)
+    //         PersonChild::class,         // Intermediate model (PersonChild)
+    //         'person_spouse_id',         // Foreign key on PersonChild table
+    //         'id',                       // Foreign key on Person table (child's ID)
+    //         'id',                       // Local key on PersonSpouse table (parent's ID)
+    //         'child_id'                  // Local key on PersonChild table (child's ID)
+    //     )->whereHas('PersonSpouses', function($query) {
+    //         $query->where('person_id', $this->id)
+    //               ->orWhere('spouse_id', $this->id);
+    //     })->whereHas('PersonChild', function($query) {
+    //         $query->where('person_spouse_id', $this->id);
+                 
+    //     });
+    // }
+
+    public function Children()
+    {
+        return $this->hasManyThrough(
+            Person::class,             // Final model to access (the child Person)
+            PersonChild::class,        // Intermediate model (PersonChild)
+            'person_spouse_id',        // Foreign key on PersonChild table
+            'id',                       // Foreign key on Person table (child's ID)
+            'id',                       // Local key on PersonSpouse table (parent's ID)
+            'child_id'                 // Local key on PersonChild table (child's ID)
+        );
+    }
 }
 
   
