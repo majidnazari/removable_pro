@@ -19,8 +19,8 @@ type Person {
 
     creator: User
     editor: User
-    # children: [PersonChild]
-    # spouses: [PersonSpouse]
+    Children: [Person]
+    Spouses: [PersonSpouse]
     addresses: [Address]
     memories: [Memory]
     familyEvents: [FamilyEvent]

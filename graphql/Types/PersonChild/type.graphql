@@ -30,8 +30,8 @@ type PersonChild {
 
     creator: User
     editor: User
-    personChildSpouse: [PersonChild]
-    Children: [PersonChild]
+    PersonSpouse: PersonSpouse
+    # WhoseChild: Person
 }
 
 

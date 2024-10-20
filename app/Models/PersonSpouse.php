@@ -31,4 +31,21 @@ class PersonSpouse extends Model
     {
         return $this->belongsTo(Person::class, 'spouse_id');
     }
+
+    public function PersonChild()
+    {
+        return $this->hasMany(PersonChild::class, 'person_spouse_id');
+    }
+    
+    public function Children()
+    {
+        return $this->hasManyThrough(
+            Person::class,
+            PersonChild::class,
+            'person_spouse_id', // Foreign key on the `PersonChild` table
+            'id',               // Foreign key on the `Person` table
+            'id',               // Local key on the `PersonSpouse` table
+            'child_id'          // Local key on the `PersonChild` table
+        );
+    }
 }

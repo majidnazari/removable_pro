@@ -21,8 +21,13 @@ class PersonChild extends Model
         return $this->belongsTo(User::class, 'editor_id');
     }
 
-    public function Marrage()
+    public function PersonSpouse()
     {
         return $this->belongsTo(PersonSpouse::class, 'person_spouse_id');
     }
+    public function WhoseChild()
+    {
+        return $this->belongsTo(Person::class, 'child_id');
+    }
+
 }

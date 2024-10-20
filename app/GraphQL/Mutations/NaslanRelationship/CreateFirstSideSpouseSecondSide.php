@@ -29,7 +29,7 @@ final class CreateFirstSideSpouseSecondSide
 
 
 
-        if ($args['relationship_id'] == "Spouse") //it is spouse relation and should check first with second and also check inverse relation too 
+        if ($args['relationship_id'] === "Spouse") //it is spouse relation and should check first with second and also check inverse relation too 
         {
             $NaslanRelationModel= [
                 "creator_id" =>1,

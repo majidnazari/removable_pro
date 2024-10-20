@@ -22,10 +22,23 @@ class Person extends Model
         return $this->belongsTo(User::class,'editor_id');
     }
 
-    public function Children()
-    {
-        return $this->hasMany(PersonChild::class, 'person_id');
-    }
+    // public function Children()
+    // {
+    //     return $this->hasManyThrough(PersonChild::class, 'child_id');
+    // }
+
+    // public function Children()
+    // {
+    //     return $this->hasManyThrough(
+    //         PersonChild::class, // The model to access (PersonChild)
+    //         PersonSpouse::class, // Intermediate table (PersonSpouse)
+    //         'person_id', // Foreign key on PersonSpouse table
+    //         'person_spouse_id', // Foreign key on PersonChild table
+    //         'id', // Local key on Person table
+    //         'id' // Local key on PersonSpouse table
+    //     );
+    // }
+   
     public function Spouses()
     {
         return $this->hasMany(PersonSpouse::class, 'person_id');
