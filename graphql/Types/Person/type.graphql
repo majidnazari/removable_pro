@@ -1,5 +1,10 @@
 
 
+enum Status {
+    Active
+    Inactive
+    None
+}
 type Person {
     id: ID!
     creator_id: ID!
@@ -12,7 +17,7 @@ type Person {
     birth_date: String
     death_date: String
     is_owner: Boolean
-    status: String
+    status: Status
     created_at: DateTime
     updated_at: DateTime
     deleted_at: DateTime
@@ -41,7 +46,7 @@ input CreatePersonInput {
     birth_date: String
     death_date: String
     is_owner: Boolean
-    status: String
+    status: Status
 }
 
 input UpdatePersonInput {
@@ -55,5 +60,5 @@ input UpdatePersonInput {
     birth_date: String
     death_date: String
     is_owner: Boolean
-    status: String
+    status: Status
 }

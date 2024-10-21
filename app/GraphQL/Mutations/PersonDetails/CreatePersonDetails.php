@@ -11,6 +11,7 @@ use Joselfonseca\LighthouseGraphQLPassport\PersonDetails\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Storage;
 use Log;
 
 final class CreatePersonDetails
@@ -28,6 +29,26 @@ final class CreatePersonDetails
     {
 
 
+       // Validate the file upload
+       if (isset($args['input']['profile_picture'])) 
+       {
+            $file = $args['input']['profile_picture'];
+
+            // Check if the file is valid
+            if (!$file->isValid()) {
+                throw new Error('Invalid file upload.');
+            }
+
+            // Store the file and get the path
+            $path = 'profile_pictures/' . time() . '_' . $file->getClientOriginalName();
+            Storage::disk('public')->put($path, file_get_contents($file->getRealPath()));
+
+            // Set the profile picture URL in the input
+            $args['input']['profile_picture'] = Storage::url($path);
+    
+         }
+       // log::info("the file is:" . json_encode($file));
+        //return $file->storePublicly('uploads');
 
         //Log::info("the args are:" . json_encode($args));
         //$user_id=auth()->guard('api')->user()->id;

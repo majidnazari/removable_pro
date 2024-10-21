@@ -1,4 +1,7 @@
 
+scalar Upload
+  @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
+  
 #import Types/Country/type.graphql
 #import Types/Province/type.graphql
 #import Types/City/type.graphql
