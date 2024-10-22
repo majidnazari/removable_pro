@@ -76,17 +76,17 @@ class Person extends Model
     //     });
     // }
 
-    public function Children()
-    {
-        return $this->hasManyThrough(
-            Person::class,             // Final model to access (the child Person)
-            PersonChild::class,        // Intermediate model (PersonChild)
-            'person_spouse_id',        // Foreign key on PersonChild table
-            'id',                       // Foreign key on Person table (child's ID)
-            'id',                       // Local key on PersonSpouse table (parent's ID)
-            'child_id'                 // Local key on PersonChild table (child's ID)
-        );
-    }
+    // public function Children()
+    // {
+    //     return $this->hasManyThrough(
+    //         Person::class,             // Final model to access (the child Person)
+    //         PersonChild::class,        // Intermediate model (PersonChild)
+    //         'person_spouse_id',        // Foreign key on PersonChild table
+    //         'id',                       // Foreign key on Person table (child's ID)
+    //         'id',                       // Local key on PersonSpouse table (parent's ID)
+    //         'child_id'                 // Local key on PersonChild table (child's ID)
+    //     );
+    // }
 }
 
   

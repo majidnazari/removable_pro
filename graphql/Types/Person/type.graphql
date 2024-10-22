@@ -24,7 +24,7 @@ type Person {
 
     Creator: User
     Editor: User
-    Children: [Person]
+    # Children: [Person]
     PersonSpouses: [PersonSpouse]
     Addresses: [Address]
     Memories: [Memory]
