@@ -28,45 +28,85 @@ final class CreatePersonDetails
     public function resolvePersonDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
+        $isExist = PersonDetail::where('person_id', $args['person_id'])->first();
+        
+        if ($isExist) {
+            return Error::createLocatedError("PersonDetail-CREATE-RECORD_IS_EXIST");
+        }        
+       
+        $path="";
+        // Check if the file exists in the input
+                if (isset($args['profile_picture'])) 
+                {
+                    $file = $args['profile_picture'];
+                   
+                    // Check if the file is valid
+                    if (!$file->isValid()) {
+                        throw new Error('Invalid file upload.');
+                    }
 
-       // Validate the file upload
-       if (isset($args['input']['profile_picture'])) 
-       {
-            $file = $args['input']['profile_picture'];
+                     // Define allowed file types and max size (in bytes)
+                    $allowedFileTypes = ['jpg', 'jpeg', 'png', 'gif'];
+                    $maxFileSize = 1 * 1024 * 1024; // 1 MB
 
-            // Check if the file is valid
-            if (!$file->isValid()) {
-                throw new Error('Invalid file upload.');
-            }
+                    // Get the file extension and size
+                    $extension = $file->getClientOriginalExtension();
+                    $fileSize = $file->getSize();
 
-            // Store the file and get the path
-            $path = 'profile_pictures/' . time() . '_' . $file->getClientOriginalName();
-            Storage::disk('public')->put($path, file_get_contents($file->getRealPath()));
+                    // Check file type
+                    if (!in_array(strtolower($extension), $allowedFileTypes)) {
+                        throw new Error('Invalid file type. Allowed types: ' . implode(', ', $allowedFileTypes));
+                    }
 
-            // Set the profile picture URL in the input
-            $args['input']['profile_picture'] = Storage::url($path);
-    
-         }
+                    // Check file size
+                    if ($fileSize > $maxFileSize) {
+                        throw new Error('File size exceeds the maximum limit of 1 MB.');
+                    }
+
+                    // Store the file with a unique name
+                    // $path = 'profile_pictures/' . time() . '_' . $file->getClientOriginalName();
+                    $path = $args['person_id'] . '.' . $file->getClientOriginalExtension();
+                    Storage::disk('public')->put("profile_pictures/".$path, file_get_contents($file->getRealPath()));
+                  
+                    // Get the URL for the stored file
+                    $profilePictureUrl = Storage::url($path);
+                    $args['profile_picture'] = $profilePictureUrl;
+                }
+
+         // Prepare the model data
+        $PersonDetailsModel = [
+            "create_id" => 1,
+            "person_id" => $args['person_id'],
+            "profile_picture" =>  $path ?? null,
+            "gendar" => $args['gendar'] ?? 'None',
+            "physical_condition" => $args['physical_condition'] ?? 'Healthy'
+        ];
+        
+        // Check if a similar details profile already exists for the same person_id
+      
+        // Create the new person detail record
+        $PersonDetailResult = PersonDetail::create($PersonDetailsModel);
+        return $PersonDetailResult;
        // log::info("the file is:" . json_encode($file));
         //return $file->storePublicly('uploads');
 
         //Log::info("the args are:" . json_encode($args));
         //$user_id=auth()->guard('api')->user()->id;
-        $PersonDetailsModel = [
-            "create_id" => 1,
-            "person_id" => $args['person_id'],
-            "profile_picture" => $args['profile_picture'] ?? null,
-            "gendar" => $args['gendar'] ?? 'None', // Default to 'None' if not provided
-            "physical_condition" => $args['physical_condition'] ?? 'Healthy' // Default to 'Healthy' if not provided
-        ];
+    //     $PersonDetailsModel = [
+    //         "create_id" => 1,
+    //         "person_id" => $args['person_id'],
+    //         "profile_picture" => $args['profile_picture'] ?? null,
+    //         "gendar" => $args['gendar'] ?? 'None', // Default to 'None' if not provided
+    //         "physical_condition" => $args['physical_condition'] ?? 'Healthy' // Default to 'Healthy' if not provided
+    //     ];
         
-        // Check if a similar details profile already exists for the same person_id
-        $is_exist = PersonDetail::where('person_id', $args['person_id'])->first();
+    //     // Check if a similar details profile already exists for the same person_id
+    //     $is_exist = PersonDetail::where('person_id', $args['person_id'])->first();
         
-        if ($is_exist) {
-            return Error::createLocatedError("PersonDetail-CREATE-RECORD_IS_EXIST");
-        }
-        $PersonDetailResult = PersonDetail::create($PersonDetailsModel);
-        return $PersonDetailResult;
-    }
+    //     if ($is_exist) {
+    //         return Error::createLocatedError("PersonDetail-CREATE-RECORD_IS_EXIST");
+    //     }
+    //     $PersonDetailResult = PersonDetail::create($PersonDetailsModel);
+    //     return $PersonDetailResult;
+     }
 }

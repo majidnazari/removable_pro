@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 return [
     'route' => [
@@ -13,7 +13,9 @@ return [
 
         // Any middleware for the graphql route group
         // This middleware will apply to all schemas
-        'middleware' => [],
+        'middleware' => [
+            \Illuminate\Http\Middleware\HandleCors::class,
+        ],
 
         // Additional route group attributes
         //

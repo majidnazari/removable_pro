@@ -13,7 +13,7 @@ class AreaPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,8 @@ class AreaPolicy
      */
     public function view(User $user, Area $area): bool
     {
-        //
+        return true;
+
     }
 
     /**
@@ -29,7 +30,8 @@ class AreaPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
+
     }
 
     /**
@@ -37,7 +39,8 @@ class AreaPolicy
      */
     public function update(User $user, Area $area): bool
     {
-        //
+        return true;
+
     }
 
     /**
@@ -45,7 +48,8 @@ class AreaPolicy
      */
     public function delete(User $user, Area $area): bool
     {
-        //
+        return true;
+
     }
 
     /**

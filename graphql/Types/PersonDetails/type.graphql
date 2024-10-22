@@ -1,3 +1,5 @@
+
+
 enum Gendar {
     Male
     Female
@@ -14,7 +16,6 @@ type PersonDetail {
     id: ID!
     person_id: ID!
     profile_picture: String
-    # upload(file: Upload!): String
     gendar: Gendar
     physical_condition: PhysicalCondition
     created_at: String
@@ -32,7 +33,7 @@ input CreatePersonDetailsInput {
 input UpdatePersonDetailsInput {
     
     person_id: ID!
-    profile_picture: String
+    profile_picture: Upload
     gendar: Gendar = None
     physical_condition: PhysicalCondition = Healthy
 }
