@@ -41,7 +41,7 @@ final class CreatePerson
             "birth_date" => $args['birth_date'] ?? null,
             "death_date" => $args['death_date'] ?? null,
             "is_owner" => $args['is_owner'] ?? false,
-            "status" => $args['status']
+            "status" => $args['status'] ?? "None"
         ];
         
         $is_exist = Person::where('first_name' , $args['first_name'])
