@@ -75,8 +75,11 @@ final class UpdatePersonDetails
             //Log::info("the old pic is:" . $personDetail['profile_picture'] );
             // Delete the old image if it exists
             if ($personDetail && $personDetail['profile_picture'] !=null ) {
-                $oldImagePath = public_path($personDetail['profile_picture'] ); // Use `public_path` to get the full path
+                $oldImagePath = public_path('storage/profile_pictures/' . $personDetail['profile_picture'] ); // Use `public_path` to get the full path
+                //Log::info("the old image in updateis: ". $oldImagePath );
+
                 if (file_exists($oldImagePath)) {
+                   // Log::info("it should unlink it");
                     unlink($oldImagePath); // Delete the old image
                     //Log::info("Deleted old image: " . $oldImagePath);
                 }

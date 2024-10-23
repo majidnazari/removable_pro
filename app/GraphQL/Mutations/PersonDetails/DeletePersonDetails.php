@@ -7,6 +7,8 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 
+use Log;
+
 final class DeletePersonDetails
 {
     /**
@@ -26,6 +28,19 @@ final class DeletePersonDetails
         {
             return Error::createLocatedError("PersonDetail-DELETE-RECORD_NOT_FOUND");
         }
+
+        if ($PersonDetailResult && $PersonDetailResult['profile_picture'] !=null ) {
+            $oldImagePath = public_path('storage/profile_pictures/' . $PersonDetailResult['profile_picture'] ); // Use `public_path` to get the full path
+
+            //Log::info("the old image is:". $oldImagePath );
+            if (file_exists($oldImagePath)) {
+                //Log::info("it should unlink it");
+
+                unlink($oldImagePath); // Delete the old image
+                //Log::info("Deleted old image: " . $oldImagePath);
+            }
+        }
+
         $PersonDetailResult_filled= $PersonDetailResult->delete();  
         return $PersonDetailResult;
 

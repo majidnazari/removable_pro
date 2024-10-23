@@ -1,4 +1,9 @@
 
+enum Status {
+    Active
+    Inactive
+    None
+}
 
 type Memory {
     
@@ -12,7 +17,7 @@ type Memory {
     title: String   
     description: String
     is_shown_after_death: Boolean
-    status: String  
+    status: Status  
     created_at: DateTime
     updated_at: DateTime
 
@@ -26,11 +31,12 @@ input CreateMemoryInput {
     person_id: ID!
     category_content_id:ID!
     group_view_id:ID!
-    content: String
+    
+    content: Upload
     title: String   
     description: String
     is_shown_after_death: Boolean
-    status: String  
+    status: Status  
 }
 
 input UpdateMemoryInput {
@@ -38,9 +44,9 @@ input UpdateMemoryInput {
     person_id: ID!
     category_content_id:ID!
     group_view_id:ID!
-    content: String
+    content: Upload
     title: String   
     description: String
     is_shown_after_death: Boolean
-    status: String 
+    status: Status 
 }
