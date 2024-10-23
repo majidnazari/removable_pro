@@ -63,13 +63,13 @@ class User extends Authenticatable
         return $this->hasMany(person::class, 'editor_id');
     }
 
-    public function PersonSpouseCreates()
+    public function PersonMarriageCreates()
     {
-        return $this->hasMany(personSpouse::class, 'creator_id');
+        return $this->hasMany(PersonMarriage::class, 'creator_id');
     }
-    public function PersonSpouseEdites()
+    public function PersonMarriageEdites()
     {
-        return $this->hasMany(personSpouse::class, 'editor_id');
+        return $this->hasMany(PersonMarriage::class, 'editor_id');
     }
 
     public function PersonChildCreates()

@@ -19,14 +19,14 @@ class PersonDetailSeeder extends Seeder
                 [
                     "person_id" => 1,
                     "profile_picture" =>"pic1.jpg",
-                    "gendar" => "Male",
+                    // "gendar" => "Male",
                     "physical_condition" => "Healthy",
                     "created_at" =>\Carbon\Carbon::now()->format("Y-m-d H:i:s"),
                 ],
                 [
                     "person_id" => 1,
                     "profile_picture" =>"pic1.jpg",
-                    "gendar" => "Male",
+                    // "gendar" => "Male",
                     "physical_condition" => "Healthy",
                     "created_at" =>\Carbon\Carbon::now()->format("Y-m-d H:i:s"),
                 ]

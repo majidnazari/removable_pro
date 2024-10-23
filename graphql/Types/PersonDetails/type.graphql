@@ -9,6 +9,7 @@ enum Gendar {
 enum PhysicalCondition {
     Healthy
     Handicapped
+    Dead
     None
 }
 
@@ -16,7 +17,7 @@ type PersonDetail {
     id: ID!
     person_id: ID!
     profile_picture: String
-    gendar: Gendar
+    # gendar: Gendar
     physical_condition: PhysicalCondition
     created_at: String
     updated_at: String
@@ -26,7 +27,7 @@ type PersonDetail {
 input CreatePersonDetailsInput {
     person_id: ID!
     profile_picture: Upload
-    gendar: Gendar = None
+    # gendar: Gendar = None
     physical_condition: PhysicalCondition = Healthy
 }
 
@@ -34,7 +35,7 @@ input UpdatePersonDetailsInput {
     
     person_id: ID!
     profile_picture: Upload
-    gendar: Gendar = None
+    # gendar: Gendar = None
     physical_condition: PhysicalCondition = Healthy
 }
 

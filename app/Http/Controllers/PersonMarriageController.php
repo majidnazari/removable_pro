@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Storeperson_spouseRequest;
-use App\Http\Requests\Updateperson_spouseRequest;
-use App\Models\person_spouse;
+use App\Http\Requests\StorePersonMarriageRequest;
+use App\Http\Requests\UpdatePersonMarriageRequest;
+use App\Models\PersonMarriage;
 
-class PersonSpouseController extends Controller
+class PersonMarriageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class PersonSpouseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Storeperson_spouseRequest $request)
+    public function store(StorePersonMarriageRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class PersonSpouseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(person_spouse $person_spouse)
+    public function show(PersonMarriage $PersonMarriage)
     {
         //
     }
@@ -43,7 +43,7 @@ class PersonSpouseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(person_spouse $person_spouse)
+    public function edit(PersonMarriage $PersonMarriage)
     {
         //
     }
@@ -51,7 +51,7 @@ class PersonSpouseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Updateperson_spouseRequest $request, person_spouse $person_spouse)
+    public function update(UpdatePersonMarriageRequest $request, PersonMarriage $PersonMarriage)
     {
         //
     }
@@ -59,7 +59,7 @@ class PersonSpouseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(person_spouse $person_spouse)
+    public function destroy(PersonMarriage $PersonMarriage)
     {
         //
     }

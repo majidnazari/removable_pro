@@ -34,7 +34,7 @@ final class CreatePersonDetails
             return Error::createLocatedError("PersonDetail-CREATE-RECORD_IS_EXIST");
         }        
        
-        Log::info("the args are: " . $args['profile_picture']);
+        //Log::info("the args are: " . $args['profile_picture']);
         $path="";
         // Check if the file exists in the input
                 if (isset($args['profile_picture'])) 
@@ -79,7 +79,7 @@ final class CreatePersonDetails
             "create_id" => 1,
             "person_id" => $args['person_id'],
             "profile_picture" =>  $path ?? null,
-            "gendar" => $args['gendar'] ?? 'None',
+            //"gendar" => $args['gendar'] ?? 'None',
             "physical_condition" => $args['physical_condition'] ?? 'Healthy'
         ];
         

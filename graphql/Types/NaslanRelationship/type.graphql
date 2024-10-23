@@ -7,25 +7,26 @@ enum Status {
 enum NaslanDanamicRelationshipEnum {
     Father
     Mother
-    Spouse
+    Marriage
     Son
     Daughter
 }
 
-enum MarrageStatus {
+enum MarriageStatus {
     Related
     Notrelated
     Suspend
+    Dead
     None
 }
 
-enum SpouseStatus {
-    Alive
-    Dead
-    Divorce
-    Unkown
-    None
-}
+# enum MarriageStatus {
+#     Alive
+    
+#     Divorce
+#     Unkown
+#     None
+# }
 
 enum ChildKind {
     Direct_child
@@ -65,17 +66,16 @@ input UpdateNaslanRelationshipInput {
     status: Status
 }
 
-type FirstSideSpouseSecondSide
+type FirstSideMarriageSecondSide
 {
     first_side_person_id: ID!
     relationship_id: ID!
     second_side_person_id: ID!
-    marrage_status: MarrageStatus,
-    spouse_status: SpouseStatus,
+    Marriage_status: MarriageStatus,
     marrage_date: String!
 }
 
-input CreateFirstSideSpouseSecondSideInput {
+input CreateFirstSideMarriageSecondSideInput {
 
     first_side_person_id: ID!
     # first_side_person: Person
@@ -85,8 +85,8 @@ input CreateFirstSideSpouseSecondSideInput {
     second_side_person_id: ID!
     # second_side_person_id: Person
 
-    marrage_status: MarrageStatus,
-    spouse_status: SpouseStatus,
+    # : MarrageStatus,
+    Marriage_status: MarriageStatus,
     marrage_date: String!
 }
 
@@ -97,13 +97,13 @@ input CreateFirstSideSpouseSecondSideInput {
 #     relationship_id: ID!
 #     second_side_person_id: ID!
 #     marrage_status: MarrageStatus,
-#     spouse_status: SpouseStatus,
+#     Marriage_status: MarriageStatus,
 #     marrage_date: String!
 # }
 
-input CreateSpouseChildInput {
+input CreateMarriageChildInput {
 
-    person_spouse_id: ID!
+    person_marriage_id: ID!
     relationship_type:NaslanDanamicRelationshipEnum
     child_id: ID!
     child_kind: ChildKind,

@@ -6,7 +6,7 @@ enum MarrageStatus {
     None
 }
 
-enum SpouseStatus {
+enum MarriageStatus {
     Alive
     Dead
     Divorce
@@ -20,20 +20,20 @@ enum Status {
     None
 }
 
-type PersonSpouse {
+type PersonMarriage {
     id: ID!
     person_id: ID!
     Itself: Person
-    spouse_id: ID!
-    Spouse: Person
+    Marriage_id: ID!
+    Wife: Person
     PersonChild: [PersonChild] @hasMany(relation: "PersonChild")
     Children: [Person] @hasManyThrough(relation: "Children")
 
    
     creator_id: ID
     editor_id: ID
-    marrage_status: MarrageStatus
-    spouse_status: SpouseStatus
+    # marrage_status: MarrageStatus
+    Marriage_status: MarriageStatus
     status: Status
     marrage_date: String
     divorce_date: String
@@ -41,26 +41,26 @@ type PersonSpouse {
     updated_at: String
 }
 
-input CreatePersonSpouseInput {
+input CreatePersonMarriageInput {
 
     person_id: ID!
-    spouse_id: ID!
+    Marriage_id: ID!
    
-    marrage_status: MarrageStatus
-    spouse_status: SpouseStatus
+    # marrage_status: MarrageStatus
+    Marriage_status: MarriageStatus
     status: Status
     marrage_date: String
     divorce_date: String
 }
 
-input UpdatePersonSpouseInput {
+input UpdatePersonMarriageInput {
 
     
     person_id: ID
-    spouse_id: ID
+    Marriage_id: ID
    
-    marrage_status: MarrageStatus
-    spouse_status: SpouseStatus
+    # marrage_status: MarrageStatus
+    Marriage_status: MarriageStatus
     status: Status
     marrage_date: String
     divorce_date: String

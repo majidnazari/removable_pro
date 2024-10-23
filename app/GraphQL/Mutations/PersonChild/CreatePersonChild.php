@@ -34,14 +34,14 @@ final class CreatePersonChild
         $PersonChildModel = [
             "creator_id" => 1,
             "editor_id" => $args['editor_id'] ?? null,
-            "person_spouse_id" => $args['person_spouse_id'] ,
+            "person_marriage_id" => $args['person_marriage_id'] ,
             "child_id" => $args['child_id'],
             "child_kind" => $args['child_kind'] ?? 'Direct_child', // Default to 'Direct_child' if not provided
             "child_status" => $args['child_status'] ?? 'With_family', // Default to 'With_family' if not provided
             "status" => $args['status'] ?? 'Active' // Default to 'Active' if not provided
         ];
         
-        $is_exist = PersonChild::where('person_spouse_id' , $args['person_spouse_id'])
+        $is_exist = PersonChild::where('person_marriage_id' , $args['person_marriage_id'])
         ->where('child_id' , $args['child_id'])
             ->first();
         if ($is_exist) {

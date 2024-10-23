@@ -1,7 +1,7 @@
 
-    createFirstSideSpouseSecondSide(input: CreateFirstSideSpouseSecondSideInput! @spread): [PersonSpouse] @paginate(builder: "App\\GraphQL\\Mutations\\NaslanRelationship\\CreateFirstSideSpouseSecondSide@resolveCreateFirstSideSpouseSecondSide") 
-    createSpouseChild(input: CreateSpouseChildInput! @spread): [PersonChild] @paginate(builder: "App\\GraphQL\\Mutations\\NaslanRelationship\\CreateChildSpouse@resolveCreateChildSpouse") 
-    createChildSpouse(input: CreateSpouseChildInput! @spread): [PersonChild] @paginate(builder: "App\\GraphQL\\Mutations\\NaslanRelationship\\CreateSpouseChild@resolveCreateSpouseChild") 
+    createFirstSideMarriageSecondSide(input: CreateFirstSideMarriageSecondSideInput! @spread): [PersonMarriage] @paginate(builder: "App\\GraphQL\\Mutations\\NaslanRelationship\\CreateFirstSideMarriageSecondSide@resolveCreateFirstSideMarriageSecondSide") 
+    createMarriageChild(input: CreateMarriageChildInput! @spread): [PersonChild] @paginate(builder: "App\\GraphQL\\Mutations\\NaslanRelationship\\CreateChildMarriage@resolveCreateChildMarriage") 
+    createChildMarriage(input: CreateMarriageChildInput! @spread): [PersonChild] @paginate(builder: "App\\GraphQL\\Mutations\\NaslanRelationship\\CreateMarriageChild@resolveCreateMarriageChild") 
     createNaslanRelationship(input: CreateNaslanRelationshipInput! @spread): NaslanRelationship @field(resolver: "App\\GraphQL\\Mutations\\NaslanRelationship\\CreateNaslanRelationship@resolveNaslanRelationship") 
     updateNaslanRelationship(id: ID!, input: UpdateNaslanRelationshipInput! @spread): NaslanRelationship @field(resolver: "App\\GraphQL\\Mutations\\NaslanRelationship\\UpdateNaslanRelationship@resolveNaslanRelationship") 
     # deleteNaslanRelationship(id: ID!): NaslanRelationship @field(resolver: "App\\GraphQL\\Mutations\\NaslanRelationship\\DeleteNaslanRelationship@resolveNaslanRelationship") 
