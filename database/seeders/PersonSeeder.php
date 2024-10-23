@@ -27,6 +27,8 @@ class PersonSeeder extends Seeder
                 'birth_date' => '1990-01-01 00:00:00',
                 //'death_date' => null,
                 'is_owner' => 1,
+                "gendar" => 1,
+
                 'status' => 'Active',
                 'created_at' => now(),
                 // 'node_level' => 2,
@@ -60,6 +62,8 @@ class PersonSeeder extends Seeder
                 //'death_date' => null,
                 //'mobile' => '09375371610',
                 'is_owner' => 0,
+                "gendar" => 0,
+
                 'status' => 'Active',
                 'created_at' => now(),
                 //'family_title' => 'رحمتی',
@@ -85,6 +89,8 @@ class PersonSeeder extends Seeder
                 'birth_date' => '2015-10-10 00:00:00',
                 //'death_date' => null,
                 'is_owner' => 0,
+                "gendar" => 1,
+
                 'status' => 'Active',
                 'created_at' => now(),
                 //'mobile' => '',
@@ -111,6 +117,8 @@ class PersonSeeder extends Seeder
                 'birth_date' => '2018-11-10 00:00:00',
                 //'death_date' => null,
                 'is_owner' => 0,
+                "gendar" => 0,
+
                 'status' => 'Active',
                 'created_at' => now(),
                 //'mobile' => '',
@@ -137,6 +145,8 @@ class PersonSeeder extends Seeder
                 'birth_date' => '1902-10-10 00:00:00',
                 //'death_date' => null,
                 'is_owner' => 0,
+                "gendar" => 1,
+
                 'status' => 'Active',
                 'created_at' => now(),
                 //'mobile' => '',
@@ -163,6 +173,8 @@ class PersonSeeder extends Seeder
                 'birth_date' => '1950-11-10 00:00:00',
                 //'death_date' => null,
                 'is_owner' => 0,
+                "gendar" => 0,
+
                 'status' => 'Active',
                 'created_at' => now(),
                 //'mobile' => '',

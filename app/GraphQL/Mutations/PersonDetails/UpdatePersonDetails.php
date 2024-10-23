@@ -112,7 +112,7 @@ final class UpdatePersonDetails
             "editor_id" => 1,
             // "person_id" => $args['person_id'],
             // "profile_picture" =>  $path ?? null,
-            "gendar" => $args['gendar'] ?? 'None',
+            //"gendar" => $args['gendar'] ?? 'None',
             "physical_condition" => $args['physical_condition'] ?? 'Healthy'
         ];
 

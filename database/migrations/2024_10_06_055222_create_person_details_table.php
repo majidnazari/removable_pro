@@ -25,8 +25,7 @@ return new class extends Migration
             //$table->string('birth_location')->nullable(); 
             //$table->string('address')->nullable();       
             $table->string('profile_picture')->nullable();    
-            $table->enum('gendar', ["Male", "Female", "None"])->default("None");   
-            $table->enum('physical_condition', ["Healthy", "Handicapped", "None"])->default("Healthy");    
+            $table->enum('physical_condition', ["Healthy", "Handicapped","Dead", "None"])->default("Healthy");    
             $table->timestamps();
             $table->softDeletes();
 

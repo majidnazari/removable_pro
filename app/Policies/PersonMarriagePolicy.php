@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\person_spouse;
+use App\Models\PersonMarriage;
 use Illuminate\Auth\Access\Response;
 
-class PersonSpousePolicy
+class PersonMarriagePolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class PersonSpousePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, person_spouse $personSpouse): bool
+    public function view(User $user, PersonMarriage $PersonMarriage): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class PersonSpousePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, person_spouse $personSpouse): bool
+    public function update(User $user, PersonMarriage $PersonMarriage): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class PersonSpousePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, person_spouse $personSpouse): bool
+    public function delete(User $user, PersonMarriage $PersonMarriage): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class PersonSpousePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, person_spouse $personSpouse): bool
+    public function restore(User $user, PersonMarriage $PersonMarriage): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class PersonSpousePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, person_spouse $personSpouse): bool
+    public function forceDelete(User $user, PersonMarriage $PersonMarriage): bool
     {
         //
     }

@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class PersonSpouse extends Model
+class PersonMarriage extends Model
 {
-    protected $fillable = ['person_id', 'spouse_id', 'creator_id', 'editor_id', 'marrage_status', 'spouse_status', 'status', 'marrage_date', 'divorce_date'];
+    protected $fillable = ['man_id', 'woman_id', 'creator_id', 'editor_id', 'marriage_status', 'status', 'marrage_date', 'divorce_date'];
     use HasFactory,SoftDeletes;
 
     public function Creator()
@@ -24,17 +24,17 @@ class PersonSpouse extends Model
 
     public function Itself()
     {
-        return $this->belongsTo(Person::class, 'person_id');
+        return $this->belongsTo(Person::class, 'man_id');
     }
 
-    public function Spouse()
+    public function Wife()
     {
-        return $this->belongsTo(Person::class, 'spouse_id');
+        return $this->belongsTo(Person::class, 'woman_id');
     }
 
     public function PersonChild()
     {
-        return $this->hasMany(PersonChild::class, 'person_spouse_id');
+        return $this->hasMany(PersonChild::class, 'person_marriage_id');
     }
     
     public function Children()
@@ -42,9 +42,9 @@ class PersonSpouse extends Model
         return $this->hasManyThrough(
             Person::class,
             PersonChild::class,
-            'person_spouse_id', // Foreign key on the `PersonChild` table
+            'person_marriage_id', // Foreign key on the `PersonChild` table
             'id',               // Foreign key on the `Person` table
-            'id',               // Local key on the `PersonSpouse` table
+            'id',               // Local key on the `PersonMarriage` table
             'child_id'          // Local key on the `PersonChild` table
         );
     }

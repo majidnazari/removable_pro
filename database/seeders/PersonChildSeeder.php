@@ -20,7 +20,7 @@ class PersonChildSeeder extends Seeder
             [
                 'creator_id' => 1,
                 'editor_id' => null,
-                'person_spouse_id' => 1,
+                'person_marriage_id' => 1,
                 'child_id' => 3,
                 'child_kind' => "Direct_child",
                 'child_status' => "With_family",
@@ -32,7 +32,7 @@ class PersonChildSeeder extends Seeder
             [
                 'creator_id' => 1,
                 'editor_id' => null,
-                'person_spouse_id' => 1,
+                'person_marriage_id' => 1,
                 'child_id' => 4,
                 'child_kind' => "Direct_child",
                 'child_status' => "With_family",

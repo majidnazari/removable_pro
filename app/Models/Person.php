@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Person extends Model
 {
-    protected $fillable = ['creator_id', 'editor_id', 'node_code', 'node_level_x', 'node_level_y', 'first_name', 'last_name', 'birth_date', 'death_date', 'is_owner', 'status'];
+    protected $fillable = ['creator_id', 'editor_id', 'node_code', 'node_level_x', 'node_level_y', 'first_name', 'last_name', 'birth_date', 'death_date', 'is_owner','gendar', 'status'];
     use HasFactory , SoftDeletes;
 
 
@@ -23,10 +23,10 @@ class Person extends Model
     }
 
 
-    public function PersonSpouses()
+    public function PersonMarriages()
     {
-        // return $this->hasMany(PersonSpouse::class, 'person_id')->orwhere('spouse_id',$this->id);
-         return $this->hasMany(PersonSpouse::class, 'person_id');
+        // return $this->hasMany(PersonMarriage::class, 'person_id')->orwhere('spouse_id',$this->id);
+         return $this->hasMany(PersonMarriage::class, 'man_id');
 
     }
   
@@ -63,15 +63,15 @@ class Person extends Model
     //     return $this->hasManyThrough(
     //         Person::class,              // Final model we want to access (child Person)
     //         PersonChild::class,         // Intermediate model (PersonChild)
-    //         'person_spouse_id',         // Foreign key on PersonChild table
+    //         'person_marriage_id',         // Foreign key on PersonChild table
     //         'id',                       // Foreign key on Person table (child's ID)
-    //         'id',                       // Local key on PersonSpouse table (parent's ID)
+    //         'id',                       // Local key on PersonMarriage table (parent's ID)
     //         'child_id'                  // Local key on PersonChild table (child's ID)
-    //     )->whereHas('PersonSpouses', function($query) {
+    //     )->whereHas('PersonMarriages', function($query) {
     //         $query->where('person_id', $this->id)
     //               ->orWhere('spouse_id', $this->id);
     //     })->whereHas('PersonChild', function($query) {
-    //         $query->where('person_spouse_id', $this->id);
+    //         $query->where('person_marriage_id', $this->id);
                  
     //     });
     // }
@@ -81,9 +81,9 @@ class Person extends Model
     //     return $this->hasManyThrough(
     //         Person::class,             // Final model to access (the child Person)
     //         PersonChild::class,        // Intermediate model (PersonChild)
-    //         'person_spouse_id',        // Foreign key on PersonChild table
+    //         'person_marriage_id',        // Foreign key on PersonChild table
     //         'id',                       // Foreign key on Person table (child's ID)
-    //         'id',                       // Local key on PersonSpouse table (parent's ID)
+    //         'id',                       // Local key on PersonMarriage table (parent's ID)
     //         'child_id'                 // Local key on PersonChild table (child's ID)
     //     );
     // }

@@ -1,7 +1,0 @@
-
-getPersonSpouse(id: ID!): PersonSpouse @field(resolver: "App\\GraphQL\\Queries\\PersonSpouse\\GetPersonSpouse@resolvePersonSpouse") 
-    getPersonSpouses(
-        first: Int, 
-        page: Int, 
-        # filter: PersonSpouseFilterInput
-    ): [PersonSpouse!]! @paginate(builder: "App\\GraphQL\\Queries\\PersonSpouse\\GetPersonSpouses@resolvePersonSpouse")

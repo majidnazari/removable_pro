@@ -18,7 +18,7 @@ scalar Upload
 #import Types/Memory/type.graphql
 #import Types/Person/type.graphql
 #import Types/PersonChild/type.graphql
-#import Types/PersonSpouse/type.graphql
+#import Types/PersonMarriage/type.graphql
 #import Types/PersonDetails/type.graphql
 #import Types/PersonScore/type.graphql
 #import Types/Question/type.graphql
@@ -65,7 +65,7 @@ type Query {
     #import Queries/Memory/Memory.graphql
     #import Queries/Person/Person.graphql
     #import Queries/PersonChild/PersonChild.graphql
-    #import Queries/PersonSpouse/PersonSpouse.graphql
+    #import Queries/PersonMarriage/PersonMarriage.graphql
     #import Queries/PersonDetails/PersonDetails.graphql
     #import Queries/PersonScore/PersonScore.graphql
     #import Queries/Question/Question.graphql
@@ -131,7 +131,7 @@ extend type Mutation {
    #import Mutations/Memory/Memory.graphql
    #import Mutations/Person/Person.graphql
    #import Mutations/PersonChild/PersonChild.graphql
-   #import Mutations/PersonSpouse/PersonSpouse.graphql
+   #import Mutations/PersonMarriage/PersonMarriage.graphql
    #import Mutations/PersonDetails/PersonDetails.graphql
    #import Mutations/PersonScore/PersonScore.graphql
    #import Mutations/Question/Question.graphql

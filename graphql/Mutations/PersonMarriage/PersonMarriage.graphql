@@ -1,0 +1,4 @@
+
+createPersonMarriage(input: CreatePersonMarriageInput! @spread): PersonMarriage @field(resolver: "App\\GraphQL\\Mutations\\PersonMarriage\\CreatePersonMarriage@resolvePersonMarriage") 
+    updatePersonMarriage(id: ID!, input: UpdatePersonMarriageInput! @spread): PersonMarriage @field(resolver: "App\\GraphQL\\Mutations\\PersonMarriage\\UpdatePersonMarriage@resolvePersonMarriage") 
+    deletePersonMarriage(id: ID!): PersonMarriage @field(resolver: "App\\GraphQL\\Mutations\\PersonMarriage\\DeletePersonMarriage@resolvePersonMarriage") 
