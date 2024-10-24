@@ -26,7 +26,7 @@ class Person extends Model
     public function PersonMarriages()
     {
         // return $this->hasMany(PersonMarriage::class, 'person_id')->orwhere('spouse_id',$this->id);
-         return $this->hasMany(PersonMarriage::class, 'man_id');
+         return $this->hasMany(PersonMarriage::class, 'man_id')->orWhere('woman_id',$this->id);
 
     }
   
