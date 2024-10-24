@@ -34,21 +34,21 @@ final class CreatePersonMarriage
         $PersonMarriageModel = [
             "creator_id" =>1,
 
-            "person_id" => $args['person_id'],
-            "spouse_id" => $args['spouse_id'],
+            "man_id" => $args['man_id'],
+            "woman_id" => $args['woman_id'],
             "editor_id" => $args['editor_id'] ?? null,
             "marriage_status" => $args['marriage_status'] ?? 'None', // Default to 'None' if not provided
-            "spouse_status" => $args['spouse_status'] ?? 'None', // Default to 'None' if not provided
+            //"marriage_status" => $args['spouse_status'] ?? 'None', // Default to 'None' if not provided
             "status" => $args['status'] ?? 'Active', // Default to 'Active' if not provided
             "marrage_date" => $args['marrage_date'] ?? null,
             "divorce_date" => $args['divorce_date'] ?? null
         ];
         
         // Check if a similar record exists based on unique constraints or business logic
-        $is_exist = PersonMarriage::where('person_id', $args['person_id'])
-        ->where('spouse_id', $args['spouse_id'])
+        $is_exist = PersonMarriage::where('man_id', $args['man_id'])
+        ->where('woman_id', $args['woman_id'])
         ->where('marriage_status', $args['marriage_status'] ?? 'None')
-        ->where('spouse_status', $args['spouse_status'] ?? 'None')
+       // ->where('spouse_status', $args['spouse_status'] ?? 'None')
         ->first();
         
         if ($is_exist) {

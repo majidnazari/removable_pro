@@ -43,8 +43,8 @@ type PersonMarriage {
 
 input CreatePersonMarriageInput {
 
-    person_id: ID!
-    Marriage_id: ID!
+    man_id: ID!
+    woman_id: ID!
    
     # marrage_status: MarrageStatus
     Marriage_status: MarriageStatus
@@ -55,9 +55,8 @@ input CreatePersonMarriageInput {
 
 input UpdatePersonMarriageInput {
 
-    
-    person_id: ID
-    Marriage_id: ID
+    man_id: ID!
+    woman_id: ID!
    
     # marrage_status: MarrageStatus
     Marriage_status: MarriageStatus
