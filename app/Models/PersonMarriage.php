@@ -22,12 +22,12 @@ class PersonMarriage extends Model
         return $this->belongsTo(User::class, 'editor_id');
     }
 
-    public function Itself()
+    public function Man()
     {
         return $this->belongsTo(Person::class, 'man_id');
     }
 
-    public function Wife()
+    public function Woman()
     {
         return $this->belongsTo(Person::class, 'woman_id');
     }
