@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Log;
+
 
 class Person extends Model
 {
@@ -87,6 +89,35 @@ class Person extends Model
     //         'child_id'                 // Local key on PersonChild table (child's ID)
     //     );
     // }
+
+    public function findRootAncestor()
+    {
+        // Log current person ID to track recursion
+        //Log::info("Checking root ancestor for person ID: " . $this->id);
+
+        // Find any parent marriage where this person is a child
+        $parentMarriage = PersonMarriage::whereHas('PersonChild', function ($query) {
+            $query->where('child_id', $this->id);
+        })->first();
+
+       // Log::info("Parent marriage found for person ID {$this->id}: " . json_encode($parentMarriage));
+
+        // If no parent marriage is found, this person is the root ancestor
+        if (!$parentMarriage) {
+            //Log::info("Root ancestor found: person ID " . $this->id);
+            return $this;  // Return the current person as the root ancestor
+        }
+
+        // Identify the parent (using the father if available, otherwise the mother)
+        $parentId = $parentMarriage->man_id ? $parentMarriage->man_id : $parentMarriage->woman_id;
+        $parent = Person::find($parentId);
+
+        //Log::info("Moving up to parent ID: " . ($parent ? $parent->id : 'null'));
+
+        // Recursive call to move up the lineage
+        return $parent ? $parent->findRootAncestor() : $this;
+    }
+
 }
 
   
