@@ -40,7 +40,7 @@ final class CreatePersonMarriage
             "marriage_status" => $args['marriage_status'] ?? 'None', // Default to 'None' if not provided
             //"marriage_status" => $args['spouse_status'] ?? 'None', // Default to 'None' if not provided
             "status" => $args['status'] ?? 'Active', // Default to 'Active' if not provided
-            "marrage_date" => $args['marrage_date'] ?? null,
+            "marriage_date" => $args['marriage_date'] ?? null,
             "divorce_date" => $args['divorce_date'] ?? null
         ];
         

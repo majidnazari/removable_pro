@@ -37,7 +37,7 @@ final class CreateFirstSideMarriageSecondSide
                 //"relationship_id" => $args['relationship_id'] ,           
                 "woman_id" => $args['second_side_person_id'],
                 "Marriage_status" => $args['Marriage_status']  ?? "None",
-                "marrage_date" => $args["marrage_date"]
+                "marriage_date" => $args["marriage_date"]
 
             ];
         } else {

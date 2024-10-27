@@ -35,7 +35,7 @@ type PersonChild {
 }
 
 
-input CreatePersonChildInput {
+input CreatePersonChildInput @validator(class: "App\\GraphQL\\Validators\\PersonChild\\CreatePersonChildInputValidator")  {
 
     person_marriage_id: ID
     child_id: ID
@@ -45,7 +45,7 @@ input CreatePersonChildInput {
    
 }
 
-input UpdatePersonChildInput {
+input UpdatePersonChildInput  @validator(class: "App\\GraphQL\\Validators\\PersonChild\\UpdatePersonChildInputValidator") {
 
     person_marriage_id: ID
     child_id: ID

@@ -34,7 +34,7 @@ return new class extends Migration
             //$table->enum('spouse_status',["Alive","Dead","Divorce","Unkown","None"])->default("None");
             $table->enum('status',["Active","Inactive","None"])->default("Active");
 
-            $table->datetime('marrage_date')->nullable();
+            $table->datetime('marriage_date')->nullable();
             $table->datetime('divorce_date')->nullable();
 
 
