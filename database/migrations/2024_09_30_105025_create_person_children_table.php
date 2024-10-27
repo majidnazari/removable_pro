@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
-            $table->unsignedBigInteger('person_spouse_id')->index();
+            $table->unsignedBigInteger('person_marriage_id')->index();
             $table->unsignedBigInteger('child_id')->index();
             
-            $table->foreign('person_spouse_id')->references('id')->on('person_spouses')->onDelete('cascade');
+            $table->foreign('person_marriage_id')->references('id')->on('person_marriages')->onDelete('cascade');
             $table->foreign('child_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');

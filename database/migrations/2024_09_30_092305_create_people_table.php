@@ -32,6 +32,9 @@ return new class extends Migration {
             $table->datetime('death_date')->nullable();
             //$table->string('mobile');
             $table->boolean('is_owner')->defalut(false);
+            //$table->enum('gendar', ["Male", "Female", "None"])->default("None");   
+            $table->smallInteger('gendar', )->default(1)->comment("1 is man 0 is woman");   
+
             //$table->string('family_title')->nullable();
             //$table->string('father_first_name')->nullable();
             //$table->string('mother_first_name')->nullable();

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PersonChild extends Model
 {
-    protected $fillable = ['creator_id', 'editor_id', 'person_spouse_id', 'child_id', 'child_kind', 'child_status', 'status'];
+    protected $fillable = ['creator_id', 'editor_id', 'person_marriage_id', 'child_id', 'child_kind', 'child_status', 'status'];
     use HasFactory,SoftDeletes;
 
     public function Creator()
@@ -21,9 +21,9 @@ class PersonChild extends Model
         return $this->belongsTo(User::class, 'editor_id');
     }
 
-    public function PersonSpouse()
+    public function PersonMarriage()
     {
-        return $this->belongsTo(PersonSpouse::class, 'person_spouse_id');
+        return $this->belongsTo(PersonMarriage::class, 'person_marriage_id');
     }
     public function WhoseChild()
     {

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Updateperson_spouseRequest extends FormRequest
+class StorePerson_marriageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

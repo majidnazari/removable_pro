@@ -14,7 +14,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Log;
 
-final class CreateSpouseChild
+final class CreateMarriageChild
 {
     /**
      * @param  null  $_
@@ -24,14 +24,14 @@ final class CreateSpouseChild
     {
         // TODO implement the resolver
     }
-    public function resolveCreateSpouseChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveCreateMarriageChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        if (($args['relationship_type'] === "Son") || ($args['relationship_type'] === "Daughter")) //it is spouse relation and should check first with second and also check inverse relation too 
+        if (($args['relationship_type'] === "Son") || ($args['relationship_type'] === "Daughter")) //it is Marriage relation and should check first with second and also check inverse relation too 
         {
             $NaslanRelationModel= [
                 "creator_id" =>1,
-                "person_spouse_id" => $args['person_spouse_id'],
+                "person_marriage_id" => $args['person_marriage_id'],
                 //"relationship_id" => $args['relationship_id'] ,           
                 "child_id" => $args['child_id'],
                 "child_kind" => $args['child_kind'] ?? "None",
@@ -47,18 +47,18 @@ final class CreateSpouseChild
         }
        // return PersonChild::where('deleted_at',null);
       
-        $is_exist_builder = PersonChild::where('person_spouse_id', $args['person_spouse_id'])->where('child_id', $args['child_id']);    
+        $is_exist_builder = PersonChild::where('person_marriage_id', $args['person_marriage_id'])->where('child_id', $args['child_id']);    
 
         // If the specific relationship already exists, find all marriages involving the person
         if ($is_exist_builder->exists()) {
-            $allchildrens = PersonChild::where('person_spouse_id', $args['person_spouse_id']);
+            $allchildrens = PersonChild::where('person_marriage_id', $args['person_marriage_id']);
             return $allchildrens;
         }
 
         // Create a new relationship if it doesn't exist
         $newRelationship = PersonChild::create($NaslanRelationModel);
 
-        $allchildrens = PersonChild::where('person_spouse_id', $args['person_spouse_id']);
+        $allchildrens = PersonChild::where('person_marriage_id', $args['person_marriage_id']);
         return $allchildrens;
     }
 }

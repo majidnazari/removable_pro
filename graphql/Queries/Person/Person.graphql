@@ -1,5 +1,6 @@
 
 getPerson(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePerson") 
+getPersonWithAncestry(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonWithAncestry") 
     getPersons(
         first: Int, 
         page: Int, 

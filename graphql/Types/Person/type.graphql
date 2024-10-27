@@ -17,6 +17,7 @@ type Person {
     birth_date: String
     death_date: String
     is_owner: Boolean
+    gendar: Int # the 1 is man and 0 is woman
     status: Status
     created_at: DateTime
     updated_at: DateTime
@@ -25,7 +26,7 @@ type Person {
     Creator: User
     Editor: User
     # Children: [Person]
-    PersonSpouses: [PersonSpouse]
+    PersonMarriages: [PersonMarriage]
     Addresses: [Address]
     Memories: [Memory]
     FamilyEvents: [FamilyEvent]
