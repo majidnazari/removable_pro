@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PersonMarriage extends Model
 {
-    protected $fillable = ['man_id', 'woman_id', 'creator_id', 'editor_id', 'marriage_status', 'status', 'marrage_date', 'divorce_date'];
+    protected $fillable = ['man_id', 'woman_id', 'creator_id', 'editor_id', 'marriage_status', 'status', 'marriage_date', 'divorce_date'];
     use HasFactory,SoftDeletes;
 
     public function Creator()

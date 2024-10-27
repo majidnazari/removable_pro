@@ -118,6 +118,33 @@ class Person extends Model
         return $parent ? $parent->findRootAncestor() : $this;
     }
 
+    public function ancestors()
+    {
+        // Retrieve parent marriages for this person where they are the child
+        $parentMarriages = PersonMarriage::whereHas('PersonChild', function ($query) {
+            $query->where('child_id', $this->id);
+        })->get();
+
+        $ancestors = collect();
+        
+        foreach ($parentMarriages as $marriage) {
+            if ($marriage->man_id) {
+                $father = Person::find($marriage->man_id);
+                $ancestors->push($father);
+                $ancestors = $ancestors->merge($father->ancestors());
+            }
+            
+            if ($marriage->woman_id) {
+                $mother = Person::find($marriage->woman_id);
+                $ancestors->push($mother);
+                $ancestors = $ancestors->merge($mother->ancestors());
+            }
+        }
+
+        return $ancestors->unique('id'); // Remove duplicates
+    }
+
+
 }
 
   
