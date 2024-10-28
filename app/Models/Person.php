@@ -90,7 +90,7 @@ class Person extends Model
     //     );
     // }
 
-    public function findRootAncestor()
+    public function findRootFatherOfFather()
     {
         // Log current person ID to track recursion
         //Log::info("Checking root ancestor for person ID: " . $this->id);
@@ -115,9 +115,24 @@ class Person extends Model
         //Log::info("Moving up to parent ID: " . ($parent ? $parent->id : 'null'));
 
         // Recursive call to move up the lineage
-        return $parent ? $parent->findRootAncestor() : $this;
+        return $parent ? $parent->findRootFatherOfFather() : $this;
     }
+    public function findRootFatherOfMother()
+    {
+        $parentMarriage = PersonMarriage::whereHas('PersonChild', function ($query) {
+            $query->where('child_id', $this->id);
+        })->first();
 
+        if (!$parentMarriage) {
+            //Log::info("Root ancestor found: person ID " . $this->id);
+            return $this;  // Return the current person as the root ancestor
+        }
+
+        $parentId = $parentMarriage->woman_id ? $parentMarriage->woman_id : $parentMarriage->man_id;
+        $parent = Person::find($parentId);
+
+        return $parent ? $parent->findRootFatherOfFather() : $this;
+    }
     public function ancestors()
     {
         // Retrieve parent marriages for this person where they are the child
@@ -147,61 +162,61 @@ class Person extends Model
      // Recursive ancestry methods
      public function getFullBinaryAncestry($depth = 3)
      {
-         Log::info("Starting ancestry crawl for Person ID: " . $this->id . " with depth: " . $depth);
+         //Log::info("Starting ancestry crawl for Person ID: " . $this->id . " with depth: " . $depth);
          return $this->crawlAncestors($this, $depth);
      }
  
-     private function crawlAncestors($person, $depth)
+    private function crawlAncestors($person, $depth)
     {
-    // Base case: stop recursion if depth is zero or person is null
-    if ($depth == 0 || !$person) {
-        return null;
-    }
+        // Base case: stop recursion if depth is zero or person is null
+        if ($depth == 0 || !$person) {
+            return null;
+        }
 
-    Log::info("Fetching ancestors for Person ID: " . $person->id . " at depth: $depth");
+        //Log::info("Fetching ancestors for Person ID: " . $person->id . " at depth: $depth");
 
-    // Find the parent marriage relations using the PersonChild intermediate model
-    $parentMarriage = PersonMarriage::whereHas('PersonChild', function ($query) use ($person) {
-        $query->where('child_id', $person->id);
-    })->first();
+        // Find the parent marriage relations using the PersonChild intermediate model
+        $parentMarriage = PersonMarriage::whereHas('PersonChild', function ($query) use ($person) {
+            $query->where('child_id', $person->id);
+        })->first();
 
-    if (!$parentMarriage) {
-        Log::info("No parent marriage found; Person ID: " . $person->id . " is likely a root ancestor.");
+        if (!$parentMarriage) {
+            //Log::info("No parent marriage found; Person ID: " . $person->id . " is likely a root ancestor.");
+            return [
+                'person_id' => $person->id,
+                'first_name' => $person->first_name,
+                'last_name' => $person->last_name,
+                'father' => null,
+                'mother' => null,
+            ];
+        }
+
+        // Identify the father and mother from the parent marriage
+        $father = Person::find($parentMarriage->man_id);
+        $mother = Person::find($parentMarriage->woman_id);
+
+        //Log::info("Person ID: " . $person->id . " -> Father ID: " . ($father ? $father->id : 'null') . ", Mother ID: " . ($mother ? $mother->id : 'null'));
+
+        // Recursive calls for both father and mother, reducing the depth for each level
+        $fatherAncestry = $father ? $this->crawlAncestors($father, $depth - 1) : null;
+        $motherAncestry = $mother ? $this->crawlAncestors($mother, $depth - 1) : null;
+
+        // Build and return the binary ancestry tree for the current person
         return [
             'person_id' => $person->id,
             'first_name' => $person->first_name,
             'last_name' => $person->last_name,
-            'father' => null,
-            'mother' => null,
+            'father' => [
+                'id' => $father ? $father->id : null,
+                'name' => $father ? $father->first_name . ' ' . $father->last_name : null,
+                'ancestry' => $fatherAncestry  // This continues the recursion on the paternal line
+            ],
+            'mother' => [
+                'id' => $mother ? $mother->id : null,
+                'name' => $mother ? $mother->first_name . ' ' . $mother->last_name : null,
+                'ancestry' => $motherAncestry  // This continues the recursion on the maternal line
+            ]
         ];
-    }
-
-    // Identify the father and mother from the parent marriage
-    $father = Person::find($parentMarriage->man_id);
-    $mother = Person::find($parentMarriage->woman_id);
-
-    Log::info("Person ID: " . $person->id . " -> Father ID: " . ($father ? $father->id : 'null') . ", Mother ID: " . ($mother ? $mother->id : 'null'));
-
-    // Recursive calls for both father and mother, reducing the depth for each level
-    $fatherAncestry = $father ? $this->crawlAncestors($father, $depth - 1) : null;
-    $motherAncestry = $mother ? $this->crawlAncestors($mother, $depth - 1) : null;
-
-    // Build and return the binary ancestry tree for the current person
-    return [
-        'person_id' => $person->id,
-        'first_name' => $person->first_name,
-        'last_name' => $person->last_name,
-        'father' => [
-            'id' => $father ? $father->id : null,
-            'name' => $father ? $father->first_name . ' ' . $father->last_name : null,
-            'ancestry' => $fatherAncestry  // This continues the recursion on the paternal line
-        ],
-        'mother' => [
-            'id' => $mother ? $mother->id : null,
-            'name' => $mother ? $mother->first_name . ' ' . $mother->last_name : null,
-            'ancestry' => $motherAncestry  // This continues the recursion on the maternal line
-        ]
-    ];
     }
 
     

@@ -23,21 +23,21 @@ final class GetPerson
         $Person = Person::where('id', $args['id']);
         return $Person->first();
     }
-    function resolvePersonWithAncestry($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    function resolvePersonFatherOfFather($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // Find the given person
         $person = Person::find($args['id']);
 
         // If the person exists, find the root ancestor
         if ($person) {
-            $rootAncestor = $person->findRootAncestor();
+            $rootAncestor = $person->findRootFatherOfFather();
         }
 
         // else {
         //     return null; // Return null if the person is not found
         // }
 
-        //Log::info("resolvePersonWithAncestry and  rootAncestor is:" . json_encode($rootAncestor));
+        //Log::info("resolvePersonFatherOfFather and  rootAncestor is:" . json_encode($rootAncestor));
 
         return $rootAncestor ? Person::find($rootAncestor->id) : $person;
         //$this->resolvePerson($rootValue,['id' => $rootAncestor->id], $context, $resolveInfo);
@@ -57,6 +57,17 @@ final class GetPerson
         //     ->first();
     }
 
+    function resolvePersonFatherOfMother($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        // Find the given person
+        $person = Person::find($args['id']);
+
+        // If the person exists, find the root ancestor
+        if ($person) {
+            $rootAncestor = $person->findRootFatherOfMother();
+        }
+        return $rootAncestor ? Person::find($rootAncestor->id) : $person;
+    }
 
 
     public function resolvePersonAncestry($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
