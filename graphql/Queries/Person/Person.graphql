@@ -10,4 +10,4 @@ getPersonFatherOfMother(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries
     
 
 
-getPersonAncestry(id: ID!, depth: Int!): AncestryTree @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")
+# getPersonAncestry(id: ID!, depth: Int!): AncestryTree @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")
