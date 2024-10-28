@@ -6,3 +6,6 @@ getPersonWithAncestry(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\
         page: Int, 
         # filter: PersonFilterInput
     ): [Person!]! @paginate(builder: "App\\GraphQL\\Queries\\Person\\GetPersons@resolvePerson")
+
+
+getPersonAncestry(id: ID!, depth: Int!): AncestryTree @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")

@@ -63,3 +63,17 @@ input UpdatePersonInput {
     is_owner: Boolean
     status: Status
 }
+
+type AncestryTree {
+    person_id: ID
+    first_name: String
+    last_name: String
+    father: AncestryNode
+    mother: AncestryNode
+}
+
+type AncestryNode {
+    id: ID
+    name: String
+    ancestry: AncestryTree
+}
