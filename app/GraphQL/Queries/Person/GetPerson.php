@@ -59,29 +59,23 @@ final class GetPerson
 
 
 
+    public function resolvePersonAncestry($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $personId = $args['id'];
+        $depth = $args['depth'] ?? 3; // Default depth of 3 if not provided
 
-    // function buildFamilyTreeRelationships($depth, $currentDepth = 1, $prefix = '')
-    // {
-    //     // Base relationships for marriages and children at this level
-    //     $relationships = [
-    //         "{$prefix}PersonMarriages.Man",
-    //         "{$prefix}PersonMarriages.Woman",
-    //         "{$prefix}PersonMarriages.Children"
-    //     ];
+        Log::info("Fetching ancestry tree for Person ID: $personId with depth: $depth");
 
-    //     // If we've reached the maximum depth, stop adding nested relationships
-    //     if ($currentDepth >= $depth) {
-    //         return $relationships;
-    //     }
+        // Find the person by ID
+        $person = Person::find($personId);
+        
+        if (!$person) {
+            Log::info("Person with ID $personId not found.");
+            return null;
+        }
 
-    //     // Add deeper levels of relationships for children’s marriages and children
-    //     $nestedRelationships = $this->buildFamilyTreeRelationships($depth, $currentDepth + 1, "{$prefix}PersonMarriages.Children.");
-
-    //     // Merge current level relationships with the nested relationships
-    //     return array_merge($relationships, $nestedRelationships);
-    // }
-
-
-
+        // Fetch the ancestry tree
+        return $person->getFullBinaryAncestry($depth);
+    }
 
 }
