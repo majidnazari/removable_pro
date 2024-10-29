@@ -35,7 +35,7 @@ type Person {
 }
 
 
-input CreatePersonInput {
+input CreatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\CreatePersonInputValidator") {
 
     creator_id: ID
     editor_id: ID
@@ -47,19 +47,35 @@ input CreatePersonInput {
     birth_date: String
     death_date: String
     is_owner: Boolean
+    gendar: Int
     status: Status
 }
 
-input UpdatePersonInput {
+input UpdatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\UpdatePersonInputValidator") {
 
-    editor_id: ID
-    node_code: String
-    node_level_x: Int
-    node_level_y: Int
     first_name: String
     last_name: String
     birth_date: String
     death_date: String
     is_owner: Boolean
+    gendar: Int
     status: Status
+}
+
+input DeletePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\DeletePersonValidator") {
+    id: ID!
+}
+
+type AncestryTree {
+    person_id: ID
+    first_name: String
+    last_name: String
+    father: AncestryNode
+    mother: AncestryNode
+}
+
+type AncestryNode {
+    id: ID
+    name: String
+    ancestry: AncestryTree
 }

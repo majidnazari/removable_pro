@@ -72,7 +72,7 @@ type FirstSideMarriageSecondSide
     relationship_id: ID!
     second_side_person_id: ID!
     Marriage_status: MarriageStatus,
-    marrage_date: String!
+    marriage_date: String!
 }
 
 input CreateFirstSideMarriageSecondSideInput {
@@ -87,7 +87,7 @@ input CreateFirstSideMarriageSecondSideInput {
 
     # : MarrageStatus,
     Marriage_status: MarriageStatus,
-    marrage_date: String!
+    marriage_date: String!
 }
 
 
@@ -98,7 +98,7 @@ input CreateFirstSideMarriageSecondSideInput {
 #     second_side_person_id: ID!
 #     marrage_status: MarrageStatus,
 #     Marriage_status: MarriageStatus,
-#     marrage_date: String!
+#     marriage_date: String!
 # }
 
 input CreateMarriageChildInput {

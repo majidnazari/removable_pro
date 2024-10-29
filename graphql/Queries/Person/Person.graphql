@@ -1,8 +1,13 @@
 
 getPerson(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePerson") 
-getPersonWithAncestry(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonWithAncestry") 
-    getPersons(
+getPersons(
         first: Int, 
         page: Int, 
         # filter: PersonFilterInput
     ): [Person!]! @paginate(builder: "App\\GraphQL\\Queries\\Person\\GetPersons@resolvePerson")
+getPersonFatherOfFather(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfFather") 
+getPersonFatherOfMother(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfMother") 
+    
+
+
+# getPersonAncestry(id: ID!, depth: Int!): AncestryTree @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")
