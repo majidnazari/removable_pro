@@ -54,3 +54,13 @@ input UpdatePersonChildInput  @validator(class: "App\\GraphQL\\Validators\\Perso
     status: Status
    
 }
+
+input DeletePersonChildInput @validator(class: "App\\GraphQL\\Validators\\PersonChild\\DeletePersonChildInputValidator")
+{
+    id: ID!
+}
+
+input DeletePersonChildByChildIdInput @validator(class: "App\\GraphQL\\Validators\\PersonChild\\DeletePersonChildByChildIdInputValidator")
+{
+    child_id: ID!
+}

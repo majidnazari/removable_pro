@@ -31,4 +31,19 @@ final class DeletePersonChild
 
         
     }
-}
+
+
+    public function resolvePersonChildByChildId($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    {  
+       // $user_id=auth()->guard('api')->user()->id;        
+        $PersonChildResult=PersonChild::where('child_id',$args['child_id'])->first();
+        
+        if(!$PersonChildResult)
+        {
+            return Error::createLocatedError("PersonChild-DELETE-RECORD_NOT_FOUND");
+        }
+        $PersonChildResult_filled= $PersonChildResult->delete();  
+        return $PersonChildResult;
+
+        
+    }}
