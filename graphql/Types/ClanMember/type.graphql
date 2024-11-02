@@ -4,10 +4,11 @@ type ClanMember {
     id: ID!
     clan_id: String
     node_code: String
-   
+    FamilyRelations: [Clan]
     created_at: DateTime
     updated_at: DateTime
 }
+
 
 input CreateClanMemberInput {
 

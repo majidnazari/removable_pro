@@ -3,23 +3,32 @@
 type Clan {
     id: ID!
     title: String
-    Clan_exact_family_name: String
-    Clan_code: String
+    clan_exact_family_name: String
+    OldestAncestry: Person
+
+    clan_code: String
+    Members:[ClanMemeber]
     created_at: DateTime
     updated_at: DateTime
 }
 
+type ClanMemeber {
+    id: ID!
+    node_code: String
+    FamilyRelations: Clan
+}
+
 input CreateClanInput {
     title: String!
-    Clan_exact_family_name: String!
-    Clan_code: String
+    clan_exact_family_name: String!
+    clan_code: String
 
 }
 
 input UpdateClanInput {
 
     title: String
-    Clan_exact_family_name: String
-    Clan_code: String
+    clan_exact_family_name: String
+    clan_code: String
 
 }

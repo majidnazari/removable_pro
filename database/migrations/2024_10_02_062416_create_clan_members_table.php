@@ -16,11 +16,13 @@ return new class extends Migration
             $table->unsignedBigInteger('creator_id'); 
             $table->unsignedBigInteger('editor_id')->nullable();
             $table->unsignedBigInteger('clan_id')->index();
+            $table->unsignedBigInteger('related_to')->nullable()->index();
             $table->string('node_code')->index();
 
             $table->foreign('creator_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('clan_id')->references('id')->on('clans')->onDelete('cascade');
+            $table->foreign('related_to')->references('id')->on('clans')->onDelete('cascade');
             
             $table->timestamps();
             $table->softDeletes();

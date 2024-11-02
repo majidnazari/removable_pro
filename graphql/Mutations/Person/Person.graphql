@@ -2,3 +2,6 @@
 createPerson(input: CreatePersonInput! @spread): Person @field(resolver: "App\\GraphQL\\Mutations\\Person\\CreatePerson@resolvePerson") 
     updatePerson(id: ID!, input: UpdatePersonInput! @spread): Person @field(resolver: "App\\GraphQL\\Mutations\\Person\\UpdatePerson@resolvePerson") 
     deletePerson(input: DeletePersonInput! @spread ): Person @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePerson@resolvePerson") 
+
+     mergePersons(primaryPersonId: ID!, secondaryPersonId: ID!): Person @field(resolver: "App\\GraphQL\\Mutations\\Person\\MergePersons@resolvemerge")
+

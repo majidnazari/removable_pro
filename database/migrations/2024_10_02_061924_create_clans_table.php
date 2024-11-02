@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
+            $table->unsignedBigInteger('biggest_person_id')->nullable();
 
             $table->foreign('creator_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade'); 
+            $table->foreign('biggest_person_id')->references('id')->on('people')->onDelete('cascade'); 
 
             $table->string('title');
             $table->string('clan_exact_family_name');
