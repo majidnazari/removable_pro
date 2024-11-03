@@ -53,16 +53,16 @@ final class MergePersons
     {
         PersonMarriage::where(function ($query) use ($secondaryPersonId) {
             $query->where('man_id', $secondaryPersonId)
-                  ->orWhere('woman_id', $secondaryPersonId);
+                ->orWhere('woman_id', $secondaryPersonId);
         })->each(function ($marriage) use ($primaryPersonId, $secondaryPersonId) {
-            
+
             $existingMarriage = PersonMarriage::where(function ($query) use ($primaryPersonId, $marriage) {
                 $query->where(function ($q) use ($primaryPersonId, $marriage) {
                     $q->where('man_id', $primaryPersonId)
-                      ->where('woman_id', $marriage->woman_id);
+                        ->where('woman_id', $marriage->woman_id);
                 })->orWhere(function ($q) use ($primaryPersonId, $marriage) {
                     $q->where('man_id', $marriage->man_id)
-                      ->where('woman_id', $primaryPersonId);
+                        ->where('woman_id', $primaryPersonId);
                 });
             })->first();
 
@@ -99,6 +99,15 @@ final class MergePersons
                     $child->child_id = $child->child_id == $secondaryPersonId ? $primaryPersonId : $child->child_id;
                     $child->person_marriage_id = $child->person_marriage_id == $secondaryPersonId ? $primaryPersonId : $child->person_marriage_id;
                     $child->save();
+                }
+
+                $existingChild = PersonChild::where('child_id', $primaryPersonId)
+                    ->where('person_marriage_id', $child->person_marriage_id)
+                    ->first();
+
+                if ($existingChild) {
+                    // Delete the duplicate child relationship
+                    $child->delete();
                 }
             });
     }
