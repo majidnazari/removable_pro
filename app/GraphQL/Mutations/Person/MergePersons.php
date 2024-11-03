@@ -13,8 +13,12 @@ final class MergePersons
     public function resolvemerge($rootValue, array $args)
     {
         // Ensure the larger ID is assigned to $secondaryPersonId for deletion
-        $primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);
-        $secondaryPersonId = max($args['primaryPersonId'], $args['secondaryPersonId']);
+        //$primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);
+        //$secondaryPersonId = max($args['primaryPersonId'], $args['secondaryPersonId']);
+
+        $primaryPersonId = $args['primaryPersonId'];
+        $secondaryPersonId = $args['secondaryPersonId'];
+
 
         // Start transaction to ensure data integrity
         DB::beginTransaction();
