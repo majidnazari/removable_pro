@@ -30,6 +30,30 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                //"creator_id" => 1,
+               // "editor_id" => null,
+                "country_code" => "098",
+                "mobile" => "9372120892",
+                "mobile_is_veryfied" => true,
+                "email" => "majidnazarister2@gmail.com",
+                "password" => Hash::make("12345678@"),
+                "status" => "Active",
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                //"creator_id" => 1,
+               // "editor_id" => null,
+                "country_code" => "098",
+                "mobile" => "9372120893",
+                "mobile_is_veryfied" => true,
+                "email" => "majidnazarister3@gmail.com",
+                "password" => Hash::make("12345678@"),
+                "status" => "Active",
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
 
         ];
 
