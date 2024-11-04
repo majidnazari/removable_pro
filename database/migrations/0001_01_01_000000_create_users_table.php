@@ -14,33 +14,18 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('creator_id'); // foreign key for the user
-            // $table->unsignedBigInteger('editor_id')->nullable();
-
-            //$table->string('name');
+          
             $table->string('country_code',11);
             $table->string('mobile',11)->unique()->index();
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->boolean(column: 'mobile_is_veryfied')->default(false);
+            $table->boolean(column: 'mobile_is_verified')->default(false);
 
             $table->string('password')->nullable();
             $table->string(column: 'sent_code')->nullable();
             $table->string(column: 'code_expired_at')->nullable();
-            $table->tinyInteger(column: 'today_attemp')->default(0);
-            $table->string('date_attemp')->nullable();
-
-            $table->unsignedBigInteger('total_attemp')->default(0);
-
-            $table->string('expire_blocked_time')->nullable();
-            $table->unsignedSmallInteger('number_of_blocked_times')->default(0);
-
-
-            //$table->string(column: 'ip')->nullable();
-            //$table->tinyInteger(column: 'ip_attemp')->default(0);
-            //$table->string(column: 'ip_attemp_date')->nullable();
-
-
+            $table->tinyInteger(column: 'user_attempt_time')->default(0);
+            $table->string('blocked_until')->nullable();
             $table->enum('status', ["Active", "Inactive", "Suspend","Blocked", "None"])->default("None");
 
             $table->rememberToken();
