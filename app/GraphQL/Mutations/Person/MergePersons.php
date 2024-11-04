@@ -13,12 +13,8 @@ final class MergePersons
     public function resolvemerge($rootValue, array $args)
     {
         // Ensure the larger ID is assigned to $secondaryPersonId for deletion
-        //$primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);
-        //$secondaryPersonId = max($args['primaryPersonId'], $args['secondaryPersonId']);
-
-        $primaryPersonId = $args['primaryPersonId'];
-        $secondaryPersonId = $args['secondaryPersonId'];
-
+        $primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);
+        $secondaryPersonId = max($args['primaryPersonId'], $args['secondaryPersonId']);
 
         // Start transaction to ensure data integrity
         DB::beginTransaction();
@@ -32,14 +28,15 @@ final class MergePersons
                 throw new Error("One or both persons do not exist.");
             }
 
-            // Step 1: Merge marriages
+            // Step 1: Merge marriages and children
             $this->mergeMarriages($primaryPersonId, $secondaryPersonId);
-
-            // Step 2: Merge children relationships
             $this->mergeChildren($primaryPersonId, $secondaryPersonId);
 
-            // Step 3: Delete the secondary person (larger ID)
+            // Step 2: Delete the secondary person (larger ID)
             $secondaryPerson->delete();
+
+            // Step 3: Final cleanup of any lingering duplicates
+            $this->cleanupDuplicates($primaryPersonId);
 
             // Commit the transaction
             DB::commit();
@@ -57,16 +54,16 @@ final class MergePersons
     {
         PersonMarriage::where(function ($query) use ($secondaryPersonId) {
             $query->where('man_id', $secondaryPersonId)
-                ->orWhere('woman_id', $secondaryPersonId);
+                  ->orWhere('woman_id', $secondaryPersonId);
         })->each(function ($marriage) use ($primaryPersonId, $secondaryPersonId) {
-
+            
             $existingMarriage = PersonMarriage::where(function ($query) use ($primaryPersonId, $marriage) {
                 $query->where(function ($q) use ($primaryPersonId, $marriage) {
                     $q->where('man_id', $primaryPersonId)
-                        ->where('woman_id', $marriage->woman_id);
+                      ->where('woman_id', $marriage->woman_id);
                 })->orWhere(function ($q) use ($primaryPersonId, $marriage) {
                     $q->where('man_id', $marriage->man_id)
-                        ->where('woman_id', $primaryPersonId);
+                      ->where('woman_id', $primaryPersonId);
                 });
             })->first();
 
@@ -104,15 +101,28 @@ final class MergePersons
                     $child->person_marriage_id = $child->person_marriage_id == $secondaryPersonId ? $primaryPersonId : $child->person_marriage_id;
                     $child->save();
                 }
+            });
+    }
 
-                $existingChild = PersonChild::where('child_id', $primaryPersonId)
-                    ->where('person_marriage_id', $child->person_marriage_id)
-                    ->first();
+    private function cleanupDuplicates($primaryPersonId)
+    {
+        // Step 1: Clean up duplicate marriages
+        PersonMarriage::where(function ($query) use ($primaryPersonId) {
+            $query->where('man_id', $primaryPersonId)
+                  ->orWhere('woman_id', $primaryPersonId);
+        })->get()->groupBy(function ($marriage) {
+            return $marriage->man_id . '-' . $marriage->woman_id;
+        })->each(function ($duplicates) {
+            $duplicates->shift(); // Keep the first record
+            $duplicates->each->delete(); // Delete the rest
+        });
 
-                if ($existingChild) {
-                    // Delete the duplicate child relationship
-                    $child->delete();
-                }
+        // Step 2: Clean up duplicate children relationships
+        PersonChild::where('child_id', $primaryPersonId)
+            ->get()->groupBy('person_marriage_id')
+            ->each(function ($duplicates) {
+                $duplicates->shift(); // Keep the first record
+                $duplicates->each->delete(); // Delete the rest
             });
     }
 }
