@@ -35,20 +35,19 @@ final class MergePersons
             // Step 2: Delete the secondary person (larger ID)
             $secondaryPerson->delete();
 
-
             // Commit the transaction
             DB::commit();
-            // Step 3: Final cleanup of any lingering duplicates
-            $this->cleanupDuplicates($primaryPersonId);
-
-
-            return $primaryPerson;
 
         } catch (\Exception $e) {
             // Rollback transaction if any error occurs
             DB::rollback();
             throw new Error("Failed to merge persons: " . $e->getMessage());
         }
+
+        // Step 3: Final cleanup of any lingering duplicates (outside of transaction)
+        $this->cleanupDuplicates($primaryPersonId);
+
+        return $primaryPerson;
     }
 
     private function mergeMarriages($primaryPersonId, $secondaryPersonId)
@@ -102,6 +101,14 @@ final class MergePersons
                     $child->person_marriage_id = $child->person_marriage_id == $secondaryPersonId ? $primaryPersonId : $child->person_marriage_id;
                     $child->save();
                 }
+                $existingChild = PersonChild::where('child_id', $primaryPersonId)
+                    ->where('person_marriage_id', $child->person_marriage_id)
+                    ->first();
+
+                if ($existingChild) {
+                    // Delete the duplicate child relationship
+                    $child->delete();
+                }
             });
     }
 
@@ -120,10 +127,14 @@ final class MergePersons
 
         // Step 2: Clean up duplicate children relationships
         PersonChild::where('child_id', $primaryPersonId)
-            ->get()->groupBy('person_marriage_id')
+            ->get()
+            ->groupBy(function ($child) {
+                return $child->person_marriage_id . '-' . $child->child_id;
+            })
             ->each(function ($duplicates) {
                 $duplicates->shift(); // Keep the first record
                 $duplicates->each->delete(); // Delete the rest
             });
     }
+
 }
