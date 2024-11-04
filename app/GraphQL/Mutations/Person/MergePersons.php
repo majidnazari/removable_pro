@@ -35,11 +35,12 @@ final class MergePersons
             // Step 2: Delete the secondary person (larger ID)
             $secondaryPerson->delete();
 
-            // Step 3: Final cleanup of any lingering duplicates
-            $this->cleanupDuplicates($primaryPersonId);
 
             // Commit the transaction
             DB::commit();
+            // Step 3: Final cleanup of any lingering duplicates
+            $this->cleanupDuplicates($primaryPersonId);
+
 
             return $primaryPerson;
 
@@ -54,16 +55,16 @@ final class MergePersons
     {
         PersonMarriage::where(function ($query) use ($secondaryPersonId) {
             $query->where('man_id', $secondaryPersonId)
-                  ->orWhere('woman_id', $secondaryPersonId);
+                ->orWhere('woman_id', $secondaryPersonId);
         })->each(function ($marriage) use ($primaryPersonId, $secondaryPersonId) {
-            
+
             $existingMarriage = PersonMarriage::where(function ($query) use ($primaryPersonId, $marriage) {
                 $query->where(function ($q) use ($primaryPersonId, $marriage) {
                     $q->where('man_id', $primaryPersonId)
-                      ->where('woman_id', $marriage->woman_id);
+                        ->where('woman_id', $marriage->woman_id);
                 })->orWhere(function ($q) use ($primaryPersonId, $marriage) {
                     $q->where('man_id', $marriage->man_id)
-                      ->where('woman_id', $primaryPersonId);
+                        ->where('woman_id', $primaryPersonId);
                 });
             })->first();
 
@@ -109,7 +110,7 @@ final class MergePersons
         // Step 1: Clean up duplicate marriages
         PersonMarriage::where(function ($query) use ($primaryPersonId) {
             $query->where('man_id', $primaryPersonId)
-                  ->orWhere('woman_id', $primaryPersonId);
+                ->orWhere('woman_id', $primaryPersonId);
         })->get()->groupBy(function ($marriage) {
             return $marriage->man_id . '-' . $marriage->woman_id;
         })->each(function ($duplicates) {
