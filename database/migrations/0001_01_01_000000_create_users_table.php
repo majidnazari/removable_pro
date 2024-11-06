@@ -15,8 +15,8 @@ return new class extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
           
-            $table->string('country_code',11);
-            $table->string('mobile',11)->unique()->index();
+            $table->string('country_code',6);
+            $table->string('mobile',18)->unique()->index();
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean(column: 'mobile_is_verified')->default(false);
@@ -25,8 +25,13 @@ return new class extends Migration {
             $table->string(column: 'sent_code')->nullable();
             $table->string(column: 'code_expired_at')->nullable();
             $table->tinyInteger(column: 'user_attempt_time')->default(0);
-            $table->string('blocked_until')->nullable();
+            $table->timestamp('last_attempt_at')->nullable();
+            $table->tinyInteger('blocked_attempts_count')->default(0);
+            $table->timestamp('blocked_until')->nullable();
+            //$table->string('blocked_until')->nullable();
             $table->enum('status', ["Active", "Inactive", "Suspend","Blocked", "None"])->default("None");
+
+            //$table->unique(['country_code', 'mobile'], 'unique_country_code_mobile');
 
             $table->rememberToken();
             $table->timestamps();

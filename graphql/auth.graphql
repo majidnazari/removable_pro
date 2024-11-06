@@ -88,8 +88,8 @@ input CompleteUserRegistrationInput {
 }
 
 input RegisterMobileInput {
-    country_code: String! @rules(apply: [ "required", "string"]),
-    mobile: String! @rules(apply: [ "required", "string",])
+    country_code: String! @rules(apply: [ "required", "string","max:6"]),
+    mobile: String! @rules(apply: [ "required", "string","max:12"])
    
 }
 
