@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('ip_address')->index();
-            $table->unsignedInteger('today_attempts')->default(0);
-            $table->unsignedInteger('total_attempts')->default(0);
+            $table->unsignedInteger('today_attempts')->default(0);          
             $table->date('attempt_date')->nullable();
             $table->dateTime('expire_blocked_time')->nullable();
-            $table->unsignedInteger('number_of_blocked_times')->default(0);
+          
             $table->timestamps();
         });
     }

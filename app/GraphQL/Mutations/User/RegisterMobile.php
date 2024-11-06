@@ -23,7 +23,7 @@ class RegisterMobile
     public $today ;
 
     const MAX_USER_ATTEMPTS = 3;
-    const MAX_IP_ATTEMPTS = 6;
+    const MAX_IP_ATTEMPTS = 2;
     const BLOCK_DURATION = 1440; // in minutes (1 day)
 
     public function __construct(){
@@ -34,50 +34,47 @@ class RegisterMobile
         "Code" => "",
         "Message" => ""
     ];
-         
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $code = rand(100000, 999999);  // Generate a 6-digit verification code
-        $expired_at = Carbon::now()->addMinutes(2)->format("Y-m-d H:i:s");
+        $expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");
+        $cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
+        $ipAddress = request()->ip();
     
-        // Check if the user already exists with the given mobile number and country code
+        // Step 1: Check if the user already exists with the given mobile number and country code
         $user = User::where('country_code', $args['country_code'])
-                    ->where('mobile', $args['mobile'])
+                    ->where('mobile', $args['country_code'].$args['mobile'])
                     ->first();
-
-        Log::info("the user is:" . json_encode($user));            
     
+        // Handle existing user logic
         if ($user) {
             // Check if mobile is already verified
             if ($user->mobile_is_verified) {
                 return Error::createLocatedError("This mobile number is already verified.");
             }
     
-            // Check if the user has exceeded the attempt limit
-            if ($user->user_attempt_time >= 3) {
-                return Error::createLocatedError("You have exceeded the maximum number of verification attempts. Please try again later.");
+            // Ensure the user hasn't requested a code within the past 5 minutes
+            if ($user->last_attempt_at && Carbon::parse($user->last_attempt_at)->gt($cooldownPeriod)) {
+                return Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
             }
     
-            // Update user with a new code and increment attempt count
+            // Update user with a new code and update the last attempt time
             $user->sent_code = $code;
             $user->code_expired_at = $expired_at;
-            $user->user_attempt_time += 1;
+            $user->last_attempt_at = Carbon::now();
             $user->save();
     
         } else {
             // Create a new user record if it doesn't exist
             $user = User::create([
                 'country_code' => $args['country_code'],
-                'mobile' => $args['mobile'],
+                'mobile' => $args['country_code'].$args['mobile'],
                 'sent_code' => $code,
                 'code_expired_at' => $expired_at,
-                'user_attempt_time' => 1,  // Start with the first attempt
+                'last_attempt_at' => Carbon::now(),
                 'status' => 'None',
             ]);
         }
-    
-        // Update or create IP tracking record
-        IpTracking::firstOrCreate(['ip' => request()->ip()]);
     
         return [
             'user_id' => $user->id,
@@ -88,50 +85,32 @@ class RegisterMobile
     
     public function VerifyMobileresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        $ipAddress = request()->ip();
         $user = User::find($args['user_id']);
         
         if (!$user) {
             return Error::createLocatedError("User not found!");
         }
+    
+        // Check if the mobile is already verified
         if ($user->mobile_is_verified) {
-            return Error::createLocatedError("Mobile number is already verified and active.");
+            return Error::createLocatedError("This mobile number is already verified.");
         }
-
-        // Step 1: Fetch or create login attempt record
-        $loginAttempt = LoginAttempt::recordAttempt($user->id, $ipAddress);
-
-        // Step 2: Check if user or IP is blocked
-        if ($loginAttempt->expire_blocked_time && Carbon::now()->lt($loginAttempt->expire_blocked_time)) {
-            return Error::createLocatedError("Your account is temporarily blocked. Please try again later.");
-        }
-
-        if ($loginAttempt->today_attempts > self::MAX_USER_ATTEMPTS) {
-            $loginAttempt->expire_blocked_time = Carbon::now()->addMinutes(self::BLOCK_DURATION);
-            $loginAttempt->number_of_blocked_times += 1;
-            $loginAttempt->save();
-
-            return Error::createLocatedError("Too many attempts. Your account is blocked for 1 day.");
-        }
-
-        // Step 3: Verify code
+    
+        // Verify the code and check if it’s expired
         if ($user->sent_code != $args['code'] || Carbon::now()->gt($user->code_expired_at)) {
-            return Error::createLocatedError("Invalid code or expired code!");
+            return Error::createLocatedError("Invalid or expired code.");
         }
-
-        // Step 4: Verification succeeded - reset attempts
-        $user->mobile_is_verified = 1;
+    
+        // Mark mobile as verified
+        $user->mobile_is_verified = true;
         $user->status = "Active";
         $user->save();
-
-        $loginAttempt->today_attempts = 0;
-        $loginAttempt->total_attempts = 0;
-        $loginAttempt->expire_blocked_time = null;
-        $loginAttempt->save();
-
+    
         return [
             "Code" => 200,
             "Message" => "USER MOBILE IS VERIFIED"
         ];
     }
+    
+    
 }
