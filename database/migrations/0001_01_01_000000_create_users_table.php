@@ -29,7 +29,7 @@ return new class extends Migration {
             $table->tinyInteger('blocked_attempts_count')->default(0);
             $table->timestamp('blocked_until')->nullable();
             //$table->string('blocked_until')->nullable();
-            $table->enum('status', ["Active", "Inactive", "Suspend","Blocked", "None"])->default("None");
+            $table->enum('status', ["Active", "Inactive", "Suspend","Blocked","New", "None"])->default("None");
 
             //$table->unique(['country_code', 'mobile'], 'unique_country_code_mobile');
 

@@ -103,7 +103,7 @@ class RegisterMobile
     
         // Mark mobile as verified
         $user->mobile_is_verified = true;
-        $user->status = "Active";
+        $user->status = "New";
         $user->save();
     
         return [

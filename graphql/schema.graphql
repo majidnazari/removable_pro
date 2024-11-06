@@ -110,7 +110,7 @@ extend type Mutation {
     register(input: RegisterInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve")
     registerMobile(input: RegisterMobileInput @spread): RegisterResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@resolve") 
     VerifyMobile(input: VerifyMobileInput @spread): VerifyMobileResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@VerifyMobileresolve") 
-    CompleteUserRegistration(input: CompleteUserRegistrationInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@CompleteUserRegistrationresolve") 
+    CompleteUserRegistration(input: CompleteUserRegistrationInput @spread): RegisterResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@CompleteUserRegistrationresolve") 
     #socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")
     #verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     #updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])

@@ -94,32 +94,33 @@ class Register extends BaseAuthResolver
     public function CompleteUserRegistrationresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user=User::where('id',$args['user_id'])->where('status','Active')->first();
+        $user=User::where('id',$args['user_id'])
+        ->where('status','New')
+        ->whereNull('password')
+        ->first();
         if(!$user)
         {
             throw new \RuntimeException('User not found');
         }
 
-        $user_answers_model=[
-            "creator_id" =>$args['user_id'],
-            "user_id" =>$args['user_id'],
-            "question_id" =>$args['question_id'],
-            "answer" =>$args["answer"],
+        // Extract the country code and mobile number separately
+        $countryCodeLength = strlen($user->country_code);
+        $pureMobileNumber = substr($user->mobile, $countryCodeLength); // remove country code prefix
 
-        ];
-
-    
-        // Create the user question record, associating it with the user.
-        $user_answers=UserAnswer::create($user_answers_model); // Assuming 'user_id' is the foreign key.
+        
         $credentials = $this->buildCredentials([
-            'username' => $args[config('lighthouse-graphql-passport.username')],
+            //'username' => $args[config('lighthouse-graphql-passport.username')],
+            'username' => $pureMobileNumber ,
             'password' => $args['password'],
         ]);
+
+        Log::info("cred is:".  json_encode($credentials));
+
         $response = $this->makeRequest($credentials);
-        event(new Registered($user));
+        //event(new Registered($user));
 
         return [
-            'tokens' => $response,
+            'tokens' =>1,
             'user_id' => $user->id,
             'status' => 'SUCCESS',
         ];

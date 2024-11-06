@@ -80,8 +80,8 @@ input RegisterInput {
 }
 input CompleteUserRegistrationInput {
     user_id: ID!
-    question_id: ID! @rules(apply: [ "required"])
-    answer: String @rules(apply: [ "required"])
+    # question_id: ID! @rules(apply: [ "required"])
+    # answer: String @rules(apply: [ "required"])
     # email: String! @rules(apply: ["required", "email", "unique:users,email"])
     password: String! @rules(apply: ["required", "confirmed", "min:8"])
     password_confirmation: String!
