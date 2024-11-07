@@ -104,23 +104,25 @@ class Register extends BaseAuthResolver
         }
 
         // Extract the country code and mobile number separately
-        $countryCodeLength = strlen($user->country_code);
-        $pureMobileNumber = substr($user->mobile, $countryCodeLength); // remove country code prefix
+        //$countryCodeLength = strlen($user->country_code);
+        //$pureMobileNumber = substr($user->mobile, $countryCodeLength); // remove country code prefix
 
+        $user->password=Hash::make($args['password']);
+        $user->status="Active";
+        $user->save();
         
         $credentials = $this->buildCredentials([
             //'username' => $args[config('lighthouse-graphql-passport.username')],
-            'username' => $pureMobileNumber ,
+            'username' => $user->mobile ,
             'password' => $args['password'],
         ]);
 
-        Log::info("cred is:".  json_encode($credentials));
+        //Log::info("cred is:".  json_encode($credentials));
 
         $response = $this->makeRequest($credentials);
-        //event(new Registered($user));
-
+       
         return [
-            'tokens' =>1,
+            'tokens' =>$response,
             'user_id' => $user->id,
             'status' => 'SUCCESS',
         ];

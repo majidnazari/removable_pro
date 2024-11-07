@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 
+use Log;
+
 
 class User extends Authenticatable
 {
@@ -46,7 +48,11 @@ class User extends Authenticatable
     }
     public function findForPassport($username)
     {
-        return $this->where('mobile', $username)->where('status','Active')->where('mobile_is_verified',1)->first();
+
+        //Log::info("the user name is:". $username);
+        // return $this->where('mobile', $username)->where('status','Active')->where('mobile_is_verified',1)->first();
+        //return $this->whereRaw("CONCAT(country_code, mobile) = ?", [$username])->first();
+        return $this->where("mobile", [$username])->first();
     }
 
     public function Persons()
