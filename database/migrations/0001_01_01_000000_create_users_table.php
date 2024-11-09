@@ -24,10 +24,12 @@ return new class extends Migration {
             $table->string('password')->nullable();
             $table->string(column: 'sent_code')->nullable();
             $table->string(column: 'code_expired_at')->nullable();
-            $table->tinyInteger(column: 'user_attempt_time')->default(0);
+            $table->integer('password_change_attempts')->default(0);
+            $table->timestamp('last_password_change_attempt')->nullable();
+            //$table->tinyInteger(column: 'user_attempt_time')->default(0);
             $table->timestamp('last_attempt_at')->nullable();
-            $table->tinyInteger('blocked_attempts_count')->default(0);
-            $table->timestamp('blocked_until')->nullable();
+            //$table->tinyInteger('blocked_attempts_count')->default(0);
+            //$table->timestamp('blocked_until')->nullable();
             //$table->string('blocked_until')->nullable();
             $table->enum('status', ["Active", "Inactive", "Suspend","Blocked","New", "None"])->default("None");
 

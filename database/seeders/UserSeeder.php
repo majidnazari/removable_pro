@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
                 "status" => "Active",
                 "sent_code" => null,
                 "code_expired_at" => null,
-                "user_attempt_time" => 0,
+                //"user_attempt_time" => 0,
                 
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
                 "status" => "Active",
                 "sent_code" => "4532",
                 "code_expired_at" => Carbon::now()->addMinutes(2),
-                "user_attempt_time" => 1,
+                //"user_attempt_time" => 1,
               
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
                 "status" => "Active",
                 "sent_code" => "8765",
                 "code_expired_at" => Carbon::now()->addMinutes(2),
-                "user_attempt_time" => 3,
+               // "user_attempt_time" => 3,
                 
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
                 "status" => "Active",
                 "sent_code" => null,
                 "code_expired_at" => null,
-                "user_attempt_time" => 0,
+                //"user_attempt_time" => 0,
                
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -74,8 +74,23 @@ class ForgotPassword extends BaseAuthResolver
             throw new \RuntimeException('User not found');
         }
     
-        Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));
+        //Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));
 
+
+        // Check if password change attempts exceed the daily limit
+         $today = Carbon::today();
+        if ($user->last_password_change_attempt && Carbon::parse($user->last_password_change_attempt)->isSameDay($today)) {
+            if ($user->password_change_attempts >= 2) {
+                return Error::createLocatedError("You cannot change your password more than 2 times in a day.");
+            }
+        } else {
+            // Reset attempts for a new day
+            $user->password_change_attempts = 0;
+        }
+
+        // Increment attempt count and update last attempt timestamp
+        $user->password_change_attempts += 1;
+        $user->last_password_change_attempt = Carbon::now();
         if ($user->code_expired_at && Carbon::parse(Carbon::now())->gt($user->code_expired_at)) {
             return  Error::createLocatedError("the code is expired please send code again.");
         }
