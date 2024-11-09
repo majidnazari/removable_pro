@@ -20,7 +20,7 @@ final class UpdatePersonMarriage
     }
     public function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $PersonMarriageResult=PersonMarriage::find($args['id']);
         $PersonMarriagemodel=$args;
@@ -30,6 +30,7 @@ final class UpdatePersonMarriage
         {
             return Error::createLocatedError("PersonMarriage-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $PersonMarriageResult_filled= $PersonMarriageResult->fill($PersonMarriagemodel);
         $PersonMarriageResult->save();       
        

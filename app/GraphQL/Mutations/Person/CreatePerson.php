@@ -27,11 +27,11 @@ final class CreatePerson
     public function resolvePerson($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
+        $user_id=auth()->guard('api')->user()->id;
+       // Log::info("the user is:" . $user_id);
 
-        //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
         $PersonModel = [
-            "creator_id" => 1,
+            "creator_id" =>  $user_id,
             //"editor_id" => $args['editor_id'] ?? null,
             "node_code" => $args['node_code'] ?? "Nas_".Rand(0000000000,99999999999),
             "node_level_x" => $args['node_level_x'] ?? 0,

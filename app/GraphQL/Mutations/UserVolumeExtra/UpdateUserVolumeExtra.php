@@ -20,7 +20,7 @@ final class UpdateUserVolumeExtra
     }
     public function resolveUserVolumeExtra($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $UserVolumeExtraResult=UserVolumeExtra::find($args['id']);
         
@@ -28,6 +28,7 @@ final class UpdateUserVolumeExtra
         {
             return Error::createLocatedError("UserVolumeExtra-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $UserVolumeExtraResult_filled= $UserVolumeExtraResult->fill($args);
         $UserVolumeExtraResult->save();       
        

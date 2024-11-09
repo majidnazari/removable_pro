@@ -1,4 +1,4 @@
 
-createFamilyEvent(input: CreateFamilyEventInput! @spread): FamilyEvent @field(resolver: "App\\GraphQL\\Mutations\\FamilyEvent\\CreateFamilyEvent@resolveFamilyEvent") 
-    updateFamilyEvent(id: ID!, input: UpdateFamilyEventInput! @spread): FamilyEvent @field(resolver: "App\\GraphQL\\Mutations\\FamilyEvent\\UpdateFamilyEvent@resolveFamilyEvent") 
-    deleteFamilyEvent(id: ID!): FamilyEvent @field(resolver: "App\\GraphQL\\Mutations\\FamilyEvent\\DeleteFamilyEvent@resolveFamilyEvent") 
+createFamilyEvent(input: CreateFamilyEventInput! @spread): FamilyEvent @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\FamilyEvent\\CreateFamilyEvent@resolveFamilyEvent") 
+    updateFamilyEvent(id: ID!, input: UpdateFamilyEventInput! @spread): FamilyEvent @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\FamilyEvent\\UpdateFamilyEvent@resolveFamilyEvent") 
+    deleteFamilyEvent(id: ID!): FamilyEvent @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\FamilyEvent\\DeleteFamilyEvent@resolveFamilyEvent") 

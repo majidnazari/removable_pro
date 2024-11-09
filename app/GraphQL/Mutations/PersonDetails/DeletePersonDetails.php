@@ -21,7 +21,7 @@ final class DeletePersonDetails
     }
     public function resolvePersonDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $PersonDetailResult=PersonDetail::find($args['id']);
         
         if(!$PersonDetailResult)
@@ -40,6 +40,9 @@ final class DeletePersonDetails
                 //Log::info("Deleted old image: " . $oldImagePath);
             }
         }
+
+        $PersonDetailResult->editor_id= $user_id;
+        $PersonDetailResult->save(); 
 
         $PersonDetailResult_filled= $PersonDetailResult->delete();  
         return $PersonDetailResult;

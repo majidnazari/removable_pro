@@ -19,13 +19,17 @@ final class DeleteNaslanSubscription
     }
     public function resolveNaslanSubscription($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $NaslanSubscriptionResult=Subscription::find($args['id']);
         
         if(!$NaslanSubscriptionResult)
         {
             return Error::createLocatedError("NaslanSubscription-DELETE-RECORD_NOT_FOUND");
         }
+
+        $NaslanSubscriptionResult->editor_id= $user_id;
+        $NaslanSubscriptionResult->save();
+
         $NaslanSubscriptionResult_filled= $NaslanSubscriptionResult->delete();  
         return $NaslanSubscriptionResult;
 

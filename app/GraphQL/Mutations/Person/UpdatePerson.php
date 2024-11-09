@@ -26,7 +26,7 @@ final class UpdatePerson
     {  
 
        //Log::info("the args of resolver  are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
 
         $id = $args['id'];
@@ -48,6 +48,7 @@ final class UpdatePerson
         {
             return Error::createLocatedError("Person-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $PersonResult_filled= $PersonResult->fill($args);
         $PersonResult->save();       
        

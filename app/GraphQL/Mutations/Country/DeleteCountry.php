@@ -19,13 +19,18 @@ final class DeleteCountry
     }
     public function resolveCountry($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $CountryResult=Country::find($args['id']);
         
         if(!$CountryResult)
         {
             return Error::createLocatedError("Country-DELETE-RECORD_NOT_FOUND");
         }
+        //$args['editor_id']=$user_id;
+
+        $CountryResult->editor_id= $user_id;
+        $CountryResult->save();
+
         $CountryResult_filled= $CountryResult->delete();  
         return $CountryResult;
 

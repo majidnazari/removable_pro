@@ -27,9 +27,9 @@ final class CreateClan
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         $ClanResult=[
-            "creator_id" => 1,
+            "creator_id" => $user_id,
             "title" => $args['title'],
             "Clan_exact_family_name" => $args['Clan_exact_family_name'],
             "Clan_code" => $args['Clan_code']            

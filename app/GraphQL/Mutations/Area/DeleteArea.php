@@ -19,13 +19,15 @@ final class DeleteArea
     }
     public function resolveArea($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $AreaResult=Area::find($args['id']);
         
         if(!$AreaResult)
         {
             return Error::createLocatedError("Area-DELETE-RECORD_NOT_FOUND");
         }
+        $AreaResult->editor_id= $user_id;
+        $AreaResult->save();
         $AreaResult_filled= $AreaResult->delete();  
         return $AreaResult;
 

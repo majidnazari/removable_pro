@@ -20,7 +20,7 @@ final class UpdatePersonScore
     }
     public function resolvePersonScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $PersonScoreResult=PersonScore::find($args['id']);
         $PersonScoremodel=$args;
@@ -30,6 +30,7 @@ final class UpdatePersonScore
         {
             return Error::createLocatedError("PersonScore-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $PersonScoreResult_filled= $PersonScoreResult->fill($PersonScoremodel);
         $PersonScoreResult->save();       
        

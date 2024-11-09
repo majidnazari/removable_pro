@@ -30,9 +30,9 @@ final class CreatePersonChild
 
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         $PersonChildModel = [
-            "creator_id" => 1,
+            "creator_id" =>  $user_id,
             "editor_id" => $args['editor_id'] ?? null,
             "person_marriage_id" => $args['person_marriage_id'] ,
             "child_id" => $args['child_id'],

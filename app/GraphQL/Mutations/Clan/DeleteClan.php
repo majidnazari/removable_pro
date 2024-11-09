@@ -19,13 +19,17 @@ final class DeleteClan
     }
     public function resolveClan($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $ClanResult=Clan::find($args['id']);
         
         if(!$ClanResult)
         {
             return Error::createLocatedError("Clan-DELETE-RECORD_NOT_FOUND");
         }
+
+        $ClanResult->editor_id= $user_id;
+        $ClanResult->save();
+
         $ClanResult_filled= $ClanResult->delete();  
         return $ClanResult;
 

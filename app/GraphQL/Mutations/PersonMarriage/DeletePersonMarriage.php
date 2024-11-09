@@ -19,7 +19,7 @@ final class DeletePersonMarriage
     }
     public function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $PersonMarriageResult=PersonMarriage::find($args['id']);
         
         if(!$PersonMarriageResult)
@@ -31,6 +31,9 @@ final class DeletePersonMarriage
             return Error::createLocatedError("PersonMarriage-HAS_CHILDREN!");
 
         }
+
+        $PersonMarriageResult->editor_id= $user_id;
+        $PersonMarriageResult->save(); 
 
         $PersonMarriageResult_filled= $PersonMarriageResult->delete();  
         return $PersonMarriageResult;

@@ -19,13 +19,17 @@ final class DeleteNaslanRelationship
     }
     public function resolveNaslanRelationship($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $NaslanRelationshipResult=NaslanRelationship::find($args['id']);
         
         if(!$NaslanRelationshipResult)
         {
             return Error::createLocatedError("NaslanRelationship-DELETE-RECORD_NOT_FOUND");
         }
+
+        $NaslanRelationshipResult->editor_id= $user_id;
+        $NaslanRelationshipResult->save();
+
         $NaslanRelationshipResult_filled= $NaslanRelationshipResult->delete();  
         return $NaslanRelationshipResult;
 

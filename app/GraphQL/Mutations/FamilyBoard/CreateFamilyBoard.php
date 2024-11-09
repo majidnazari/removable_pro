@@ -27,9 +27,9 @@ final class CreateFamilyBoard
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         $FamilyBoardResult=[
-            "creator_id" => 1,
+            "creator_id" => $user_id,
             "category_content_id" => $args['category_content_id'],
             "title" => $args['title'],
             "selected_date" => $args['selected_date'],

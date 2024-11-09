@@ -20,7 +20,7 @@ final class UpdatePersonChild
     }
     public function resolvePersonChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $PersonChildResult=PersonChild::find($args['id']);
         $personChildmodel=$args;
@@ -30,6 +30,7 @@ final class UpdatePersonChild
         {
             return Error::createLocatedError("PersonChild-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $PersonChildResult_filled= $PersonChildResult->fill($personChildmodel);
         $PersonChildResult->save();       
        

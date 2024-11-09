@@ -19,13 +19,17 @@ final class DeleteUserVolumeExtra
     }
     public function resolveUserVolumeExtra($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $UserVolumeExtraResult=UserVolumeExtra::find($args['id']);
         
         if(!$UserVolumeExtraResult)
         {
             return Error::createLocatedError("UserVolumeExtra-DELETE-RECORD_NOT_FOUND");
         }
+
+        $UserVolumeExtraResult->editor_id= $user_id;
+        $UserVolumeExtraResult->save(); 
+
         $UserVolumeExtraResult_filled= $UserVolumeExtraResult->delete();  
         return $UserVolumeExtraResult;
 

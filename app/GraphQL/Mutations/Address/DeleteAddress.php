@@ -19,13 +19,15 @@ final class DeleteAddress
     }
     public function resolveAddress($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $AddressResult=Address::find($args['id']);
         
         if(!$AddressResult)
         {
             return Error::createLocatedError("Address-DELETE-RECORD_NOT_FOUND");
         }
+        $AddressResult->editor_id= $user_id;
+        $AddressResult->save();
         $AddressResult_filled= $AddressResult->delete();  
         return $AddressResult;
 

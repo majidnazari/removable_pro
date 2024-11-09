@@ -19,13 +19,16 @@ final class DeleteMemory
     }
     public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $MemoryResult=Memory::find($args['id']);
         
         if(!$MemoryResult)
         {
             return Error::createLocatedError("Memory-DELETE-RECORD_NOT_FOUND");
         }
+        $MemoryResult->editor_id= $user_id;
+        $MemoryResult->save();
+
         $MemoryResult_filled= $MemoryResult->delete();  
         return $MemoryResult;
 

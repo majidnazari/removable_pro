@@ -20,7 +20,7 @@ final class UpdateNaslanSubscription
     }
     public function resolveNaslanSubscription($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $NaslanSubscriptionResult=Subscription::find($args['id']);
         
@@ -28,6 +28,7 @@ final class UpdateNaslanSubscription
         {
             return Error::createLocatedError("NaslanSubscription-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $NaslanSubscriptionResult_filled= $NaslanSubscriptionResult->fill($args);
         $NaslanSubscriptionResult->save();       
        

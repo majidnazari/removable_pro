@@ -20,7 +20,7 @@ final class UpdateFavorite
     }
     public function resolveFavorite($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $FavoriteResult=Favorite::find($args['id']);
         
@@ -28,6 +28,7 @@ final class UpdateFavorite
         {
             return Error::createLocatedError("Favorite-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $FavoriteResult_filled= $FavoriteResult->fill($args);
         $FavoriteResult->save();       
        

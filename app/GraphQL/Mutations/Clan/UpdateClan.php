@@ -20,7 +20,7 @@ final class UpdateClan
     }
     public function resolveClan($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $ClanResult=Clan::find($args['id']);
         
@@ -28,6 +28,7 @@ final class UpdateClan
         {
             return Error::createLocatedError("Clan-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $ClanResult_filled= $ClanResult->fill($args);
         $ClanResult->save();       
        

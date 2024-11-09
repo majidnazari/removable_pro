@@ -1,4 +1,4 @@
 
-    createClanMember(input: CreateClanMemberInput! @spread): ClanMember @field(resolver: "App\\GraphQL\\Mutations\\ClanMember\\CreateClanMember@resolveClanMember") 
-    updateClanMember(id: ID!, input: UpdateClanMemberInput! @spread): ClanMember @field(resolver: "App\\GraphQL\\Mutations\\ClanMember\\UpdateClanMember@resolveClanMember") 
-    deleteClanMember(id: ID!): ClanMember @field(resolver: "App\\GraphQL\\Mutations\\ClanMember\\DeleteClanMember@resolveClanMember") 
+    createClanMember(input: CreateClanMemberInput! @spread): ClanMember @guard(with: ["api"])@field(resolver: "App\\GraphQL\\Mutations\\ClanMember\\CreateClanMember@resolveClanMember") 
+    updateClanMember(id: ID!, input: UpdateClanMemberInput! @spread): ClanMember @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\ClanMember\\UpdateClanMember@resolveClanMember") 
+    deleteClanMember(id: ID!): ClanMember @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\ClanMember\\DeleteClanMember@resolveClanMember") 

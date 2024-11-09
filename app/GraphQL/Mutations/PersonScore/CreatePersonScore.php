@@ -28,9 +28,9 @@ final class CreatePersonScore
     {
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         $PersonScoreModel = [
-            "creator_id" => 1,
+            "creator_id" =>  $user_id,
             "person_id" => $args['person_id'],
             "score_id" => $args['score_id'],
             
