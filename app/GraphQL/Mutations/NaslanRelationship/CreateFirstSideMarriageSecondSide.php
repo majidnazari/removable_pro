@@ -27,12 +27,13 @@ final class CreateFirstSideMarriageSecondSide
     public function resolveCreateFirstSideMarriageSecondSide($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
+        $user_id=auth()->guard('api')->user()->id;
 
 
         if ($args['relationship_id'] === "Marriage") //it is Marriage relation and should check first with second and also check inverse relation too 
         {
             $NaslanRelationModel= [
-                "creator_id" =>1,
+                "creator_id" => $user_id,
                 "man_id" => $args['first_side_person_id'],
                 //"relationship_id" => $args['relationship_id'] ,           
                 "woman_id" => $args['second_side_person_id'],

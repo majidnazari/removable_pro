@@ -1,4 +1,4 @@
 
-createEvent(input: CreateEventInput! @spread): Event @field(resolver: "App\\GraphQL\\Mutations\\Event\\CreateEvent@resolveEvent") 
-    updateEvent(id: ID!, input: UpdateEventInput! @spread): Event @field(resolver: "App\\GraphQL\\Mutations\\Event\\UpdateEvent@resolveEvent") 
-    deleteEvent(id: ID!): Event @field(resolver: "App\\GraphQL\\Mutations\\Event\\DeleteEvent@resolveEvent") 
+createEvent(input: CreateEventInput! @spread): Event @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Event\\CreateEvent@resolveEvent") 
+    updateEvent(id: ID!, input: UpdateEventInput! @spread): Event @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Event\\UpdateEvent@resolveEvent") 
+    deleteEvent(id: ID!): Event @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Event\\DeleteEvent@resolveEvent") 

@@ -19,13 +19,16 @@ final class DeleteFamilyEvent
     }
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $FamilyEventResult=FamilyEvent::find($args['id']);
         
         if(!$FamilyEventResult)
         {
             return Error::createLocatedError("FamilyEvent-DELETE-RECORD_NOT_FOUND");
         }
+        $FamilyEventResult->editor_id= $user_id;
+        $FamilyEventResult->save();
+
         $FamilyEventResult_filled= $FamilyEventResult->delete();  
         return $FamilyEventResult;
 

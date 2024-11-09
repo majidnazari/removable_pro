@@ -23,7 +23,7 @@ final class UpdatePersonDetails
     }
     public function resolvePersonDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $personDetail = PersonDetail::find($args['id']);
        
@@ -109,7 +109,7 @@ final class UpdatePersonDetails
 
            // Prepare the model data
            $PersonDetailsModel = [
-            "editor_id" => 1,
+            "editor_id" => $user_id,
             // "person_id" => $args['person_id'],
             // "profile_picture" =>  $path ?? null,
             //"gendar" => $args['gendar'] ?? 'None',

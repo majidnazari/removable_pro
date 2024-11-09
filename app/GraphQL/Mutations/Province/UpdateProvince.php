@@ -20,7 +20,7 @@ final class UpdateProvince
     }
     public function resolveProvince($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $ProvinceResult=Province::find($args['id']);
         
@@ -28,6 +28,9 @@ final class UpdateProvince
         {
             return Error::createLocatedError("Province-UPDATE-RECORD_NOT_FOUND");
         }
+
+        $args['editor_id']=$user_id;
+        
         $ProvinceResult_filled= $ProvinceResult->fill($args);
         $ProvinceResult->save();       
        

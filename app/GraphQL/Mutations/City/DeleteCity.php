@@ -19,13 +19,18 @@ final class DeleteCity
     }
     public function resolveCity($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $CityResult=City::find($args['id']);
         
         if(!$CityResult)
         {
             return Error::createLocatedError("City-DELETE-RECORD_NOT_FOUND");
         }
+
+        $CityResult->editor_id= $user_id;
+        $CityResult->save();
+
+
         $CityResult_filled= $CityResult->delete();  
         return $CityResult;
 

@@ -19,13 +19,16 @@ final class DeleteFamilyBoard
     }
     public function resolveFamilyBoard($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $FamilyBoardResult=FamilyBoard::find($args['id']);
         
         if(!$FamilyBoardResult)
         {
             return Error::createLocatedError("FamilyBoard-DELETE-RECORD_NOT_FOUND");
         }
+        $FamilyBoardResult->editor_id= $user_id;
+        $FamilyBoardResult->save();
+
         $FamilyBoardResult_filled= $FamilyBoardResult->delete();  
         return $FamilyBoardResult;
 

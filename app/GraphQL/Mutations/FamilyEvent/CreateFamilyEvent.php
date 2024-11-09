@@ -27,9 +27,9 @@ final class CreateFamilyEvent
     { 
        
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         $FamilyEventResult=[
-            "creator_id" => 1,
+            "creator_id" => $user_id,
             "person_id" => $args['person_id'],
             "event_id" => $args['event_id'],
             // "title" => $args['title'],

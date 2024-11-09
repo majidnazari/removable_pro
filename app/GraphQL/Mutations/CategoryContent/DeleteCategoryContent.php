@@ -19,13 +19,17 @@ final class DeleteCategoryContent
     }
     public function resolveCategoryContent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $CategoryContentResult=CategoryContent::find($args['id']);
         
         if(!$CategoryContentResult)
         {
             return Error::createLocatedError("CategoryContent-DELETE-RECORD_NOT_FOUND");
         }
+        
+        $CategoryContentResult->editor_id= $user_id;
+        $CategoryContentResult->save();
+
         $CategoryContentResult_filled= $CategoryContentResult->delete();  
         return $CategoryContentResult;
 

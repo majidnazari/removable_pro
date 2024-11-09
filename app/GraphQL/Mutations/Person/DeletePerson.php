@@ -19,13 +19,17 @@ final class DeletePerson
     }
     public function resolvePerson($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $PersonResult=Person::find($args['id']);
         
         if(!$PersonResult)
         {
             return Error::createLocatedError("Person-DELETE-RECORD_NOT_FOUND");
         }
+
+        $PersonResult->editor_id= $user_id;
+        $PersonResult->save(); 
+
         $PersonResult_filled= $PersonResult->delete();  
         return $PersonResult;
 

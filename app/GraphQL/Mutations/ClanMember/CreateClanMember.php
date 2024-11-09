@@ -27,9 +27,9 @@ final class CreateClanMember
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         $ClanMemberResult=[
-            "creator_id" => 1,
+            "creator_id" => $user_id,
             "clan_id" => $args['clan_id'],
             "node_code" => $args['node_code'],
         ];

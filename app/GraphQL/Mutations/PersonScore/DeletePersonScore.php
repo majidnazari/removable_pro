@@ -19,13 +19,17 @@ final class DeletePersonScore
     }
     public function resolvePersonScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $PersonScoreResult=PersonScore::find($args['id']);
         
         if(!$PersonScoreResult)
         {
             return Error::createLocatedError("PersonScore-DELETE-RECORD_NOT_FOUND");
         }
+
+        $PersonScoreResult->editor_id= $user_id;
+        $PersonScoreResult->save(); 
+
         $PersonScoreResult_filled= $PersonScoreResult->delete();  
         return $PersonScoreResult;
 

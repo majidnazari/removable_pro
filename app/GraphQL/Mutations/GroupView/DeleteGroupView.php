@@ -19,13 +19,17 @@ final class DeleteGroupView
     }
     public function resolveGroupView($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $GroupViewResult=GroupView::find($args['id']);
         
         if(!$GroupViewResult)
         {
             return Error::createLocatedError("GroupView-DELETE-RECORD_NOT_FOUND");
         }
+
+        $GroupViewResult->editor_id= $user_id;
+        $GroupViewResult->save();
+
         $GroupViewResult_filled= $GroupViewResult->delete();  
         return $GroupViewResult;
 

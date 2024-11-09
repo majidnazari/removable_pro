@@ -19,13 +19,17 @@ final class DeleteQuestion
     }
     public function resolveQuestion($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $QuestionResult=Question::find($args['id']);
         
         if(!$QuestionResult)
         {
             return Error::createLocatedError("Question-DELETE-RECORD_NOT_FOUND");
         }
+
+        $QuestionResult->editor_id= $user_id;
+        $QuestionResult->save(); 
+
         $QuestionResult_filled= $QuestionResult->delete();  
         return $QuestionResult;
 

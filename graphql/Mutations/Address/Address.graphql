@@ -1,3 +1,3 @@
-createAddress(input: CreateAddressInput! @spread): Address @field(resolver: "App\\GraphQL\\Mutations\\Address\\CreateAddress@resolveAddress") 
-    updateAddress(id: ID!, input: UpdateAddressInput! @spread): Address @field(resolver: "App\\GraphQL\\Mutations\\Address\\UpdateAddress@resolveAddress") 
-    deleteAddress(id: ID!): Address @field(resolver: "App\\GraphQL\\Mutations\\Address\\DeleteAddress@resolveAddress") 
+createAddress(input: CreateAddressInput! @spread): Address @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Address\\CreateAddress@resolveAddress") 
+    updateAddress(id: ID!, input: UpdateAddressInput! @spread): Address @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Address\\UpdateAddress@resolveAddress") 
+    deleteAddress(id: ID!): Address @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Address\\DeleteAddress@resolveAddress") 

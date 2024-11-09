@@ -20,7 +20,7 @@ final class UpdateMemory
     }
     public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $MemoryResult=Memory::find($args['id']);
         
@@ -28,6 +28,7 @@ final class UpdateMemory
         {
             return Error::createLocatedError("Memory-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $MemoryResult_filled= $MemoryResult->fill($args);
         $MemoryResult->save();       
        

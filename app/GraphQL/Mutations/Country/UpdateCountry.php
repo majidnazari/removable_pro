@@ -20,7 +20,7 @@ final class UpdateCountry
     }
     public function resolveCountry($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $CountryResult=Country::find($args['id']);
         
@@ -28,6 +28,8 @@ final class UpdateCountry
         {
             return Error::createLocatedError("Country-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
+
         $CountryResult_filled= $CountryResult->fill($args);
         $CountryResult->save();       
        

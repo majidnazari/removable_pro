@@ -19,13 +19,16 @@ final class DeleteEvent
     }
     public function resolveEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $EventResult=Event::find($args['id']);
         
         if(!$EventResult)
         {
             return Error::createLocatedError("Event-DELETE-RECORD_NOT_FOUND");
         }
+        //$args['editor_id']=$user_id;
+        $EventResult->editor_id= $user_id;
+        $EventResult->save();
         $EventResult_filled= $EventResult->delete();  
         return $EventResult;
 

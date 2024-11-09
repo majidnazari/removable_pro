@@ -20,7 +20,7 @@ final class UpdateQuestion
     }
     public function resolveQuestion($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $QuestionResult=Question::find($args['id']);
         
@@ -28,6 +28,8 @@ final class UpdateQuestion
         {
             return Error::createLocatedError("Question-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
+        
         $QuestionResult_filled= $QuestionResult->fill($args);
         $QuestionResult->save();       
        

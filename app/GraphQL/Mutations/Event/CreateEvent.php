@@ -27,9 +27,9 @@ final class CreateEvent
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         $EventResult=[
-            "creator_id" => 1,
+            "creator_id" =>  $user_id,
             "title" => $args['title'],
             "status" => $args['status']            
         ];

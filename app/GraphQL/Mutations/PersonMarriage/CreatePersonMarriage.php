@@ -30,9 +30,9 @@ final class CreatePersonMarriage
 
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         $PersonMarriageModel = [
-            "creator_id" =>1,
+            "creator_id" => $user_id,
 
             "man_id" => $args['man_id'],
             "woman_id" => $args['woman_id'],

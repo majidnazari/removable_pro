@@ -20,7 +20,7 @@ final class UpdateFamilyEvent
     }
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $FamilyEventResult=FamilyEvent::find($args['id']);
         
@@ -28,6 +28,7 @@ final class UpdateFamilyEvent
         {
             return Error::createLocatedError("FamilyEvent-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $FamilyEventResult_filled= $FamilyEventResult->fill($args);
         $FamilyEventResult->save();       
        

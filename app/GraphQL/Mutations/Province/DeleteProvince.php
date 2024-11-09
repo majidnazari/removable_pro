@@ -19,13 +19,18 @@ final class DeleteProvince
     }
     public function resolveProvince($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $user_id=auth()->guard('api')->user()->id;        
         $ProvinceResult=Province::find($args['id']);
         
         if(!$ProvinceResult)
         {
             return Error::createLocatedError("Province-DELETE-RECORD_NOT_FOUND");
         }
+
+        $ProvinceResult->editor_id= $user_id;
+        $ProvinceResult->save(); 
+
+
         $ProvinceResult_filled= $ProvinceResult->delete();  
         return $ProvinceResult;
 

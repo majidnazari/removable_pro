@@ -20,7 +20,7 @@ final class UpdateFamilyBoard
     }
     public function resolveFamilyBoard($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $FamilyBoardResult=FamilyBoard::find($args['id']);
         
@@ -28,6 +28,7 @@ final class UpdateFamilyBoard
         {
             return Error::createLocatedError("FamilyBoard-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$user_id;
         $FamilyBoardResult_filled= $FamilyBoardResult->fill($args);
         $FamilyBoardResult->save();       
        

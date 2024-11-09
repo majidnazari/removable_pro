@@ -29,8 +29,10 @@ final class CreateMemory
     public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
+        $user_id=auth()->guard('api')->user()->id;
+
         $MemoryModel = [
-            "creator_id" => 1,
+            "creator_id" => $user_id,
             "person_id" => $args['person_id'],
             "category_content_id" => $args['category_content_id'],
             "group_view_id" => $args['group_view_id'],            

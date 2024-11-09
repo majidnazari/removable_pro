@@ -27,7 +27,7 @@ final class CreateNaslanRelationship
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user_id=auth()->guard('api')->user()->id;
         $NaslanRelationResult=[
             "status" => $args['status'] ?? "None",           
             "title" => $args['title'],
