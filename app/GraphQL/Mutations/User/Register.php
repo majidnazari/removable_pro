@@ -35,7 +35,7 @@ class Register extends BaseAuthResolver
         $args['code_expired_at']=$code_expired_at;
         $model = $this->createAuthModel($args);
 
-        Log::info("the user is:" . json_encode($model));
+        //Log::info("the user is:" . json_encode($model));
 
         $this->validateAuthModel($model);
 
