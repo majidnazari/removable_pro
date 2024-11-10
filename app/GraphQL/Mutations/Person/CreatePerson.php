@@ -11,6 +11,7 @@ use Joselfonseca\LighthouseGraphQLPassport\Persons\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Carbon\Carbon;
 use Log;
 
 final class CreatePerson
@@ -33,7 +34,7 @@ final class CreatePerson
         $PersonModel = [
             "creator_id" =>  $user_id,
             //"editor_id" => $args['editor_id'] ?? null,
-            "node_code" => $args['node_code'] ?? "Nas_".Rand(0000000000,99999999999),
+            "node_code" => Carbon::now()->format('YmdHisv'),
             "node_level_x" => $args['node_level_x'] ?? 0,
             "node_level_y" => $args['node_level_y'] ?? 0,
             "first_name" => $args['first_name'],

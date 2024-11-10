@@ -30,6 +30,8 @@ final class MergePersons
             $this->mergeMarriages($primaryPersonId, $secondaryPersonId, $user_id);
             $this->mergeChildren($primaryPersonId, $secondaryPersonId, $user_id);
 
+            $secondaryPerson->editor_id=$user_id;
+            $secondaryPerson->save();
             $secondaryPerson->delete();
             
             DB::commit();
@@ -63,6 +65,8 @@ final class MergePersons
             if ($existingMarriage) {
                 PersonChild::where('person_marriage_id', $marriage->id)
                     ->update(['person_marriage_id' => $existingMarriage->id]);
+                    $marriage->editor_id = $user_id;  // Set the editor ID
+                    $marriage->save();
                 $marriage->delete();
             } else {
                 $marriage->man_id = $marriage->man_id == $secondaryPersonId ? $primaryPersonId : $marriage->man_id;
@@ -84,6 +88,8 @@ final class MergePersons
                 ->first();
 
             if ($existingChild) {
+                $child->editor_id = $user_id;  // Set the editor ID
+                $child->save();
                 $child->delete();
             } else {
                 $child->child_id = $child->child_id == $secondaryPersonId ? $primaryPersonId : $child->child_id;
@@ -124,6 +130,7 @@ final class MergePersons
             $duplicates->shift(); // Keep the first record in each group
             $duplicates->each(function ($marriage) use ($user_id) {
                 $marriage->editor_id = $user_id;
+                $marriage->save();
                 $marriage->delete(); // Delete the rest in each group
             });
         });
@@ -135,6 +142,7 @@ final class MergePersons
             $duplicates->shift(); // Keep the first record in each group
             $duplicates->each(function ($child) use ($user_id) {
                 $child->editor_id = $user_id;
+                $child->save();
                 $child->delete(); // Delete the rest in each group
             });
         });

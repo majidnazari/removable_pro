@@ -9,6 +9,7 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\UserLoggedIn;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 
+use Log;
 
 class Login extends BaseAuthResolver
 {
@@ -25,6 +26,7 @@ class Login extends BaseAuthResolver
     {
         $credentials = $this->buildCredentials($args);
         $response = $this->makeRequest($credentials);
+
         $user = $this->findUser($args['username']);
 
         $this->validateUser($user);

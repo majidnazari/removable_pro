@@ -5,6 +5,30 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property int|null $user_id
+ * @property string $ip_address
+ * @property int $today_attempts
+ * @property string|null $attempt_date
+ * @property string|null $expire_blocked_time
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereAttemptDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereExpireBlockedTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereIpAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereTodayAttempts($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereUserId($value)
+ * @mixin \Eloquent
+ */
 class LoginAttempt extends Model
 {
     protected $fillable = [
