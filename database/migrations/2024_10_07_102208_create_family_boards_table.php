@@ -26,7 +26,10 @@ return new class extends Migration
             $table->datetime('selected_date');
             $table->string('file_path')->nullable();
             $table->string('description');
-            $table->enum('status',["Active","Inactive","None"])->default("Active");
+            //$table->enum('status',["Active","Inactive","None"])->default("Active");
+
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=susspend ");   
+
 
 
             $table->timestamps();

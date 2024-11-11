@@ -1,24 +1,11 @@
 
 
-enum Gendar {
-    Male
-    Female
-    None
-}
-
-enum PhysicalCondition {
-    Healthy
-    Handicapped
-    Dead
-    None
-}
-
 type PersonDetail {
     id: ID!
     person_id: ID!
     profile_picture: String
-    # gendar: Gendar
-    physical_condition: PhysicalCondition
+    # gender: gender
+    physical_condition: Int
     created_at: String
     updated_at: String
 }
@@ -27,15 +14,15 @@ type PersonDetail {
 input CreatePersonDetailsInput {
     person_id: ID!
     profile_picture: Upload
-    # gendar: Gendar = None
-    physical_condition: PhysicalCondition = Healthy
+    # gender: gender = None
+    physical_condition: Int = 1
 }
 
 input UpdatePersonDetailsInput {
     
     person_id: ID!
     profile_picture: Upload
-    # gendar: Gendar = None
-    physical_condition: PhysicalCondition = Healthy
+    # gender: gender = None
+    physical_condition: Int = 1
 }
 

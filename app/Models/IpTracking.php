@@ -41,8 +41,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|IpTracking withoutTrashed()
  * @mixin \Eloquent
  */
-class IpTracking extends Model
+class IpTracking extends  \Eloquent
 {
-    protected $fillable = ['ip', 'date_attemp', 'today_attemp', 'total_attemp', 'status', 'expire_blocked_time', 'number_of_blocked_times'];
-    use HasFactory,SoftDeletes;
+    protected $fillable = [
+        'ip',
+        'date_attemp',
+        'today_attemp',
+        'total_attemp',
+        'status',
+        'expire_blocked_time',
+        'number_of_blocked_times',
+    ];
+    use HasFactory, SoftDeletes;
 }

@@ -1,9 +1,4 @@
 
-enum Status {
-    Active
-    Inactive
-    None
-}
 
 type Memory {
     

@@ -1,30 +1,12 @@
-enum ChildStatus {
-    With_family
-    Separated
-    None
-}
 
-enum Status {
-    Active
-    Inactive
-    None
-} 
-
-enum ChildKind {
-    Direct_child
-    Mother_child
-    Father_child
-    Adoption
-    None
-}
 type PersonChild {
     id: ID!
     creator_id: ID!
     editor_id: ID
     person_marriage_id: ID
     child_id: ID
-    child_kind: ChildKind
-    child_status: ChildStatus
+    child_kind: Int
+    child_status: Int
     status: Status
    
 
@@ -39,8 +21,8 @@ input CreatePersonChildInput @validator(class: "App\\GraphQL\\Validators\\Person
 
     person_marriage_id: ID
     child_id: ID
-    child_kind: ChildKind
-    child_status: ChildStatus
+    child_kind: Int
+    child_status: Int
     status: Status
    
 }
@@ -49,8 +31,8 @@ input UpdatePersonChildInput  @validator(class: "App\\GraphQL\\Validators\\Perso
 
     person_marriage_id: ID
     child_id: ID
-    child_kind: ChildKind
-    child_status: ChildStatus
+    child_kind: Int
+    child_status: Int
     status: Status
    
 }

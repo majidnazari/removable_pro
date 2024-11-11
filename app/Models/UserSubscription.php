@@ -41,7 +41,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserSubscription withoutTrashed()
  * @mixin \Eloquent
  */
-class UserSubscription extends Model
+class UserSubscription extends  \Eloquent
 {
     protected $fillable = [
         'user_id',
@@ -58,16 +58,17 @@ class UserSubscription extends Model
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
   
-    public const CATEGORY_CONTENT_ID = 'category_content_id';
+    public const SUBSCRIPTION_ID = 'subscription_id';
+    public const USER_ID = 'user_id';
     protected $table = self::TABLE_NAME;
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, SELF::USER_ID);
     }
     public function Subscription()
     {
-        return $this->belongsTo(Subscription::class, 'subscription_id');
+        return $this->belongsTo(Subscription::class, SELF::SUBSCRIPTION_ID);
     }
     // public function editor()
     // {

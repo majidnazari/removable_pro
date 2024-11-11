@@ -2,11 +2,14 @@
 
 namespace App\GraphQL\Mutations\PersonDetails;
 
+use App\GraphQL\Enums\PhysicalCondition;
 use App\Models\PersonDetail;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Illuminate\Support\Facades\Storage;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 
 use Log;
 
@@ -112,8 +115,8 @@ final class UpdatePersonDetails
             "editor_id" => $user_id,
             // "person_id" => $args['person_id'],
             // "profile_picture" =>  $path ?? null,
-            //"gendar" => $args['gendar'] ?? 'None',
-            "physical_condition" => $args['physical_condition'] ?? 'Healthy'
+            //"gender" => $args['gender'] ?? 'None',
+            "physical_condition" => $args['physical_condition'] ??  PhysicalCondition::Healthy // 'Healthy'
         ];
 
 

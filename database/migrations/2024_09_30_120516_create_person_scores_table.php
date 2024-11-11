@@ -25,8 +25,12 @@ return new class extends Migration
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
  
-            $table->enum('score_level',["Excellent","Verygood","Good","NotBad","Bad","None"])->default("None");
-            $table->enum('status',["Active","a","None"])->default("Active");
+           // $table->enum('score_level',["Excellent","Verygood","Good","NotBad","Bad","None"])->default("None");
+          // $table->enum('status',["Active","a","None"])->default("Active");
+
+            $table->tinyInteger('score_level', )->default(0)->comment("0=none  1=bad 2=NotBad 3=Verygood 4=Excellent ");   
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=susspend ");   
+
             $table->timestamps();
             $table->softDeletes();
         });

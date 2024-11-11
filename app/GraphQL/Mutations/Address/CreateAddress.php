@@ -11,6 +11,7 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+
 use Log;
 
 final class CreateAddress
@@ -28,6 +29,12 @@ final class CreateAddress
         
         //Log::info("the args are:" . json_encode($args));
         $user_id=auth()->guard('api')->user()->id;
+
+           // Use the helper to get the integer value of status
+        //$statusValue = StatusHelper::getStatusValue($args['status']);
+
+       // Log::info("the status is:". $statusValue );
+
         $AddressResult=[
             "creator_id"=> $user_id,
             "person_id"=> $args['person_id'],
@@ -40,7 +47,7 @@ final class CreateAddress
             "builder_no" => $args['builder_no'],
             "floor_no" => $args['floor_no'],
             "unit_no" => $args['unit_no'],
-            "status" => $args['status'],
+            "status" =>  $args['status'],
                 
         ];
         $is_exist= Address::where($AddressResult)->first();

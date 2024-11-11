@@ -29,7 +29,7 @@ use Carbon\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereUserId($value)
  * @mixin \Eloquent
  */
-class LoginAttempt extends Model
+class LoginAttempt extends  \Eloquent
 {
     protected $fillable = [
         'user_id',

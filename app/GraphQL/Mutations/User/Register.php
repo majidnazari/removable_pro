@@ -12,11 +12,16 @@ use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserAnswer;
+use App\GraphQL\Enums\Status;
+
 use DB;
 use Log;
 
 class Register extends BaseAuthResolver
 {
+    
+    public const NONE=0;
+    public const ACTIVE=1;
     /**
      * @param $rootValue
      * @param  array  $args
@@ -95,7 +100,7 @@ class Register extends BaseAuthResolver
     {
 
         $user=User::where('id',$args['user_id'])
-        ->where('status','New')
+        ->where('status',Status::New)
         ->whereNull('password')
         ->first();
         if(!$user)
@@ -108,7 +113,7 @@ class Register extends BaseAuthResolver
         //$pureMobileNumber = substr($user->mobile, $countryCodeLength); // remove country code prefix
 
         $user->password=Hash::make($args['password']);
-        $user->status="Active";
+        $user->status=Status::Active;
         $user->save();
         
         $credentials = $this->buildCredentials([

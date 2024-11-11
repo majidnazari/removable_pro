@@ -1,24 +1,4 @@
 
-enum MarrageStatus {
-    Related
-    Notrelated
-    Suspend
-    None
-}
-
-enum MarriageStatus {
-    Alive
-    Dead
-    Divorce
-    Unkown
-    None
-}
-
-enum Status {
-    Active
-    Inactive
-    None
-}
 
 type PersonMarriage {
     id: ID!
@@ -33,7 +13,7 @@ type PersonMarriage {
     creator_id: ID
     editor_id: ID
     # marrage_status: MarrageStatus
-    Marriage_status: MarriageStatus
+    Marriage_status: Int
     status: Status
     marriage_date: String
     divorce_date: String
@@ -47,7 +27,7 @@ input CreatePersonMarriageInput  @validator(class: "App\\GraphQL\\Validators\\Pe
     woman_id: ID!
    
     # marrage_status: MarrageStatus
-    Marriage_status: MarriageStatus
+    Marriage_status: Int
     status: Status
     marriage_date: String
     divorce_date: String
@@ -59,7 +39,7 @@ input UpdatePersonMarriageInput @validator(class: "App\\GraphQL\\Validators\\Per
     woman_id: ID!
    
     # marrage_status: MarrageStatus
-    Marriage_status: MarriageStatus
+    Marriage_status: Int
     status: Status
     marriage_date: String
     divorce_date: String

@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Score withoutTrashed()
  * @mixin \Eloquent
  */
-class Score extends Model
+class Score extends  \Eloquent
 {
     protected $fillable = [
         'title',

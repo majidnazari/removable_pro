@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations\PersonDetails;
 
+use App\GraphQL\Enums\PhysicalCondition;
 use App\Models\PersonDetail;
 use GraphQL\Type\Definition\ResolveInfo;
 use App\Models\GroupUser;
@@ -12,6 +13,8 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Storage;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreatePersonDetails
@@ -79,8 +82,8 @@ final class CreatePersonDetails
             "create_id" => 1,
             "person_id" => $args['person_id'],
             "profile_picture" =>  $path ?? null,
-            //"gendar" => $args['gendar'] ?? 'None',
-            "physical_condition" => $args['physical_condition'] ?? 'Healthy'
+            //"gender" => $args['gender'] ?? 'None',
+            "physical_condition" => $args['physical_condition'] ?? PhysicalCondition::Healthy // 'Healthy'
         ];
         
         // Check if a similar details profile already exists for the same person_id
@@ -97,7 +100,7 @@ final class CreatePersonDetails
     //         "create_id" => 1,
     //         "person_id" => $args['person_id'],
     //         "profile_picture" => $args['profile_picture'] ?? null,
-    //         "gendar" => $args['gendar'] ?? 'None', // Default to 'None' if not provided
+    //         "gender" => $args['gender'] ?? 'None', // Default to 'None' if not provided
     //         "physical_condition" => $args['physical_condition'] ?? 'Healthy' // Default to 'Healthy' if not provided
     //     ];
         

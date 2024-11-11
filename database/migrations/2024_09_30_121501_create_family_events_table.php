@@ -26,7 +26,10 @@ return new class extends Migration
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->datetime('event_date');
-            $table->enum('status',["Active","Inactive","None"])->default("Active");
+            //$table->enum('status',["Active","Inactive","None"])->default("Active");
+
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=susspend ");   
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,6 +15,8 @@ use Log;
 
 final class CreateNaslanSubscription
 {
+    public const NONE=0;
+    public const ACTIVE=1;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -29,7 +31,7 @@ final class CreateNaslanSubscription
         //Log::info("the args are:" . json_encode($args));
         //$user_id=auth()->guard('api')->user()->id;
         $NaslanSubscriptionModel=[
-            "status" => $args['status'] ?? "None",
+            "status" => $args['status'] ?? self::NONE,
             "title" => $args['title'],
             "day_number" => $args['day_number'],
             "volume_amount" => $args['volume_amount'],

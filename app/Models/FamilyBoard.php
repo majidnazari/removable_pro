@@ -46,7 +46,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard withoutTrashed()
  * @mixin \Eloquent
  */
-class FamilyBoard extends Model
+class FamilyBoard extends \Eloquent 
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
@@ -69,17 +69,17 @@ class FamilyBoard extends Model
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, self::CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, 'editor_id');
+        return $this->belongsTo(User::class, self::EDITOR_ID);
     }
 
     public function Category()
     {
-        return $this->belongsTo(CategoryContent::class, 'category_content_id');
+        return $this->belongsTo(CategoryContent::class, self::CATEGORY_CONTENT_ID);
     }
 
 

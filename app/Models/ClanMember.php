@@ -41,7 +41,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ClanMember withoutTrashed()
  * @mixin \Eloquent
  */
-class ClanMember extends Model
+class ClanMember extends \Eloquent 
 {
     protected $fillable = [
         'creator_id',

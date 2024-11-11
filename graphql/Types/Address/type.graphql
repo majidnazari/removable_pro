@@ -21,7 +21,7 @@ type Address {
     unit_no: String
     lat: Float
     lon: Float
-    status: String
+    status: Status
     created_at: DateTime
     updated_at: DateTime
 }
@@ -40,7 +40,7 @@ input CreateAddressInput {
     unit_no: String
     lat: Float
     lon: Float
-    status: String
+    status: Status
 }
 
 input UpdateAddressInput {
@@ -58,5 +58,5 @@ input UpdateAddressInput {
     unit_no: String
     lat: Float
     lon: Float
-    status: String
+    status: Status
 }

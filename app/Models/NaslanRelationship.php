@@ -33,7 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship withoutTrashed()
  * @mixin \Eloquent
  */
-class NaslanRelationship extends Model
+class NaslanRelationship extends  \Eloquent
 {
     use HasFactory,SoftDeletes;
     protected $fillable = [
@@ -42,7 +42,7 @@ class NaslanRelationship extends Model
         "status",
     ] ;
 
-    public const TABLE_NAME = 'category_contents';
+    public const TABLE_NAME = 'naslan_relations';
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';

@@ -1,19 +1,5 @@
 
 
-enum ScoreLevel {
-    Excellent
-    Verygood
-    Good
-    NotBad
-    Bad
-    None
-}
-
-enum Status {
-    Active
-    Inactive
-    None
-}
 
 type PersonScore {
 
@@ -22,7 +8,7 @@ type PersonScore {
     editor_id: ID
     person_id: ID
     score_id: ID
-    score_level: ScoreLevel
+    score_level: Int
     status: Status   
 
     Person: Person
@@ -34,7 +20,7 @@ input CreatePersonScoreInput {
 
     person_id: ID
     score_id: ID
-    score_level: ScoreLevel
+    score_level: Int
     status: Status
 }
 
@@ -42,7 +28,7 @@ input UpdatePersonScoreInput {
     
     person_id: ID
     score_id: ID
-    score_level: ScoreLevel
+    score_level: Int
     status: Status
 }
 

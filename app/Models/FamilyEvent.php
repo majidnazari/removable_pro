@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent withoutTrashed()
  * @mixin \Eloquent
  */
-class FamilyEvent extends Model
+class FamilyEvent extends \Eloquent
 {
     protected $fillable = [
         'person_id',
@@ -60,25 +60,27 @@ class FamilyEvent extends Model
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
   
-    public const CATEGORY_CONTENT_ID = 'category_content_id';
+    public const PERSON_ID = 'person_id';
+    public const EVENT_ID = 'event_id';
     protected $table = self::TABLE_NAME;
 
     public function Person()
     {
-        return $this->belongsTo(Person::class, 'person_id');
+        return $this->belongsTo(Person::class, self::PERSON_ID);
     }
     public function Event()
     {
-        return $this->belongsTo(Event::class, 'event_id');
+        return $this->belongsTo(Event::class, SELF::EVENT_ID);
     }
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, SELF::CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, 'editor_id');
+        return $this->belongsTo(User::class, SELF::EDITOR_ID);
     }
+    
 }

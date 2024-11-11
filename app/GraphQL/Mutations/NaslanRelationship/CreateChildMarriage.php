@@ -2,6 +2,8 @@
 
 namespace App\GraphQL\Mutations\NaslanRelationship;
 
+use App\GraphQL\Enums\ChildKind;
+use App\GraphQL\Enums\ChildStatus;
 use App\Models\NaslanRelationship;
 use App\Models\PersonChild;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -12,10 +14,13 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateChildMarriage
 {
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -28,6 +33,7 @@ final class CreateChildMarriage
     {
         $user_id=auth()->guard('api')->user()->id;
 
+
         // if (($args['relationship_type'] === "Father") || ($args['relationship_type'] === "Daughter")) //it is Marriage relation and should check first with second and also check inverse relation too 
         // {
             $NaslanRelationModel= [
@@ -35,9 +41,9 @@ final class CreateChildMarriage
                 "person_marriage_id" => $args['person_marriage_id'],
                 //"relationship_id" => $args['relationship_id'] ,           
                 "child_id" => $args['child_id'],
-                "child_kind" => $args['child_kind'] ?? "None",
-                "child_status" => $args['child_status']  ?? "None",
-                "status" => $args["status"] ?? "Active"
+                "child_kind" => $args['child_kind'] ?? ChildKind::None,
+                "child_status" => $args['child_status']  ?? ChildStatus::None,
+                "status" => $args["status"] ?? Status::Active
     
             ];
             

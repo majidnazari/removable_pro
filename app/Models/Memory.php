@@ -52,7 +52,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory withoutTrashed()
  * @mixin \Eloquent
  */
-class Memory extends Model
+class Memory extends  \Eloquent
 {
     protected $fillable = [
         'person_id',
@@ -73,28 +73,30 @@ class Memory extends Model
     public const EDITOR_ID = 'editor_id';
   
     public const CATEGORY_CONTENT_ID = 'category_content_id';
+    public const PERSON_ID = 'person_id';
+    public const GROUP_VIEW_ID = 'group_view_id';
     protected $table = self::TABLE_NAME;
 
     public function Person()
     {
-        return $this->belongsTo(Person::class, 'person_id');
+        return $this->belongsTo(Person::class, SELF::PERSON_ID);
     }
     public function Category()
     {
-        return $this->belongsTo(CategoryContent::class, 'category_content_id');
+        return $this->belongsTo(CategoryContent::class, SELF::CATEGORY_CONTENT_ID);
     }
     public function GroupView()
     {
-        return $this->belongsTo(GroupView::class, 'group_view_id');
+        return $this->belongsTo(GroupView::class, SELF::GROUP_VIEW_ID);
     }
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, SELF::CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, 'editor_id');
+        return $this->belongsTo(User::class, SELF::EDITOR_ID);
     }
 }

@@ -13,6 +13,8 @@ use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\LoginAttempt;
+use App\GraphQL\Enums\Status;
+
 
 use GraphQL\Error\Error;
 
@@ -72,7 +74,7 @@ class RegisterMobile
                 'sent_code' => $code,
                 'code_expired_at' => $expired_at,
                 'last_attempt_at' => Carbon::now(),
-                'status' => 'None',
+                'status' => Status::None,
             ]);
         }
     
@@ -103,7 +105,7 @@ class RegisterMobile
     
         // Mark mobile as verified
         $user->mobile_is_verified = true;
-        $user->status = "New";
+        $user->status = Status::New;
         $user->save();
     
         return [

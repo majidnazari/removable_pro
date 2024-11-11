@@ -1,8 +1,4 @@
-enum Status {
-    Active
-    Inactive
-    None
-}
+
 
 type Score {
     id: ID!

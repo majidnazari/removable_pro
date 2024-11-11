@@ -11,6 +11,8 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateUserVolumeExtra
@@ -31,7 +33,7 @@ final class CreateUserVolumeExtra
         //$user_id=auth()->guard('api')->user()->id;
         $UserVolumeExtraModel=[
 
-            "status" => $args['status'] ?? "None",
+            "status" => $args['status'] ?? Status::None,
             "start_date" => $args['start_date'] ,
             "end_date" => $args['end_date'] ,
             "volume_extra_id" => $args['volume_extra_id'] ,

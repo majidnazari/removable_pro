@@ -1,46 +1,4 @@
-enum Status {
-    Active
-    Inactive
-    None
-}
 
-enum NaslanDanamicRelationshipEnum {
-    Father
-    Mother
-    Marriage
-    Son
-    Daughter
-}
-
-enum MarriageStatus {
-    Related
-    Notrelated
-    Suspend
-    Dead
-    None
-}
-
-# enum MarriageStatus {
-#     Alive
-    
-#     Divorce
-#     Unkown
-#     None
-# }
-
-enum ChildKind {
-    Direct_child
-    Mother_child
-    Father_child
-    Adoption
-    None
-}
-
-enum ChildStatus {
-    With_family
-    Separated
-    None
-}
 
 type NaslanRelationship {
     id: ID!
@@ -71,7 +29,7 @@ type FirstSideMarriageSecondSide
     first_side_person_id: ID!
     relationship_id: ID!
     second_side_person_id: ID!
-    Marriage_status: MarriageStatus,
+    Marriage_status: Int ,
     marriage_date: String!
 }
 
@@ -79,14 +37,14 @@ input CreateFirstSideMarriageSecondSideInput {
 
     first_side_person_id: ID!
     # first_side_person: Person
-    relationship_id:NaslanDanamicRelationshipEnum
+    # relationship_id:NaslanDanamicRelationshipEnum
     # relationship: Realationship
 
     second_side_person_id: ID!
     # second_side_person_id: Person
 
     # : MarrageStatus,
-    Marriage_status: MarriageStatus,
+    Marriage_status: Int,
     marriage_date: String!
 }
 
@@ -104,9 +62,9 @@ input CreateFirstSideMarriageSecondSideInput {
 input CreateMarriageChildInput {
 
     person_marriage_id: ID!
-    relationship_type:NaslanDanamicRelationshipEnum
+    # relationship_type:NaslanDanamicRelationshipEnum
     child_id: ID!
-    child_kind: ChildKind,
-    child_status: ChildStatus,
-    status: Status!
+    child_kind: Int,
+    child_status: Int,
+    status: Status
 }

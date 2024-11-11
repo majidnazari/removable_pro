@@ -33,7 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Question withoutTrashed()
  * @mixin \Eloquent
  */
-class Question extends Model
+class Question extends  \Eloquent
 {
     protected $fillable = [
         'title',

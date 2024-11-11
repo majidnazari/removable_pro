@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserAnswer withoutTrashed()
  * @mixin \Eloquent
  */
-class UserAnswer extends Model
+class UserAnswer extends  \Eloquent
 {
     protected $fillable = [
         'creator_id',
@@ -52,19 +52,20 @@ class UserAnswer extends Model
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
   
-    public const CATEGORY_CONTENT_ID = 'category_content_id';
+    public const USER_ID = 'user_id';
+    public const QUESTION_ID = 'question_id';
     protected $table = self::TABLE_NAME;
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, SELF::CREATOR_ID);
     }
     public function User()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, SELF::USER_ID);
     }
     public function Question()
     {
-        return $this->belongsTo(Question::class, 'question_id');
+        return $this->belongsTo(Question::class, SELF::QUESTION_ID);
     }
 }

@@ -11,7 +11,7 @@ type FamilyEvent {
     
     # title: String
     event_date: String  
-    status: String 
+    status: Status 
     created_at: DateTime
     updated_at: DateTime
 
@@ -24,7 +24,7 @@ input CreateFamilyEventInput {
     event_id: ID!    
     # title: String
     event_date: String  
-    status: String 
+    status: Status 
 
 }
 
@@ -35,5 +35,5 @@ input UpdateFamilyEventInput {
 
     # title: String
     event_date: String  
-    status: String 
+    status: Status 
 }

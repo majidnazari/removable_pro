@@ -1,11 +1,5 @@
 
 
-enum Status {
-    Active
-    Inactive
-    None
-}
-
 type NaslanSubscription {
 
     id: ID!

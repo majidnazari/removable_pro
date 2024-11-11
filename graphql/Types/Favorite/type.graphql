@@ -10,12 +10,11 @@ type Favorite {
     title: String   
     description: String   
     star: String   
-    status: String   
+    status: Status   
 
     
     # title: String
     event_date: String  
-    status: String 
     created_at: DateTime
     updated_at: DateTime
 
@@ -34,9 +33,9 @@ input CreateFavoriteInput {
     title: String   
     description: String   
     star: String   
-    status: String      
+    status: Status      
     event_date: String  
-    status: String 
+    
 
 }
 
@@ -49,7 +48,7 @@ input UpdateFavoriteInput {
     title: String   
     description: String   
     star: String   
-    status: String  
+    status: Status  
     event_date: String  
-    status: String 
+   
 }

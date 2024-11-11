@@ -13,12 +13,15 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserAnswer;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 
 use DB;
 use Log;
 
 class ForgotPassword extends BaseAuthResolver
 {
+  
     /**
      * @param $rootValue
      * @param  array  $args
@@ -33,7 +36,7 @@ class ForgotPassword extends BaseAuthResolver
         $expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");
         //$cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
 
-        $user=User::where('mobile',$args['country_code'].$args['mobile'])->where('status','Active')->where('mobile_is_verified',true)->first();
+        $user=User::where('mobile',$args['country_code'].$args['mobile'])->where('status',Status::Active )->where('mobile_is_verified',true)->first();
 
         if(!$user)
         {
@@ -65,7 +68,7 @@ class ForgotPassword extends BaseAuthResolver
         //$cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
 
         $user=User::where('mobile',$args['country_code'].$args['mobile'])
-        ->where('status','Active')
+        ->where('status',Status::Active)
         ->where('sent_code',operator: $args['code'])        
         ->where('mobile_is_verified',true)->first();
 

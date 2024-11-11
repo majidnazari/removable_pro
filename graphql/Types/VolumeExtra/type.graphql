@@ -1,9 +1,3 @@
-enum Status {
-    Active
-    Inactive
-    None
-}
-
 
 type VolumeExtra {
     id: ID!

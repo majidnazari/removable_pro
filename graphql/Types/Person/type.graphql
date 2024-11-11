@@ -1,10 +1,6 @@
 
 
-enum Status {
-    Active
-    Inactive
-    None
-}
+
 type Person {
     id: ID!
     creator_id: ID
@@ -17,7 +13,7 @@ type Person {
     birth_date: String
     death_date: String
     is_owner: Boolean
-    gendar: Int # the 1 is man and 0 is woman
+    gender: Int # the 1 is man and 0 is woman
     status: Status
     created_at: DateTime
     updated_at: DateTime
@@ -47,7 +43,7 @@ input CreatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\Cre
     birth_date: String
     death_date: String
     is_owner: Boolean
-    gendar: Int
+    gender: Int
     status: Status
 }
 
@@ -58,7 +54,7 @@ input UpdatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\Upd
     birth_date: String
     death_date: String
     is_owner: Boolean
-    gendar: Int
+    gender: Int
     status: Status
 }
 

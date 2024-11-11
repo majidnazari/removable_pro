@@ -34,12 +34,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonDetail withoutTrashed()
  * @mixin \Eloquent
  */
-class PersonDetail extends Model
+class PersonDetail extends  \Eloquent
 {
     protected $fillable = [
         'person_id',
         'profile_picture',
-        'physical_condition'
+        'physical_condition',
     ];
     use HasFactory, SoftDeletes;
 
@@ -48,11 +48,11 @@ class PersonDetail extends Model
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
   
-    public const CATEGORY_CONTENT_ID = 'category_content_id';
+    public const PERSON_ID = 'person_id';
     protected $table = self::TABLE_NAME;
 
     public function Person()
     {
-        return $this->belongsTo(Person::class, 'person_id');
+        return $this->belongsTo(Person::class, SELF::PERSON_ID);
     }
 }

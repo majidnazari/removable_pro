@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent withoutTrashed()
  * @mixin \Eloquent
  */
-class CategoryContent extends Model
+class CategoryContent extends \Eloquent 
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [

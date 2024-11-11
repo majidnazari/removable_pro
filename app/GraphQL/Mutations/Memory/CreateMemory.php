@@ -12,6 +12,8 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Storage;
+use App\GraphQL\Enums\Status;
+
 
 use Log;
 
@@ -112,7 +114,7 @@ final class CreateMemory
         $MemoryModel['content']=$path ?? "";
         $MemoryModel['description']= $args['description'] ?? "";
         $MemoryModel['is_shown_after_death']= $args['is_shown_after_death'] ?? false;
-        $MemoryModel['status']= $args['status'] ?? "None";
+        $MemoryModel['status']= $args['status'] ?? Status::None;
         
         $MemoryModelResult = Memory::create($MemoryModel);
         return $MemoryModelResult;

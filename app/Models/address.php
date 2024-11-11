@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-
+use App\GraphQL\Enums\Status;
+use App\Traits\HasStatusEnum;
 
 /**
  * 
@@ -84,7 +84,12 @@ class Address extends \Eloquent
         'lon',
         'status',
     ];
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes;// HasStatusEnum;
+
+    // protected $casts = [
+    //     'status' => Status::class,
+    // ];
+
 
     public const TABLE_NAME = 'addresses';
     public const COLUMN_ID = 'id';
@@ -130,4 +135,7 @@ class Address extends \Eloquent
     {
         return $this->belongsTo(Country::class, self::COUNTRY_ID);
     }
+
+     // Accessor to get status as string
+    
 }

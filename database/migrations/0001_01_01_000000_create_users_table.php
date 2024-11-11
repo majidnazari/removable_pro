@@ -28,10 +28,13 @@ return new class extends Migration {
             $table->timestamp('last_password_change_attempt')->nullable();
             //$table->tinyInteger(column: 'user_attempt_time')->default(0);
             $table->timestamp('last_attempt_at')->nullable();
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none 1=active 2=inactive 3=susspend 4=New");   
+
             //$table->tinyInteger('blocked_attempts_count')->default(0);
             //$table->timestamp('blocked_until')->nullable();
             //$table->string('blocked_until')->nullable();
-            $table->enum('status', ["Active", "Inactive", "Suspend","Blocked","New", "None"])->default("None");
+            //$table->string('status', 20)->default("None");
+            //$table->string('status', ["Active", "Inactive", "Suspend","Blocked","New", "None"])->default("None");
 
             //$table->unique(['country_code', 'mobile'], 'unique_country_code_mobile');
 

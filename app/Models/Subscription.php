@@ -37,7 +37,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription withoutTrashed()
  * @mixin \Eloquent
  */
-class Subscription extends Model
+class Subscription extends  \Eloquent
 {
     protected $fillable = [
         'title',

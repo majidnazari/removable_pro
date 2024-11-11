@@ -2,6 +2,9 @@
 
 namespace App\GraphQL\Mutations\NaslanRelationship;
 
+use App\GraphQL\Enums\ChildKind;
+use App\GraphQL\Enums\ChildStatus;
+use App\GraphQL\Enums\Status;
 use App\Models\NaslanRelationship;
 use App\Models\PersonChild;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -36,9 +39,9 @@ final class CreateMarriageChild
                 "person_marriage_id" => $args['person_marriage_id'],
                 //"relationship_id" => $args['relationship_id'] ,           
                 "child_id" => $args['child_id'],
-                "child_kind" => $args['child_kind'] ?? "None",
-                "child_status" => $args['child_status']  ?? "None",
-                "status" => $args["status"] ?? "Active"
+                "child_kind" => $args['child_kind'] ?? ChildKind::None,
+                "child_status" => $args['child_status']  ?? ChildStatus::None,
+                "status" => $args["status"] ?? Status::Active
     
             ];
             

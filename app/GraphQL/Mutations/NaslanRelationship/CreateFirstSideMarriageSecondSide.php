@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations\NaslanRelationship;
 
+use App\GraphQL\Enums\MarriageStatus;
 use App\Models\NaslanRelationship;
 use App\Models\PersonMarriage;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -16,6 +17,7 @@ use Log;
 
 final class CreateFirstSideMarriageSecondSide
 {
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -37,7 +39,7 @@ final class CreateFirstSideMarriageSecondSide
                 "man_id" => $args['first_side_person_id'],
                 //"relationship_id" => $args['relationship_id'] ,           
                 "woman_id" => $args['second_side_person_id'],
-                "Marriage_status" => $args['Marriage_status']  ?? "None",
+                "Marriage_status" => $args['Marriage_status']  ?? MarriageStatus::None,
                 "marriage_date" => $args["marriage_date"]
 
             ];

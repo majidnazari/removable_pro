@@ -2,6 +2,8 @@
 
 namespace App\GraphQL\Mutations\PersonChild;
 
+use App\GraphQL\Enums\ChildKind;
+use App\GraphQL\Enums\ChildStatus;
 use App\Models\PersonChild;
 use GraphQL\Type\Definition\ResolveInfo;
 use App\Models\GroupUser;
@@ -11,10 +13,13 @@ use Joselfonseca\LighthouseGraphQLPassport\PersonChilds\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreatePersonChild
 {
+   
     /**
      * @param  null  $_
      * 
@@ -36,9 +41,9 @@ final class CreatePersonChild
             "editor_id" => $args['editor_id'] ?? null,
             "person_marriage_id" => $args['person_marriage_id'] ,
             "child_id" => $args['child_id'],
-            "child_kind" => $args['child_kind'] ?? 'Direct_child', // Default to 'Direct_child' if not provided
-            "child_status" => $args['child_status'] ?? 'With_family', // Default to 'With_family' if not provided
-            "status" => $args['status'] ?? 'Active' // Default to 'Active' if not provided
+            "child_kind" => $args['child_kind'] ?? ChildKind::DirectChild, // Default to 'Direct_child' if not provided
+            "child_status" => $args['child_status'] ?? ChildStatus::WithFamily, // Default to 'With_family' if not provided
+            "status" => $args['status'] ?? status::Active // Default to 'Active' if not provided
         ];
         
         $is_exist = PersonChild::where('person_marriage_id' , $args['person_marriage_id'])

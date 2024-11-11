@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City withoutTrashed()
  * @mixin \Eloquent
  */
-class City extends Model
+class City extends \Eloquent 
 {
     protected $fillable = [
         'province_id',

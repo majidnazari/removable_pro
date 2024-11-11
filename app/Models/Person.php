@@ -23,7 +23,7 @@ use Log;
  * @property string|null $birth_date
  * @property string|null $death_date
  * @property int $is_owner
- * @property int $gendar 1 is man 0 is woman
+ * @property int $gender 1 is man 0 is woman
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -54,7 +54,7 @@ use Log;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereGendar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereIsOwner($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereLastName($value)
@@ -67,7 +67,7 @@ use Log;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person withoutTrashed()
  * @mixin \Eloquent
  */
-class Person extends Model
+class Person extends  \Eloquent
 {
     protected $fillable = [
         'creator_id',
@@ -80,7 +80,7 @@ class Person extends Model
         'birth_date',
         'death_date',
         'is_owner',
-        'gendar',
+        'gender',
         'status',
     ];
     use HasFactory, SoftDeletes;
@@ -91,47 +91,55 @@ class Person extends Model
     public const EDITOR_ID = 'editor_id';
   
     public const CATEGORY_CONTENT_ID = 'category_content_id';
+    public const CHILD_ID = 'child_id';
+    public const ADDRESS_ID = 'address_is';
+    public const PERSON_ID = 'person_id';
+    public const MAN_ID = 'man_id';
+    public const WOMAN_ID = 'woman_id';
+    public const PERSONCHILD = 'PersonChild';
+    public const SCORE_ID = 'score_id';
+    public const ID = 'id';
     protected $table = self::TABLE_NAME;
 
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, self::CREATOR_ID);
     }
     public function Editor()
     {
-        return $this->belongsTo(User::class, 'editor_id');
+        return $this->belongsTo(User::class, self::EDITOR_ID);
     }
 
 
     public function PersonMarriages()
     {
         // return $this->hasMany(PersonMarriage::class, 'person_id')->orwhere('spouse_id',$this->id);
-        return $this->hasMany(PersonMarriage::class, 'man_id')->orWhere('woman_id', $this->id);
+        return $this->hasMany(PersonMarriage::class, SELF::MAN_ID)->orWhere(SELF::WOMAN_ID, $this->id);
 
     }
 
     public function Addresses()
     {
-        return $this->hasMany(Address::class, 'address_id');
+        return $this->hasMany(Address::class, SELF::ADDRESS_ID);
     }
 
     public function Memories()
     {
-        return $this->hasMany(Memory::class, 'person_id');
+        return $this->hasMany(Memory::class, SELF::PERSON_ID);
     }
     public function FamilyEvents()
     {
-        return $this->hasMany(FamilyEvent::class, 'person_id');
+        return $this->hasMany(FamilyEvent::class, SELF::PERSON_ID);
     }
     public function Favorites()
     {
-        return $this->hasMany(Favorite::class, 'person_id');
+        return $this->hasMany(Favorite::class, SELF::PERSON_ID);
     }
 
     public function Scores()
     {
-        return $this->hasMany(Score::class, 'score_id');
+        return $this->hasMany(Score::class, SELF::SCORE_ID);
     }
 
 
@@ -175,8 +183,8 @@ class Person extends Model
         //Log::info("Checking root ancestor for person ID: " . $this->id);
 
         // Find any parent marriage where this person is a child
-        $parentMarriage = PersonMarriage::whereHas('PersonChild', function ($query) {
-            $query->where('child_id', $this->id);
+        $parentMarriage = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) {
+            $query->where(SELF::CHILD_ID, $this->id);
         })->first();
 
         // Log::info("Parent marriage found for person ID {$this->id}: " . json_encode($parentMarriage));
@@ -198,8 +206,8 @@ class Person extends Model
     }
     public function findRootFatherOfMother()
     {
-        $parentMarriage = PersonMarriage::whereHas('PersonChild', function ($query) {
-            $query->where('child_id', $this->id);
+        $parentMarriage = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) {
+            $query->where(SELF::CHILD_ID, $this->id);
         })->first();
 
         if (!$parentMarriage) {
@@ -215,8 +223,8 @@ class Person extends Model
     public function ancestors()
     {
         // Retrieve parent marriages for this person where they are the child
-        $parentMarriages = PersonMarriage::whereHas('PersonChild', function ($query) {
-            $query->where('child_id', $this->id);
+        $parentMarriages = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) {
+            $query->where(SELF::CHILD_ID, $this->id);
         })->get();
 
         $ancestors = collect();
@@ -235,7 +243,7 @@ class Person extends Model
             }
         }
 
-        return $ancestors->unique('id'); // Remove duplicates
+        return $ancestors->unique(SELF::ID); // Remove duplicates
     }
 
     // Recursive ancestry methods
@@ -255,8 +263,8 @@ class Person extends Model
         //Log::info("Fetching ancestors for Person ID: " . $person->id . " at depth: $depth");
 
         // Find the parent marriage relations using the PersonChild intermediate model
-        $parentMarriage = PersonMarriage::whereHas('PersonChild', function ($query) use ($person) {
-            $query->where('child_id', $person->id);
+        $parentMarriage = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) use ($person) {
+            $query->where(SELF::CHILD_ID, $person->id);
         })->first();
 
         if (!$parentMarriage) {

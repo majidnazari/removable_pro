@@ -39,7 +39,7 @@ class CreatePersonInputValidator extends Validator
                 'before_or_equal:today', // Ensures death_date is not in the future
                 'after_or_equal:birth_date', // Ensures death_date is not before birth_date
             ],
-            'gendar' => [
+            'gender' => [
                 'sometimes',
                 'integer',
                 'in:0,1',  // Only allows 0 (Man) or 1 (Woman)
@@ -58,7 +58,7 @@ class CreatePersonInputValidator extends Validator
             'birth_date.before_or_equal' => 'The birth date cannot be in the future.',
             'death_date.before_or_equal' => 'The death date cannot be in the future.',
             'death_date.after_or_equal' => 'The death date cannot be before the birth date.',
-            'gendar.in' => 'The gender must be either 0 (Man) or 1 (Woman).',
+            'gender.in' => 'The gender must be either 0 (Man) or 1 (Woman).',
             'first_name.regex' => 'The first name may only contain letters, spaces, and hyphens.',
             'last_name.regex' => 'The last name may only contain letters, spaces, and hyphens.',
         ];

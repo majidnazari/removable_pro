@@ -11,10 +11,14 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateNaslanRelationship
 {
+    public const NONE=0;
+    public const ACTIVE=1;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -29,7 +33,7 @@ final class CreateNaslanRelationship
         //Log::info("the args are:" . json_encode($args));
         $user_id=auth()->guard('api')->user()->id;
         $NaslanRelationResult=[
-            "status" => $args['status'] ?? "None",           
+            "status" => $args['status'] ?? Status::None,           
             "title" => $args['title'],
         ];
         $is_exist= NaslanRelationship::where('title',$args['title'])->first();

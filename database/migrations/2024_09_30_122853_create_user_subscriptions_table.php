@@ -29,7 +29,10 @@ return new class extends Migration
             $table->datetime('end_date')->nullable();
             $table->integer('remain_volume')->nullable()->comment("(MB)"); //this is just amount of subscriptions not extra
 
-            $table->enum('status',["Active","Inactive","None"])->default("Active");
+            //$table->enum('status',["Active","Inactive","None"])->default("Active");
+
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=susspend ");   
+
 
             $table->timestamps();
             $table->softDeletes();

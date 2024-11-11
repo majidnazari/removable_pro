@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Country withoutTrashed()
  * @mixin \Eloquent
  */
-class Country extends Model
+class Country extends \Eloquent 
 {
     protected $fillable = [
         'title',

@@ -618,7 +618,7 @@ namespace App\Models{
  * @property string|null $birth_date
  * @property string|null $death_date
  * @property int $is_owner
- * @property int $gendar 1 is man 0 is woman
+ * @property int $gender 1 is man 0 is woman
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -649,7 +649,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereGendar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereIsOwner($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereLastName($value)

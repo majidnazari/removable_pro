@@ -11,6 +11,8 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateVolumeExtra
@@ -29,7 +31,7 @@ final class CreateVolumeExtra
         //Log::info("the args are:" . json_encode($args));
         //$user_id=auth()->guard('api')->user()->id;
         $VolumeExtraResult=[
-            "status" => $args['status'] ?? "None",
+            "status" => $args['status'] ?? Status::None,
             "day_number" => $args['day_number'] ?? 0,
             "description" => $args['description'] ?? "",
             "title" => $args['title'],
