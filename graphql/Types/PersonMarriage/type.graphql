@@ -13,7 +13,7 @@ type PersonMarriage {
     creator_id: ID
     editor_id: ID
     # marrage_status: MarrageStatus
-    Marriage_status: Int
+    Marriage_status: MarriageStatus
     status: Status
     marriage_date: String
     divorce_date: String
@@ -27,7 +27,7 @@ input CreatePersonMarriageInput  @validator(class: "App\\GraphQL\\Validators\\Pe
     woman_id: ID!
    
     # marrage_status: MarrageStatus
-    Marriage_status: Int
+    Marriage_status: MarriageStatus
     status: Status
     marriage_date: String
     divorce_date: String
@@ -39,7 +39,7 @@ input UpdatePersonMarriageInput @validator(class: "App\\GraphQL\\Validators\\Per
     woman_id: ID!
    
     # marrage_status: MarrageStatus
-    Marriage_status: Int
+    Marriage_status: MarriageStatus
     status: Status
     marriage_date: String
     divorce_date: String

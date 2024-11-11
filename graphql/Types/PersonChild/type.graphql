@@ -5,8 +5,8 @@ type PersonChild {
     editor_id: ID
     person_marriage_id: ID
     child_id: ID
-    child_kind: Int
-    child_status: Int
+    child_kind: ChildKind
+    child_status: ChildStatus
     status: Status
    
 
@@ -21,8 +21,8 @@ input CreatePersonChildInput @validator(class: "App\\GraphQL\\Validators\\Person
 
     person_marriage_id: ID
     child_id: ID
-    child_kind: Int
-    child_status: Int
+    child_kind: ChildKind
+    child_status: ChildStatus
     status: Status
    
 }
@@ -31,8 +31,8 @@ input UpdatePersonChildInput  @validator(class: "App\\GraphQL\\Validators\\Perso
 
     person_marriage_id: ID
     child_id: ID
-    child_kind: Int
-    child_status: Int
+    child_kind: ChildKind
+    child_status: ChildStatus
     status: Status
    
 }

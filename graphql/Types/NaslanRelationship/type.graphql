@@ -29,7 +29,7 @@ type FirstSideMarriageSecondSide
     first_side_person_id: ID!
     relationship_id: ID!
     second_side_person_id: ID!
-    Marriage_status: Int ,
+    Marriage_status: MarriageStatus ,
     marriage_date: String!
 }
 
@@ -44,7 +44,7 @@ input CreateFirstSideMarriageSecondSideInput {
     # second_side_person_id: Person
 
     # : MarrageStatus,
-    Marriage_status: Int,
+    Marriage_status: MarriageStatus,
     marriage_date: String!
 }
 
@@ -64,7 +64,7 @@ input CreateMarriageChildInput {
     person_marriage_id: ID!
     # relationship_type:NaslanDanamicRelationshipEnum
     child_id: ID!
-    child_kind: Int,
-    child_status: Int,
+    child_kind: ChildKind,
+    child_status: ChildStatus,
     status: Status
 }

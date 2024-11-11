@@ -5,7 +5,7 @@ type PersonDetail {
     person_id: ID!
     profile_picture: String
     # gender: gender
-    physical_condition: Int
+    physical_condition: PhysicalCondition
     created_at: String
     updated_at: String
 }
@@ -15,7 +15,7 @@ input CreatePersonDetailsInput {
     person_id: ID!
     profile_picture: Upload
     # gender: gender = None
-    physical_condition: Int = 1
+    physical_condition: PhysicalCondition = Healthy
 }
 
 input UpdatePersonDetailsInput {
@@ -23,6 +23,6 @@ input UpdatePersonDetailsInput {
     person_id: ID!
     profile_picture: Upload
     # gender: gender = None
-    physical_condition: Int = 1
+    physical_condition: PhysicalCondition = Healthy
 }
 

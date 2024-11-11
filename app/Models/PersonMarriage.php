@@ -74,6 +74,7 @@ class PersonMarriage extends  \Eloquent
     public const WOMAN_ID = 'woman_id';
     public const PERSON_MARRIAGE_ID = 'person_marriage_id';
     public const CHILD_ID = 'child_id';
+    public const ID = 'id';
     protected $table = self::TABLE_NAME;
 
     public function Creator()

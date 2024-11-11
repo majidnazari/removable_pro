@@ -1,34 +1,52 @@
 <?php
 namespace App\GraphQL\Enums;
 
-use Nuwave\Lighthouse\Support\Contracts\EnumValue;
 
-// class Status implements EnumValue
-// {
-//     const Blocked = -1;
-//     const None = 0;
-//     const Active = 1;
-//     const Inactive = 2;
-//     const Suspended = 3;
-//     const New = 4;
+    enum Status: int
+    {
+        
+    case Balocked=-1;
+    case None=0;
+    case Active=1;
+    case Inactive=2;
+    case Susspend=3;
+    case New=4;
 
-//     public static $statusMap = [
-//         'Blocked' => self::Blocked,
-//         'None' => self::None,
-//         'Active' => self::Active,
-//         'Inactive' => self::Inactive,
-//         'Suspended' => self::Suspended,
-//         'New' => self::New,
-//     ];
+    }
 
-//     public static function getStatusValue(string $status): int
-//     {
-//         return self::$statusMap[$status] ?? self::None;
-//     }
+    enum MarriageStatus: int 
+    {
+    case None=0;
+    case Related=1;
+    case NotRelated=2;
+    case Susspend=3;
+    
+    }
 
-//     public static function getStatusString(int $status): string
-//     {
-//         return array_flip(self::$statusMap)[$status] ?? 'None';
-//     }
-// }
+    enum ChildKind: int 
+    {
+    case None=0;
+    case DirectChild=1;
+    case MotherChild=2;
+    case FatherChild=3;
+    
+    }
 
+    enum ChildStatus: int 
+    {
+    case None=0;
+    case WithFamily=1;
+    case Separated=2;
+    
+    
+    }
+
+    enum PhysicalCondition: int 
+    {
+    case None=0;
+    case Healthy=1;
+    case Handicapped=2;
+    case Dead=3;
+    
+    
+    }

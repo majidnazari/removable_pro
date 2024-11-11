@@ -11,7 +11,7 @@ use Joselfonseca\LighthouseGraphQLPassport\Persons\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-//use App\GraphQL\Enums\Status;
+use App\GraphQL\Enums\Status;
 
 use Carbon\Carbon;
 use Log;
@@ -47,7 +47,7 @@ final class CreatePerson
             "birth_date" => $args['birth_date'] ?? null,
             "death_date" => $args['death_date'] ?? null,
             "is_owner" => $args['is_owner'] ?? false,
-            "status" => $args['status'] //?? status::None
+            "status" => $args['status'] ?? status::None
         ];
         
         $is_exist = Person::where('first_name' , $args['first_name'])
