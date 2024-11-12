@@ -28,6 +28,8 @@ final class GetPerson
         // Find the given person
         $person = Person::find($args['id']);
 
+        Log::info("the id is:" . $args['id'] . "the person is:" . json_encode($person));
+
         // If the person exists, find the root ancestor
         if ($person) {
             $rootAncestor = $person->findRootFatherOfFather();

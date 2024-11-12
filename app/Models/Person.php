@@ -86,13 +86,13 @@ class Person extends  \Eloquent
     use HasFactory, SoftDeletes;
 
     public const TABLE_NAME = 'people';
-    public const COLUMN_ID = 'id';
+    //public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
   
     public const CATEGORY_CONTENT_ID = 'category_content_id';
     public const CHILD_ID = 'child_id';
-    public const ADDRESS_ID = 'address_is';
+    public const ADDRESS_ID = 'address_id';
     public const PERSON_ID = 'person_id';
     public const MAN_ID = 'man_id';
     public const WOMAN_ID = 'woman_id';
@@ -180,14 +180,14 @@ class Person extends  \Eloquent
     public function findRootFatherOfFather()
     {
         // Log current person ID to track recursion
-        //Log::info("Checking root ancestor for person ID: " . $this->id);
+        Log::info("Checking root ancestor for person ID: " . $this->id);
 
         // Find any parent marriage where this person is a child
         $parentMarriage = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) {
             $query->where(SELF::CHILD_ID, $this->id);
         })->first();
 
-        // Log::info("Parent marriage found for person ID {$this->id}: " . json_encode($parentMarriage));
+         Log::info("Parent marriage found for person ID {$this->id}: " . json_encode($parentMarriage));
 
         // If no parent marriage is found, this person is the root ancestor
         if (!$parentMarriage) {
@@ -226,6 +226,8 @@ class Person extends  \Eloquent
         $parentMarriages = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) {
             $query->where(SELF::CHILD_ID, $this->id);
         })->get();
+
+        Log::info("ancestry method is :" . json_encode( $parentMarriages));
 
         $ancestors = collect();
 

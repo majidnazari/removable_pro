@@ -66,7 +66,7 @@ class PersonMarriage extends  \Eloquent
     use HasFactory, SoftDeletes;
 
     public const TABLE_NAME = 'person_marriages';
-    public const COLUMN_ID = 'id';
+    //public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
   

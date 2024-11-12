@@ -58,7 +58,7 @@ class PersonChild extends  \Eloquent
     ];
     use HasFactory, SoftDeletes;
 
-    public const TABLE_NAME = 'person_child';
+    public const TABLE_NAME = 'person_children';
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
