@@ -5,6 +5,8 @@ namespace App\GraphQL\Queries\Person;
 use App\Models\Person;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use GraphQL\Error\Error;
+
 
 use Log;
 
@@ -20,13 +22,13 @@ final class GetPerson
     }
     function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $Person = Person::where('id', $args['id']);
+        $Person = $this->findUser($args['id']);//Person::where('id', $args['id']);
         return $Person->first();
     }
     function resolvePersonFatherOfFather($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // Find the given person
-        $person = Person::find($args['id']);
+        $person = $this->findUser($args['id']);//Person::find($args['id']);
 
         Log::info("the id is:" . $args['id'] . "the person is:" . json_encode($person));
 
@@ -62,7 +64,7 @@ final class GetPerson
     function resolvePersonFatherOfMother($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // Find the given person
-        $person = Person::find($args['id']);
+        $person =$this->findUser($args['id']);// Person::find($args['id']);
 
         // If the person exists, find the root ancestor
         if ($person) {
@@ -80,7 +82,7 @@ final class GetPerson
         Log::info("Fetching ancestry tree for Person ID: $personId with depth: $depth");
 
         // Find the person by ID
-        $person = Person::find($personId);
+        $person = $this->findUser($personId);//Person::find($personId);
         
         if (!$person) {
             Log::info("Person with ID $personId not found.");
@@ -97,6 +99,11 @@ final class GetPerson
         if($person)
         {
             return $person;
+        }
+        else
+        {
+            throw new \RuntimeException("The person not found!");
+            //return  Error::createLocatedError("The person not found!");
         }
     }
 
