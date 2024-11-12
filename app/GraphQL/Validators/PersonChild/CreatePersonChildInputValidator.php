@@ -36,7 +36,7 @@ class CreatePersonChildInputValidator extends GraphQLValidator
             'child_id' => [
                 'required',
                 'exists:people,id',
-                new NotSelfChild($this->arg('child_id')),  // Prevents a person from being their own child
+                new NotSelfChild($this->arg('person_marriage_id')),  // Prevents a person from being their own child
                 new ChildAfterMarriageDate($personMarriageId),  // Ensures child's birth date is after marriage date
                 new ParentsAliveAtChildBirth($personMarriageId), // Ensures parents were alive at birth
                 new RealisticParentChildAgeGap($personMarriageId), // Ensures realistic age gap between parent and child
