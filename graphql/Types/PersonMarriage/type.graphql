@@ -4,7 +4,7 @@ type PersonMarriage {
     id: ID!
     person_id: ID!
     Man: Person
-    Marriage_id: ID!
+   
     Woman: Person
     PersonChild: [PersonChild] @hasMany(relation: "PersonChild")
     Children: [Person] @hasManyThrough(relation: "Children")
