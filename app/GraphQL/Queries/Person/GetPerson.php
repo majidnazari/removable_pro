@@ -91,4 +91,13 @@ final class GetPerson
         return $person->getFullBinaryAncestry($depth);
     }
 
+    public function findUser($id)
+    {
+        $person = Person::find($id);
+        if($person)
+        {
+            return $person;
+        }
+    }
+
 }

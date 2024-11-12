@@ -5,9 +5,12 @@ getPersons(
         page: Int, 
         # filter: PersonFilterInput
     ): [Person!]! @paginate(builder: "App\\GraphQL\\Queries\\Person\\GetPersons@resolvePerson")
-getPersonFatherOfFather(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfFather") 
+getPersonFatherOfFather(id: ID!): Person
+# @validator(class: "App\\GraphQL\\Validators\\PersonIdValidator") 
+@field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfFather") 
+
 getPersonFatherOfMother(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfMother") 
     
 
 
-# getPersonAncestry(id: ID!, depth: Int!): AncestryTree @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")
+ getPersonAncestry(id: ID!, depth: Int!): AncestryTree @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")

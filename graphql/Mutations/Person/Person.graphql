@@ -1,5 +1,5 @@
 
-createPerson(input: CreatePersonInput! @spread): Person @guard(with: ["api"]) @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Person\\CreatePerson@resolvePerson") 
+createPerson(input: CreatePersonInput! @spread): Person @guard(with: ["api"])  @field(resolver: "App\\GraphQL\\Mutations\\Person\\CreatePerson@resolvePerson") 
     updatePerson(id: ID!, input: UpdatePersonInput! @spread): Person  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Person\\UpdatePerson@resolvePerson") 
     deletePerson(input: DeletePersonInput! @spread ): Person  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePerson@resolvePerson") 
 
