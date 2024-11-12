@@ -2,9 +2,10 @@
 
 namespace App\GraphQL\Validators\Person;
 
-use App\Rules\UniquePerson;
+
 use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Validation\Validator;
+use App\Rules\Person\UniquePerson;
 
 class CreatePersonInputValidator extends Validator
 {
@@ -21,7 +22,7 @@ class CreatePersonInputValidator extends Validator
                 'sometimes',
                 'string',
                 'max:255',
-               // new UniquePerson($firstName, $lastName, $birthDate, $id),
+               new UniquePerson($firstName, $lastName, $birthDate),
             ],
             'last_name' => [
                 'sometimes',

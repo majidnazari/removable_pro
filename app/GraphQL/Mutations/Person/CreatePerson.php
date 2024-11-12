@@ -50,12 +50,12 @@ final class CreatePerson
             "status" => $args['status'] ?? status::None
         ];
         
-        $is_exist = Person::where('first_name' , $args['first_name'])
-        ->where('last_name' , $args['last_name'])
-        ->first();
-        if ($is_exist) {
-            return Error::createLocatedError("Person-CREATE-RECORD_IS_EXIST");
-        }
+        // $is_exist = Person::where('first_name' , $args['first_name'])
+        // ->where('last_name' , $args['last_name'])
+        // ->first();
+        // if ($is_exist) {
+        //     return Error::createLocatedError("Person-CREATE-RECORD_IS_EXIST");
+        // }
         $PersonResult = Person::create($PersonModel);
         return $PersonResult;
     }
