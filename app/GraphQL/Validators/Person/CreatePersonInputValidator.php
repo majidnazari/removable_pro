@@ -8,12 +8,16 @@ use Nuwave\Lighthouse\Validation\Validator;
 use App\Rules\Person\UniquePerson;
 use App\Rules\Person\UniqueOwnerPerUser;
 
+use Log;
+
 class CreatePersonInputValidator extends Validator
 {
     public function rules(): array
     {
 
         $user_id=auth()->guard('api')->user()->id;
+
+        Log::info("the user is:" . $user_id);
         //$id = $this->arg('id');  // Get the id argument for update
         $firstName = $this->arg('first_name');
         $lastName = $this->arg('last_name');

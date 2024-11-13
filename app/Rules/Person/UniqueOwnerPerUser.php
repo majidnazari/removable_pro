@@ -30,7 +30,7 @@ class UniqueOwnerPerUser implements Rule
     public function passes($attribute, $value)
     {
         // Check if a Person record already exists with is_owner=true for this user_id
-        return !Person::where('user_id', $this->userId)
+        return !Person::where('creator_id', $this->userId)
                       ->where('is_owner', true)
                       ->exists();
     }
