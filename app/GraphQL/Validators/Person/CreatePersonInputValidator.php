@@ -22,6 +22,7 @@ class CreatePersonInputValidator extends Validator
         $firstName = $this->arg('first_name');
         $lastName = $this->arg('last_name');
         $birthDate = $this->arg('birth_date');
+        $is_owner = $this->arg('is_owner');
 
         return [
             
@@ -30,7 +31,7 @@ class CreatePersonInputValidator extends Validator
                 'string',
                 'max:255',
                new UniquePerson($firstName, $lastName, $birthDate),
-               new UniqueOwnerPerUser($user_id),
+               new UniqueOwnerPerUser($user_id, $is_owner),
             ],
             'last_name' => [
                 'sometimes',

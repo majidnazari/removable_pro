@@ -41,7 +41,7 @@ input CreatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\Cre
     last_name: String!
     birth_date: String!
     death_date: String
-    # is_owner: Boolean
+    is_owner: Boolean
     gender: Int
     # status: Status
 }

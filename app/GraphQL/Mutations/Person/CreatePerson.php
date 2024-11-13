@@ -33,7 +33,7 @@ final class CreatePerson
     {
 
         $user_id=auth()->guard('api')->user()->id;
-       // Log::info("the user is:" . $user_id);
+        Log::info("the user is:" . $user_id . "and is_owner is:" .$args['is_owner'] );
 
         $PersonModel = [
             "creator_id" =>  $user_id,

@@ -8,6 +8,7 @@ use App\Models\Person;
 class UniqueOwnerPerUser implements Rule
 {
     protected $userId;
+    protected $isOwner;
 
     /**
      * Create a new rule instance.
@@ -15,9 +16,10 @@ class UniqueOwnerPerUser implements Rule
      * @param  int  $userId  The ID of the user creating the person record
      * @return void
      */
-    public function __construct($userId)
+    public function __construct($userId,$is_owner)
     {
         $this->userId = $userId;
+        $this->isOwner = $is_owner;
     }
 
     /**
@@ -29,6 +31,11 @@ class UniqueOwnerPerUser implements Rule
      */
     public function passes($attribute, $value)
     {
+        // If is_owner is not 1, bypass the check and return true
+        if ($this->isOwner != 1) {
+            return true;
+        }
+
         // Check if a Person record already exists with is_owner=true for this user_id
         return !Person::where('creator_id', $this->userId)
                       ->where('is_owner', true)
