@@ -32,7 +32,7 @@ final class CreateScore
         //Log::info("the args are:" . json_encode($args));
         //$user_id=auth()->guard('api')->user()->id;
         $ScoreResult=[
-            "status" => $args['status'] ?? Status::None,
+            "status" => $args['status'] ?? Status::Active,
             "title" => $args['title'],
         ];
         $is_exist= Score::where('title',$args['title'])->first();

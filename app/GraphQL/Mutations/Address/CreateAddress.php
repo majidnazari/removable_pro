@@ -12,6 +12,9 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 
+use App\GraphQL\Enums\Status;
+
+
 use Log;
 
 final class CreateAddress
@@ -47,7 +50,7 @@ final class CreateAddress
             "builder_no" => $args['builder_no'],
             "floor_no" => $args['floor_no'],
             "unit_no" => $args['unit_no'],
-            "status" =>  $args['status'],
+            "status" =>  $args['status'] ?? status::Active,
                 
         ];
         $is_exist= Address::where($AddressResult)->first();

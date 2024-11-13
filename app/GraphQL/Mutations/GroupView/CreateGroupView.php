@@ -11,6 +11,8 @@ use Joselfonseca\LighthouseGraphQLPassport\GroupViews\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateGroupView
@@ -31,7 +33,7 @@ final class CreateGroupView
         $GroupViewModel=[
            
             "title" => $args['title'],          
-            "status" => $args['status']            
+            "status" => $args['status'] ?? Status::Active            
         ];
         $is_exist= GroupView::where($GroupViewModel)->first();
         if($is_exist)

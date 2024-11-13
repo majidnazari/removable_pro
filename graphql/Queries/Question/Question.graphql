@@ -1,7 +1,7 @@
 
-getQuestion(id: ID!): Question @field(resolver: "App\\GraphQL\\Queries\\Question\\GetQuestion@resolveQuestion") 
+getQuestion(id: ID!): Question @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Question\\GetQuestion@resolveQuestion") 
     getQuestions(
         first: Int, 
         page: Int, 
         # filter: QuestionFilterInput
-    ): [Question!]! @paginate(builder: "App\\GraphQL\\Queries\\Question\\GetQuestions@resolveQuestion")
+    ): [Question!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Question\\GetQuestions@resolveQuestion")

@@ -11,6 +11,8 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateEvent
@@ -31,7 +33,7 @@ final class CreateEvent
         $EventResult=[
             "creator_id" =>  $user_id,
             "title" => $args['title'],
-            "status" => $args['status']            
+            "status" => $args['status'] ?? Status::Active,           
         ];
         $is_exist= Event::where('title',$args['title'])->where('status',$args['status'])->first();
         if($is_exist)

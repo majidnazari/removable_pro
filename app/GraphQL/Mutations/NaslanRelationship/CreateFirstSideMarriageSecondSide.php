@@ -39,7 +39,7 @@ final class CreateFirstSideMarriageSecondSide
                 "man_id" => $args['first_side_person_id'],
                 //"relationship_id" => $args['relationship_id'] ,           
                 "woman_id" => $args['second_side_person_id'],
-                "Marriage_status" => $args['Marriage_status']  ?? MarriageStatus::None,
+                "Marriage_status" => $args['Marriage_status']  ?? MarriageStatus::Related,
                 "marriage_date" => $args["marriage_date"]
 
             ];

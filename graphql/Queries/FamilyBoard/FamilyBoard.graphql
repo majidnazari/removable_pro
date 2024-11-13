@@ -1,7 +1,7 @@
 
-getFamilyBoard(id: ID!): FamilyBoard @field(resolver: "App\\GraphQL\\Queries\\FamilyBoard\\GetFamilyBoard@resolveFamilyBoard") 
+getFamilyBoard(id: ID!): FamilyBoard  @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\FamilyBoard\\GetFamilyBoard@resolveFamilyBoard") 
     getFamilyBoards(
         first: Int, 
         page: Int, 
         # filter: FamilyBoardFilterInput
-    ): [FamilyBoard!]! @paginate(builder: "App\\GraphQL\\Queries\\FamilyBoard\\GetFamilyBoards@resolveFamilyBoard")
+    ): [FamilyBoard!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\FamilyBoard\\GetFamilyBoards@resolveFamilyBoard")

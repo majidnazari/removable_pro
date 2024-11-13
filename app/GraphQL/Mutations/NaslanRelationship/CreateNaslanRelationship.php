@@ -33,7 +33,7 @@ final class CreateNaslanRelationship
         //Log::info("the args are:" . json_encode($args));
         $user_id=auth()->guard('api')->user()->id;
         $NaslanRelationResult=[
-            "status" => $args['status'] ?? Status::None,           
+            "status" => $args['status'] ?? Status::Active,           
             "title" => $args['title'],
         ];
         $is_exist= NaslanRelationship::where('title',$args['title'])->first();

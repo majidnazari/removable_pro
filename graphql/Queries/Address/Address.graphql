@@ -1,7 +1,7 @@
 
-getAddress(id: ID!): Address @field(resolver: "App\\GraphQL\\Queries\\Address\\GetAddress@resolveAddress") 
+getAddress(id: ID!): Address @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Address\\GetAddress@resolveAddress") 
     getAddresses(
         first: Int, 
         page: Int, 
         # filter: AddressFilterInput
-    ): [Address!]! @paginate(builder: "App\\GraphQL\\Queries\\Address\\GetAddresses@resolveAddress")
+    ): [Address!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Address\\GetAddresses@resolveAddress")

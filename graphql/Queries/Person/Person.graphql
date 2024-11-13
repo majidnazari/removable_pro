@@ -1,20 +1,20 @@
 
-getPerson(id: ID!): Person @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePerson") 
+getPerson(id: ID!): Person @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePerson") 
 getPersons(
         first: Int, 
         page: Int, 
         # filter: PersonFilterInput
-    ): [Person!]! @paginate(builder: "App\\GraphQL\\Queries\\Person\\GetPersons@resolvePerson")
+    ): [Person!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Person\\GetPersons@resolvePerson")
 
-getPersonFatherOfFather(id: ID!): Person
+getPersonFatherOfFather(id: ID!): Person @guard(with:["api"])
 @validator(class: "App\\GraphQL\\Validators\\Person\\PersonInputValidator") 
 @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfFather") 
 
-getPersonFatherOfMother(id: ID!): Person
+getPersonFatherOfMother(id: ID!): Person @guard(with:["api"])
 @validator(class: "App\\GraphQL\\Validators\\Person\\PersonInputValidator") 
 
  @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfMother") 
     
 
 
- getPersonAncestry(id: ID!, depth: Int!): AncestryTree @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")
+ getPersonAncestry(id: ID!, depth: Int!): AncestryTree @guard(with:["api"])  @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")

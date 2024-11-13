@@ -1,7 +1,7 @@
 
-getFamilyEvent(id: ID!): FamilyEvent @field(resolver: "App\\GraphQL\\Queries\\FamilyEvent\\GetFamilyEvent@resolveFamilyEvent") 
+getFamilyEvent(id: ID!): FamilyEvent @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\FamilyEvent\\GetFamilyEvent@resolveFamilyEvent") 
     getFamilyEvents(
         first: Int, 
         page: Int, 
         # filter: FamilyEventFilterInput
-    ): [FamilyEvent!]! @paginate(builder: "App\\GraphQL\\Queries\\FamilyEvent\\GetFamilyEvents@resolveFamilyEvent")
+    ): [FamilyEvent!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\FamilyEvent\\GetFamilyEvents@resolveFamilyEvent")

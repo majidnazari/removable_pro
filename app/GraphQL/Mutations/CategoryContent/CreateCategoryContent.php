@@ -11,6 +11,8 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateCategoryContent
@@ -31,7 +33,7 @@ final class CreateCategoryContent
         $CategoryContentResult = [
 
             "title" => $args['title'],
-            "status" => $args['status']
+            "status" => $args['status'] ?? status::Active,
         ];
         $is_exist = CategoryContent::where('title', $args['title'])->first();
         if ($is_exist) {

@@ -11,6 +11,8 @@ use Joselfonseca\LighthouseGraphQLPassport\FamilyEvents\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateFamilyEvent
@@ -34,7 +36,7 @@ final class CreateFamilyEvent
             "event_id" => $args['event_id'],
             // "title" => $args['title'],
             "event_date" => $args['event_date'],
-            "status" => $args['status']            
+            "status" => $args['status'] ?? Status::Active           
         ];
         $is_exist= FamilyEvent::where('person_id',$args['person_id'])
         ->where('status',$args['status'])

@@ -38,7 +38,7 @@ final class CreatePersonScore
             "score_id" => $args['score_id'],
             
             "score_level" => $args['score_level'] ,
-            "status" => $args['status'] ?? Status::None, // Default to 'None' if not provided
+            "status" => $args['status'] ?? Status::Active, // Default to 'None' if not provided
         ];
         
         // Check if a similar details profile already exists for the same person_id

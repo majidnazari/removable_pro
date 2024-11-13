@@ -39,8 +39,8 @@ final class CreateMarriageChild
                 "person_marriage_id" => $args['person_marriage_id'],
                 //"relationship_id" => $args['relationship_id'] ,           
                 "child_id" => $args['child_id'],
-                "child_kind" => $args['child_kind'] ?? ChildKind::None,
-                "child_status" => $args['child_status']  ?? ChildStatus::None,
+                "child_kind" => $args['child_kind'] ?? ChildKind::DirectChild,
+                "child_status" => $args['child_status']  ?? ChildStatus::WithFamily,
                 "status" => $args["status"] ?? Status::Active
     
             ];

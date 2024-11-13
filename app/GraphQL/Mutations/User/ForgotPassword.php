@@ -36,7 +36,10 @@ class ForgotPassword extends BaseAuthResolver
         $expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");
         //$cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
 
-        $user=User::where('mobile',$args['country_code'].$args['mobile'])->where('status',Status::Active )->where('mobile_is_verified',true)->first();
+        $user=User::where('mobile',$args['country_code'].$args['mobile'])
+        ->where('status',Status::Active )
+        ->where('mobile_is_verified',true)
+        ->first();
 
         if(!$user)
         {

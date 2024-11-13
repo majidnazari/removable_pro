@@ -11,6 +11,8 @@ use Joselfonseca\LighthouseGraphQLPassport\FamilyBoards\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateFamilyBoard
@@ -35,7 +37,7 @@ final class CreateFamilyBoard
             "selected_date" => $args['selected_date'],
             "file_path" => $args['file_path'],
             "description" => $args['description'],
-            "status" => $args['status']            
+            "status" => $args['status']   ?? status::Active         
         ];
         $is_exist= FamilyBoard::where('title',$args['title'])->where('status',$args['status'])->first();
         if($is_exist)

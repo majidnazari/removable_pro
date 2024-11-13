@@ -1,7 +1,7 @@
 
-getNaslanSubscription(id: ID!): NaslanSubscription @field(resolver: "App\\GraphQL\\Queries\\NaslanSubscription\\GetNaslanSubscription@resolveNaslanSubscription") 
+getNaslanSubscription(id: ID!): NaslanSubscription @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\NaslanSubscription\\GetNaslanSubscription@resolveNaslanSubscription") 
     getNaslanSubscriptions(
         first: Int, 
         page: Int, 
         # filter: NaslanSubscriptionFilterInput
-    ): [NaslanSubscription!]! @paginate(builder: "App\\GraphQL\\Queries\\NaslanSubscription\\GetNaslanSubscriptions@resolveNaslanSubscription")
+    ): [NaslanSubscription!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\NaslanSubscription\\GetNaslanSubscriptions@resolveNaslanSubscription")

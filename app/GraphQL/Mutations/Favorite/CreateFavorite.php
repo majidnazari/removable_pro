@@ -11,6 +11,8 @@ use Joselfonseca\LighthouseGraphQLPassport\Favorites\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class CreateFavorite
@@ -36,7 +38,7 @@ final class CreateFavorite
             "title" => $args['title'],
             "description" => $args['description'],
             "star" => $args['star'],
-            "status" => $args['status']            
+            "status" => $args['status'] ?? Status::Active           
         ];
         $is_exist= Favorite::where($FavoriteModel)->first();
         if($is_exist)

@@ -1,7 +1,7 @@
 
-getEvent(id: ID!): Event @field(resolver: "App\\GraphQL\\Queries\\Event\\GetEvent@resolveEvent") 
+getEvent(id: ID!): Event @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Event\\GetEvent@resolveEvent") 
     getEvents(
         first: Int, 
         page: Int, 
         # filter: EventFilterInput
-    ): [Event!]! @paginate(builder: "App\\GraphQL\\Queries\\Event\\GetEvents@resolveEvent")
+    ): [Event!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Event\\GetEvents@resolveEvent")

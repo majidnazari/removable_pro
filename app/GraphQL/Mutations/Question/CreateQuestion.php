@@ -32,7 +32,7 @@ final class CreateQuestion
         //Log::info("the args are:" . json_encode($args));
         //$user_id=auth()->guard('api')->user()->id;
         $QuestionResult=[
-            "status" => $args['status'] ?? Status::None,
+            "status" => $args['status'] ?? Status::Active,
             "title" => $args['title'],
             "description" => $args['description']   ?? ""          
         ];
