@@ -92,7 +92,7 @@ class Address extends \Eloquent
 
 
     public const TABLE_NAME = 'addresses';
-    public const COLUMN_ID = 'id';
+    public const ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
     public const PERSON_ID = 'person_id';

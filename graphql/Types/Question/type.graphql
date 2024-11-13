@@ -14,7 +14,7 @@ input CreateQuestionInput {
 
     title: String!
     description: String
-    status: Status
+    #status: Status
 }
 
 input UpdateQuestionInput {

@@ -28,7 +28,7 @@ input CreatePersonMarriageInput  @validator(class: "App\\GraphQL\\Validators\\Pe
    
     # marrage_status: MarrageStatus
     Marriage_status: MarriageStatus
-    status: Status
+    #status: Status
     marriage_date: String
     divorce_date: String
 }

@@ -15,7 +15,7 @@ input CreateVolumeExtraInput {
     title: String!
     day_number:Int
     description:String
-    status: Status
+    #status: Status
 }
 
 input UpdateVolumeExtraInput {

@@ -27,7 +27,7 @@ type Address {
 }
 
 input CreateAddressInput {
-    creator_id: ID
+    # creator_id: ID
     person_id: ID!
     country_id: ID!
     province_id: ID
@@ -45,7 +45,7 @@ input CreateAddressInput {
 
 input UpdateAddressInput {
    
-    editor_id: ID
+    # editor_id: ID
     person_id: ID
     country_id: ID
     province_id: ID

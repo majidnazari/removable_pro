@@ -33,18 +33,17 @@ type Person {
 
 input CreatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\CreatePersonInputValidator") {
 
-    creator_id: ID
-    editor_id: ID
-    node_code: String
-    node_level_x: Int
-    node_level_y: Int
+    # creator_id: ID
+    # editor_id: ID
+    # node_code: String
+   
     first_name: String!
     last_name: String!
-    birth_date: String
+    birth_date: String!
     death_date: String
-    is_owner: Boolean
+    # is_owner: Boolean
     gender: Int
-    status: Status
+    # status: Status
 }
 
 input UpdatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\UpdatePersonInputValidator") {
@@ -55,7 +54,7 @@ input UpdatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\Upd
     death_date: String
     is_owner: Boolean
     gender: Int
-    status: Status
+    # status: Status
 }
 
 input DeletePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\DeletePersonValidator") {

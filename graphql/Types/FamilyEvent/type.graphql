@@ -24,7 +24,7 @@ input CreateFamilyEventInput {
     event_id: ID!    
     # title: String
     event_date: String  
-    status: Status 
+    # status: Status 
 
 }
 

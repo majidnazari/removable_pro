@@ -23,7 +23,7 @@ input CreatePersonChildInput @validator(class: "App\\GraphQL\\Validators\\Person
     child_id: ID
     child_kind: ChildKind
     child_status: ChildStatus
-    status: Status
+    #status: Status
    
 }
 

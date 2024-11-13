@@ -14,14 +14,14 @@ input CreateNaslanRelationshipInput {
 
     title: String!   
     priority:Int
-    status: Status
+    #status: Status
 }
 
 input UpdateNaslanRelationshipInput {
 
     title: String!   
     priority:Int
-    status: Status
+    #status: Status
 }
 
 type FirstSideMarriageSecondSide
@@ -66,5 +66,5 @@ input CreateMarriageChildInput {
     child_id: ID!
     child_kind: ChildKind,
     child_status: ChildStatus,
-    status: Status
+   # status: Status
 }

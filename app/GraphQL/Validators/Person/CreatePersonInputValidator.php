@@ -6,11 +6,14 @@ namespace App\GraphQL\Validators\Person;
 use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Validation\Validator;
 use App\Rules\Person\UniquePerson;
+use App\Rules\Person\UniqueOwnerPerUser;
 
 class CreatePersonInputValidator extends Validator
 {
     public function rules(): array
     {
+
+        $user_id=auth()->guard('api')->user()->id;
         //$id = $this->arg('id');  // Get the id argument for update
         $firstName = $this->arg('first_name');
         $lastName = $this->arg('last_name');
@@ -23,6 +26,7 @@ class CreatePersonInputValidator extends Validator
                 'string',
                 'max:255',
                new UniquePerson($firstName, $lastName, $birthDate),
+               new UniqueOwnerPerUser($user_id),
             ],
             'last_name' => [
                 'sometimes',

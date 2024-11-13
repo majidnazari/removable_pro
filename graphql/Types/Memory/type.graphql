@@ -31,7 +31,7 @@ input CreateMemoryInput {
     title: String   
     description: String
     is_shown_after_death: Boolean
-    status: Status  
+   # status: Status  
 }
 
 input UpdateMemoryInput {

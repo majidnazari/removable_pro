@@ -21,7 +21,7 @@ input CreatePersonScoreInput {
     person_id: ID
     score_id: ID
     score_level: Int
-    status: Status
+    #status: Status
 }
 
 input UpdatePersonScoreInput {

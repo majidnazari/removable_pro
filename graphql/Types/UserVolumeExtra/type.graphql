@@ -20,7 +20,7 @@ input CreateUserVolumeExtraInput {
     volume_extra_id:ID!
     start_date: String   
     end_date:String
-    status: Status
+    #status: Status
 }
 
 input UpdateUserVolumeExtraInput {

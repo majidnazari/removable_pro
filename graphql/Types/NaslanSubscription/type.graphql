@@ -19,7 +19,7 @@ input CreateNaslanSubscriptionInput {
     day_number: Int   
     volume_amount: Int 
     description: String!   
-    status: Status
+    #status: Status
 }
 
 input UpdateNaslanSubscriptionInput {
