@@ -65,7 +65,7 @@ use App\Traits\HasStatusEnum;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withoutTrashed()
  * @mixin \Eloquent
  */
-class Address extends \Eloquent  
+class Address extends \Eloquent
 {
     protected $fillable = [
         'creator_id',
@@ -136,6 +136,6 @@ class Address extends \Eloquent
         return $this->belongsTo(Country::class, self::COUNTRY_ID);
     }
 
-     // Accessor to get status as string
-    
+    // Accessor to get status as string
+
 }

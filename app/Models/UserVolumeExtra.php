@@ -40,7 +40,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserVolumeExtra withoutTrashed()
  * @mixin \Eloquent
  */
-class UserVolumeExtra extends  \Eloquent
+class UserVolumeExtra extends \Eloquent
 {
     protected $fillable = [
         'user_id',
@@ -58,7 +58,7 @@ class UserVolumeExtra extends  \Eloquent
     public const EDITOR_ID = 'editor_id';
     public const USER_ID = 'user_id';
 
-  
+
     public const CATEGORY_CONTENT_ID = 'category_content_id';
     protected $table = self::TABLE_NAME;
 

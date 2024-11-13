@@ -41,7 +41,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|IpTracking withoutTrashed()
  * @mixin \Eloquent
  */
-class IpTracking extends  \Eloquent
+class IpTracking extends \Eloquent
 {
     protected $fillable = [
         'ip',

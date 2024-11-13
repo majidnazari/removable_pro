@@ -46,6 +46,7 @@ final class CreatePerson
             "gender" => $args['gender'] ?? 0,
             "birth_date" => $args['birth_date'] ?? null,
             "death_date" => $args['death_date'] ?? null,
+            "mobile" => $args['mobile'] ?? null,
             "is_owner" => $args['is_owner'] ?? false,
             "status" => $args['status'] ?? status::Active
         ];

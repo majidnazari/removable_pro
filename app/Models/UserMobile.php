@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMobile withoutTrashed()
  * @mixin \Eloquent
  */
-class UserMobile extends  \Eloquent
+class UserMobile extends \Eloquent
 {
     protected $fillable = [
         'creator_id',
@@ -48,15 +48,15 @@ class UserMobile extends  \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     protected $table = self::TABLE_NAME;
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, SELF::CREATOR_ID);
+        return $this->belongsTo(User::class, self::CREATOR_ID);
     }
     public function User()
     {
-        return $this->belongsTo(User::class, SELF::EDITOR_ID);
+        return $this->belongsTo(User::class, self::EDITOR_ID);
     }
 }

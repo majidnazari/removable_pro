@@ -67,18 +67,17 @@ use Log;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person withoutTrashed()
  * @mixin \Eloquent
  */
-class Person extends  \Eloquent
+class Person extends \Eloquent
 {
     protected $fillable = [
         'creator_id',
         'editor_id',
         'node_code',
-        'node_level_x',
-        'node_level_y',
         'first_name',
         'last_name',
         'birth_date',
         'death_date',
+        'mobile',
         'is_owner',
         'gender',
         'status',
@@ -89,10 +88,10 @@ class Person extends  \Eloquent
     //public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const CATEGORY_CONTENT_ID = 'category_content_id';
     public const CHILD_ID = 'child_id';
-     public const ADDRESS_ID = 'id';
+    public const ADDRESS_ID = 'id';
     public const PERSON_ID = 'person_id';
     public const MAN_ID = 'man_id';
     public const WOMAN_ID = 'woman_id';
@@ -115,7 +114,7 @@ class Person extends  \Eloquent
     public function PersonMarriages()
     {
         // return $this->hasMany(PersonMarriage::class, 'person_id')->orwhere('spouse_id',$this->id);
-        return $this->hasMany(PersonMarriage::class, SELF::MAN_ID)->orWhere(SELF::WOMAN_ID, $this->id);
+        return $this->hasMany(PersonMarriage::class, self::MAN_ID)->orWhere(self::WOMAN_ID, $this->id);
 
     }
 
@@ -126,20 +125,20 @@ class Person extends  \Eloquent
 
     public function Memories()
     {
-        return $this->hasMany(Memory::class, SELF::PERSON_ID);
+        return $this->hasMany(Memory::class, self::PERSON_ID);
     }
     public function FamilyEvents()
     {
-        return $this->hasMany(FamilyEvent::class, SELF::PERSON_ID);
+        return $this->hasMany(FamilyEvent::class, self::PERSON_ID);
     }
     public function Favorites()
     {
-        return $this->hasMany(Favorite::class, SELF::PERSON_ID);
+        return $this->hasMany(Favorite::class, self::PERSON_ID);
     }
 
     public function Scores()
     {
-        return $this->hasMany(Score::class, SELF::SCORE_ID);
+        return $this->hasMany(Score::class, self::SCORE_ID);
     }
 
 
@@ -184,10 +183,10 @@ class Person extends  \Eloquent
 
         // Find any parent marriage where this person is a child
         $parentMarriage = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) {
-            $query->where(SELF::CHILD_ID, $this->id);
+            $query->where(self::CHILD_ID, $this->id);
         })->first();
 
-         Log::info("Parent marriage found for person ID {$this->id}: " . json_encode($parentMarriage));
+        Log::info("Parent marriage found for person ID {$this->id}: " . json_encode($parentMarriage));
 
         // If no parent marriage is found, this person is the root ancestor
         if (!$parentMarriage) {
@@ -207,7 +206,7 @@ class Person extends  \Eloquent
     public function findRootFatherOfMother()
     {
         $parentMarriage = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) {
-            $query->where(SELF::CHILD_ID, $this->id);
+            $query->where(self::CHILD_ID, $this->id);
         })->first();
 
         if (!$parentMarriage) {
@@ -224,10 +223,10 @@ class Person extends  \Eloquent
     {
         // Retrieve parent marriages for this person where they are the child
         $parentMarriages = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) {
-            $query->where(SELF::CHILD_ID, $this->id);
+            $query->where(self::CHILD_ID, $this->id);
         })->get();
 
-        Log::info("ancestry method is :" . json_encode( $parentMarriages));
+        Log::info("ancestry method is :" . json_encode($parentMarriages));
 
         $ancestors = collect();
 
@@ -245,7 +244,7 @@ class Person extends  \Eloquent
             }
         }
 
-        return $ancestors->unique(SELF::ID); // Remove duplicates
+        return $ancestors->unique(self::ID); // Remove duplicates
     }
 
     // Recursive ancestry methods
@@ -266,7 +265,7 @@ class Person extends  \Eloquent
 
         // Find the parent marriage relations using the PersonChild intermediate model
         $parentMarriage = PersonMarriage::whereHas(self::PERSONCHILD, function ($query) use ($person) {
-            $query->where(SELF::CHILD_ID, $person->id);
+            $query->where(self::CHILD_ID, $person->id);
         })->first();
 
         if (!$parentMarriage) {

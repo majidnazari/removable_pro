@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City withoutTrashed()
  * @mixin \Eloquent
  */
-class City extends \Eloquent 
+class City extends \Eloquent
 {
     protected $fillable = [
         'province_id',
@@ -56,7 +56,7 @@ class City extends \Eloquent
 
     public function Province()
     {
-        return $this->belongsTo(Province::class, SELF::PROVINCE_ID);
+        return $this->belongsTo(Province::class, self::PROVINCE_ID);
     }
     // public function Area()
     // {

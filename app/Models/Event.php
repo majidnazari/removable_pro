@@ -33,7 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event withoutTrashed()
  * @mixin \Eloquent
  */
-class Event extends \Eloquent 
+class Event extends \Eloquent
 {
     protected $fillable = [
         'title',
@@ -45,13 +45,13 @@ class Event extends \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const EVENT_ID = 'event_id';
     protected $table = self::TABLE_NAME;
 
     public function FamilyEvents()
     {
-        return $this->hasMany(FamilyEvent::class, SELF::EVENT_ID);
+        return $this->hasMany(FamilyEvent::class, self::EVENT_ID);
     }
 
 }

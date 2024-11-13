@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province withoutTrashed()
  * @mixin \Eloquent
  */
-class Province extends  \Eloquent
+class Province extends \Eloquent
 {
     protected $fillable = [
         'country_id',
@@ -47,13 +47,13 @@ class Province extends  \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const COUNTRY_ID = 'country_id';
     protected $table = self::TABLE_NAME;
 
     public function Country()
     {
-        return $this->belongsTo(Country::class, SELF::COUNTRY_ID);
+        return $this->belongsTo(Country::class, self::COUNTRY_ID);
     }
 
 }

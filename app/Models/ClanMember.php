@@ -41,14 +41,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ClanMember withoutTrashed()
  * @mixin \Eloquent
  */
-class ClanMember extends \Eloquent 
+class ClanMember extends \Eloquent
 {
     protected $fillable = [
         'creator_id',
         'editor_id',
         'clan_id',
         'related_to',
-        'biggest_person_id',
         'node_code',
     ];
     use HasFactory, SoftDeletes;
@@ -57,7 +56,7 @@ class ClanMember extends \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const BIGGEST_PERSON_ID = 'biggest_person_id';
 
     public const RELATED_ID = 'related_to';
@@ -75,7 +74,7 @@ class ClanMember extends \Eloquent
 
     public function FamilyRelations()
     {
-        return $this->belongsTo(Clan::class, SELF::RELATED_ID);
+        return $this->belongsTo(Clan::class, self::RELATED_ID);
     }
     public function Person()
     {

@@ -44,15 +44,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Clan withoutTrashed()
  * @mixin \Eloquent
  */
-class Clan extends \Eloquent 
+class Clan extends \Eloquent
 {
     protected $fillable = [
         'creator_id',
         'editor_id',
-        'title',
         'biggest_person_id',
-        'Clan_exact_family_name',
-        'Clan_code',
+        'title',
+        'clan_exact_family_name',
+        'clan_code',
     ];
     use HasFactory, SoftDeletes;
 
@@ -61,7 +61,7 @@ class Clan extends \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const BIGGEST_PERSON_ID = 'biggest_person_id';
     public const CLAN_ID = 'clan_id';
     protected $table = self::TABLE_NAME;
@@ -70,7 +70,7 @@ class Clan extends \Eloquent
 
     public function Person()
     {
-        return $this->belongsTo(Person::class, SELF::CREATOR_ID);
+        return $this->belongsTo(Person::class, self::CREATOR_ID);
     }
     public function OldestAncestry()
     {
@@ -79,7 +79,7 @@ class Clan extends \Eloquent
 
     public function User()
     {
-        return $this->belongsTo(User::class, SELF::EDITOR_ID);
+        return $this->belongsTo(User::class, self::EDITOR_ID);
     }
     public function Members()
     {

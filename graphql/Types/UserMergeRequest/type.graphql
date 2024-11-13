@@ -1,0 +1,51 @@
+type UserMergeRequest {
+
+    id: ID!
+    sender_id: ID!
+    reciver_id: ID!
+    request_is_read: Boolean
+    request_expired_at: String
+    request_status: RequestStatus
+    merge_sender_id: ID
+    merge_reciver_id: ID
+    merge_is_read: Boolean
+    merge_expired_at: String
+    merge_status: RequestStatus
+    created_at: String
+    updated_at: String
+}
+
+
+input CreateUserMergeRequestInput {
+
+    sender_id: ID!
+    reciver_id: ID!
+    request_is_read: Boolean = false
+    request_expired_at: String
+    request_status: RequestStatus
+    merge_sender_id: ID!
+    merge_reciver_id: ID!
+    merge_is_read: Boolean = false
+    merge_expired_at: String
+    merge_status: RequestStatus
+}
+
+input sendRequestToOtherFamilyInput {
+
+    sender_id: ID!
+    mobile: String   
+}
+
+input UpdateUserMergeRequestInput {
+
+    id: ID!
+    sender_id: ID
+    reciver_id: ID
+    request_is_read: Boolean
+    request_status: RequestStatus
+    merge_sender_id: ID
+    merge_reciver_id: ID
+    merge_is_read: Boolean
+    merge_expired_at: String
+    merge_status: RequestStatus
+}

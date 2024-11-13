@@ -52,7 +52,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory withoutTrashed()
  * @mixin \Eloquent
  */
-class Memory extends  \Eloquent
+class Memory extends \Eloquent
 {
     protected $fillable = [
         'person_id',
@@ -71,7 +71,7 @@ class Memory extends  \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const CATEGORY_CONTENT_ID = 'category_content_id';
     public const PERSON_ID = 'person_id';
     public const GROUP_VIEW_ID = 'group_view_id';
@@ -79,24 +79,24 @@ class Memory extends  \Eloquent
 
     public function Person()
     {
-        return $this->belongsTo(Person::class, SELF::PERSON_ID);
+        return $this->belongsTo(Person::class, self::PERSON_ID);
     }
     public function Category()
     {
-        return $this->belongsTo(CategoryContent::class, SELF::CATEGORY_CONTENT_ID);
+        return $this->belongsTo(CategoryContent::class, self::CATEGORY_CONTENT_ID);
     }
     public function GroupView()
     {
-        return $this->belongsTo(GroupView::class, SELF::GROUP_VIEW_ID);
+        return $this->belongsTo(GroupView::class, self::GROUP_VIEW_ID);
     }
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, SELF::CREATOR_ID);
+        return $this->belongsTo(User::class, self::CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, SELF::EDITOR_ID);
+        return $this->belongsTo(User::class, self::EDITOR_ID);
     }
 }

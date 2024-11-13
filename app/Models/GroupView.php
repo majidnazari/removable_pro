@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupView withoutTrashed()
  * @mixin \Eloquent
  */
-class GroupView extends  \Eloquent
+class GroupView extends \Eloquent
 {
     protected $fillable = [
         'title',
@@ -43,7 +43,7 @@ class GroupView extends  \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const CATEGORY_CONTENT_ID = 'category_content_id';
     protected $table = self::TABLE_NAME;
 }

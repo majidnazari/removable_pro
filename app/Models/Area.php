@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area withoutTrashed()
  * @mixin \Eloquent
  */
-class Area extends \Eloquent 
+class Area extends \Eloquent
 {
     protected $fillable = [
         'city_id',
@@ -46,7 +46,7 @@ class Area extends \Eloquent
     public const TABLE_NAME = 'areas';
     public const COLUMN_ID = 'id';
     public const CITY_ID = 'city_id';
-   
+
 
     protected $table = self::TABLE_NAME;
 

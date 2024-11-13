@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore withoutTrashed()
  * @mixin \Eloquent
  */
-class PersonScore extends  \Eloquent
+class PersonScore extends \Eloquent
 {
     protected $fillable = [
         'creator_id',
@@ -59,27 +59,27 @@ class PersonScore extends  \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const PERSON_ID = 'person_id';
     public const SCORE_ID = 'score_id';
     protected $table = self::TABLE_NAME;
 
     public function Person()
     {
-        return $this->belongsTo(Person::class, SELF::PERSON_ID);
+        return $this->belongsTo(Person::class, self::PERSON_ID);
     }
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, SELF::CREATOR_ID);
+        return $this->belongsTo(User::class, self::CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, SELF::EDITOR_ID);
+        return $this->belongsTo(User::class, self::EDITOR_ID);
     }
     public function Score()
     {
-        return $this->belongsTo(Score::class, SELF::SCORE_ID);
+        return $this->belongsTo(Score::class, self::SCORE_ID);
     }
 }

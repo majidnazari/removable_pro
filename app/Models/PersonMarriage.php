@@ -51,7 +51,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage withoutTrashed()
  * @mixin \Eloquent
  */
-class PersonMarriage extends  \Eloquent
+class PersonMarriage extends \Eloquent
 {
     protected $fillable = [
         'man_id',
@@ -61,7 +61,7 @@ class PersonMarriage extends  \Eloquent
         'marriage_status',
         'status',
         'marriage_date',
-        'divorce_date'
+        'divorce_date',
     ];
     use HasFactory, SoftDeletes;
 
@@ -69,7 +69,7 @@ class PersonMarriage extends  \Eloquent
     //public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const MAN_ID = 'man_id';
     public const WOMAN_ID = 'woman_id';
     public const PERSON_MARRIAGE_ID = 'person_marriage_id';
@@ -79,27 +79,27 @@ class PersonMarriage extends  \Eloquent
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, SELF::CREATOR_ID);
+        return $this->belongsTo(User::class, self::CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, SELF::EDITOR_ID);
+        return $this->belongsTo(User::class, self::EDITOR_ID);
     }
 
     public function Man()
     {
-        return $this->belongsTo(Person::class, SELF::MAN_ID);
+        return $this->belongsTo(Person::class, self::MAN_ID);
     }
 
     public function Woman()
     {
-        return $this->belongsTo(Person::class, SELF::WOMAN_ID);
+        return $this->belongsTo(Person::class, self::WOMAN_ID);
     }
 
     public function PersonChild()
     {
-        return $this->hasMany(PersonChild::class, SELF::PERSON_MARRIAGE_ID);
+        return $this->hasMany(PersonChild::class, self::PERSON_MARRIAGE_ID);
     }
 
     public function Children()
@@ -107,10 +107,10 @@ class PersonMarriage extends  \Eloquent
         return $this->hasManyThrough(
             Person::class,
             PersonChild::class,
-            SELF::PERSON_MARRIAGE_ID, // Foreign key on the `PersonChild` table
-            SELF::ID,               // Foreign key on the `Person` table
-            SELF::ID,               // Local key on the `PersonMarriage` table
-            SELF::CHILD_ID          // Local key on the `PersonChild` table
+            self::PERSON_MARRIAGE_ID, // Foreign key on the `PersonChild` table
+            self::ID,               // Foreign key on the `Person` table
+            self::ID,               // Local key on the `PersonMarriage` table
+            self::CHILD_ID          // Local key on the `PersonChild` table
         );
     }
 

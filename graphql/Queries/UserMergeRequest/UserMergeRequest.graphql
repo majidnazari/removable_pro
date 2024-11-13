@@ -1,0 +1,7 @@
+
+getUserMergeRequest(id: ID!): UserMergeRequest @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\UserMergeRequest\\GetUserMergeRequest@resolveUserMergeRequest") 
+    getUserMergeRequests(
+        first: Int, 
+        page: Int, 
+        # filter: UserMergeRequestFilterInput
+    ): [UserMergeRequest!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\UserMergeRequest\\GetUserMergeRequests@resolveUserMergeRequest")

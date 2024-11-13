@@ -29,16 +29,14 @@ use Carbon\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginAttempt whereUserId($value)
  * @mixin \Eloquent
  */
-class LoginAttempt extends  \Eloquent
+class LoginAttempt extends \Eloquent
 {
     protected $fillable = [
         'user_id',
         'ip_address',
         'today_attempts',
-        'total_attempts',
         'attempt_date',
         'expire_blocked_time',
-        'number_of_blocked_times',
     ];
 
     public static function recordAttempt($userId, $ipAddress)

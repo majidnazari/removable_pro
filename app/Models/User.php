@@ -111,10 +111,9 @@ class User extends Authenticatable
         'password',
         'sent_code',
         'code_expired_at',
-        'user_attempt_time',
+        'password_change_attempts',
+        'last_password_change_attempt',
         'last_attempt_at',
-        'blocked_attempts_count',
-        'blocked_until',
         'status',
         'remember_token',
         'avatar',
@@ -123,10 +122,10 @@ class User extends Authenticatable
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const USER_ID = 'user_id';
     public const MOBILE = 'mobile';
-    
+
     protected $table = self::TABLE_NAME;
 
     /**
@@ -158,70 +157,70 @@ class User extends Authenticatable
         //Log::info("the user name is:". $username);
         // return $this->where('mobile', $username)->where('status','Active')->where('mobile_is_verified',1)->first();
         //return $this->whereRaw("CONCAT(country_code, mobile) = ?", [$username])->first();
-        return $this->where(SELF::MOBILE, [$username])->first();
+        return $this->where(self::MOBILE, [$username])->first();
     }
 
     public function Persons()
     {
-        return $this->hasMany(person::class, SELF::USER_ID);
+        return $this->hasMany(person::class, self::USER_ID);
     }
 
     public function PersonCreates()
     {
-        return $this->hasMany(person::class, SELF::CREATOR_ID);
+        return $this->hasMany(person::class, self::CREATOR_ID);
     }
     public function PersonEdites()
     {
-        return $this->hasMany(person::class, SELF::EDITOR_ID);
+        return $this->hasMany(person::class, self::EDITOR_ID);
     }
 
     public function PersonMarriageCreates()
     {
-        return $this->hasMany(PersonMarriage::class, SELF::CREATOR_ID);
+        return $this->hasMany(PersonMarriage::class, self::CREATOR_ID);
     }
     public function PersonMarriageEdites()
     {
-        return $this->hasMany(PersonMarriage::class, SELF::EDITOR_ID);
+        return $this->hasMany(PersonMarriage::class, self::EDITOR_ID);
     }
 
     public function PersonChildCreates()
     {
-        return $this->hasMany(personChild::class, SELF::CREATOR_ID);
+        return $this->hasMany(personChild::class, self::CREATOR_ID);
     }
     public function PersonChildEdites()
     {
-        return $this->hasMany(personChild::class, SELF::EDITOR_ID);
+        return $this->hasMany(personChild::class, self::EDITOR_ID);
     }
 
     public function Subscriptions()
     {
-        return $this->hasMany(UserSubscription::class, SELF::USER_ID);
+        return $this->hasMany(UserSubscription::class, self::USER_ID);
     }
 
     public function FavoriteCreates()
     {
-        return $this->hasMany(Favorite::class, SELF::CREATOR_ID);
+        return $this->hasMany(Favorite::class, self::CREATOR_ID);
     }
     public function FavoriteEdites()
     {
-        return $this->hasMany(Favorite::class, SELF::EDITOR_ID);
+        return $this->hasMany(Favorite::class, self::EDITOR_ID);
     }
 
     public function MemoryCreates()
     {
-        return $this->hasMany(Memory::class, SELF::CREATOR_ID);
+        return $this->hasMany(Memory::class, self::CREATOR_ID);
     }
     public function MemoryEdites()
     {
-        return $this->hasMany(Memory::class, SELF::EDITOR_ID);
+        return $this->hasMany(Memory::class, self::EDITOR_ID);
     }
     public function Mobiles()
     {
-        return $this->hasMany(UserMobile::class, SELF::USER_ID);
+        return $this->hasMany(UserMobile::class, self::USER_ID);
     }
     public function Answer()
     {
-        return $this->hasOne(UserAnswer::class, SELF::USER_ID);
+        return $this->hasOne(UserAnswer::class, self::USER_ID);
     }
 
     protected $casts = [

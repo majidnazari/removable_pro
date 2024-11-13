@@ -46,7 +46,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite withoutTrashed()
  * @mixin \Eloquent
  */
-class Favorite extends  \Eloquent
+class Favorite extends \Eloquent
 {
     protected $fillable = [
         'creator_id',
@@ -63,22 +63,22 @@ class Favorite extends  \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const PERSON_ID = 'person_id';
     protected $table = self::TABLE_NAME;
 
     public function Person()
     {
-        return $this->belongsTo(Person::class, SELF::PERSON_ID);
+        return $this->belongsTo(Person::class, self::PERSON_ID);
     }
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, SELF::CREATOR_ID);
+        return $this->belongsTo(User::class, self::CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, SELF::EDITOR_ID);
+        return $this->belongsTo(User::class, self::EDITOR_ID);
     }
 }

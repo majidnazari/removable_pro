@@ -45,7 +45,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild withoutTrashed()
  * @mixin \Eloquent
  */
-class PersonChild extends  \Eloquent
+class PersonChild extends \Eloquent
 {
     protected $fillable = [
         'creator_id',
@@ -62,27 +62,27 @@ class PersonChild extends  \Eloquent
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
-  
+
     public const PERSON_MARRIAGE_ID = 'person_marriage_id';
     public const CHILD_ID = 'child_id';
     protected $table = self::TABLE_NAME;
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, SELF::CREATOR_ID);
+        return $this->belongsTo(User::class, self::CREATOR_ID);
     }
     public function Editor()
     {
-        return $this->belongsTo(User::class, SELF::EDITOR_ID);
+        return $this->belongsTo(User::class, self::EDITOR_ID);
     }
 
     public function PersonMarriage()
     {
-        return $this->belongsTo(PersonMarriage::class, SELF::PERSON_MARRIAGE_ID);
+        return $this->belongsTo(PersonMarriage::class, self::PERSON_MARRIAGE_ID);
     }
     public function WhoseChild()
     {
-        return $this->belongsTo(Person::class, SELF::CHILD_ID);
+        return $this->belongsTo(Person::class, self::CHILD_ID);
     }
 
 }

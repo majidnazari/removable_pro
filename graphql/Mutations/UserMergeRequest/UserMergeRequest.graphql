@@ -1,0 +1,21 @@
+
+    sendRequestToOtherFamily(input: sendRequestToOtherFamilyInput! @spread): UserMergeRequest 
+    @guard(with: ["api"]) 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\sendRequestToOtherFamily@resolveUserMergeRequest") 
+
+    sendFirstMergeRequest(input: sendRequestToOtherFamilyInput! @spread): UserMergeRequest 
+    @guard(with: ["api"]) 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\sendFirstMergeRequest@resolvesendFirstMergeRequest") 
+
+
+    createUserMergeRequest(input: CreateUserMergeRequestInput! @spread): UserMergeRequest 
+    @guard(with: ["api"]) 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\CreateUserMergeRequest@resolveUserMergeRequest") 
+
+    updateUserMergeRequest(id: ID!, input: UpdateUserMergeRequestInput! @spread): UserMergeRequest 
+    @guard(with: ["api"]) 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateUserMergeRequest@resolveUserMergeRequest") 
+
+    deleteUserMergeRequest(id: ID!): UserMergeRequest 
+    @guard(with: ["api"])
+     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\DeleteUserMergeRequest@resolveUserMergeRequest") 
