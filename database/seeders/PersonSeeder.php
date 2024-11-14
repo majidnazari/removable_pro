@@ -32,7 +32,7 @@ class PersonSeeder extends Seeder
     //             'is_owner' => 1,
     //             "gender" => 1,
 
-    //             'status' => 'Active',
+    //             'status' => 1,
     //             'created_at' => now(),
     //             // 'node_level' => 2,
     //             // 'naslan_id' => 'NAS001',
@@ -67,7 +67,7 @@ class PersonSeeder extends Seeder
     //             'is_owner' => 0,
     //             "gender" => 0,
 
-    //             'status' => 'Active',
+    //             'status' => 1,
     //             'created_at' => now(),
     //             //'family_title' => 'رحمتی',
     //             //'father_first_name' => 'صدیقه',
@@ -94,7 +94,7 @@ class PersonSeeder extends Seeder
     //             'is_owner' => 0,
     //             "gender" => 1,
 
-    //             'status' => 'Active',
+    //             'status' => 1,
     //             'created_at' => now(),
     //             //'mobile' => '',
     //             //'family_title' => 'نظری',
@@ -122,7 +122,7 @@ class PersonSeeder extends Seeder
     //             'is_owner' => 0,
     //             "gender" => 0,
 
-    //             'status' => 'Active',
+    //             'status' => 1,
     //             'created_at' => now(),
     //             //'mobile' => '',
     //             //'family_title' => 'نظری',
@@ -150,7 +150,7 @@ class PersonSeeder extends Seeder
     //             'is_owner' => 0,
     //             "gender" => 1,
 
-    //             'status' => 'Active',
+    //             'status' => 1,
     //             'created_at' => now(),
     //             //'mobile' => '',
     //            // 'family_title' => 'نظری',
@@ -178,7 +178,7 @@ class PersonSeeder extends Seeder
     //             'is_owner' => 0,
     //             "gender" => 0,
 
-    //             'status' => 'Active',
+    //             'status' => 1,
     //             'created_at' => now(),
     //             //'mobile' => '',
     //             //'family_title' => 'رجبی',

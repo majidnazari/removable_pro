@@ -19,35 +19,35 @@ class NaslanRelationshipSeeder extends Seeder
             [
                 "title" => "Father",
                 "priority" => 1,
-                "status" => "Active",   
+                "status" => 1,   
                          
                 'created_at' => now(),
             ],
             [
                 "title" => "Mother",
                 "priority" => 1,
-                "status" => "Active",   
+                "status" => 1,   
                          
                 'created_at' => now(),
             ],
             [
                 "title" => "Spouse",
                 "priority" => 1,
-                "status" => "Active",   
+                "status" => 1,   
                          
                 'created_at' => now(),
             ],
             [
                 "title" => "Son",
                 "priority" => 1,
-                "status" => "Active",   
+                "status" => 1,   
                          
                 'created_at' => now(),
             ],
             [
                 "title" => "Daughter",
                 "priority" => 1,
-                "status" => "Active",   
+                "status" => 1,   
                          
                 'created_at' => now(),
             ],

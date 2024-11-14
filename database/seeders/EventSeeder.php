@@ -19,27 +19,27 @@ class EventSeeder extends Seeder
         $data=[
             [
                 "title" => "دوره",
-                "status" => "Active",
+                "status" =>1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 "title" => "ازدواج",
-                "status" => "Active",
+                "status" =>1,
                 'created_at' => now(),
                 'updated_at' => now(),
 
             ],
             [
                 "title" => "فوت",
-                "status" => "Active",
+                "status" => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
 
             ],
             [
                 "title" => "تولد",
-                "status" => "Active",
+                "status" => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
 

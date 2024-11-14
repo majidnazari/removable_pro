@@ -17,32 +17,32 @@ class GroupViewSeeder extends Seeder
         $data = [
             [
                 "title" => "همه",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
                 "title" => "عمومی",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
                 "title" => "خصوصی",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
                 "title" => "خاندان خودم",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
                 "title" => "خانواده خودم",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
                 "title" => " فقط برادران ",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
         ];

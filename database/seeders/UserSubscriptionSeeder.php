@@ -23,7 +23,7 @@ class UserSubscriptionSeeder extends Seeder
                 'start_date' => now()->format('Y-m-d H:i:s'),
                 'end_date' => now()->format('Y-m-d H:i:s'),
                 "remain_volume" => 2000,
-                'status' => 'Active',               
+                'status' => 1,               
                 'created_at' => now(),
             ],
             [
@@ -33,7 +33,7 @@ class UserSubscriptionSeeder extends Seeder
                 'start_date' => now()->addMonths(-6)->format('Y-m-d H:i:s'),
                 'end_date' => now()->addMonths(-3)->format('Y-m-d H:i:s'),
                 "remain_volume" => 200,
-                'status' => 'Active',               
+                'status' => 1,               
                 'created_at' => now(),
             ],
             

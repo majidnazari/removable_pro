@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
             UserAnswerSeeder::class,
             UserMobileSeeder::class,
             IpTrackingSeeder::class,
-            NaslanRelationshipSeeder::class,
+            // NaslanRelationshipSeeder::class,
 
         ]);
     }

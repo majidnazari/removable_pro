@@ -25,7 +25,7 @@ class MemorySeeder extends Seeder
                 "title" => " و صیت نامه",
                 "description" => "هرکس به این وصیت نامه بسیار مهم عمل نکند از وراثت بنده خارج می شود.",
                 "is_shown_after_death" => true,
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
@@ -38,7 +38,7 @@ class MemorySeeder extends Seeder
                 "title" => " وصیت نامه تصویری ",
                 "description" => "هرکس به این وصیت نامه تصویری بسیار مهم عمل نکند از وراثت بنده خارج می شود.",
                 "is_shown_after_death" => true,
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
@@ -51,7 +51,7 @@ class MemorySeeder extends Seeder
                 "title" => " وصیت نامه متنی ",
                 "description" => "هرکس به این وصیت نامه متنی بسیار مهم عمل نکند از وراثت بنده خارج می شود.",
                 "is_shown_after_death" => true,
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
 

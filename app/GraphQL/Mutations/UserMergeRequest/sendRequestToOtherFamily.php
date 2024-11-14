@@ -33,6 +33,7 @@ final class sendRequestToOtherFamily
 
         $user=User::where('mobile',$args['mobile'])
         //->where('is_owner',true)
+        ->where(column: 'country_code',operator: $args['country_code'])
         ->where('status',Status::Active)
         ->first();
 

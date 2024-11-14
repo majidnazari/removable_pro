@@ -22,7 +22,7 @@ class FavoriteSeeder extends Seeder
                 "title" => "ipad",
                 "description" => " i love iphone 18",
                 "star" => "5",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
@@ -32,7 +32,7 @@ class FavoriteSeeder extends Seeder
                 "title" => "iphone",
                 "description" => " i love iphone 18+",
                 "star" => "5",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
@@ -42,7 +42,7 @@ class FavoriteSeeder extends Seeder
                 "title" => "masla",
                 "description" => " i love traveling to north of iran",
                 "star" => "5",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
@@ -52,7 +52,7 @@ class FavoriteSeeder extends Seeder
                 "title" => "exercise",
                 "description" => "running in the morning",
                 "star" => "5",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
             [
@@ -62,7 +62,7 @@ class FavoriteSeeder extends Seeder
                 "title" => "coffee",
                 "description" => " i love double spreso(dark sps)",
                 "star" => "5",
-                "status" => "Active",
+                "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
         ];

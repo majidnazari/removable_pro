@@ -22,8 +22,8 @@ class PersonScoreSeeder extends Seeder
                 'editor_id' => null,
                 'person_id' => 1,
                 'score_id' => 1,
-                'score_level' => "Excellent",               
-                'status' => 'Active',
+                'score_level' => 2,               
+                'status' => 1,
                 'created_at' => now(),
             ],
             [
@@ -31,8 +31,8 @@ class PersonScoreSeeder extends Seeder
                 'editor_id' => null,
                 'person_id' => 1,
                 'score_id' => 2,
-                'score_level' => "good",               
-                'status' => 'Active',
+                'score_level' => 3,               
+                'status' => 1,
                 'created_at' => now(),
             ],
             [
@@ -40,8 +40,8 @@ class PersonScoreSeeder extends Seeder
                 'editor_id' => null,
                 'person_id' => 1,
                 'score_id' => 3,
-                'score_level' => "NotBad",               
-                'status' => 'Active',
+                'score_level' => 1,               
+                'status' => 1,
                 'created_at' => now(),
             ],
         ];

@@ -20,13 +20,13 @@ class QuestionSeeder extends Seeder
             [
                 "title" => 'معلم اول دبستان',
                 "description" => '',
-                "status" => "Active",                
+                "status" => 1,                
                 'created_at' => now(),
             ],
             [
                 "title" => 'نام پدر بزرگ پدری',
                 "description" => '',
-                "status" => "Active",                
+                "status" => 1,                
                 'created_at' => now(),
             ],
         ];

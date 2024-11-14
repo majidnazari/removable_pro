@@ -29,7 +29,7 @@ class AddressSeeder extends Seeder
                 "builder_no" => 235,
                 "floor_no" => 2,
                 "unit_no" => 334,
-                "status" => "Active",
+                "status" => 1,
                 "created_at"=>now(),
             ]
             ];

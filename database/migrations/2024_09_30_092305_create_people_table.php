@@ -30,7 +30,8 @@ return new class extends Migration {
             $table->string('last_name',length:30)->nullable();
             $table->datetime('birth_date')->nullable();
             $table->datetime('death_date')->nullable();
-            $table->string('mobile',length:11)->nullable();
+            $table->string('country_code',length:6)->nullable();
+            $table->string('mobile',length:12)->nullable();
             //$table->string('mobile');
             $table->boolean('is_owner')->defalut(false);
             //$table->enum('gender', ["Male", "Female", "None"])->default("None");   
