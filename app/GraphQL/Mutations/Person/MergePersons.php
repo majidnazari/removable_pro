@@ -7,12 +7,14 @@ use App\Models\PersonMarriage;
 use App\Models\PersonChild;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\DB;
+use Log;
 
 final class MergePersons
 {
     public function resolvemerge($rootValue, array $args)
     {
         $auth_id = auth()->guard('api')->user()->id;
+        Log::info("the user id is:" .  $auth_id);
 
         $primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);
         $secondaryPersonId = max($args['primaryPersonId'], $args['secondaryPersonId']);
@@ -64,8 +66,8 @@ final class MergePersons
 
             if ($existingMarriage) {
                 PersonChild::where('person_marriage_id', $marriage->id)
-                    ->update(['person_marriage_id' => $existingMarriage->id]);
-                $marriage->editor_id = $auth_id;  // Set the editor ID
+                    ->update(['person_marriage_id' => $existingMarriage->id,'editor_id' =>$auth_id ]);
+                //$marriage->editor_id = $auth_id;  // Set the editor ID
                 $marriage->save();
                 $marriage->delete();
             } else {
