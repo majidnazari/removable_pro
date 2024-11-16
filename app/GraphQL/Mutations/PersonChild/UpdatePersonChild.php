@@ -24,7 +24,7 @@ final class UpdatePersonChild
         //args["user_id_creator"]=$user_id;
         $PersonChildResult=PersonChild::find($args['id']);
         $personChildmodel=$args;
-        $personChildmodel['editor_id']=1;
+        $personChildmodel['editor_id']=$user_id;
         
         if(!$PersonChildResult)
         {

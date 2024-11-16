@@ -24,7 +24,7 @@ final class UpdatePersonMarriage
         //args["user_id_creator"]=$user_id;
         $PersonMarriageResult=PersonMarriage::find($args['id']);
         $PersonMarriagemodel=$args;
-        $PersonMarriagemodel['editor_id']=1;
+        $PersonMarriagemodel['editor_id']=$user_id;
         
         if(!$PersonMarriageResult)
         {

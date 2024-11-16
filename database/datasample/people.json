@@ -162,7 +162,7 @@
     {
         "id": "11",
         "creator_id": "2",
-        "editor_id": "1",
+        "editor_id": null,
         "node_code": "20241113122629856",
         "first_name": "محمد",
         "last_name": "پیرودین",
@@ -178,7 +178,7 @@
     {
         "id": "12",
         "creator_id": "2",
-        "editor_id": "1",
+        "editor_id": null,
         "node_code": "20241113122655039",
         "first_name": "سارا",
         "last_name": "شاطری",

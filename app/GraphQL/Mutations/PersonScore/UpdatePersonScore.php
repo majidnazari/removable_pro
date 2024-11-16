@@ -24,7 +24,7 @@ final class UpdatePersonScore
         //args["user_id_creator"]=$user_id;
         $PersonScoreResult=PersonScore::find($args['id']);
         $PersonScoremodel=$args;
-        $PersonScoremodel['editor_id']=1;
+        $PersonScoremodel['editor_id']=$user_id;
         
         if(!$PersonScoreResult)
         {

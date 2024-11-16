@@ -43,12 +43,14 @@ final class MergePersons
             throw new Error("Failed to merge persons: " . $e->getMessage());
         }
 
-        $this->cleanupDuplicates($primaryPersonId);
+        $this->cleanupDuplicates($auth_id);
         return $primaryPerson;
     }
 
     private function mergeMarriages($primaryPersonId, $secondaryPersonId, $auth_id)
     {
+
+        Log::info("merge of marriage is running and the params are:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
         PersonMarriage::where(function ($query) use ($primaryPersonId, $secondaryPersonId) {
             $query->where('man_id', $secondaryPersonId)
                 ->orWhere('woman_id', $secondaryPersonId);
@@ -70,11 +72,15 @@ final class MergePersons
                 //$marriage->editor_id = $auth_id;  // Set the editor ID
                 $marriage->save();
                 $marriage->delete();
+        Log::info("existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+
             } else {
                 $marriage->man_id = $marriage->man_id == $secondaryPersonId ? $primaryPersonId : $marriage->man_id;
                 $marriage->woman_id = $marriage->woman_id == $secondaryPersonId ? $primaryPersonId : $marriage->woman_id;
                 $marriage->editor_id = $auth_id;  // Set the editor ID
                 $marriage->save();
+        Log::info("else of existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+
             }
         });
     }
@@ -93,11 +99,16 @@ final class MergePersons
                 $child->editor_id = $auth_id;  // Set the editor ID
                 $child->save();
                 $child->delete();
+        Log::info("existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+
             } else {
                 $child->child_id = $child->child_id == $secondaryPersonId ? $primaryPersonId : $child->child_id;
                 $child->person_marriage_id = $child->person_marriage_id == $secondaryPersonId ? $primaryPersonId : $child->person_marriage_id;
                 $child->editor_id = $auth_id;  // Set the editor ID
                 $child->save();
+
+        Log::info("not existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+
             }
         });
     }
