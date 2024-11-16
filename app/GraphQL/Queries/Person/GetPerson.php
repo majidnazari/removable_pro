@@ -23,7 +23,9 @@ final class GetPerson
     function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $Person = $this->findUser($args['id']);//Person::where('id', $args['id']);
-        return $Person->first();
+
+       // Log::info("the id is:" . $args['id'] ."the peson found is :". json_encode($Person) );
+        return $Person;
     }
     function resolvePersonFatherOfFather($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
