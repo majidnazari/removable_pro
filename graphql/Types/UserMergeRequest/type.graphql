@@ -32,7 +32,9 @@ input CreateUserMergeRequestInput {
 
 input sendRequestToOtherFamilyInput {
 
-    sender_id: ID!
+    user_sender_id: ID!
+    node_sender_id: ID!
+    country_code: String
     mobile: String   
 }
 

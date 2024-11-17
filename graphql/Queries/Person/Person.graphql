@@ -10,7 +10,7 @@ getPersonFatherOfFather(id: ID!): Person @guard(with: ["api"])
 @validator(class: "App\\GraphQL\\Validators\\Person\\PersonInputValidator") 
 @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfFather") 
 
-getPersonFatherOfMother(id: ID!): Person @guard(with: ["api"])
+getPersonFatherOfMother(id: ID! ): Person @guard(with: ["api"])
 @validator(class: "App\\GraphQL\\Validators\\Person\\PersonInputValidator") 
 
  @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfMother") 

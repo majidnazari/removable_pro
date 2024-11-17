@@ -7,6 +7,8 @@ use App\Models\PersonMarriage;
 use App\Models\PersonChild;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\DB;
+use App\GraphQL\Enums\Status;
+
 use Log;
 
 final class MergePersons
@@ -22,11 +24,15 @@ final class MergePersons
         DB::beginTransaction();
 
         try {
-            $primaryPerson = Person::find($primaryPersonId);
-            $secondaryPerson = Person::find($secondaryPersonId);
+            $primaryPerson = Person::where('id',$primaryPersonId)->where('status',Status::Active)->first();
+            $secondaryPerson = Person::where('id',$secondaryPersonId)->where('status',Status::Active)->first();;
 
             if (!$primaryPerson || !$secondaryPerson) {
                 throw new Error("One or both persons do not exist.");
+            }
+            // Check if both persons have the same gender
+            if ($primaryPerson->gender !== $secondaryPerson->gender) {
+                throw new Error("Persons cannot be merged because they have different genders.");
             }
 
             $this->mergeMarriages($primaryPersonId, $secondaryPersonId, auth_id: $auth_id);

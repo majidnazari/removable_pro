@@ -661,7 +661,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person withoutTrashed()
  * @mixin \Eloquent
+ * @property string|null $country_code
  * @property string|null $mobile
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereCountryCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Person whereMobile($value)
  */
 	class Person extends \Eloquent {}
@@ -1116,6 +1118,16 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest withoutTrashed()
  * @property string|null $request_expired_at
  * @mixin \Eloquent
+ * @property int $user_sender_id
+ * @property int $node_sender_id
+ * @property int $user_reciver_id
+ * @property int|null $merge_user_sender_id
+ * @property int|null $merge_user_reciver_id
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeUserReciverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeUserSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereNodeSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereUserReciverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereUserSenderId($value)
  */
 	class UserMergeRequest extends \Eloquent {}
 }

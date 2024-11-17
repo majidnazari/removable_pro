@@ -60,16 +60,18 @@ class UserMergeRequest extends \Eloquent
 
     public const TABLE_NAME = 'user_merge_requests';
     public const ID = 'id';
-    public const SENDER_ID = 'sender_id';
-    public const RECIVER_ID = 'reciver_id';
+    public const USER_SENDER_ID = 'user_sender_id';
+    public const NODE_SENDER_ID = 'node_sender_id';
+    public const USER_RECIVER_ID = 'user_reciver_id';
     public const MERGE_SENDER_ID = 'merge_sender_id';
     public const MERGE_RECIVER_ID = 'merge_reciver_id';
     protected $table = self::TABLE_NAME;
 
 
     protected $fillable = [
-        'sender_id',
-        'reciver_id',
+        'user_sender_id',
+        'node_sender_id',
+        'user_reciver_id',
         'request_is_read',
         "request_expired_at",
         'request_status',
@@ -82,12 +84,12 @@ class UserMergeRequest extends \Eloquent
    
     public function sender()
     {
-        return $this->belongsTo(Person::class, self::SENDER_ID);
+        return $this->belongsTo(Person::class, self::USER_SENDER_ID);
     }
 
     public function receiver()
     {
-        return $this->belongsTo(Person::class, self::RECIVER_ID);
+        return $this->belongsTo(Person::class, self::USER_RECIVER_ID);
     }
 
     public function mergeSender()
