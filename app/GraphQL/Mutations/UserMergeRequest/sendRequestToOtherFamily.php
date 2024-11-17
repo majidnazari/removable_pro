@@ -78,14 +78,14 @@ final class sendRequestToOtherFamily
             "request_status" => RequestStatus::Susspend
         ];
 
-        Log::info("the args are:" . json_encode($UserMergeRequestResult));
+       // Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $is_exist = UserMergeRequest::where('user_sender_id', $user_sender_id)
-            ->where('node_sender_id', $args['node_sender_id'])
-            ->where('user_reciver_id', $user_reciver->id)
-            ->where('request_status', RequestStatus::Susspend)
+           // ->where('node_sender_id', $args['node_sender_id'])
+           // ->where('user_reciver_id', $user_reciver->id)
+            ->where('request_status','!=', RequestStatus::Refused)
             ->first();
         if ($is_exist) {
-            return Error::createLocatedError("UserMergeRequest-CREATE-RECORD_IS_EXIST");
+            return Error::createLocatedError("UserMergeRequest-YOU_HAVE_CREATED_ONE_MERGE_REQUEST");
         }
         $UserMergeRequestResult_result = UserMergeRequest::create($UserMergeRequestResult);
         return $UserMergeRequestResult_result;
