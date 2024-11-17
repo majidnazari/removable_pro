@@ -1,16 +1,25 @@
 type UserMergeRequest {
 
     id: ID!
-    sender_id: ID!
-    reciver_id: ID!
-    request_is_read: Boolean
-    request_expired_at: String
-    request_status: RequestStatus
-    merge_sender_id: ID
-    merge_reciver_id: ID
-    merge_is_read: Boolean
-    merge_expired_at: String
-    merge_status: RequestStatus
+    creator_id: ID
+    editor_id: ID
+
+    user_sender_id: ID!
+    node_sender_id: ID!
+
+    user_reciver_id: ID!
+    request_status_sender: RequestStatusSender
+    request_sender_expired_at: String
+    request_status_reciver: RequestStatusReciver
+
+    merge_ids_sender: String
+    merge_ids_reciver: String
+
+
+    merge_status_sender: RequestStatusSender
+    merge_sender_expired_at: String
+    merge_status_reciver: RequestStatusReciver
+
     created_at: String
     updated_at: String
 }
@@ -18,36 +27,62 @@ type UserMergeRequest {
 
 input CreateUserMergeRequestInput {
 
-    sender_id: ID!
-    reciver_id: ID!
-    request_is_read: Boolean = false
-    request_expired_at: String
-    request_status: RequestStatus
-    merge_sender_id: ID!
-    merge_reciver_id: ID!
-    merge_is_read: Boolean = false
-    merge_expired_at: String
-    merge_status: RequestStatus
+    user_sender_id: ID!
+    node_sender_id: ID!
+
+    user_reciver_id: ID!
+
+    request_status_sender: RequestStatusSender
+    request_sender_expired_at: String
+    request_status_reciver: RequestStatusReciver
+
 }
 
-input sendRequestToOtherFamilyInput {
+input SendRequestToOtherFamilyInput {
 
     user_sender_id: ID!
     node_sender_id: ID!
-    country_code: String
-    mobile: String   
+   
+}
+input UpdateRequestSenderInput {
+
+    request_status_sender: RequestStatusSender
+   
+}
+input UpdateRequestReciverInput {
+
+   request_status_reciver: RequestStatusReciver
+   
 }
 
 input UpdateUserMergeRequestInput {
 
     id: ID!
-    sender_id: ID
-    reciver_id: ID
-    request_is_read: Boolean
-    request_status: RequestStatus
-    merge_sender_id: ID
-    merge_reciver_id: ID
-    merge_is_read: Boolean
-    merge_expired_at: String
-    merge_status: RequestStatus
+   
+    merge_ids_sender: String
+    merge_ids_reciver: String
+
+    merge_status_sender: RequestStatusSender
+    merge_sender_expired_at: String
+    
+}
+
+input UpdateUserMergeRequestAllInput {
+
+    id: ID!
+    user_sender_id: ID!
+    node_sender_id: ID!
+
+    user_reciver_id: ID!
+    request_status_sender: RequestStatusSender
+    request_sender_expired_at: String
+    request_status_reciver: RequestStatusReciver
+
+    merge_ids_sender: String
+    merge_ids_reciver: String
+
+
+    merge_status_sender: RequestStatusSender
+    merge_sender_expired_at: String
+    merge_status_reciver: RequestStatusReciver
 }

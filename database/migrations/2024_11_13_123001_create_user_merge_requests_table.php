@@ -13,26 +13,35 @@ return new class extends Migration
     {
         Schema::create('user_merge_requests', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('creator_id')->index(); 
+            $table->unsignedBigInteger('editor_id')->nullable()->index(); 
+
             $table->unsignedBigInteger('user_sender_id')->index(); 
             $table->unsignedBigInteger('node_sender_id')->index(); 
             $table->unsignedBigInteger('user_reciver_id')->index(); 
             // Define foreign keys
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->foreign('user_sender_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('node_sender_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('user_reciver_id')->references('id')->on('people')->onDelete('cascade');
-            $table->boolean('request_is_read', )->default(0)->comment(" 0=not read 1=read");  
-            $table->datetime(column: 'request_expired_at')->nullable();
-            $table->tinyInteger('request_status', )->default(3)->comment(" 1=active 2=refused 3=susspend");   
 
+            $table->tinyInteger('request_status_sender', )->default(3)->comment(" 1=Active 2=Cancel 3=Suspend");  
+            $table->datetime(column: 'request_sender_expired_at')->nullable();
+            $table->tinyInteger('request_status_reciver', )->default(3)->comment("1=Active 2=Refused 3=Suspend");   
 
+            // $table->unsignedBigInteger(column: 'merge_user_sender_id')->nullable()->index();
+            // $table->unsignedBigInteger('merge_user_reciver_id')->nullable()->index(); 
+            // $table->foreign('merge_user_sender_id')->references('id')->on('people')->onDelete('cascade');
+            // $table->foreign('merge_user_reciver_id')->references('id')->on('people')->onDelete('cascade'); 
+            $table->string('merge_ids_sender')->nullable();  
+            $table->string('merge_ids_reciver' )->nullable();  
+            $table->tinyInteger('merge_status_sender', )->default(0)->comment(" 1=Active 2=Cancel 3=Suspend");  
+            $table->datetime(column: 'merge_sender_expired_at')->nullable();
+            $table->tinyInteger('merge_status_reciver', )->default(0)->comment(" 1=Active 2=Refused 3=Suspend");  
 
-            $table->unsignedBigInteger(column: 'merge_user_sender_id')->nullable()->index();
-            $table->unsignedBigInteger('merge_user_reciver_id')->nullable()->index(); 
-            $table->foreign('merge_user_sender_id')->references('id')->on('people')->onDelete('cascade');
-            $table->foreign('merge_user_reciver_id')->references('id')->on('people')->onDelete('cascade'); 
-            $table->boolean('merge_is_read', )->default(0)->comment(" 0=not read 1=read");  
-            $table->datetime(column: 'merge_expired_at')->nullable();
-            $table->tinyInteger('merge_status', )->default(3)->comment(" 1=active 2=refused 3=susspend");   
+            //$table->tinyInteger('merge_status', )->default(3)->comment("1=Active 2=Cansel 3=refused 4=Suspend");   
 
             
             $table->timestamps();

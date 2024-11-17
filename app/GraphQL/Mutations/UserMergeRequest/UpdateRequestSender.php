@@ -12,13 +12,13 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
-use App\GraphQL\Enums\RequestStatus;
+use App\GraphQL\Enums\RequestStatusSender;
 use App\models\User;
 use App\models\Person;
 use Carbon\Carbon;
 use Log;
 
-final class SendrequestToOtherFamily
+final class UpdateRequestSender
 {
 
     /**
@@ -29,7 +29,7 @@ final class SendrequestToOtherFamily
     {
         // TODO implement the resolver
     }
-    public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveUpdateRequestSender($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
         $user_sender_id = auth()->guard('api')->user()->id;
@@ -47,7 +47,7 @@ final class SendrequestToOtherFamily
         $user_reciver = User::where('mobile', $person->country_code . $person->mobile)
             //->where('is_owner',true)
             //->where(column: 'country_code',operator: $args['country_code'])
-            // ->where('id', '!=', $user_sender_id)
+           // ->where('id', '!=', $user_sender_id)
             //->where('is_owner', true)
             ->where('status', Status::Active)
             ->first();
@@ -60,9 +60,9 @@ final class SendrequestToOtherFamily
         }
         //Log::info("the args are:" . json_encode( $user) . " and user id is :". $user->id. " and the carbo is:" .Carbon::now()->addDays(1)->format("Y-M-d H:i:s"));
 
+      
 
-
-
+       
 
 
         //Log::info("the args are:" . json_encode($args));
@@ -75,15 +75,16 @@ final class SendrequestToOtherFamily
             // "node_reciver_id" => $args['node_reciver_id'],
 
             "request_sender_expired_at" => Carbon::now()->addDays(1)->format("Y-m-d H:i:s"),
-            "request_status_sender" => RequestStatus::Active
+            "request_status_sender" => RequestStatusSender::Active
         ];
 
-        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
+       // Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $is_exist = UserMergeRequest::where('user_sender_id', $user_sender_id)
-            // ->where('node_sender_id', $args['node_sender_id'])
-            // ->where('user_reciver_id', $user_reciver->id)
-            ->where('request_status_sender', '!=', RequestStatus::Active)
+           // ->where('node_sender_id', $args['node_sender_id'])
+           // ->where('user_reciver_id', $user_reciver->id)
+            ->where('request_status_sender', RequestStatusSender::Active)
             ->first();
+            Log::info("the user id is :". $user_sender_id . " and the user is :" . json_encode(  $is_exist));
         if ($is_exist) {
             return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
         }

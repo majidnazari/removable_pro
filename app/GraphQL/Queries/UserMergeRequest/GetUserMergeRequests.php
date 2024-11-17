@@ -20,7 +20,9 @@ final class GetUserMergeRequests
     }
     function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $UserMergeRequests = UserMergeRequest::where('deleted_at', null);
+        $user_sender_id = auth()->guard('api')->user()->id;
+
+        $UserMergeRequests = UserMergeRequest::where('creator_id',$user_sender_id)->where('deleted_at', null);
 
         //log::info("the Scores is:" . json_encode($UserMergeRequests));
         return $UserMergeRequests;

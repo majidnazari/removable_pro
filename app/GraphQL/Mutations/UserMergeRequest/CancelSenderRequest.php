@@ -8,7 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 
 
-final class UpdateUserMergeRequest
+final class CancelSenderRequest
 {
     /**
      * @param  null  $_
@@ -18,17 +18,18 @@ final class UpdateUserMergeRequest
     {
         // TODO implement the resolver
     }
-    public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveCancelSenderRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
-        $UserMergeRequestResult=UserMergeRequest::find($args['id']);
+
+        $UserMergeRequestResult=UserMergeRequest::where( 'creator_id',$user_id)->first();
         
         if(!$UserMergeRequestResult)
         {
             return Error::createLocatedError("UserMergeRequest-UPDATE-RECORD_NOT_FOUND");
         }
-        $args['editor_id']=$user_id;
+        $UserMergeRequestResult->editor_id=$user_id;
         
         $UserMergeRequestResult_filled= $UserMergeRequestResult->fill($args);
         $UserMergeRequestResult->save();       

@@ -1,21 +1,21 @@
 
-    sendRequestToOtherFamily(input: sendRequestToOtherFamilyInput! @spread): UserMergeRequest 
+    SendRequestToOtherFamily(input: SendRequestToOtherFamilyInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
-    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\sendRequestToOtherFamily@resolveUserMergeRequest") 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\SendRequestToOtherFamily@resolveUserMergeRequest") 
 
-    sendFirstMergeRequest(input: sendRequestToOtherFamilyInput! @spread): UserMergeRequest 
+    sendFirstMergeRequest(input: SendRequestToOtherFamilyInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\sendFirstMergeRequest@resolvesendFirstMergeRequest") 
 
 
-    createUserMergeRequest(input: CreateUserMergeRequestInput! @spread): UserMergeRequest 
-    @guard(with: ["api"]) 
-    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\CreateUserMergeRequest@resolveUserMergeRequest") 
+    # createUserMergeRequest(input: CreateUserMergeRequestInput! @spread): UserMergeRequest 
+    # @guard(with: ["api"]) 
+    # @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\CreateUserMergeRequest@resolveUserMergeRequest") 
 
-    updateUserMergeRequest(id: ID!, input: UpdateUserMergeRequestInput! @spread): UserMergeRequest 
+    UpdateRequestSender (id: ID!, input: UpdateRequestSenderInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
-    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateUserMergeRequest@resolveUserMergeRequest") 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateRequestSender@resolveUpdateRequestSender") 
 
-    deleteUserMergeRequest(id: ID!): UserMergeRequest 
-    @guard(with: ["api"])
-     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\DeleteUserMergeRequest@resolveUserMergeRequest") 
+    # deleteUserMergeRequest(id: ID!): UserMergeRequest 
+    # @guard(with: ["api"])
+    #  @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\DeleteUserMergeRequest@resolveUserMergeRequest") 

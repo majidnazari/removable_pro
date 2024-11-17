@@ -60,6 +60,8 @@ class UserMergeRequest extends \Eloquent
 
     public const TABLE_NAME = 'user_merge_requests';
     public const ID = 'id';
+    public const CREATOR_ID = 'creator_id';
+    public const EDITOR_ID = 'editor_id';
     public const USER_SENDER_ID = 'user_sender_id';
     public const NODE_SENDER_ID = 'node_sender_id';
     public const USER_RECIVER_ID = 'user_reciver_id';
@@ -69,17 +71,19 @@ class UserMergeRequest extends \Eloquent
 
 
     protected $fillable = [
+        'creator_id',
+        'editor_id',
         'user_sender_id',
         'node_sender_id',
         'user_reciver_id',
-        'request_is_read',
-        "request_expired_at",
-        'request_status',
-        'merge_sender_id',
-        'merge_reciver_id',
-        'merge_is_read',
-        "merge_expired_at",
-        'merge_status',
+        'request_status_sender',
+        "request_sender_expired_at",
+        'request_status_reciver',
+        'merge_ids_sender',
+        'merge_ids_reciver',
+        'merge_status_sender',
+        "merge_sender_expired_at",
+        'merge_status_reciver',
     ];
    
     public function sender()
