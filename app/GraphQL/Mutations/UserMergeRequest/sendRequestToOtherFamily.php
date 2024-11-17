@@ -52,7 +52,7 @@ final class sendRequestToOtherFamily
             ->where('status', Status::Active)
             ->first();
 
-        if (!$user_reciver->id === $user_sender_id) {
+        if ($user_reciver->id === $user_sender_id) {
             return Error::createLocatedError("the sender and reciver cannot be the same!");
         }
         //Log::info("the args are:" . json_encode( $user) . " and user id is :". $user->id. " and the carbo is:" .Carbon::now()->addDays(1)->format("Y-M-d H:i:s"));
