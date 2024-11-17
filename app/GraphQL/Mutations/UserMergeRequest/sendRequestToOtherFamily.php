@@ -18,7 +18,7 @@ use App\models\Person;
 use Carbon\Carbon;
 use Log;
 
-final class SendrequestToOtherFamily
+final class SendRequestToOtherFamily
 {
 
     /**
@@ -82,8 +82,10 @@ final class SendrequestToOtherFamily
         $is_exist = UserMergeRequest::where('user_sender_id', $user_sender_id)
             // ->where('node_sender_id', $args['node_sender_id'])
             // ->where('user_reciver_id', $user_reciver->id)
-            ->where('request_status_sender', '!=', RequestStatus::Active)
+            ->where('request_status_sender',  RequestStatus::Active)
             ->first();
+       // Log::info("the args are:" . json_encode(  $is_exist) . " and user id is :". $user_sender_id);
+
         if ($is_exist) {
             return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
         }

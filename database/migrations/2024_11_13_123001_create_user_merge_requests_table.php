@@ -37,9 +37,9 @@ return new class extends Migration
             // $table->foreign('merge_user_reciver_id')->references('id')->on('people')->onDelete('cascade'); 
             $table->string('merge_ids_sender')->nullable();  
             $table->string('merge_ids_reciver' )->nullable();  
-            $table->tinyInteger('merge_status_sender', )->default(0)->comment(" 1=Active 2=Cancel 3=Suspend");  
+            $table->tinyInteger('merge_status_sender', )->default(3)->comment(" 1=Active 2=Cancel 3=Suspend");  
             $table->datetime(column: 'merge_sender_expired_at')->nullable();
-            $table->tinyInteger('merge_status_reciver', )->default(0)->comment(" 1=Active 2=Refused 3=Suspend");  
+            $table->tinyInteger('merge_status_reciver', )->default(3)->comment(" 1=Active 2=Refused 3=Suspend");  
 
             //$table->tinyInteger('merge_status', )->default(3)->comment("1=Active 2=Cansel 3=refused 4=Suspend");   
 

@@ -34,61 +34,23 @@ final class UpdateRequestSender
 
         $user_sender_id = auth()->guard('api')->user()->id;
 
-        if ($user_sender_id === $args['user_sender_id']) {
-            return Error::createLocatedError("the sender and reciver cannot be the same!");
-        }
-
-        $person = Person::where('id', $args['node_sender_id'])->first();
-
-        if ($person && empty($person->country_code) && empty($person->mobile)) {
-            return Error::createLocatedError("the person with this mobile not found!");
-        }
-
-        $user_reciver = User::where('mobile', $person->country_code . $person->mobile)
-            //->where('is_owner',true)
-            //->where(column: 'country_code',operator: $args['country_code'])
-           // ->where('id', '!=', $user_sender_id)
-            //->where('is_owner', true)
-            ->where('status', Status::Active)
-            ->first();
-
-        if (!$user_reciver) {
-            return Error::createLocatedError("the node you have seleted not found!");
-        }
-        if ($user_reciver->id === $user_sender_id) {
-            return Error::createLocatedError("the sender and reciver cannot be the same!");
-        }
-        //Log::info("the args are:" . json_encode( $user) . " and user id is :". $user->id. " and the carbo is:" .Carbon::now()->addDays(1)->format("Y-M-d H:i:s"));
-
-      
-
-       
-
-
-        //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
         $UserMergeRequestResult = [
-            "creator_id" => $user_sender_id,
-            "user_sender_id" => $user_sender_id,
-            "node_sender_id" => $args['node_sender_id'],
-            "user_reciver_id" => $user_reciver->id,
-            // "node_reciver_id" => $args['node_reciver_id'],
-
-            "request_sender_expired_at" => Carbon::now()->addDays(1)->format("Y-m-d H:i:s"),
-            "request_status_sender" => RequestStatusSender::Active
+            "editor_id" => $user_sender_id,
+            "request_status_sender" => $args['request_status_sender'] ?? RequestStatusSender::Susspend
         ];
 
        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
-        $is_exist = UserMergeRequest::where('user_sender_id', $user_sender_id)
-           // ->where('node_sender_id', $args['node_sender_id'])
-           // ->where('user_reciver_id', $user_reciver->id)
-            ->where('request_status_sender', RequestStatusSender::Active)
-            ->first();
-            Log::info("the user id is :". $user_sender_id . " and the user is :" . json_encode(  $is_exist));
-        if ($is_exist) {
-            return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
+        $UserMergeRequest = UserMergeRequest::where('id', $args['id'])->first();
+        if (!$UserMergeRequest) {
+            return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
-        $UserMergeRequestResult_result = UserMergeRequest::create($UserMergeRequestResult);
+
+
+        if($UserMergeRequest->creator_id != $user_sender_id){
+            return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
+
+        }
+        $UserMergeRequestResult_result = $UserMergeRequest->fill($UserMergeRequestResult);
         return $UserMergeRequestResult_result;
     }
 }
