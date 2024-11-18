@@ -43,10 +43,21 @@ final class UpdateRequestSender
 
        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $UserMergeRequest = UserMergeRequest::where('id', $args['id'])->first();
+       //->where('request_status_sender',  RequestStatusSender::Active->value)
+        
         if (!$UserMergeRequest) {
             return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
 
+        $is_exist = UserMergeRequest::where('user_sender_id', $user_sender_id)
+            ->where('id','!=', $args['id'])
+            // ->where('user_reciver_id', $user_reciver->id)
+            ->where('request_status_sender',  RequestStatusSender::Active->value)
+            ->first();
+
+        if ($is_exist) {
+            return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
+        }
 
         if($UserMergeRequest->creator_id != $user_sender_id){
             return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");

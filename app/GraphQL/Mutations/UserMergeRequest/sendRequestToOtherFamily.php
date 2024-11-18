@@ -12,7 +12,7 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
-use App\GraphQL\Enums\RequestStatus;
+use App\GraphQL\Enums\RequestStatusSender;
 use App\models\User;
 use App\models\Person;
 use Carbon\Carbon;
@@ -79,14 +79,14 @@ final class SendRequestToOtherFamily
             // "node_reciver_id" => $args['node_reciver_id'],
 
             "request_sender_expired_at" => Carbon::now()->addDays(1)->format("Y-m-d H:i:s"),
-            "request_status_sender" => RequestStatus::Active
+            "request_status_sender" => RequestStatusSender::Active
         ];
 
         // Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $is_exist = UserMergeRequest::where('user_sender_id', $user_sender_id)
             // ->where('node_sender_id', $args['node_sender_id'])
             // ->where('user_reciver_id', $user_reciver->id)
-            ->where('request_status_sender',  RequestStatus::Active)
+            ->where('request_status_sender',  RequestStatusSender::Active->value)
             ->first();
        // Log::info("the args are:" . json_encode(  $is_exist) . " and user id is :". $user_sender_id);
 

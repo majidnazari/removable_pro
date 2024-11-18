@@ -37,7 +37,7 @@ final class UpdateRequestReciver
 
         $data = [
            // "editor_id" => $user_sender_id,
-            "request_status_reciver" => $args['request_status_reciver'] ?? RequestStatusReciver::Suspend
+            "request_status_reciver" => $args['request_status_reciver'] ?? RequestStatusReciver::Suspend->value
         ];
 
        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
@@ -46,6 +46,15 @@ final class UpdateRequestReciver
             return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
 
+        $is_exist = UserMergeRequest::where('user_sender_id', $user_reciver_id)
+        ->where('id','!=', $args['id'])
+        // ->where('user_reciver_id', $user_reciver->id)
+        ->where('request_status_sender',  RequestStatusSender::Active->value)
+        ->first();
+
+        if ($is_exist) {
+            return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
+        }
 
         if($UserMergeRequest->user_reciver_id != $user_reciver_id){
             return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
