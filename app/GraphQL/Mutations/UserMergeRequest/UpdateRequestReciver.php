@@ -53,12 +53,14 @@ final class UpdateRequestReciver
         }
 
 
-        Log::info("the active sttaus us:".RequestStatusSender::Active->value);
+        //Log::info("the active sttaus us:".RequestStatusSender::Active->value);
         if($UserMergeRequest->request_status_sender != RequestStatusSender::Active->value){
-            return Error::createLocatedError("UserMergeRequest-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE" . $UserMergeRequest->request_status_sender . RequestStatusSender::Active->value);
+            return Error::createLocatedError("UserMergeRequest-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE" );
 
         }
         $UserMergeRequestResult = $UserMergeRequest->fill($data);
+        $UserMergeRequestResult->save();       
+
         return $UserMergeRequestResult;
     }
 }

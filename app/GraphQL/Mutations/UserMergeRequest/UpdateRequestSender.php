@@ -34,10 +34,12 @@ final class UpdateRequestSender
 
         $user_sender_id = auth()->guard('api')->user()->id;
 
-        $UserMergeRequestResult = [
+        $data = [
             "editor_id" => $user_sender_id,
             "request_status_sender" => $args['request_status_sender'] ?? RequestStatusSender::Suspend
         ];
+
+        Log::info("the update status sender :". json_encode($data));
 
        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $UserMergeRequest = UserMergeRequest::where('id', $args['id'])->first();
@@ -50,7 +52,9 @@ final class UpdateRequestSender
             return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
 
         }
-        $UserMergeRequestResult_result = $UserMergeRequest->fill($UserMergeRequestResult);
-        return $UserMergeRequestResult_result;
+        $UserMergeRequestResult = $UserMergeRequest->fill($data);
+        $UserMergeRequestResult->save();       
+
+        return $UserMergeRequestResult;
     }
 }
