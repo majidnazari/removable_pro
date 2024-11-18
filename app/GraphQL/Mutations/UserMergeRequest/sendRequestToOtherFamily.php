@@ -34,14 +34,18 @@ final class SendRequestToOtherFamily
 
         $user_sender_id = auth()->guard('api')->user()->id;
 
-        if ($user_sender_id === $args['user_sender_id']) {
-            return Error::createLocatedError("the sender and reciver cannot be the same!");
-        }
+        // if ($user_sender_id === $args['user_sender_id']) {
+        //     return Error::createLocatedError("the sender and reciver cannot be the same!");
+        // }
 
         $person = Person::where('id', $args['node_sender_id'])->first();
 
         if ($person && empty($person->country_code) && empty($person->mobile)) {
             return Error::createLocatedError("the person with this mobile not found!");
+        }
+
+        if ($person->creator_id !==$user_sender_id ) {
+            return Error::createLocatedError("you don't have access to other family!");
         }
 
         $user_reciver = User::where('mobile', $person->country_code . $person->mobile)

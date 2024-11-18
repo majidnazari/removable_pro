@@ -27,7 +27,7 @@ type UserMergeRequest {
 
 input CreateUserMergeRequestInput {
 
-    user_sender_id: ID!
+    # user_sender_id: ID!
     node_sender_id: ID!
 
     user_reciver_id: ID!
@@ -40,7 +40,7 @@ input CreateUserMergeRequestInput {
 
 input SendRequestToOtherFamilyInput {
 
-    user_sender_id: ID!
+    # user_sender_id: ID!
     node_sender_id: ID!
    
 }
@@ -76,7 +76,7 @@ input UpdateUserMergeRequestInput {
 input UpdateUserMergeRequestAllInput {
 
     id: ID!
-    user_sender_id: ID!
+    # user_sender_id: ID!
     node_sender_id: ID!
 
     user_reciver_id: ID!
