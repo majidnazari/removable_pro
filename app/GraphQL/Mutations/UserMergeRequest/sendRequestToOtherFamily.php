@@ -55,9 +55,11 @@ final class SendRequestToOtherFamily
         if (!$user_reciver) {
             return Error::createLocatedError("the node you have seleted not found!");
         }
-        // if ($person->creator_id !==$user_sender_id ) {
-        //     return Error::createLocatedError("you don't have access to other family!");
-        // }
+
+        //Log::info("the creator id node input is:" . $person->creator_id . "and the user id sender is:" .  $user_sender_id );
+        if ($person->creator_id !==$user_sender_id ) {
+            return Error::createLocatedError("you don't have access to other family!");
+        }
         if ($user_reciver->id === $user_sender_id) {
             return Error::createLocatedError("the sender and reciver cannot be the same!");
         }
