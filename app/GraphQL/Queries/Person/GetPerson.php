@@ -7,11 +7,15 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 
+use App\Traits\AuthUserTrait;
+
 
 use Log;
 
 final class GetPerson
 {
+   // $user_id = auth()->guard('api')->user()->id;
+ use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -32,7 +36,7 @@ final class GetPerson
         // Find the given person
         $person = $this->findUser($args['id']);//Person::find($args['id']);
 
-        Log::info("the id is:" . $args['id'] . "the person is:" . json_encode($person));
+        //Log::info("the id is:" . $args['id'] . "the person is:" . json_encode($person));
 
         // If the person exists, find the root ancestor
         if ($person) {
@@ -81,13 +85,13 @@ final class GetPerson
         $personId = $args['id'];
         $depth = $args['depth'] ?? 3; // Default depth of 3 if not provided
 
-        Log::info("Fetching ancestry tree for Person ID: $personId with depth: $depth");
+       // Log::info("Fetching ancestry tree for Person ID: $personId with depth: $depth");
 
         // Find the person by ID
         $person = $this->findUser($personId);//Person::find($personId);
         
         if (!$person) {
-            Log::info("Person with ID $personId not found.");
+           // Log::info("Person with ID $personId not found.");
             return null;
         }
 

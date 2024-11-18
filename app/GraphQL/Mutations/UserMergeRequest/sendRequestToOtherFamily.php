@@ -44,10 +44,6 @@ final class SendRequestToOtherFamily
             return Error::createLocatedError("the person with this mobile not found!");
         }
 
-        if ($person->creator_id !==$user_sender_id ) {
-            return Error::createLocatedError("you don't have access to other family!");
-        }
-
         $user_reciver = User::where('mobile', $person->country_code . $person->mobile)
             //->where('is_owner',true)
             //->where(column: 'country_code',operator: $args['country_code'])
@@ -59,6 +55,9 @@ final class SendRequestToOtherFamily
         if (!$user_reciver) {
             return Error::createLocatedError("the node you have seleted not found!");
         }
+        // if ($person->creator_id !==$user_sender_id ) {
+        //     return Error::createLocatedError("you don't have access to other family!");
+        // }
         if ($user_reciver->id === $user_sender_id) {
             return Error::createLocatedError("the sender and reciver cannot be the same!");
         }
