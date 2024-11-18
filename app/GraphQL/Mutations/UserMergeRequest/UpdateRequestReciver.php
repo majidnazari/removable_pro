@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations\UserMergeRequest;
 
+use App\GraphQL\Enums\RequestStatusReciver;
 use App\Models\UserMergeRequest;
 use GraphQL\Type\Definition\ResolveInfo;
 use App\Models\GroupUser;
@@ -18,7 +19,7 @@ use App\models\Person;
 use Carbon\Carbon;
 use Log;
 
-final class UpdateRequestSender
+final class UpdateRequestReciver
 {
 
     /**
@@ -29,14 +30,14 @@ final class UpdateRequestSender
     {
         // TODO implement the resolver
     }
-    public function resolveUpdateRequestSender($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveUpdateRequestReciver($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user_sender_id = auth()->guard('api')->user()->id;
+        $user_reciver_id = auth()->guard('api')->user()->id;
 
-        $UserMergeRequestResult = [
-            "editor_id" => $user_sender_id,
-            "request_status_sender" => $args['request_status_sender'] ?? RequestStatusSender::Suspend
+        $data = [
+           // "editor_id" => $user_sender_id,
+            "request_status_reciver" => $args['request_status_reciver'] ?? RequestStatusReciver::Suspend
         ];
 
        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
@@ -46,11 +47,18 @@ final class UpdateRequestSender
         }
 
 
-        if($UserMergeRequest->creator_id != $user_sender_id){
+        if($UserMergeRequest->user_reciver_id != $user_reciver_id){
             return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
 
         }
-        $UserMergeRequestResult_result = $UserMergeRequest->fill($UserMergeRequestResult);
-        return $UserMergeRequestResult_result;
+
+
+        Log::info("the active sttaus us:".RequestStatusSender::Active->value);
+        if($UserMergeRequest->request_status_sender != RequestStatusSender::Active->value){
+            return Error::createLocatedError("UserMergeRequest-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE" . $UserMergeRequest->request_status_sender . RequestStatusSender::Active->value);
+
+        }
+        $UserMergeRequestResult = $UserMergeRequest->fill($data);
+        return $UserMergeRequestResult;
     }
 }

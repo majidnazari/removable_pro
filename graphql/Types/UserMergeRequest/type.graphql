@@ -49,6 +49,12 @@ input UpdateRequestSenderInput {
     request_status_sender: RequestStatusSender
    
 }
+
+input UpdateRequestReciverInput {
+
+    request_status_sender: RequestStatusSender
+   
+}
 input UpdateRequestReciverInput {
 
    request_status_reciver: RequestStatusReciver

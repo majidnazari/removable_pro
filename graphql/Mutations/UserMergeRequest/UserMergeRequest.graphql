@@ -16,6 +16,10 @@
     @guard(with: ["api"]) 
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateRequestSender@resolveUpdateRequestSender") 
 
+    UpdateRequestReciver (id: ID!, input: UpdateRequestReciverInput! @spread): UserMergeRequest 
+    @guard(with: ["api"]) 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateRequestReciver@resolveUpdateRequestReciver") 
+
     # deleteUserMergeRequest(id: ID!): UserMergeRequest 
     # @guard(with: ["api"])
     #  @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\DeleteUserMergeRequest@resolveUserMergeRequest") 
