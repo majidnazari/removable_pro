@@ -8,6 +8,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 
 use App\Traits\AuthUserTrait;
+use App\Traits\FindOwnerTrait;
+
 
 
 use Log;
@@ -15,7 +17,7 @@ use Log;
 final class GetPerson
 {
    // $user_id = auth()->guard('api')->user()->id;
- use AuthUserTrait;
+ use AuthUserTrait,FindOwnerTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -33,8 +35,12 @@ final class GetPerson
     }
     function resolvePersonFatherOfFather($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+
+        $owner_person=$this->findOwner();
+
         // Find the given person
-        $person = $this->findUser($args['id']);//Person::find($args['id']);
+        //$person = $this->findUser($args['id']);//Person::find($args['id']);
+        $person = $this->findUser($owner_person->id);//Person::find($args['id']);
 
         //Log::info("the id is:" . $args['id'] . "the person is:" . json_encode($person));
 
@@ -69,8 +75,10 @@ final class GetPerson
 
     function resolvePersonFatherOfMother($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $owner_person=$this->findOwner();
         // Find the given person
-        $person =$this->findUser($args['id']);// Person::find($args['id']);
+       // $person =$this->findUser($args['id']);// Person::find($args['id']);
+        $person =$this->findUser( $owner_person->id);// Person::find($args['id']);
 
         // If the person exists, find the root ancestor
         if ($person) {
@@ -82,7 +90,11 @@ final class GetPerson
 
     public function resolvePersonAncestry($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $personId = $args['id'];
+        $user_id = $this->getUserId();
+        $owner_person=$this->findOwner();
+        //Log::info("the owner of user id :".$user_id . " is :" .  $user_is_owner->id);
+        $personId =  $owner_person->id;//$args['id'];
+        //$personId =  $args['id'];
         $depth = $args['depth'] ?? 3; // Default depth of 3 if not provided
 
        // Log::info("Fetching ancestry tree for Person ID: $personId with depth: $depth");
