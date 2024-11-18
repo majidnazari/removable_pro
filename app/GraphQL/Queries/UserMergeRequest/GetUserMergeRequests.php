@@ -5,11 +5,14 @@ namespace App\GraphQL\Queries\UserMergeRequest;
 use App\Models\UserMergeRequest;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\Traits\AuthUserTrait;
+
 
 use Log;
 
 final class GetUserMergeRequests
 {
+    use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,9 +23,12 @@ final class GetUserMergeRequests
     }
     function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user_sender_id = auth()->guard('api')->user()->id;
+        //$user_id = auth()->guard('api')->user()->id;
+        $user_id = $this->getUserId();
 
-        $UserMergeRequests = UserMergeRequest::where('creator_id',$user_sender_id)->where('deleted_at', null);
+        $UserMergeRequests = UserMergeRequest::where('user_sender_id', $user_id)
+        ->orWhere('user_reciver_id',$user_id)
+        ->where('deleted_at', null);
 
         //log::info("the Scores is:" . json_encode($UserMergeRequests));
         return $UserMergeRequests;
