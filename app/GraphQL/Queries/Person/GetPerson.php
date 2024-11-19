@@ -95,48 +95,48 @@ final class GetPerson
     {
         // Fetch the authenticated user's ID
         $user_id = $this->getUserId();
-
-        // Get the owner person and related node ID
-        $owner_person = $this->findOwner(); // Primary person
-        $personId = $owner_person->id;
-
-        $depth = $args['depth'] ?? 3; // Default depth is 3 if not provided
-
-        $data=[
-            "user_sender_id" => $user_id,
-            "node_sender_id" => $personId,
-            "request_status_sender" =>RequestStatusSender::Active,
-            "status" => MergeStatus::Active,
-        ];
-
-        $userRequestMerge = UserMergeRequest::where( 'user_sender_id', $user_id)->orWhere('user_reciver_id', $user_id)->first();
-
-
-        Log::info("the data are:" . json_encode($data) . " userRequestMerge is:" . json_encode( $userRequestMerge ));
-
-        $relatedNodeId = $userRequestMerge ? $userRequestMerge->node_reciver_id : null;
-
-        //$relatedNodeId = 8;//$args['relatedNodeId'] ?? null; // ID of the related node
-
-        // Fetch the main person
-        $person = $this->findUser($personId); // Person::find($personId);
-        $related_person = $this->findUser($relatedNodeId); // Person::find($personId);
-
-        // Return null if no primary person is found
-        if (!$person) {
+    
+        // Fetch sender and receiver records for the logged-in user
+        $sender = UserMergeRequest::where('user_sender_id', $user_id)->where('request_status_sender', RequestStatusSender::Active)->first();
+        $receiver = UserMergeRequest::where('user_reciver_id', $user_id)->where('status', MergeStatus::Active)->first();
+    
+        Log::info("The sender is: " . json_encode($sender) . " | The receiver is: " . json_encode($receiver));
+    
+        // Determine if the user is acting as a sender or receiver
+        if ($sender) {
+            // Logged-in user is the sender
+            $mineNodeId = $sender->node_sender_id; // "mine" refers to the sender's node
+            $relatedNodeId = $sender->node_reciver_id; // "related_node" refers to the receiver's node
+        } elseif ($receiver) {
+            // Logged-in user is the receiver
+            $mineNodeId = $receiver->node_reciver_id; // "mine" refers to the receiver's node
+            $relatedNodeId = $receiver->node_sender_id; // "related_node" refers to the sender's node
+        } else {
+            // No valid sender or receiver relationship found
             return null;
         }
-
-        // Fetch the related node person, if provided
-       // $relatedNodePerson = $relatedNodeId ? $this->findUser($relatedNodeId) : null;
-
-        // Fetch the ancestry tree for both main and related nodes
+    
+        // Fetch the "mine" and "related_node" persons
+        $minePerson = $this->findUser($mineNodeId);
+        $relatedPerson = $this->findUser($relatedNodeId);
+    
+        Log::info("Mine person: " . json_encode($minePerson) . " | Related person: " . json_encode($relatedPerson));
+    
+        // Ensure both persons are valid
+        if (!$minePerson || !$relatedPerson) {
+            return null;
+        }
+    
+        // Determine the depth
+        $depth = $args['depth'] ?? 3; // Default depth is 3 if not provided
+    
+        // Fetch the ancestry tree for both "mine" and "related_node"
         return [
-            'mine' => $person->getFullBinaryAncestry($depth),
-            'related_node' =>$related_person->getFullBinaryAncestry($depth) ,
+            'mine' => $minePerson->getFullBinaryAncestry($depth),
+            'related_node' => $relatedPerson->getFullBinaryAncestry($depth),
         ];
     }
-
+    
 
     public function findUser($id)
     {
