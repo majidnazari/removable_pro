@@ -35,52 +35,24 @@ final class SendRequestToOtherFamily
 
         $user_sender_id = auth()->guard('api')->user()->id;
 
-        // if ($user_sender_id === $args['user_sender_id']) {
-        //     return Error::createLocatedError("the sender and reciver cannot be the same!");
-        // }
+        // Validate inputs using the custom validator
+        //$this->validate($args);
 
-        $person = Person::where('id', $args['node_sender_id'])->first();
+        // Fetch the sender person
+        $person = Person::find($args['node_sender_id']);
 
-        if ($person && empty($person->country_code) && empty($person->mobile)) {
-            return Error::createLocatedError("the person with this mobile not found!");
-        }
-
+        // Fetch the receiver user by mobile
         $user_reciver = User::where('mobile', $person->country_code . $person->mobile)
-            //->where('is_owner',true)
-            //->where(column: 'country_code',operator: $args['country_code'])
-            // ->where('id', '!=', $user_sender_id)
-            //->where('is_owner', true)
             ->where('status', Status::Active)
             ->first();
 
-        if (!$user_reciver) {
-            return Error::createLocatedError("the node you have seleted not found!");
-        }
-
-        //Log::info("the creator id node input is:" . $person->creator_id . "and the user id sender is:" .  $user_sender_id );
-        if ($person->creator_id !==$user_sender_id ) {
-            return Error::createLocatedError("you don't have access to other family!");
-        }
-        if ($user_reciver->id === $user_sender_id) {
-            return Error::createLocatedError("the sender and reciver cannot be the same!");
-        }
-
-
+        // Fetch the receiver's owner
         $person_reciver_owner = Person::where('creator_id', $user_reciver->id)
-        ->where('is_owner',true)
-        ->where('status',Status::Active)
-        ->first();
+            ->where('is_owner', true)
+            ->where('status', Status::Active)
+            ->first();
 
-        //Log::info("the person_reciver_owner are:" . $person_reciver_owner);
-
-        if (!$person_reciver_owner) {
-            return Error::createLocatedError("the person reciver owner not found!");
-        }
-
-
-
-        //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        // Prepare data for creating UserMergeRequest
         $UserMergeRequestResult = [
             "creator_id" => $user_sender_id,
             "user_sender_id" => $user_sender_id,
@@ -88,23 +60,11 @@ final class SendRequestToOtherFamily
             "user_reciver_id" => $user_reciver->id,
             "node_reciver_id" => $person_reciver_owner->id,
             "status" => MergeStatus::Active,
-
             "request_sender_expired_at" => Carbon::now()->addDays(1)->format("Y-m-d H:i:s"),
-            "request_status_sender" => RequestStatusSender::Active
+            "request_status_sender" => RequestStatusSender::Active,
         ];
 
-        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
-        $is_exist = UserMergeRequest::where('user_sender_id', $user_sender_id)
-            // ->where('node_sender_id', $args['node_sender_id'])
-            // ->where('user_reciver_id', $user_reciver->id)
-            ->where('request_status_sender',  RequestStatusSender::Active->value)
-            ->first();
-       // Log::info("the args are:" . json_encode(  $is_exist) . " and user id is :". $user_sender_id);
-
-        if ($is_exist) {
-            return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
-        }
-        $UserMergeRequestResult_result = UserMergeRequest::create($UserMergeRequestResult);
-        return $UserMergeRequestResult_result;
+        // Create the UserMergeRequest
+        return UserMergeRequest::create($UserMergeRequestResult);
     }
 }

@@ -38,7 +38,8 @@ input CreateUserMergeRequestInput {
 
 }
 
-input SendRequestToOtherFamilyInput {
+input SendRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendRequestToOtherFamilyInputValidator")
+{
 
     # user_sender_id: ID!
     node_sender_id: ID!
