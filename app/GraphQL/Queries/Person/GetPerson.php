@@ -3,6 +3,7 @@
 namespace App\GraphQL\Queries\Person;
 
 use App\Models\Person;
+use App\Models\UserMergeRequest;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
@@ -90,26 +91,43 @@ final class GetPerson
 
     public function resolvePersonAncestry($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        // Fetch the authenticated user's ID
         $user_id = $this->getUserId();
-        $owner_person=$this->findOwner();
-        //Log::info("the owner of user id :".$user_id . " is :" .  $user_is_owner->id);
-        $personId =  $owner_person->id;//$args['id'];
-        //$personId =  $args['id'];
-        $depth = $args['depth'] ?? 3; // Default depth of 3 if not provided
 
-       // Log::info("Fetching ancestry tree for Person ID: $personId with depth: $depth");
+        // Get the owner person and related node ID
+        $owner_person = $this->findOwner(); // Primary person
+        $personId = $owner_person->id;
 
-        // Find the person by ID
-        $person = $this->findUser($personId);//Person::find($personId);
-        
+        $depth = $args['depth'] ?? 3; // Default depth is 3 if not provided
+
+        $userRequestMerge = UserMergeRequest::where('user_sender_id',  $user_id) // Assuming the sender is the current person
+        ->where('node_sender_id', $personId) // Assuming the sender is the current person
+        ->where('request_status_sender', 'Active') // Optional: Only fetch active requests
+        ->where('status', 'Active') // Optional: Only fetch active requests
+        ->first();
+
+    $relatedNodeId = $userRequestMerge ? $userRequestMerge->node_reciver_id : null;
+
+        $relatedNodeId = 8;//$args['relatedNodeId'] ?? null; // ID of the related node
+
+        // Fetch the main person
+        $person = $this->findUser($personId); // Person::find($personId);
+
+        // Return null if no primary person is found
         if (!$person) {
-           // Log::info("Person with ID $personId not found.");
             return null;
         }
 
-        // Fetch the ancestry tree
-        return $person->getFullBinaryAncestry($depth);
+        // Fetch the related node person, if provided
+        $relatedNodePerson = $relatedNodeId ? $this->findUser($relatedNodeId) : null;
+
+        // Fetch the ancestry tree for both main and related nodes
+        return [
+            'mine' => $person->getFullBinaryAncestry($depth),
+            'related_node' => $relatedNodePerson ? $relatedNodePerson->getFullBinaryAncestry($depth) : null,
+        ];
     }
+
 
     public function findUser($id)
     {
