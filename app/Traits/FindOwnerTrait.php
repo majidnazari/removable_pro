@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Traits;
+use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Person;
 trait FindOwnerTrait
@@ -10,15 +11,18 @@ trait FindOwnerTrait
      *
      * @return Person|null
      */
-    public function findOwner()
+    public function findOwner($user_id = null)
     {
-        // Get the logged-in user ID
-        $userId = Auth::guard('api')->id();
-
-        // Find the person where is_owner = 1 and user_id matches
+        // Determine the user ID to query
+        $userId = $user_id ?? Auth::guard('api')->id();
+    
+        // Query the Person model for the active owner
         return Person::where('creator_id', $userId)
+            ->where('status', Status::Active)
             ->where('is_owner', 1)
             ->first();
     }
+    
+
 }
 
