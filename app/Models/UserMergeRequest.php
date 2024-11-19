@@ -55,8 +55,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class UserMergeRequest extends \Eloquent
 {
-   
-    use HasFactory, SoftDeletes; 
+
+    use HasFactory, SoftDeletes;
 
     public const TABLE_NAME = 'user_merge_requests';
     public const ID = 'id';
@@ -76,6 +76,7 @@ class UserMergeRequest extends \Eloquent
         'user_sender_id',
         'node_sender_id',
         'user_reciver_id',
+        'node_reciver_id',
         'request_status_sender',
         "request_sender_expired_at",
         'request_status_reciver',
@@ -84,8 +85,9 @@ class UserMergeRequest extends \Eloquent
         'merge_status_sender',
         "merge_sender_expired_at",
         'merge_status_reciver',
+        'status',
     ];
-   
+
     public function sender()
     {
         return $this->belongsTo(Person::class, self::USER_SENDER_ID);

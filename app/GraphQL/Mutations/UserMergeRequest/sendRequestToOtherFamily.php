@@ -12,6 +12,7 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
+use App\GraphQL\Enums\MergeStatus;
 use App\GraphQL\Enums\RequestStatusSender;
 use App\models\User;
 use App\models\Person;
@@ -63,10 +64,18 @@ final class SendRequestToOtherFamily
         if ($user_reciver->id === $user_sender_id) {
             return Error::createLocatedError("the sender and reciver cannot be the same!");
         }
-        //Log::info("the args are:" . json_encode( $user) . " and user id is :". $user->id. " and the carbo is:" .Carbon::now()->addDays(1)->format("Y-M-d H:i:s"));
 
 
+        $person_reciver_owner = Person::where('creator_id', $user_reciver->id)
+        ->where('is_owner',true)
+        ->where('status',Status::Active)
+        ->first();
 
+        //Log::info("the person_reciver_owner are:" . $person_reciver_owner);
+
+        if (!$person_reciver_owner) {
+            return Error::createLocatedError("the person reciver owner not found!");
+        }
 
 
 
@@ -77,7 +86,8 @@ final class SendRequestToOtherFamily
             "user_sender_id" => $user_sender_id,
             "node_sender_id" => $args['node_sender_id'],
             "user_reciver_id" => $user_reciver->id,
-            // "node_reciver_id" => $args['node_reciver_id'],
+            "node_reciver_id" => $person_reciver_owner->id,
+            "status" => MergeStatus::Active,
 
             "request_sender_expired_at" => Carbon::now()->addDays(1)->format("Y-m-d H:i:s"),
             "request_status_sender" => RequestStatusSender::Active

@@ -276,6 +276,7 @@ class Person extends \Eloquent
                 'last_name' => $person->last_name,
                 'father' => null,
                 'mother' => null,
+              
             ];
         }
 
