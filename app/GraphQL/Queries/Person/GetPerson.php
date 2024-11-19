@@ -2,6 +2,8 @@
 
 namespace App\GraphQL\Queries\Person;
 
+use App\GraphQL\Enums\MergeStatus;
+use App\GraphQL\Enums\RequestStatusSender;
 use App\Models\Person;
 use App\Models\UserMergeRequest;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -100,18 +102,25 @@ final class GetPerson
 
         $depth = $args['depth'] ?? 3; // Default depth is 3 if not provided
 
-        $userRequestMerge = UserMergeRequest::where('user_sender_id',  $user_id) // Assuming the sender is the current person
-        ->where('node_sender_id', $personId) // Assuming the sender is the current person
-        ->where('request_status_sender', 'Active') // Optional: Only fetch active requests
-        ->where('status', 'Active') // Optional: Only fetch active requests
-        ->first();
+        $data=[
+            "user_sender_id" => $user_id,
+            "node_sender_id" => $personId,
+            "request_status_sender" =>RequestStatusSender::Active,
+            "status" => MergeStatus::Active,
+        ];
 
-    $relatedNodeId = $userRequestMerge ? $userRequestMerge->node_reciver_id : null;
+        $userRequestMerge = UserMergeRequest::where( 'user_sender_id', $user_id)->orWhere('user_reciver_id', $user_id)->first();
 
-        $relatedNodeId = 8;//$args['relatedNodeId'] ?? null; // ID of the related node
+
+        Log::info("the data are:" . json_encode($data) . " userRequestMerge is:" . json_encode( $userRequestMerge ));
+
+        $relatedNodeId = $userRequestMerge ? $userRequestMerge->node_reciver_id : null;
+
+        //$relatedNodeId = 8;//$args['relatedNodeId'] ?? null; // ID of the related node
 
         // Fetch the main person
         $person = $this->findUser($personId); // Person::find($personId);
+        $related_person = $this->findUser($relatedNodeId); // Person::find($personId);
 
         // Return null if no primary person is found
         if (!$person) {
@@ -119,12 +128,12 @@ final class GetPerson
         }
 
         // Fetch the related node person, if provided
-        $relatedNodePerson = $relatedNodeId ? $this->findUser($relatedNodeId) : null;
+       // $relatedNodePerson = $relatedNodeId ? $this->findUser($relatedNodeId) : null;
 
         // Fetch the ancestry tree for both main and related nodes
         return [
             'mine' => $person->getFullBinaryAncestry($depth),
-            'related_node' => $relatedNodePerson ? $relatedNodePerson->getFullBinaryAncestry($depth) : null,
+            'related_node' =>$related_person->getFullBinaryAncestry($depth) ,
         ];
     }
 
