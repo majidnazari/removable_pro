@@ -64,19 +64,22 @@ input DeletePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\Del
     id: ID!
 }
 
-type AncestryTree {
+
+type AncestryTreeNode {
     person_id: ID
     first_name: String
     last_name: String
     father: AncestryNode
     mother: AncestryNode
-
-   
 }
 
 type AncestryNode {
     id: ID
     name: String
-    ancestry: AncestryTree
+    ancestry: AncestryTreeNode
 }
 
+type AncestryTree {
+    mine: AncestryTreeNode
+    related_node: AncestryTreeNode
+}
