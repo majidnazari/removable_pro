@@ -7,6 +7,7 @@ use Nuwave\Lighthouse\Validation\Validator;
 
 
 use App\Rules\UserMergeRequest\MergeIdsAreDifferent;
+use App\Rules\UserMergeRequest\MergeNoDuplicateIds;
 use App\Rules\UserMergeRequest\MergeIdsReceiverValid;
 use App\Rules\UserMergeRequest\MergeIdsSenderOwnership;
 //use App\Rules\UserMergeRequest\MergeIdsCountMatch;
@@ -41,10 +42,12 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
                 'string',
                // new MergeIdsSenderOwnership($this->userSenderId, $merge_ids_sender ), // Validates sender ownership
                new MergeIdsAreDifferent($mergeIdsReceiver),
+               new MergeNoDuplicateIds(), 
             ],
             'merge_ids_reciver' => [
                 'required',
                 'string',
+                new MergeNoDuplicateIds(), 
                // new MergeIdsReceiverValid($this->userSenderId,$merge_ids_reciver), // Validates receiver validity
             ],
            
