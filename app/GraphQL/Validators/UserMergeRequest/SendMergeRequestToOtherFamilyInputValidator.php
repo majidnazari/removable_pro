@@ -33,17 +33,17 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
             'id' => [
                 'required',
                 'exists:user_merge_requests,id',
-                new MergeActiveRequestExists(), // Checks if the request is active
+                //new MergeActiveRequestExists(), // Checks if the request is active
             ],
             'merge_ids_sender' => [
                 'required',
                 'string',
-                new MergeIdsSenderOwnership($this->userSenderId, $merge_ids_sender ), // Validates sender ownership
+               // new MergeIdsSenderOwnership($this->userSenderId, $merge_ids_sender ), // Validates sender ownership
             ],
             'merge_ids_reciver' => [
                 'required',
                 'string',
-                new MergeIdsReceiverValid($this->userSenderId,$merge_ids_reciver), // Validates receiver validity
+               // new MergeIdsReceiverValid($this->userSenderId,$merge_ids_reciver), // Validates receiver validity
             ],
            
         ];

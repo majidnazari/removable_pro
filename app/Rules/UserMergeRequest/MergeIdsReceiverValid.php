@@ -23,7 +23,7 @@ class MergeIdsReceiverValid implements Rule
     public function passes($attribute, $value)
     {
         $mergeIdsReceiver = explode(',', $value);
-        $receiverCreatorId = UserMergeRequest::where('creator_id', $this->userSenderId)
+        $receiverCreatorId = UserMergeRequest::where('creator_id', $this->mergeIdsReciver)
         ->where('status',MergeStatus::Active)
         ->first()->creator_id;
 
