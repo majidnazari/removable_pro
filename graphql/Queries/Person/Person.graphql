@@ -17,4 +17,4 @@ getPersonFatherOfMother(id: ID! ): Person @guard(with: ["api"])
     
 
 
- getPersonAncestry(id: ID!, depth: Int!): AncestryTree @guard(with: ["api"])  @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")
+ getPersonAncestry( depth: Int!): AncestryTree @guard(with: ["api"])  @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestry")

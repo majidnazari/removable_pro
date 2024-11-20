@@ -4,10 +4,10 @@ type UserMergeRequest {
     creator_id: ID
     editor_id: ID
 
-    user_sender_id: ID!
+    user_sender_id: ID
     node_sender_id: ID!
 
-    user_reciver_id: ID!
+    user_reciver_id: ID
     request_status_sender: RequestStatusSender
     request_sender_expired_at: String
     request_status_reciver: RequestStatusReciver
@@ -19,6 +19,9 @@ type UserMergeRequest {
     merge_status_sender: RequestStatusSender
     merge_sender_expired_at: String
     merge_status_reciver: RequestStatusReciver
+
+
+    status: MergeStatus
 
     created_at: String
     updated_at: String
@@ -45,6 +48,7 @@ input SendRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\
     node_sender_id: ID!
    
 }
+
 input UpdateRequestSenderInput {
 
     request_status_sender: RequestStatusSender
@@ -53,16 +57,18 @@ input UpdateRequestSenderInput {
 
 input UpdateRequestReciverInput {
 
-    request_status_sender: RequestStatusSender
-   
-}
-input UpdateRequestReciverInput {
-
    request_status_reciver: RequestStatusReciver
    
 }
 
-input UpdateUserMergeRequestInput {
+input SendMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendMergeRequestToOtherFamilyInputValidator")
+{
+    id: ID!
+    merge_ids_sender: String
+    merge_ids_reciver: String 
+}
+
+input UpdateMergeRequestSenderInput {
 
     id: ID!
    
@@ -71,6 +77,14 @@ input UpdateUserMergeRequestInput {
 
     merge_status_sender: RequestStatusSender
     merge_sender_expired_at: String
+    
+    
+}
+
+input UpdateMergeRequestReciverInput {
+
+    id: ID!
+    merge_status_reciver: RequestStatusReciver
     
 }
 

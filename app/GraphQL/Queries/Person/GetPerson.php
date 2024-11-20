@@ -111,12 +111,12 @@ final class GetPerson
     
         // If no relationship is found, only return the user's own ancestry
         if (!$relation) {
-            Log::info("No relationship found for user_id: $user_id. Returning only their own family.");
+            //Log::info("No relationship found for user_id: $user_id. Returning only their own family.");
             $minePerson = $this->findOwner($user_id);
 
             // Ensure the owner is valid
             if (!$minePerson) {
-                Log::warning("No valid owner found for user_id: $user_id.");
+                //Log::warning("No valid owner found for user_id: $user_id.");
                 return null;
             }
 
@@ -135,20 +135,20 @@ final class GetPerson
         $relatedUserId = $isSender ? $relation->user_reciver_id : $relation->user_sender_id;
     
         // Log the determined roles and IDs
-        Log::info("Role determined: " . ($isSender ? 'Sender' : 'Receiver'));
-        Log::info("MineUserId: $mineUserId | RelatedUserId: $relatedUserId");
+       // Log::info("Role determined: " . ($isSender ? 'Sender' : 'Receiver'));
+       //Log::info("MineUserId: $mineUserId | RelatedUserId: $relatedUserId");
     
         // Fetch the owners of both the sender and receiver nodes
         $minePerson = $this->findOwner($mineUserId); // Find the owner of the sender/receiver
         $relatedPerson = $this->findOwner($relatedUserId); // Find the owner of the related user
     
         // Log the fetched owners
-        Log::info("Mine person owner: " . json_encode($minePerson));
-        Log::info("Related person owner: " . json_encode($relatedPerson));
+        //Log::info("Mine person owner: " . json_encode($minePerson));
+       // Log::info("Related person owner: " . json_encode($relatedPerson));
     
         // Ensure both owners are valid
         if (!$minePerson || !$relatedPerson) {
-            Log::warning("Invalid owner found. Mine person: " . json_encode($minePerson) . " | Related person: " . json_encode($relatedPerson));
+            //Log::warning("Invalid owner found. Mine person: " . json_encode($minePerson) . " | Related person: " . json_encode($relatedPerson));
             return null;
         }
     
@@ -159,8 +159,8 @@ final class GetPerson
         $relatedAncestry = $relatedPerson->getFullBinaryAncestry($depth);
     
         // Log the ancestry trees
-        Log::info("Mine ancestry tree: " . json_encode($mineAncestry));
-        Log::info("Related node ancestry tree: " . json_encode($relatedAncestry));
+        //Log::info("Mine ancestry tree: " . json_encode($mineAncestry));
+        //Log::info("Related node ancestry tree: " . json_encode($relatedAncestry));
     
         // Return the results
         return [
