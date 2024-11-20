@@ -9,9 +9,9 @@ use Nuwave\Lighthouse\Validation\Validator;
 use App\Rules\UserMergeRequest\MergeIdsAreDifferent;
 use App\Rules\UserMergeRequest\MergeNoDuplicateIds;
 use App\Rules\UserMergeRequest\ExcludeLoggedInUserIds;
-use App\Rules\UserMergeRequest\MergeIdsSenderOwnership;
+use App\Rules\UserMergeRequest\MustIncludeLoggedInUserId;
 //use App\Rules\UserMergeRequest\MergeIdsCountMatch;
-use App\Rules\UserMergeRequest\NoDuplicateMergeRequest;
+use App\Rules\UserMergeRequest\EqualCountIds;
 use Log;
 
 class SendMergeRequestToOtherFamilyInputValidator extends Validator
@@ -31,6 +31,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
         $merge_ids_sender = $this->arg('merge_ids_sender');
         $merge_ids_reciver = $this->arg('merge_ids_reciver');
         $mergeIdsReceiver = $this->arg('merge_ids_reciver');
+        $mergeIdsReceiver = $this->arg('merge_ids_reciver');
         return [
             'id' => [
                 'required',
@@ -44,12 +45,13 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
                new MergeIdsAreDifferent($mergeIdsReceiver),
                new MergeNoDuplicateIds(), 
                new ExcludeLoggedInUserIds($this->userId),
+               new EqualCountIds($mergeIdsReceiver),
             ],
             'merge_ids_reciver' => [
                 'required',
                 'string',
                 new MergeNoDuplicateIds(), 
-                new ExcludeLoggedInUserIds($this->userId),
+                new MustIncludeLoggedInUserId($this->userId),
                // new MergeIdsReceiverValid($this->userSenderId,$merge_ids_reciver), // Validates receiver validity
             ],
            
