@@ -9,7 +9,7 @@ use App\GraphQL\Enums\MergeStatus;
 use App\GraphQL\Enums\Status;
 
 
-class EqualCountIds implements Rule
+class MergeEqualCountIds implements Rule
 {
     protected $mergeIdsReceiver;
     protected $senderCount;
