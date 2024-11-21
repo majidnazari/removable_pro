@@ -8,6 +8,8 @@ use App\Rules\UserMergeRequest\MergeIdsAreDifferent;
 use App\Rules\UserMergeRequest\MergeNoDuplicateIds;
 use App\Rules\UserMergeRequest\MergeValidateNodeIdsInMergeIds;
 use App\Rules\UserMergeRequest\MergeValidateMergeIdsWithinActiveRelations;
+use App\Rules\UserMergeRequest\MergeValidateMergeIdsSender;
+use App\Rules\UserMergeRequest\MergeValidateMergeIdReceiver;
 use App\Rules\UserMergeRequest\MergeEqualCountIds;
 use Log;
 
@@ -37,18 +39,21 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
             'merge_ids_sender' => [
                 'required',
                 'string',
-               new MergeIdsAreDifferent($mergeIdsReceiver),
-               new MergeNoDuplicateIds(), 
-               new MergeEqualCountIds($mergeIdsReceiver),
-               new MergeValidateMergeIdsWithinActiveRelations($this->userId),
+                new MergeIdsAreDifferent($mergeIdsReceiver),
+                new MergeNoDuplicateIds(),
+                new MergeEqualCountIds($mergeIdsReceiver),
+                //new MergeValidateMergeIdsWithinActiveRelations($this->userId),
+                new MergeValidateMergeIdsSender($this->userId),
             ],
             'merge_ids_reciver' => [
                 'required',
                 'string',
-                new MergeNoDuplicateIds(), 
-                new MergeValidateMergeIdsWithinActiveRelations($this->userId),
+                new MergeNoDuplicateIds(),
+                // new MergeValidateMergeIdsWithinActiveRelations($this->userId),
+                new MergeValidateMergeIdReceiver($this->userId),
+
             ],
-           
+
         ];
     }
 }
