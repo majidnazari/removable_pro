@@ -8,6 +8,7 @@ use App\GraphQL\Enums\MergeStatus;
 use App\GraphQL\Enums\Status;
 
 use App\Models\Person;
+use Log;
 
 
 
@@ -25,35 +26,81 @@ class MergeValidateMergeIdsWithinActiveRelations implements Rule
 
     public function passes($attribute, $value)
     {
+        Log::info("MergeValidateMergeIdsWithinActiveRelations: Checking {$attribute} with value: {$value}");
         $this->attributeName = $attribute; // Capture the attribute name
 
-        // Fetch all active relationships where the logged-in user is a sender or receiver
-        $activeRelations = UserMergeRequest::where('status', Mergestatus::Active)
+        $this->allowedPersonIds = []; // Initialize allowed person IDs
+
+        // Handle Active Relationships
+        $activeRelation = UserMergeRequest::where('status', 1) // Active status
+            ->where(function ($query) {
+                $query->where('user_sender_id', $this->loggedInUserId)
+                    ->orWhere('user_reciver_id', $this->loggedInUserId);
+            })
+            ->first();
+
+        if ($activeRelation) {
+            if ($this->attributeName === 'input.merge_ids_sender') {
+                // Fetch persons created by user_sender_id
+                $this->allowedPersonIds = array_merge(
+                    $this->allowedPersonIds,
+                    Person::where('creator_id', $activeRelation->user_sender_id)
+                        ->pluck('id')
+                        ->toArray()
+                );
+                Log::info("Active Relationship - merge_ids_sender allowedPersonIds: " . json_encode($this->allowedPersonIds));
+            } elseif ($this->attributeName === 'input.merge_ids_reciver') {
+                // Fetch persons created by user_reciver_id
+                $this->allowedPersonIds = array_merge(
+                    $this->allowedPersonIds,
+                    Person::where('creator_id', $activeRelation->user_reciver_id)
+                        ->pluck('id')
+                        ->toArray()
+                );
+                Log::info("Active Relationship - merge_ids_reciver allowedPersonIds: " . json_encode($this->allowedPersonIds));
+            }
+        } else {
+            Log::info("No active relationship found for user {$this->loggedInUserId}");
+        }
+
+        // Handle Complete Relationships
+        $completeRelations = UserMergeRequest::where('status', Mergestatus::Complete) // Complete status
             ->where(function ($query) {
                 $query->where('user_sender_id', $this->loggedInUserId)
                     ->orWhere('user_reciver_id', $this->loggedInUserId);
             })
             ->get();
-        // Extract user IDs of sender and receiver from active relationships
-        $relatedUserIds = $activeRelations->flatMap(function ($relation) {
-            return [$relation->user_sender_id, $relation->user_reciver_id];
-        })->unique()->toArray();
 
-        // Step 2: Fetch all person IDs created by the related users with status 'Active'
-        $this->allowedPersonIds = Person::whereIn('creator_id', $relatedUserIds)
-            ->where('status', status::Active)
-            ->pluck('id')
-            ->toArray();
+        if ($completeRelations->isNotEmpty()) {
+            foreach ($completeRelations as $relation) {
+                // Fetch all persons created by both sender and receiver
+                $this->allowedPersonIds = array_merge(
+                    $this->allowedPersonIds,
+                    Person::where('creator_id', $relation->user_sender_id)
+                        ->pluck('id')
+                        ->toArray(),
+                    Person::where('creator_id', $relation->user_reciver_id)
+                        ->pluck('id')
+                        ->toArray()
+                );
+            }
 
-            // Convert the input merge IDs to an array
-            $mergeIds = explode(',', $value);
+            Log::info("Complete Relationships - merged allowedPersonIds: " . json_encode($this->allowedPersonIds));
+        }
 
-            // Check for any IDs not in the allowed range
-            $this->invalidIds = array_diff($mergeIds, $this->allowedPersonIds);
+        // Remove duplicate IDs
+        $this->allowedPersonIds = array_unique($this->allowedPersonIds);
+        Log::info("Final Allowed Person IDs for {$this->attributeName}: " . json_encode($this->allowedPersonIds));
 
-            // Validation passes if there are no invalid IDs
-            return empty($this->invalidIds);
+        // Validate input merge IDs
+        $mergeIds = explode(',', $value);
+        $this->invalidIds = array_diff($mergeIds, $this->allowedPersonIds);
+        Log::info("Invalid IDs for {$this->attributeName}: " . json_encode($this->invalidIds));
+
+        // Validation passes if there are no invalid IDs
+        return empty($this->invalidIds);
     }
+
 
     public function message()
     {
