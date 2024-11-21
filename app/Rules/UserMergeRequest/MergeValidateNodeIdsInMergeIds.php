@@ -12,7 +12,7 @@ class MergeValidateNodeIdsInMergeIds implements Rule
     protected $userMergeRequestId;
     protected $mergeIdsSender;
     protected $mergeIdsReceiver;
-    protected $missingIds = [];
+    protected $errors = [];
 
     public function __construct($userMergeRequestId, $mergeIdsSender, $mergeIdsReceiver)
     {
@@ -24,9 +24,12 @@ class MergeValidateNodeIdsInMergeIds implements Rule
     public function passes($attribute, $value)
     {
         // Fetch the user merge request by ID
-        $userMergeRequest = UserMergeRequest::where('id',$this->userMergeRequestId)->where('status',MergeStatus::Active)->first();
+        $userMergeRequest = UserMergeRequest::where('id', $this->userMergeRequestId)
+            ->where('status', MergeStatus::Active)
+            ->first();
 
         if (!$userMergeRequest) {
+            $this->errors[] = 'The provided user merge request is invalid or inactive.';
             return false;
         }
 
@@ -38,28 +41,22 @@ class MergeValidateNodeIdsInMergeIds implements Rule
         $mergeIdsSenderArray = explode(',', $this->mergeIdsSender);
         $mergeIdsReceiverArray = explode(',', $this->mergeIdsReceiver);
 
-        // Check if both node_sender_id and node_reciver_id exist in their respective arrays
-        if (!in_array($nodeSenderId, $mergeIdsSenderArray)) {
-            $this->missingIds['sender'] = $nodeSenderId;
+        // Check if node_sender_id is the first element in merge_ids_sender
+        if ($mergeIdsSenderArray[0] != $nodeSenderId) {
+            $this->errors[] = "The node_sender_id ({$nodeSenderId}) must be the first element in merge_ids_sender.";
         }
 
-        if (!in_array($nodeReceiverId, $mergeIdsReceiverArray)) {
-            $this->missingIds['receiver'] = $nodeReceiverId;
+        // Check if node_reciver_id is the first element in merge_ids_receiver
+        if ($mergeIdsReceiverArray[0] != $nodeReceiverId) {
+            $this->errors[] = "The node_reciver_id ({$nodeReceiverId}) must be the first element in merge_ids_reciver.";
         }
 
-        // Validation passes if no missing IDs
-        return empty($this->missingIds);
+        // Validation passes if there are no errors
+        return empty($this->errors);
     }
 
     public function message()
     {
-        $messages = [];
-        if (isset($this->missingIds['sender'])) {
-            $messages[] = "The node_sender_id ({$this->missingIds['sender']}) must be included in merge_ids_sender.";
-        }
-        if (isset($this->missingIds['receiver'])) {
-            $messages[] = "The node_reciver_id ({$this->missingIds['receiver']}) must be included in merge_ids_reciver.";
-        }
-        return implode(' ', $messages);
+        return implode(' ', $this->errors);
     }
 }
