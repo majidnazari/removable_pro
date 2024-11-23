@@ -10,7 +10,16 @@ use App\Models\UserMergeRequest;
 use App\Rules\UserMergeRequest\PersonHasValidMobile;
 use App\Rules\UserMergeRequest\PersonIsAccessibleBySender;
 use App\Rules\UserMergeRequest\NoActiveRequestExists;
+
+use App\Rules\UserMergeRequest\NodeSenderExists;
+use App\Rules\UserMergeRequest\NodeSenderNotOwner;
+use App\Rules\UserMergeRequest\ReceiverExists;
+use App\Rules\UserMergeRequest\SenderAndReceiverAreDifferent;
+use App\Rules\UserMergeRequest\ReceiverHasOwner;
+
 use App\GraphQL\Enums\Status;
+
+use Log;
 
 use GraphQL\Error\Error;
 
@@ -35,6 +44,12 @@ class SendRequestToOtherFamilyInputValidator extends Validator
                 new PersonHasValidMobile(),
                 new PersonIsAccessibleBySender($this->user_sender_id),
                 new NoActiveRequestExists($this->user_sender_id),
+
+                new NodeSenderExists(),
+                new NodeSenderNotOwner(),
+                new ReceiverExists(),
+                new SenderAndReceiverAreDifferent($this->user_sender_id),
+                new ReceiverHasOwner(),
             ],
         ];
     }
@@ -42,36 +57,51 @@ class SendRequestToOtherFamilyInputValidator extends Validator
     /**
      * Custom validation logic after field-level validation.
      */
-    public function after($validator)
-    {
-        // Fetch the sender person
-        $node_sender_id = $this->data['node_sender_id'];
-        $person = Person::find($node_sender_id);
+//     public function after($validator)
+//     {
+//         // Fetch the sender person
+//         $node_sender_id = $this->data['node_sender_id'];
+//         $person = Person::find($node_sender_id);
 
-        // Ensure the receiver exists
-        $user_reciver = User::where('mobile', $person->country_code . $person->mobile)
-            ->where('status', Status::Active)
-            ->first();
+//         Log::info("the person foundis:". json_encode($person));
 
-        if (!$user_reciver) {
-            $validator->errors()->add('user_reciver_id', 'The node you have selected is not found.');
-            return;
-        }
+//         if (!$person) {
+//             $validator->errors()->add('node_sender_id', 'The selected node sender does not exist.');
+//             return;
+//         }
 
-        // Ensure sender and receiver are different
-        if ($this->user_sender_id === $user_reciver->id) {
-            $validator->errors()->add('user_reciver_id', 'The sender and receiver cannot be the same.');
-            return;
-        }
+//         // Check if the sender is an owner
+//         if ($person->is_owner) {
+//             $validator->errors()->add('node_sender_id', 'The owner cannot send requests to others.');
+//             return;
+//         }
 
-        // Ensure the receiver's owner exists
-        $person_reciver_owner = Person::where('creator_id', $user_reciver->id)
-            ->where('is_owner', true)
-            ->where('status', Status::Active)
-            ->first();
+//         // Ensure the receiver exists
+//         $user_reciver = User::where('mobile', $person->country_code . $person->mobile)
+//             ->where('status', Status::Active)
+//             ->first();
 
-        if (!$person_reciver_owner) {
-            $validator->errors()->add('node_reciver_id', 'The receiver\'s owner is not found.');
-        }
-    }
-}
+//         if (!$user_reciver) {
+//             $validator->errors()->add('user_reciver_id', 'The node you have selected is not found.');
+//             return;
+//         }
+
+//         // Ensure sender and receiver are different
+//         if ($this->user_sender_id === $user_reciver->id) {
+//             $validator->errors()->add('user_reciver_id', 'The sender and receiver cannot be the same.');
+//             return false;
+//         }
+
+//         // Ensure the receiver's owner exists
+//         $person_reciver_owner = Person::where('creator_id', $user_reciver->id)
+//             ->where('is_owner', true)
+//             ->where('status', Status::Active)
+//             ->first();
+
+//         if (!$person_reciver_owner) {
+//             $validator->errors()->add('node_reciver_id', 'The receiver\'s owner is not found.');
+//         }
+
+        
+//     }
+ }

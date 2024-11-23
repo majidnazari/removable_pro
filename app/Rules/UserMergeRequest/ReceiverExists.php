@@ -2,30 +2,30 @@
 
 namespace App\Rules\UserMergeRequest;
 
+use App\Models\User;
 use App\Models\Person;
 use Illuminate\Contracts\Validation\Rule;
 use App\GraphQL\Enums\Status;
 
-class ReceiverHasOwner implements Rule
+class ReceiverExists implements Rule
 {
     public function passes($attribute, $value)
     {
         $person = Person::find($value);
 
         if (!$person) {
-            return true; // Pass if person not found (to let other rules handle it)
+            return false; // Fail if person does not exist
         }
 
-        $person_reciver_owner = Person::where('creator_id', $person->creator_id)
-            ->where('is_owner', true)
+        $user_reciver = User::where('mobile', $person->country_code . $person->mobile)
             ->where('status', Status::Active)
             ->first();
 
-        return $person_reciver_owner !== null;
+        return $user_reciver !== null;
     }
 
     public function message()
     {
-        return 'The receiver\'s owner is not found.';
+        return 'The node you have selected is not associated with an active user.';
     }
 }
