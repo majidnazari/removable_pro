@@ -14,6 +14,7 @@ use App\Rules\UserMergeRequest\MergeEqualCountIds;
 use App\Rules\UserMergeRequest\MergeRequestIdExists;
 
 use Illuminate\Support\Facades\Auth;
+
 use Exception;
 use Log;
 
@@ -31,6 +32,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
         }
 
         $this->userId = $user->id;
+        Log::info("the user id is:". $this->userId );
     }
 
     /**

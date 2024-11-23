@@ -15,6 +15,8 @@ use App\GraphQL\Enums\Status;
 use App\GraphQL\Enums\RequestStatus;
 use App\models\user;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 final class sendFirstMergeRequest

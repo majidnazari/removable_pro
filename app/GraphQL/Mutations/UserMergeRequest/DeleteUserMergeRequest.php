@@ -6,6 +6,8 @@ use App\Models\UserMergeRequest;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 final class DeleteUserMergeRequest
 {
@@ -25,7 +27,8 @@ final class DeleteUserMergeRequest
 
         if (!$user) {
             throw new Exception("Authentication required. No user is currently logged in.");
-        }        
+        }    
+        $this->userId = $user->id;    
         $UserMergeRequestResult=UserMergeRequest::find($args['id']);
         
         if(!$UserMergeRequestResult)

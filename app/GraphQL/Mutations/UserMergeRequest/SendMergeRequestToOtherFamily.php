@@ -17,6 +17,8 @@ use App\GraphQL\Enums\RequestStatusSender;
 use App\models\User;
 use App\models\Person;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 final class SendMergeRequestToOtherFamily
@@ -39,6 +41,7 @@ final class SendMergeRequestToOtherFamily
         if (!$user) {
             throw new Exception("Authentication required. No user is currently logged in.");
         }
+        $this->userId = $user->id;    
 
         // Validate inputs using the custom validator
         //$this->validate($args);
