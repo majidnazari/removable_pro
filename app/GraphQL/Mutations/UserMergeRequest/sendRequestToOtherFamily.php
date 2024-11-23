@@ -23,7 +23,7 @@ use Exception;
 
 final class SendRequestToOtherFamily
 {
-    protected $userId;
+    protected $user_sender_id;
 
     /**
      * @param  null  $_
@@ -36,12 +36,13 @@ final class SendRequestToOtherFamily
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user_sender_id = Auth::guard('api')->user();
+        $user_sender = Auth::guard('api')->user();
 
-        if (!$user_sender_id) {
+        if (!$user_sender) {
             throw new Exception("Authentication required. No user is currently logged in.");
         }
 
+        $this->user_sender_id= $user_sender->id;
         // Validate inputs using the custom validator
         //$this->validate($args);
 
@@ -61,8 +62,8 @@ final class SendRequestToOtherFamily
 
         // Prepare data for creating UserMergeRequest
         $UserMergeRequestResult = [
-            "creator_id" => $user_sender_id,
-            "user_sender_id" => $user_sender_id,
+            "creator_id" => $this->user_sender_id,
+            "user_sender_id" => $this->user_sender_id,
             "node_sender_id" => $args['node_sender_id'],
             "user_reciver_id" => $user_reciver->id,
             "node_reciver_id" => $person_reciver_owner->id,
