@@ -11,6 +11,8 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 use App\GraphQL\Enums\Status;
 
@@ -19,6 +21,8 @@ use Log;
 
 final class CreateAddress
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -30,8 +34,13 @@ final class CreateAddress
     public function resolveAddress($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
         
-        //Log::info("the args are:" . json_encode($args));
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;
 
            // Use the helper to get the integer value of status
         //$statusValue = StatusHelper::getStatusValue($args['status']);
@@ -39,7 +48,7 @@ final class CreateAddress
        // Log::info("the status is:". $statusValue );
 
         $AddressResult=[
-            "creator_id"=> $user_id,
+            "creator_id"=>  $this->userId,
             "person_id"=> $args['person_id'],
             "country_id"=> $args['country_id'],
             "province_id"=> $args['province_id'],

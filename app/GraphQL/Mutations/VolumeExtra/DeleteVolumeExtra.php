@@ -19,7 +19,6 @@ final class DeleteVolumeExtra
     }
     public function resolveVolumeExtra($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
         $VolumeExtraResult=VolumeExtra::find($args['id']);
         
         if(!$VolumeExtraResult)

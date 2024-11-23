@@ -3,9 +3,9 @@ namespace App\Rules\Share;
 
 
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 class MatchCreator implements Rule
 {
     protected $modelClass;
@@ -42,7 +42,13 @@ class MatchCreator implements Rule
         }
 
         // Get the authenticated user's ID
-        $userId = auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;
 
         // Query the model for the specified IDs
         $modelInstance = new $this->modelClass;
@@ -50,7 +56,7 @@ class MatchCreator implements Rule
 
         // Check that all records have matching creator_id
         foreach ($records as $record) {
-            if ($record->creator_id !== $userId) {
+            if ($record->creator_id !== $this->userId) {
                 $this->errorMessage = 'You do not have permission to access one or more records.';
                 return false;
             }

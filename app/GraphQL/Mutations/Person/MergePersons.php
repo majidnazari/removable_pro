@@ -8,14 +8,23 @@ use App\Models\PersonChild;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\Status;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 final class MergePersons
 {
+    protected $userId;
+
     public function resolvemerge($rootValue, array $args)
     {
-        $auth_id = auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
         //Log::info("the user id is:" .  $auth_id);
 
         $primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);
@@ -35,21 +44,21 @@ final class MergePersons
                 throw new Error("Persons cannot be merged because they have different genders.");
             }
 
-            $this->mergeMarriages($primaryPersonId, $secondaryPersonId, auth_id: $auth_id);
-            $this->mergeChildren($primaryPersonId, $secondaryPersonId, auth_id: $auth_id);
+            $this->mergeMarriages($primaryPersonId, $secondaryPersonId, auth_id: $this->userId);
+            $this->mergeChildren($primaryPersonId, $secondaryPersonId, auth_id: $this->userId);
 
-            $secondaryPerson->editor_id = $auth_id;
+            $secondaryPerson->editor_id = $this->userId;
             $secondaryPerson->save();
             $secondaryPerson->delete();
 
             DB::commit();
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollback();
             throw new Error("Failed to merge persons: " . $e->getMessage());
         }
 
-        $this->cleanupDuplicates($auth_id);
+        $this->cleanupDuplicates($this->userId);
         return $primaryPerson;
     }
 

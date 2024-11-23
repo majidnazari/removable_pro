@@ -9,6 +9,8 @@ use GraphQL\Error\Error;
 
 final class DeleteQuestion
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,7 +21,13 @@ final class DeleteQuestion
     }
     public function resolveQuestion($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;        
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;        
         $QuestionResult=Question::find($args['id']);
         
         if(!$QuestionResult)
@@ -27,7 +35,7 @@ final class DeleteQuestion
             return Error::createLocatedError("Question-DELETE-RECORD_NOT_FOUND");
         }
 
-        $QuestionResult->editor_id= $user_id;
+        $QuestionResult->editor_id= $this->userId;
         $QuestionResult->save(); 
 
         $QuestionResult_filled= $QuestionResult->delete();  

@@ -4,11 +4,14 @@ namespace App\Rules\PersonMarriage;
 
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Exception;
 use App\Models\Person;
 use Log;
 
 class OppositeGenderMarriage implements Rule
 {
+    protected $userId;
+
     protected $manId;
     protected $womanId;
 
@@ -35,7 +38,13 @@ class OppositeGenderMarriage implements Rule
      */
     public function passes($attribute, $value)
     {
-        $userId = auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;
 
        // Log::info("the is is :". $userId);
 
@@ -50,7 +59,7 @@ class OppositeGenderMarriage implements Rule
 
 
         // Check if both persons have the same creator_id as the logged-in user
-        if ($man->creator_id !== $userId || $woman->creator_id !== $userId) {
+        if ($man->creator_id !==  $this->userId || $woman->creator_id !==  $this->userId) {
             $this->errorMessage = 'You can only marry persons you have created.';
             return false;
         }

@@ -29,7 +29,6 @@ final class CreateVolumeExtra
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
         $VolumeExtraResult=[
             "status" => $args['status'] ?? Status::None,
             "day_number" => $args['day_number'] ?? 0,

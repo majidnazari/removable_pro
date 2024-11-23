@@ -13,12 +13,16 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Storage;
 use App\GraphQL\Enums\Status;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 
 use Log;
 
 final class CreateMemory
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * 
@@ -31,10 +35,16 @@ final class CreateMemory
     public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
 
         $MemoryModel = [
-            "creator_id" => $user_id,
+            "creator_id" => $this->userId,
             "person_id" => $args['person_id'],
             "category_content_id" => $args['category_content_id'],
             "group_view_id" => $args['group_view_id'],            

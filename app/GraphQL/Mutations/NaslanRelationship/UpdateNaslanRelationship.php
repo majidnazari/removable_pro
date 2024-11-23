@@ -6,12 +6,13 @@ use App\Models\NaslanRelationship;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 final class UpdateNaslanRelationship
-
-
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -22,7 +23,13 @@ final class UpdateNaslanRelationship
     }
     public function resolveNaslanRelationship($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
         //args["user_id_creator"]=$user_id;
         $NaslanRelationshipResult=NaslanRelationship::find($args['id']);
         
@@ -30,7 +37,7 @@ final class UpdateNaslanRelationship
         {
             return Error::createLocatedError("NaslanRelationship-UPDATE-RECORD_NOT_FOUND");
         }
-        $args['editor_id']=$user_id;
+        $args['editor_id']=$this->userId;
         $NaslanRelationshipResult_filled= $NaslanRelationshipResult->fill($args);
         $NaslanRelationshipResult->save();       
        

@@ -11,10 +11,14 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 final class CreateCity
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -27,7 +31,13 @@ final class CreateCity
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;
         $CityResult=[
             "province_id" => $args['province_id'],
             "title" => $args['title'],

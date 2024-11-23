@@ -18,9 +18,12 @@ use App\models\User;
 use App\models\Person;
 use Carbon\Carbon;
 use Log;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 final class SendRequestToOtherFamily
 {
+    protected $userId;
 
     /**
      * @param  null  $_
@@ -33,7 +36,11 @@ final class SendRequestToOtherFamily
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user_sender_id = auth()->guard('api')->user()->id;
+        $user_sender_id = Auth::guard('api')->user();
+
+        if (!$user_sender_id) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
 
         // Validate inputs using the custom validator
         //$this->validate($args);

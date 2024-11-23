@@ -19,7 +19,6 @@ use Log;
 
 final class GetPerson
 {
-   // $user_id = auth()->guard('api')->user()->id;
  use AuthUserTrait,FindOwnerTrait;
     /**
      * @param  null  $_

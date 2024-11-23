@@ -9,6 +9,8 @@ use GraphQL\Error\Error;
 
 final class DeleteUserMergeRequest
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,7 +21,11 @@ final class DeleteUserMergeRequest
     }
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;        
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }        
         $UserMergeRequestResult=UserMergeRequest::find($args['id']);
         
         if(!$UserMergeRequestResult)
@@ -27,7 +33,7 @@ final class DeleteUserMergeRequest
             return Error::createLocatedError("UserMergeRequest-DELETE-RECORD_NOT_FOUND");
         }
 
-        $UserMergeRequestResult->editor_id= $user_id;
+        $UserMergeRequestResult->editor_id= $this->userId;
         $UserMergeRequestResult->save(); 
 
         $UserMergeRequestResult_filled= $UserMergeRequestResult->delete();  

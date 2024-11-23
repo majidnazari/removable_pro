@@ -11,10 +11,14 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 final class CreateClanMember
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -27,9 +31,15 @@ final class CreateClanMember
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;
         $ClanMemberResult=[
-            "creator_id" => $user_id,
+            "creator_id" => $this->userId,
             "clan_id" => $args['clan_id'],
             "node_code" => $args['node_code'],
         ];

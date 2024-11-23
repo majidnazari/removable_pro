@@ -12,11 +12,13 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 final class CreateQuestion
 {
+    protected $userId;
    
     /**
      * @param  null  $_
@@ -30,7 +32,11 @@ final class CreateQuestion
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
         $QuestionResult=[
             "status" => $args['status'] ?? Status::Active,
             "title" => $args['title'],

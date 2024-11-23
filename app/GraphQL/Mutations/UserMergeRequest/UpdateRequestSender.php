@@ -17,9 +17,12 @@ use App\models\User;
 use App\models\Person;
 use Carbon\Carbon;
 use Log;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 final class UpdateRequestSender
 {
+    protected $user_sender_id;
 
     /**
      * @param  null  $_
@@ -32,10 +35,18 @@ final class UpdateRequestSender
     public function resolveUpdateRequestSender($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user_sender_id = auth()->guard('api')->user()->id;
+
+        $user_sender = Auth::guard('api')->user();
+
+        if (!$user_sender) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->user_sender_id = $user_sender->id;
+
 
         $data = [
-            "editor_id" => $user_sender_id,
+            "editor_id" =>  $this->user_sender_id,
             "request_status_sender" => $args['request_status_sender'] ?? RequestStatusSender::Suspend
         ];
 
@@ -49,7 +60,7 @@ final class UpdateRequestSender
             return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
 
-        $is_exist = UserMergeRequest::where('user_sender_id', $user_sender_id)
+        $is_exist = UserMergeRequest::where('user_sender_id',  $this->user_sender_id)
             ->where('id','!=', $args['id'])
             // ->where('user_reciver_id', $user_reciver->id)
             ->where('request_status_sender',  RequestStatusSender::Active->value)
@@ -59,7 +70,7 @@ final class UpdateRequestSender
             return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
         }
 
-        if($UserMergeRequest->creator_id != $user_sender_id){
+        if($UserMergeRequest->creator_id !=  $this->user_sender_id){
             return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
 
         }

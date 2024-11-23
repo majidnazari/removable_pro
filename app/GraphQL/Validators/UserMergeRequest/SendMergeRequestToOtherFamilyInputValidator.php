@@ -11,6 +11,10 @@ use App\Rules\UserMergeRequest\MergeValidateMergeIdsWithinActiveRelations;
 use App\Rules\UserMergeRequest\MergeValidateMergeIdsSender;
 use App\Rules\UserMergeRequest\MergeValidateMergeIdReceiver;
 use App\Rules\UserMergeRequest\MergeEqualCountIds;
+use App\Rules\UserMergeRequest\MergeRequestIdExists;
+
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 class SendMergeRequestToOtherFamilyInputValidator extends Validator
@@ -19,7 +23,14 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
 
     public function __construct()
     {
-        $this->userId = auth()->guard('api')->user()->id;
+        // Ensure a user is authenticated
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;
     }
 
     /**
@@ -33,7 +44,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
         return [
             'id' => [
                 'required',
-                'exists:user_merge_requests,id',
+                new MergeRequestIdExists(), 
                 new MergeValidateNodeIdsInMergeIds($userMergeRequestId, $mergeIdsSender, $mergeIdsReceiver), // Validate sender and receiver node IDs
             ],
             'merge_ids_sender' => [

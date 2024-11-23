@@ -23,7 +23,6 @@ final class GetUserMergeRequests
     }
     function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        //$user_id = auth()->guard('api')->user()->id;
         $user_id = $this->getUserId();
 
         $UserMergeRequests = UserMergeRequest::where('user_sender_id', $user_id)

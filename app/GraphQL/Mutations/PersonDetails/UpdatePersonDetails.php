@@ -9,13 +9,16 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Illuminate\Support\Facades\Storage;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 use Log;
 
 
 final class UpdatePersonDetails
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -26,8 +29,14 @@ final class UpdatePersonDetails
     }
     public function resolvePersonDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        $user_id=auth()->guard('api')->user()->id;
-        //args["user_id_creator"]=$user_id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
+        //args["user_id_creator"]=$this->userId;
         $personDetail = PersonDetail::find($args['id']);
        
 
@@ -112,7 +121,7 @@ final class UpdatePersonDetails
 
            // Prepare the model data
            $PersonDetailsModel = [
-            "editor_id" => $user_id,
+            "editor_id" => $this->userId,
             // "person_id" => $args['person_id'],
             // "profile_picture" =>  $path ?? null,
             //"gender" => $args['gender'] ?? 'None',

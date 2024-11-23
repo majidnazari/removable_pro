@@ -6,9 +6,12 @@ use App\Models\Memory;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 final class DeleteMemory
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,14 +22,20 @@ final class DeleteMemory
     }
     public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;        
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;        
         $MemoryResult=Memory::find($args['id']);
         
         if(!$MemoryResult)
         {
             return Error::createLocatedError("Memory-DELETE-RECORD_NOT_FOUND");
         }
-        $MemoryResult->editor_id= $user_id;
+        $MemoryResult->editor_id= $this->userId;
         $MemoryResult->save();
 
         $MemoryResult_filled= $MemoryResult->delete();  

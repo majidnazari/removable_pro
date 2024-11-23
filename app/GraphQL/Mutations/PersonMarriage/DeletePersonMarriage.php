@@ -6,9 +6,12 @@ use App\Models\PersonMarriage;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 final class DeletePersonMarriage
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,7 +22,13 @@ final class DeletePersonMarriage
     }
     public function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;        
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;        
         $PersonMarriageResult=PersonMarriage::find($args['id']);
         
         if(!$PersonMarriageResult)
@@ -32,7 +41,7 @@ final class DeletePersonMarriage
 
         }
 
-        $PersonMarriageResult->editor_id= $user_id;
+        $PersonMarriageResult->editor_id= $this->userId;
         $PersonMarriageResult->save(); 
 
         $PersonMarriageResult_filled= $PersonMarriageResult->delete();  

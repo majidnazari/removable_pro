@@ -6,10 +6,13 @@ use App\Models\Memory;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 final class UpdateMemory
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,7 +23,13 @@ final class UpdateMemory
     }
     public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
         //args["user_id_creator"]=$user_id;
         $MemoryResult=Memory::find($args['id']);
         
@@ -28,7 +37,7 @@ final class UpdateMemory
         {
             return Error::createLocatedError("Memory-UPDATE-RECORD_NOT_FOUND");
         }
-        $args['editor_id']=$user_id;
+        $args['editor_id']=$this->userId;
         $MemoryResult_filled= $MemoryResult->fill($args);
         $MemoryResult->save();       
        

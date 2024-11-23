@@ -19,6 +19,7 @@ use Log;
 
 final class sendFirstMergeRequest
 {
+    protected $userId;
    
     /**
      * @param  null  $_
@@ -45,13 +46,17 @@ final class sendFirstMergeRequest
             return Error::createLocatedError("the user not found");
         }
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
         $data=[
             "merge_sender_id" => $args['sender_id'] ,
             "merge_reciver_id" => $user->id,
             "merge_expired_at" => Carbon::now()->addDays(1)->format("Y-m-d H:i:s"),
             "merge_is_read"=> 0,
-            "merge_status" => RequestStatus::Susspend       
+            "merge_status" => RequestStatus::Suspend       
         ];
 
         // Log::info("the args are:" . json_encode($UserMergeRequestResult));

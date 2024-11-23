@@ -14,9 +14,13 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Log;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 final class CreateFirstSideMarriageSecondSide
 {
+
+    protected $userId;
 
     /**
      * @param  null  $_
@@ -29,13 +33,19 @@ final class CreateFirstSideMarriageSecondSide
     public function resolveCreateFirstSideMarriageSecondSide($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
 
 
         if ($args['relationship_id'] === "Marriage") //it is Marriage relation and should check first with second and also check inverse relation too 
         {
             $NaslanRelationModel= [
-                "creator_id" => $user_id,
+                "creator_id" => $this->userId,
                 "man_id" => $args['first_side_person_id'],
                 //"relationship_id" => $args['relationship_id'] ,           
                 "woman_id" => $args['second_side_person_id'],

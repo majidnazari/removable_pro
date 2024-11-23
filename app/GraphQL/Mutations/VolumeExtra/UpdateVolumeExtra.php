@@ -20,7 +20,6 @@ final class UpdateVolumeExtra
     }
     public function resolveVolumeExtra($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
         //args["user_id_creator"]=$user_id;
         $VolumeExtraResult=VolumeExtra::find($args['id']);
         

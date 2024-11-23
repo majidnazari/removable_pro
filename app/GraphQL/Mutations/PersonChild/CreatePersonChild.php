@@ -14,11 +14,14 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 final class CreatePersonChild
 {
+    protected $userId;
+
    
     /**
      * @param  null  $_
@@ -35,9 +38,15 @@ final class CreatePersonChild
 
 
         //Log::info("the args are:" . json_encode($args));
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
         $PersonChildModel = [
-            "creator_id" =>  $user_id,
+            "creator_id" =>  $this->userId,
             "editor_id" => $args['editor_id'] ?? null,
             "person_marriage_id" => $args['person_marriage_id'] ,
             "child_id" => $args['child_id'],

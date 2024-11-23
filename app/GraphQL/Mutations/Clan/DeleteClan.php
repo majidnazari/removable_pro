@@ -6,9 +6,13 @@ use App\Models\Clan;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 final class DeleteClan
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,7 +23,13 @@ final class DeleteClan
     }
     public function resolveClan($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;        
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;        
         $ClanResult=Clan::find($args['id']);
         
         if(!$ClanResult)
@@ -27,7 +37,7 @@ final class DeleteClan
             return Error::createLocatedError("Clan-DELETE-RECORD_NOT_FOUND");
         }
 
-        $ClanResult->editor_id= $user_id;
+        $ClanResult->editor_id= $this->userId;
         $ClanResult->save();
 
         $ClanResult_filled= $ClanResult->delete();  

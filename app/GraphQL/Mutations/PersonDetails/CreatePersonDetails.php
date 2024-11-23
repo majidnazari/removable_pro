@@ -95,7 +95,7 @@ final class CreatePersonDetails
         //return $file->storePublicly('uploads');
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        //
     //     $PersonDetailsModel = [
     //         "create_id" => 1,
     //         "person_id" => $args['person_id'],

@@ -12,6 +12,8 @@ use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 
 class Logout extends BaseAuthResolver
 {
+    protected $userId;
+
     /**
      * @param $rootValue
      * @param  array  $args

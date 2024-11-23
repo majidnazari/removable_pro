@@ -12,9 +12,12 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Log;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 final class CreateNaslanSubscription
 {
+    protected $userId;
+
     public const NONE=0;
     public const ACTIVE=1;
     /**
@@ -29,7 +32,11 @@ final class CreateNaslanSubscription
     {        
 
         //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
         $NaslanSubscriptionModel=[
             "status" => $args['status'] ?? self::NONE,
             "title" => $args['title'],

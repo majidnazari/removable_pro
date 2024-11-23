@@ -10,6 +10,8 @@ use GraphQL\Error\Error;
 
 final class UpdateClanMember
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,7 +22,13 @@ final class UpdateClanMember
     }
     public function resolveClanMember($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;
         //args["user_id_creator"]=$user_id;
         $ClanMemberResult=ClanMember::find($args['id']);
         
@@ -28,7 +36,7 @@ final class UpdateClanMember
         {
             return Error::createLocatedError("ClanMember-UPDATE-RECORD_NOT_FOUND");
         }
-        $args['editor_id']=$user_id;
+        $args['editor_id']= $this->userId;
         $ClanMemberResult_filled= $ClanMemberResult->fill($args);
         $ClanMemberResult->save();       
        

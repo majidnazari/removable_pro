@@ -14,9 +14,12 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use Log;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 final class CreatePersonMarriage
 {
+    protected $userId;
    
     /**
      * @param  null  $_
@@ -33,9 +36,15 @@ final class CreatePersonMarriage
 
 
         //Log::info("the args are:" . json_encode($args));
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
         $PersonMarriageModel = [
-            "creator_id" => $user_id,
+            "creator_id" => $this->userId,
 
             "man_id" => $args['man_id'],
             "woman_id" => $args['woman_id'],

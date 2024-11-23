@@ -21,6 +21,7 @@ use Log;
 
 final class SendMergeRequestToOtherFamily
 {
+    protected $userId;
 
     /**
      * @param  null  $_
@@ -33,7 +34,11 @@ final class SendMergeRequestToOtherFamily
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user_sender_id = auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
 
         // Validate inputs using the custom validator
         //$this->validate($args);

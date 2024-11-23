@@ -7,17 +7,26 @@ use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Validation\Validator;
 use App\Rules\Person\UniquePerson;
 use App\Rules\Person\UniqueOwnerPerUser;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 class CreatePersonInputValidator extends Validator
 {
+    protected $userId;
+
     public function rules(): array
     {
 
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
 
-        Log::info("the user is:" . $user_id);
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
+
+        Log::info("the user is:" . $this->userId);
         //$id = $this->arg('id');  // Get the id argument for update
         $firstName = $this->arg('first_name');
         $lastName = $this->arg('last_name');
@@ -31,7 +40,7 @@ class CreatePersonInputValidator extends Validator
                 'string',
                 'max:255',
                new UniquePerson($firstName, $lastName, $birthDate),
-               new UniqueOwnerPerUser($user_id, $is_owner),
+               new UniqueOwnerPerUser($this->userId, $is_owner),
             ],
             'last_name' => [
                 'sometimes',

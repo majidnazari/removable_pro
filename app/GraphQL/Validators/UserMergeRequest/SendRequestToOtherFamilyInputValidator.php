@@ -18,7 +18,8 @@ use App\Rules\UserMergeRequest\SenderAndReceiverAreDifferent;
 use App\Rules\UserMergeRequest\ReceiverHasOwner;
 
 use App\GraphQL\Enums\Status;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 use Log;
 
 use GraphQL\Error\Error;
@@ -29,7 +30,14 @@ class SendRequestToOtherFamilyInputValidator extends Validator
 
     public function __construct()
     {
-        $this->user_sender_id = auth()->guard('api')->user()->id;
+        
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->user_sender_id = $user->id;
     }
 
     /**

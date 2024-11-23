@@ -6,9 +6,12 @@ use App\Models\Score;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 final class DeleteScore
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,14 +22,18 @@ final class DeleteScore
     }
     public function resolveScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;        
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }        
         $ScoreResult=Score::find($args['id']);
         
         if(!$ScoreResult)
         {
             return Error::createLocatedError("Score-DELETE-RECORD_NOT_FOUND");
         }
-        $ScoreResult->editor_id= $user_id;
+        $ScoreResult->editor_id= $this->userId;
         $ScoreResult->save(); 
 
 

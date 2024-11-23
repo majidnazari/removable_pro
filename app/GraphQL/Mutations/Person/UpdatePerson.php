@@ -7,13 +7,16 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Rules\Person\UniquePerson;
-
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 use Log;
 
 
 final class UpdatePerson
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -26,7 +29,13 @@ final class UpdatePerson
     {  
 
        //Log::info("the args of resolver  are:" . json_encode($args));
-        $user_id=auth()->guard('api')->user()->id;
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;
         //args["user_id_creator"]=$user_id;
 
         $id = $args['id'];
@@ -48,7 +57,7 @@ final class UpdatePerson
         {
             return Error::createLocatedError("Person-UPDATE-RECORD_NOT_FOUND");
         }
-        $args['editor_id']=$user_id;
+        $args['editor_id']=$this->userId ;
         $PersonResult_filled= $PersonResult->fill($args);
         $PersonResult->save();       
        

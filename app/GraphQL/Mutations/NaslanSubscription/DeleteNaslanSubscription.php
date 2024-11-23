@@ -9,6 +9,8 @@ use GraphQL\Error\Error;
 
 final class DeleteNaslanSubscription
 {
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,7 +21,13 @@ final class DeleteNaslanSubscription
     }
     public function resolveNaslanSubscription($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user_id=auth()->guard('api')->user()->id;        
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;;        
         $NaslanSubscriptionResult=Subscription::find($args['id']);
         
         if(!$NaslanSubscriptionResult)
@@ -27,7 +35,7 @@ final class DeleteNaslanSubscription
             return Error::createLocatedError("NaslanSubscription-DELETE-RECORD_NOT_FOUND");
         }
 
-        $NaslanSubscriptionResult->editor_id= $user_id;
+        $NaslanSubscriptionResult->editor_id= $this->userId;
         $NaslanSubscriptionResult->save();
 
         $NaslanSubscriptionResult_filled= $NaslanSubscriptionResult->delete();  

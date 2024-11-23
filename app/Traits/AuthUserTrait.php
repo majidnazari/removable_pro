@@ -2,8 +2,13 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Auth;
+use Exception;
+
 trait AuthUserTrait
 {
+    protected $userId;
+
 /**
      * Get the authenticated user's ID.
      *
@@ -11,7 +16,15 @@ trait AuthUserTrait
      */
     protected function getUserId()
     {
-        return auth()->guard('api')->user()?->id; // Use null safe operator to handle unauthenticated cases
+
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            throw new Exception("Authentication required. No user is currently logged in.");
+        }
+
+        $this->userId = $user->id;
+        return  $this->userId;//auth()->guard('api')->user()?->id; // Use null safe operator to handle unauthenticated cases
     }
 }
 
