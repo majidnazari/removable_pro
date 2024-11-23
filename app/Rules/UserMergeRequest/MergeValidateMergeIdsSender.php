@@ -45,7 +45,7 @@ class MergeValidateMergeIdsSender implements Rule
             $this->allowedPersonIds = array_merge($this->allowedPersonIds, $senderPersons, $receiverPersons);
         }
 
-        if($completeRelations->isNotEmpty())
+        if($completeRelations->isEmpty())
         {
             // Step 2: Fetch Active Relationships
             $activeRelations = UserMergeRequest::where('status', MergeStatus::Active)
