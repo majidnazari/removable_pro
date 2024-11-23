@@ -30,7 +30,7 @@ class PreventSelfMergeRequest implements Rule
         }
 
         $this->userSenderId = $mergeRequest->user_sender_id;
-        $this->userReceiverId = $mergeRequest->user_reciver_id;
+        $this->userReceiverId = $mergeRequest->user_receiver_id;
 
         Log::info("User sender ID: {$this->userSenderId}, User receiver ID: {$this->userReceiverId}");
 

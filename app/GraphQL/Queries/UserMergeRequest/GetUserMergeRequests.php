@@ -26,7 +26,7 @@ final class GetUserMergeRequests
         $user_id = $this->getUserId();
 
         $UserMergeRequests = UserMergeRequest::where('user_sender_id', $user_id)
-        ->orWhere('user_reciver_id',$user_id)
+        ->orWhere('user_receiver_id',$user_id)
         ->where('deleted_at', null);
 
         //log::info("the Scores is:" . json_encode($UserMergeRequests));

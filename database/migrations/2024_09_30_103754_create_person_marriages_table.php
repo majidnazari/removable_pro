@@ -36,8 +36,8 @@ return new class extends Migration
             //$table->string('marriage_status', 20)->default("None");
             //$table->string('status', 20)->default("None");
 
-            $table->tinyInteger('marriage_status', )->default(0)->comment(" 0=none 1=Related 2=Notrelated  3=susspend ");   
-            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=susspend ");   
+            $table->tinyInteger('marriage_status', )->default(0)->comment(" 0=none 1=Related 2=Notrelated  3=suspend ");   
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=suspend ");   
 
 
 

@@ -17,11 +17,11 @@ class ReceiverExists implements Rule
             return false; // Fail if person does not exist
         }
 
-        $user_reciver = User::where('mobile', $person->country_code . $person->mobile)
+        $user_receiver = User::where('mobile', $person->country_code . $person->mobile)
             ->where('status', Status::Active)
             ->first();
 
-        return $user_reciver !== null;
+        return $user_receiver !== null;
     }
 
     public function message()

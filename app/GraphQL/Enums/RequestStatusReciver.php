@@ -2,7 +2,7 @@
 namespace App\GraphQL\Enums;
 
 
-enum RequestStatusReciver: int
+enum RequestStatusReceiver: int
 {
 
     case Active = 1;

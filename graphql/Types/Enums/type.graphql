@@ -19,7 +19,7 @@ enum MarriageStatus
     None @enum(value: 0)
     Related @enum(value: 1)
     NotRelated @enum(value: 2)
-    Susspend @enum(value: 3)
+    suspend @enum(value: 3)
      
 }
 
@@ -54,7 +54,7 @@ enum RequestStatusSender
      
 }
 
-enum RequestStatusReciver 
+enum RequestStatusReceiver 
 {
     Active @enum(value: 1)
     Refused @enum(value: 2)

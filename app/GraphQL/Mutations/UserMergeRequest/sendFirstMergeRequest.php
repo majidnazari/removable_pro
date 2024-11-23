@@ -55,7 +55,7 @@ final class sendFirstMergeRequest
         }
         $data=[
             "merge_sender_id" => $args['sender_id'] ,
-            "merge_reciver_id" => $user->id,
+            "merge_receiver_id" => $user->id,
             "merge_expired_at" => Carbon::now()->addDays(1)->format("Y-m-d H:i:s"),
             "merge_is_read"=> 0,
             "merge_status" => RequestStatus::Suspend       

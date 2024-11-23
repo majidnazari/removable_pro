@@ -8,10 +8,15 @@
     @guard(with: ["api"]) 
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateRequestSender@resolveUpdateRequestSender") 
 
-    UpdateRequestReciver (id: ID!, input: UpdateRequestReciverInput! @spread): UserMergeRequest 
+    UpdateRequestReceiver (id: ID!, input: UpdateRequestReceiverInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
-    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateRequestReciver@resolveUpdateRequestReciver") 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateRequestReceiver@resolveUpdateRequestReceiver") 
 
+
+
+    UpdateMergeRequestReceiver (id: ID!, input: UpdateMergeRequestReceiverInput! @spread): UserMergeRequest 
+        @guard(with: ["api"]) 
+        @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateMergeRequestReceiver@resolveUpdateMergeRequestReceiver") 
 
     # sendFirstMergeRequest(input: SendRequestToOtherFamilyInput! @spread): UserMergeRequest 
     # @guard(with: ["api"]) 

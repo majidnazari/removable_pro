@@ -16,12 +16,12 @@ class ReceiverHasOwner implements Rule
             return true; // Pass if person not found (to let other rules handle it)
         }
 
-        $person_reciver_owner = Person::where('creator_id', $person->creator_id)
+        $person_receiver_owner = Person::where('creator_id', $person->creator_id)
             ->where('is_owner', true)
             ->where('status', Status::Active)
             ->first();
 
-        return $person_reciver_owner !== null;
+        return $person_receiver_owner !== null;
     }
 
     public function message()

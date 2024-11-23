@@ -32,6 +32,6 @@ class MergeEqualCountIds implements Rule
 
     public function message()
     {
-        return 'The count of merge_ids_sender (' . $this->senderCount . ') and merge_ids_reciver (' . $this->receiverCount . ') must be equal.';
+        return 'The count of merge_ids_sender (' . $this->senderCount . ') and merge_ids_receiver (' . $this->receiverCount . ') must be equal.';
     }
 }

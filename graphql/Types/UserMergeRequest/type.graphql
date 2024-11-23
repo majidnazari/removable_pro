@@ -5,21 +5,22 @@ type UserMergeRequest {
     editor_id: ID
 
     user_sender_id: ID
-    node_sender_id: ID!
+    node_sender_id: ID
 
-    user_reciver_id: ID
+    user_receiver_id: ID
+    node_receiver_id: ID!
+
     request_status_sender: RequestStatusSender
     request_sender_expired_at: String
-    request_status_reciver: RequestStatusReciver
+    request_status_receiver: RequestStatusReceiver
 
     merge_ids_sender: String
-    merge_ids_reciver: String
+    merge_ids_receiver: String
 
 
     merge_status_sender: RequestStatusSender
     merge_sender_expired_at: String
-    merge_status_reciver: RequestStatusReciver
-
+    merge_status_receiver: RequestStatusReceiver
 
     status: MergeStatus
 
@@ -33,11 +34,11 @@ input CreateUserMergeRequestInput {
     # user_sender_id: ID!
     node_sender_id: ID!
 
-    user_reciver_id: ID!
+    user_receiver_id: ID!
 
     request_status_sender: RequestStatusSender
     request_sender_expired_at: String
-    request_status_reciver: RequestStatusReciver
+    request_status_receiver: RequestStatusReceiver
 
 }
 
@@ -55,9 +56,14 @@ input UpdateRequestSenderInput {
    
 }
 
-input UpdateRequestReciverInput {
+input UpdateRequestReceiverInput {
 
-   request_status_reciver: RequestStatusReciver
+   request_status_receiver: RequestStatusReceiver
+   
+}
+input UpdateMergeRequestReceiverInput {
+
+   merge_status_receiver: RequestStatusReceiver
    
 }
 
@@ -65,7 +71,7 @@ input SendMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Valida
 {
     id: ID!
     merge_ids_sender: String
-    merge_ids_reciver: String 
+    merge_ids_receiver: String 
 }
 
 input UpdateMergeRequestSenderInput {
@@ -73,7 +79,7 @@ input UpdateMergeRequestSenderInput {
     id: ID!
    
     merge_ids_sender: String
-    merge_ids_reciver: String
+    merge_ids_receiver: String
 
     merge_status_sender: RequestStatusSender
     merge_sender_expired_at: String
@@ -81,10 +87,10 @@ input UpdateMergeRequestSenderInput {
     
 }
 
-input UpdateMergeRequestReciverInput {
+input UpdateMergeRequestReceiverInput {
 
     id: ID!
-    merge_status_reciver: RequestStatusReciver
+    merge_status_receiver: RequestStatusReceiver
     
 }
 
@@ -94,16 +100,16 @@ input UpdateUserMergeRequestAllInput {
     # user_sender_id: ID!
     node_sender_id: ID!
 
-    user_reciver_id: ID!
+    user_receiver_id: ID!
     request_status_sender: RequestStatusSender
     request_sender_expired_at: String
-    request_status_reciver: RequestStatusReciver
+    request_status_receiver: RequestStatusReceiver
 
     merge_ids_sender: String
-    merge_ids_reciver: String
+    merge_ids_receiver: String
 
 
     merge_status_sender: RequestStatusSender
     merge_sender_expired_at: String
-    merge_status_reciver: RequestStatusReciver
+    merge_status_receiver: RequestStatusReceiver
 }

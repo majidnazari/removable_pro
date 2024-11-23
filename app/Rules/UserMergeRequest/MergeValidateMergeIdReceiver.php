@@ -25,14 +25,14 @@ class MergeValidateMergeIdReceiver implements Rule
 
         // Step 1: Fetch Complete Relationships
         $completeRelations = UserMergeRequest::where('status', MergeStatus::Complete)
-            ->where('user_reciver_id', $this->loggedInUserId)
+            ->where('user_receiver_id', $this->loggedInUserId)
             ->get();
 
         Log::info("Complete Relationships for user {$this->loggedInUserId}: " . json_encode($completeRelations));
 
         foreach ($completeRelations as $relation) {
             // Add receiver's people
-            $receiverPersons = Person::where('creator_id', $relation->user_reciver_id)
+            $receiverPersons = Person::where('creator_id', $relation->user_receiver_id)
                 ->pluck('id')
                 ->toArray();
 
@@ -56,7 +56,7 @@ class MergeValidateMergeIdReceiver implements Rule
 
             foreach ($activeRelations as $relation) {
                 // Add only receiver's own people
-                $receiverPersons = Person::where('creator_id', $relation->user_reciver_id)
+                $receiverPersons = Person::where('creator_id', $relation->user_receiver_id)
                     ->pluck('id')
                     ->toArray();
 
@@ -68,13 +68,13 @@ class MergeValidateMergeIdReceiver implements Rule
         }
       
 
-        Log::info("Final Allowed Person IDs for input.merge_ids_reciver: " . json_encode($this->allowedPersonIds));
+        Log::info("Final Allowed Person IDs for input.merge_ids_receiver: " . json_encode($this->allowedPersonIds));
 
         // Step 3: Validate Input Merge IDs
         $mergeIds = explode(',', $value);
         $this->invalidIds = array_diff($mergeIds, $this->allowedPersonIds);
 
-        Log::info("Invalid IDs for input.merge_ids_reciver: " . json_encode($this->invalidIds));
+        Log::info("Invalid IDs for input.merge_ids_receiver: " . json_encode($this->invalidIds));
 
         // Validation passes if there are no invalid IDs
         return empty($this->invalidIds);
@@ -86,7 +86,7 @@ class MergeValidateMergeIdReceiver implements Rule
             return 'No valid IDs are available for your complete or active relationships.';
         }
 
-        return 'The input.merge_ids_reciver contains invalid IDs: ' 
+        return 'The input.merge_ids_receiver contains invalid IDs: ' 
             . implode(', ', $this->invalidIds) 
             . '. Only the following IDs are allowed: ' 
             . implode(', ', $this->allowedPersonIds) . '.';

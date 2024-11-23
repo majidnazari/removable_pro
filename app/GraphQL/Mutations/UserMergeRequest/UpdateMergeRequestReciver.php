@@ -21,7 +21,7 @@ use Log;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
-final class UpdateRequestReceiver
+final class UpdateMergeRequestReceiver
 {
     protected $user_receiver_id;
 
@@ -33,7 +33,7 @@ final class UpdateRequestReceiver
     {
         // TODO implement the resolver
     }
-    public function resolveUpdateRequestReceiver($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveUpdateMergeRequestreceiver($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
         $user_receiver = Auth::guard('api')->user();
@@ -52,32 +52,40 @@ final class UpdateRequestReceiver
        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $UserMergeRequest = UserMergeRequest::where('id', $args['id'])->first();
         if (!$UserMergeRequest) {
-            return Error::createLocatedError("UserSendRequest-NOT_FOUND");
+            return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
 
-        $is_exist = UserMergeRequest::where('user_sender_id', $this->user_receiver_id)
+        $is_exist = UserMergeRequest::where('user_receiver_id', $this->user_receiver_id)
         ->where('id','!=', $args['id'])
         // ->where('user_receiver_id', $user_receiver->id)
         ->where('request_status_sender',  RequestStatusSender::Active->value)
+        ->where('request_status_receiver',  RequestStatusReceiver::Active->value)
+        ->where('merge_status_sender',  RequestStatusSender::Active->value)
         ->first();
 
         if ($is_exist) {
-            return Error::createLocatedError("UserSendRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
+            return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
         }
 
         if($UserMergeRequest->user_receiver_id != $this->user_receiver_id){
-            return Error::createLocatedError("UserSendRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
+            return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
 
         }
 
 
         //Log::info("the active sttaus us:".RequestStatusSender::Active->value);
         if($UserMergeRequest->request_status_sender != RequestStatusSender::Active->value){
-            return Error::createLocatedError("UserSendRequest-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE" );
+            return Error::createLocatedError("UserMergeRequest-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE" );
 
         }
-        $UserMergeRequestResult = $UserMergeRequest->fill($data);
-        $UserMergeRequestResult->save();       
+
+        if($UserMergeRequest->merge_status_sender != RequestStatusSender::Active->value){
+            return Error::createLocatedError("UserMergeRequest-FIRST_MERGE_SENDER_MUST_MAKE_REQUEST_ACTIVE" );
+
+        } 
+
+          $UserMergeRequestResult = $UserMergeRequest->fill($data);
+          $UserMergeRequestResult->save();       
 
         return $UserMergeRequestResult;
     }

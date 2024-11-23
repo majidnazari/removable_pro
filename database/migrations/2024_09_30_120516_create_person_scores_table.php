@@ -29,7 +29,7 @@ return new class extends Migration
           // $table->enum('status',["Active","a","None"])->default("Active");
 
             $table->tinyInteger('score_level', )->default(0)->comment("0=none  1=bad 2=NotBad 3=Verygood 4=Excellent ");   
-            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=susspend ");   
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=suspend ");   
 
             $table->timestamps();
             $table->softDeletes();

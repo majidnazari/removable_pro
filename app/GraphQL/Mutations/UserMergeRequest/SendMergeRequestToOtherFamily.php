@@ -60,10 +60,10 @@ final class SendMergeRequestToOtherFamily
         $data= [
            
             'merge_ids_sender' => $args['merge_ids_sender'],
-            'merge_ids_reciver' => $args['merge_ids_reciver'],
+            'merge_ids_receiver' => $args['merge_ids_receiver'],
             "merge_sender_expired_at" => Carbon::now()->addDays(1)->format("Y-m-d H:i:s"),
             "merge_status_sender" => RequestStatusSender::Active,
-            "status" => MergeStatus::Active,
+            //"status" => MergeStatus::Active,
 
         ];
 

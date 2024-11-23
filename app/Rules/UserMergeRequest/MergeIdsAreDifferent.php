@@ -31,6 +31,6 @@ class MergeIdsAreDifferent implements Rule
 
     public function message()
     {
-        return 'The merge_ids_sender and merge_ids_reciver cannot contain the same values. Duplicated IDs: ' . implode(', ', $this->commonIds);
+        return 'The merge_ids_sender and merge_ids_receiver cannot contain the same values. Duplicated IDs: ' . implode(', ', $this->commonIds);
     }
 }

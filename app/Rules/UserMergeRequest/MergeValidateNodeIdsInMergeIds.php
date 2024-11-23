@@ -33,9 +33,9 @@ class MergeValidateNodeIdsInMergeIds implements Rule
             return false;
         }
 
-        // Extract node_sender_id and node_reciver_id
+        // Extract node_sender_id and node_receiver_id
         $nodeSenderId = $userMergeRequest->node_sender_id;
-        $nodeReceiverId = $userMergeRequest->node_reciver_id;
+        $nodeReceiverId = $userMergeRequest->node_receiver_id;
 
         // Convert merge IDs to arrays
         $mergeIdsSenderArray = explode(',', $this->mergeIdsSender);
@@ -46,9 +46,9 @@ class MergeValidateNodeIdsInMergeIds implements Rule
             $this->errors[] = "The node_sender_id ({$nodeSenderId}) must be the first element in merge_ids_sender.";
         }
 
-        // Check if node_reciver_id is the first element in merge_ids_receiver
+        // Check if node_receiver_id is the first element in merge_ids_receiver
         if ($mergeIdsReceiverArray[0] != $nodeReceiverId) {
-            $this->errors[] = "The node_reciver_id ({$nodeReceiverId}) must be the first element in merge_ids_reciver.";
+            $this->errors[] = "The node_receiver_id ({$nodeReceiverId}) must be the first element in merge_ids_receiver.";
         }
 
         // Validation passes if there are no errors

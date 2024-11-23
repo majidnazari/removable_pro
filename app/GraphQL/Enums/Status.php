@@ -9,7 +9,7 @@ enum Status: int
     case None = 0;
     case Active = 1;
     case Inactive = 2;
-    case Susspend = 3;
+    case suspend = 3;
     case New = 4;
 
 }

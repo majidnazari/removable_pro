@@ -35,7 +35,7 @@ class MergeValidateMergeIdsWithinActiveRelations implements Rule
         $activeRelation = UserMergeRequest::where('status', 1) // Active status
             ->where(function ($query) {
                 $query->where('user_sender_id', $this->loggedInUserId)
-                    ->orWhere('user_reciver_id', $this->loggedInUserId);
+                    ->orWhere('user_receiver_id', $this->loggedInUserId);
             })
             ->first();
 
@@ -49,15 +49,15 @@ class MergeValidateMergeIdsWithinActiveRelations implements Rule
                         ->toArray()
                 );
                 Log::info("Active Relationship - merge_ids_sender allowedPersonIds: " . json_encode($this->allowedPersonIds));
-            } elseif ($this->attributeName === 'input.merge_ids_reciver') {
-                // Fetch persons created by user_reciver_id
+            } elseif ($this->attributeName === 'input.merge_ids_receiver') {
+                // Fetch persons created by user_receiver_id
                 $this->allowedPersonIds = array_merge(
                     $this->allowedPersonIds,
-                    Person::where('creator_id', $activeRelation->user_reciver_id)
+                    Person::where('creator_id', $activeRelation->user_receiver_id)
                         ->pluck('id')
                         ->toArray()
                 );
-                Log::info("Active Relationship - merge_ids_reciver allowedPersonIds: " . json_encode($this->allowedPersonIds));
+                Log::info("Active Relationship - merge_ids_receiver allowedPersonIds: " . json_encode($this->allowedPersonIds));
             }
         } else {
             Log::info("No active relationship found for user {$this->loggedInUserId}");
@@ -67,7 +67,7 @@ class MergeValidateMergeIdsWithinActiveRelations implements Rule
         $completeRelations = UserMergeRequest::where('status', Mergestatus::Complete) // Complete status
             ->where(function ($query) {
                 $query->where('user_sender_id', $this->loggedInUserId)
-                    ->orWhere('user_reciver_id', $this->loggedInUserId);
+                    ->orWhere('user_receiver_id', $this->loggedInUserId);
             })
             ->get();
 
@@ -79,7 +79,7 @@ class MergeValidateMergeIdsWithinActiveRelations implements Rule
                     Person::where('creator_id', $relation->user_sender_id)
                         ->pluck('id')
                         ->toArray(),
-                    Person::where('creator_id', $relation->user_reciver_id)
+                    Person::where('creator_id', $relation->user_receiver_id)
                         ->pluck('id')
                         ->toArray()
                 );

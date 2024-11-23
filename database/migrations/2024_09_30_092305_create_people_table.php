@@ -45,7 +45,7 @@ return new class extends Migration {
 
 
             //$table->string('status', 20)->default("None");
-            $table->tinyInteger('status', )->default(0)->comment("-1 = Blocked 0=none  1=active 2=inactive 3=susspend ");   
+            $table->tinyInteger('status', )->default(0)->comment("-1 = Blocked 0=none  1=active 2=inactive 3=suspend ");   
 
 
             //$table->enum('status', ["Active", "Inactive", "Suspend", "None"])->default("None");

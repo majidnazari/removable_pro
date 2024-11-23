@@ -37,7 +37,7 @@ class MergeValidateMergeIdsSender implements Rule
                 ->toArray();
 
             // Add receiver's people
-            $receiverPersons = Person::where('creator_id', $relation->user_reciver_id)
+            $receiverPersons = Person::where('creator_id', $relation->user_receiver_id)
                 ->pluck('id')
                 ->toArray();
 

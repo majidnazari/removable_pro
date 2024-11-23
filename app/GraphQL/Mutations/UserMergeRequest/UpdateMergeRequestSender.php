@@ -20,7 +20,7 @@ use Log;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
-final class UpdateRequestSender
+final class UpdateMergeRequestSender
 {
     protected $user_sender_id;
 
@@ -57,21 +57,23 @@ final class UpdateRequestSender
        //->where('request_status_sender',  RequestStatusSender::Active->value)
         
         if (!$UserMergeRequest) {
-            return Error::createLocatedError("UserSendRequest-NOT_FOUND");
+            return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
 
         $is_exist = UserMergeRequest::where('user_sender_id',  $this->user_sender_id)
             ->where('id','!=', $args['id'])
             // ->where('user_receiver_id', $user_receiver->id)
             ->where('request_status_sender',  RequestStatusSender::Active->value)
+            ->where('request_status_sender',  RequestStatusSender::Active->value)
+            ->where('merge_status_sender',  RequestStatusSender::Active->value)
             ->first();
 
         if ($is_exist) {
-            return Error::createLocatedError("UserSendRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
+            return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_MERGE_REQUEST");
         }
 
         if($UserMergeRequest->creator_id !=  $this->user_sender_id){
-            return Error::createLocatedError("UserSendRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
+            return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
 
         }
         $UserMergeRequestResult = $UserMergeRequest->fill($data);

@@ -85,29 +85,29 @@ class SendRequestToOtherFamilyInputValidator extends Validator
 //         }
 
 //         // Ensure the receiver exists
-//         $user_reciver = User::where('mobile', $person->country_code . $person->mobile)
+//         $user_receiver = User::where('mobile', $person->country_code . $person->mobile)
 //             ->where('status', Status::Active)
 //             ->first();
 
-//         if (!$user_reciver) {
-//             $validator->errors()->add('user_reciver_id', 'The node you have selected is not found.');
+//         if (!$user_receiver) {
+//             $validator->errors()->add('user_receiver_id', 'The node you have selected is not found.');
 //             return;
 //         }
 
 //         // Ensure sender and receiver are different
-//         if ($this->user_sender_id === $user_reciver->id) {
-//             $validator->errors()->add('user_reciver_id', 'The sender and receiver cannot be the same.');
+//         if ($this->user_sender_id === $user_receiver->id) {
+//             $validator->errors()->add('user_receiver_id', 'The sender and receiver cannot be the same.');
 //             return false;
 //         }
 
 //         // Ensure the receiver's owner exists
-//         $person_reciver_owner = Person::where('creator_id', $user_reciver->id)
+//         $person_receiver_owner = Person::where('creator_id', $user_receiver->id)
 //             ->where('is_owner', true)
 //             ->where('status', Status::Active)
 //             ->first();
 
-//         if (!$person_reciver_owner) {
-//             $validator->errors()->add('node_reciver_id', 'The receiver\'s owner is not found.');
+//         if (!$person_receiver_owner) {
+//             $validator->errors()->add('node_receiver_id', 'The receiver\'s owner is not found.');
 //         }
 
         

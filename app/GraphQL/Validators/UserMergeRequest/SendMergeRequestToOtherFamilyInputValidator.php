@@ -42,7 +42,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
     {
         $mergeIdsSender = $this->arg('merge_ids_sender');
         $userMergeRequestId = $this->arg('id');
-        $mergeIdsReceiver = $this->arg('merge_ids_reciver');
+        $mergeIdsReceiver = $this->arg('merge_ids_receiver');
         return [
             'id' => [
                 'required',
@@ -58,7 +58,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
                 //new MergeValidateMergeIdsWithinActiveRelations($this->userId),
                 new MergeValidateMergeIdsSender($this->userId),
             ],
-            'merge_ids_reciver' => [
+            'merge_ids_receiver' => [
                 'required',
                 'string',
                 new MergeNoDuplicateIds(),

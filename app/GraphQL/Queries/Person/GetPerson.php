@@ -100,7 +100,7 @@ final class GetPerson
         // Fetch the UserMergeRequest where the user is either a sender or receiver
         $relation = UserMergeRequest::where(function ($query) use ($user_id) {
             $query->where('user_sender_id', $user_id)
-                  ->orWhere('user_reciver_id', $user_id);
+                  ->orWhere('user_receiver_id', $user_id);
         })
         ->where(function ($query) {
             $query->where('request_status_sender', RequestStatusSender::Active)
@@ -130,8 +130,8 @@ final class GetPerson
         $isSender = $relation->user_sender_id === $user_id;
     
         // Assign mineUserId and relatedUserId based on the user's role
-        $mineUserId = $isSender ? $relation->user_sender_id : $relation->user_reciver_id;
-        $relatedUserId = $isSender ? $relation->user_reciver_id : $relation->user_sender_id;
+        $mineUserId = $isSender ? $relation->user_sender_id : $relation->user_receiver_id;
+        $relatedUserId = $isSender ? $relation->user_receiver_id : $relation->user_sender_id;
     
         // Log the determined roles and IDs
        // Log::info("Role determined: " . ($isSender ? 'Sender' : 'Receiver'));

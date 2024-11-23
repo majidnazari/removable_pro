@@ -34,7 +34,7 @@ final class CancelSenderRequest
         
         if(!$UserMergeRequestResult)
         {
-            return Error::createLocatedError("UserMergeRequest-UPDATE-RECORD_NOT_FOUND");
+            return Error::createLocatedError("UserSendeRequest-UPDATE-RECORD_NOT_FOUND");
         }
         $UserMergeRequestResult->editor_id=$this->userId;
         

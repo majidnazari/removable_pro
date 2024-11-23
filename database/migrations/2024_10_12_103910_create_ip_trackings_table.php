@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('total_attemp')->default(0);
             //$table->enum('status', ["Active","Blocked", "Suspend", "None"])->default("Active");
 
-            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=susspend ");   
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=suspend ");   
 
             $table->string('expire_blocked_time')->nullable();
             $table->unsignedSmallInteger('number_of_blocked_times')->default(0);

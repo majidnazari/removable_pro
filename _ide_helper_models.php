@@ -1079,14 +1079,14 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $sender_id
- * @property int $reciver_id
+ * @property int $receiver_id
  * @property int $request_is_read  0=not read 1=read
- * @property int $request_status  1=active 2=refused 3=susspend
+ * @property int $request_status  1=active 2=refused 3=suspend
  * @property int|null $merge_sender_id
- * @property int|null $merge_reciver_id
+ * @property int|null $merge_receiver_id
  * @property int $merge_is_read  0=not read 1=read
  * @property string|null $merge_expired_at
- * @property int $merge_status  1=active 2=refused 3=susspend
+ * @property int $merge_status  1=active 2=refused 3=suspend
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $deleted_at
@@ -1102,10 +1102,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeExpiredAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeIsRead($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeReciverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeReceiverId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeSenderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereReciverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereReceiverId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestExpiredAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestIsRead($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestStatus($value)
@@ -1122,31 +1122,31 @@ namespace App\Models{
  * @property int|null $editor_id
  * @property int $user_sender_id
  * @property int $node_sender_id
- * @property int $user_reciver_id
- * @property int $node_reciver_id
+ * @property int $user_receiver_id
+ * @property int $node_receiver_id
  * @property int $request_status_sender  1=Active 2=Cancel 3=Suspend
  * @property string|null $request_sender_expired_at
- * @property int $request_status_reciver 1=Active 2=Refused 3=Suspend
+ * @property int $request_status_receiver 1=Active 2=Refused 3=Suspend
  * @property string|null $merge_ids_sender
- * @property string|null $merge_ids_reciver
+ * @property string|null $merge_ids_receiver
  * @property int $merge_status_sender  1=Active 2=Cancel 3=Suspend
  * @property string|null $merge_sender_expired_at
- * @property int $merge_status_reciver  1=Active 2=Refused 3=Suspend
+ * @property int $merge_status_receiver  1=Active 2=Refused 3=Suspend
  * @property int $status  1=Active 2=Inactive 3=Susspend 4=Complete
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeIdsReciver($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeIdsReceiver($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeIdsSender($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeSenderExpiredAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeStatusReciver($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeStatusReceiver($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeStatusSender($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereNodeReciverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereNodeReceiverId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereNodeSenderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestSenderExpiredAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestStatusReciver($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestStatusReceiver($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestStatusSender($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereUserReciverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereUserReceiverId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereUserSenderId($value)
  */
 	class UserMergeRequest extends \Eloquent {}
