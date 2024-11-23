@@ -14,6 +14,7 @@ use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use App\GraphQL\Enums\MergeStatus;
 use App\GraphQL\Enums\RequestStatusSender;
+use App\GraphQL\Enums\RequestStatusReceiver;
 use App\models\User;
 use App\models\Person;
 use Carbon\Carbon;
@@ -48,7 +49,9 @@ final class SendMergeRequestToOtherFamily
 
         // Fetch the sender person
         $userMergeRequest = UserMergeRequest::where('id',$args['id'])
-        ->where('status',MergeStatus::Active)
+        //->where('status',MergeStatus::Active)
+        ->where('request_status_sender',  RequestStatusSender::Active->value)
+        ->where('request_status_receiver',  RequestStatusReceiver::Active->value)
         ->first();
 
         if(!$userMergeRequest)

@@ -2,6 +2,7 @@
 
 namespace App\Rules\UserMergeRequest;
 
+use App\GraphQL\Enums\RequestStatusSender;
 use App\Models\UserMergeRequest;
 use Illuminate\Contracts\Validation\Rule;
 use App\GraphQL\Enums\MergeStatus;
@@ -25,7 +26,8 @@ class MergeValidateNodeIdsInMergeIds implements Rule
     {
         // Fetch the user merge request by ID
         $userMergeRequest = UserMergeRequest::where('id', $this->userMergeRequestId)
-            ->where('status', MergeStatus::Active)
+            ->where('request_status_sender', RequestStatusSender::Active)
+            ->where('request_status_receiver', RequestStatusSender::Active)
             ->first();
 
         if (!$userMergeRequest) {

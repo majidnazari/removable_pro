@@ -46,7 +46,7 @@ final class UpdateMergeRequestReceiver
 
         $data = [
            // "editor_id" => $user_sender_id,
-            "request_status_receiver" => $args['request_status_receiver'] ?? RequestStatusReceiver::Suspend->value
+            "merge_status_receiver" => $args['merge_status_receiver'] ?? RequestStatusReceiver::Suspend->value
         ];
 
        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
@@ -81,6 +81,14 @@ final class UpdateMergeRequestReceiver
 
         if($UserMergeRequest->merge_status_sender != RequestStatusSender::Active->value){
             return Error::createLocatedError("UserMergeRequest-FIRST_MERGE_SENDER_MUST_MAKE_REQUEST_ACTIVE" );
+
+        } 
+        if(( $args['merge_status_receiver'] == RequestStatusSender::Active->value) &&
+           ( $UserMergeRequest->request_status_sender != RequestStatusSender::Active->value ||
+            $UserMergeRequest->request_status_receiver != RequestStatusSender::Active->value ||
+            $UserMergeRequest->merge_status_sender != RequestStatusSender::Active->value  )
+            ){
+            return Error::createLocatedError("UserMergeRequest-ALL_STATUS_MUST_BE_ACTIVE" );
 
         } 
 

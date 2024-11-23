@@ -32,7 +32,7 @@ final class UpdateMergeRequestSender
     {
         // TODO implement the resolver
     }
-    public function resolveUpdateRequestSender($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveUpdateMergeRequestSender($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
 
@@ -47,7 +47,7 @@ final class UpdateMergeRequestSender
 
         $data = [
             "editor_id" =>  $this->user_sender_id,
-            "request_status_sender" => $args['request_status_sender'] ?? RequestStatusSender::Suspend
+            "merge_status_sender" => $args['merge_status_sender'] ?? RequestStatusSender::Suspend
         ];
 
         //Log::info("the update status sender :". json_encode($data));

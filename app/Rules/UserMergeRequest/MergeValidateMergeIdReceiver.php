@@ -6,6 +6,8 @@ use App\Models\UserMergeRequest;
 use App\Models\Person;
 use Illuminate\Contracts\Validation\Rule;
 use App\GraphQL\Enums\MergeStatus;
+use App\GraphQL\Enums\RequestStatusSender;
+
 use Illuminate\Support\Facades\Log;
 
 class MergeValidateMergeIdReceiver implements Rule
@@ -25,6 +27,7 @@ class MergeValidateMergeIdReceiver implements Rule
 
         // Step 1: Fetch Complete Relationships
         $completeRelations = UserMergeRequest::where('status', MergeStatus::Complete)
+        //->where('request_status_receiver', RequestStatusSender::Active)
             ->where('user_receiver_id', $this->loggedInUserId)
             ->get();
 
@@ -48,7 +51,9 @@ class MergeValidateMergeIdReceiver implements Rule
         if($completeRelations->isEmpty())
         {
               // Step 2: Fetch Active Relationships
-                $activeRelations = UserMergeRequest::where('status', MergeStatus::Active)
+                $activeRelations = UserMergeRequest::where('request_status_sender', RequestStatusSender::Active)
+                ->where('request_status_receiver', RequestStatusSender::Active)
+
                 ->where('user_sender_id', $this->loggedInUserId)
                 ->get();
 

@@ -67,6 +67,12 @@ input UpdateMergeRequestReceiverInput {
    
 }
 
+input UpdateMergeRequestSenderInput {
+
+   merge_status_sender: RequestStatusSender
+   
+}
+
 input SendMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendMergeRequestToOtherFamilyInputValidator")
 {
     id: ID!
@@ -74,7 +80,7 @@ input SendMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Valida
     merge_ids_receiver: String 
 }
 
-input UpdateMergeRequestSenderInput {
+input testSenderInput {
 
     id: ID!
    
@@ -87,12 +93,12 @@ input UpdateMergeRequestSenderInput {
     
 }
 
-input UpdateMergeRequestReceiverInput {
+# input UpdateMergeRequestReceiverInput {
 
-    id: ID!
-    merge_status_receiver: RequestStatusReceiver
     
-}
+#     merge_status_receiver: RequestStatusReceiver
+    
+# }
 
 input UpdateUserMergeRequestAllInput {
 

@@ -14,9 +14,14 @@
 
 
 
+    UpdateMergeRequestSender (id: ID!, input: UpdateMergeRequestSenderInput! @spread): UserMergeRequest 
+    @guard(with: ["api"]) 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateMergeRequestSender@resolveUpdateMergeRequestSender") 
+    
+
     UpdateMergeRequestReceiver (id: ID!, input: UpdateMergeRequestReceiverInput! @spread): UserMergeRequest 
-        @guard(with: ["api"]) 
-        @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateMergeRequestReceiver@resolveUpdateMergeRequestReceiver") 
+    @guard(with: ["api"]) 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateMergeRequestReceiver@resolveUpdateMergeRequestReceiver") 
 
     # sendFirstMergeRequest(input: SendRequestToOtherFamilyInput! @spread): UserMergeRequest 
     # @guard(with: ["api"]) 
