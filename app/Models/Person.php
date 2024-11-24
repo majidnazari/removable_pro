@@ -91,7 +91,7 @@ class Person extends \Eloquent
 
     public const CATEGORY_CONTENT_ID = 'category_content_id';
     public const CHILD_ID = 'child_id';
-    public const ADDRESS_ID = 'id';
+    public const ADDRESS_ID = 'Addrss_id';
     public const PERSON_ID = 'person_id';
     public const MAN_ID = 'man_id';
     public const WOMAN_ID = 'woman_id';

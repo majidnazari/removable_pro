@@ -31,7 +31,7 @@ class MergeValidateNodeIdsInMergeIds implements Rule
             ->first();
 
         if (!$userMergeRequest) {
-            $this->errors[] = 'The provided  merge request record  is invalid or inactive.';
+            $this->errors[] = 'The sender status or receiver status  is invalid or not active.';
             return false;
         }
 

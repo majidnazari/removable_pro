@@ -6,9 +6,7 @@ use App\Models\UserMergeRequest;
 use App\Models\Person;
 use Illuminate\Contracts\Validation\Rule;
 use App\GraphQL\Enums\MergeStatus;
-use Illuminate\Support\Facades\Log;
 use App\GraphQL\Enums\RequestStatusSender;
-
 
 class MergeValidateMergeIdsSender implements Rule
 {
@@ -23,64 +21,11 @@ class MergeValidateMergeIdsSender implements Rule
 
     public function passes($attribute, $value)
     {
-        Log::info("MergeValidateMergeIdsSender: Checking {$attribute} with value: {$value}");
+        $this->allowedPersonIds = $this->fetchAllowedPersonIds();
 
-        // Step 1: Fetch Complete Relationships
-        $completeRelations = UserMergeRequest::where('status', MergeStatus::Complete)
-            ->where('user_sender_id', $this->loggedInUserId)
-            ->get();
-
-        Log::info("Complete Relationships for user {$this->loggedInUserId}: " . json_encode($completeRelations));
-
-        foreach ($completeRelations as $relation) {
-            // Add sender's people
-            $senderPersons = Person::where('creator_id', $relation->user_sender_id)
-                ->pluck('id')
-                ->toArray();
-
-            // Add receiver's people
-            $receiverPersons = Person::where('creator_id', $relation->user_receiver_id)
-                ->pluck('id')
-                ->toArray();
-
-            // Merge IDs
-            $this->allowedPersonIds = array_merge($this->allowedPersonIds, $senderPersons, $receiverPersons);
-        }
-
-        if($completeRelations->isEmpty())
-        {
-            // Step 2: Fetch Active Relationships
-            $activeRelations = UserMergeRequest::where('request_status_sender', RequestStatusSender::Active)
-            //where('status', MergeStatus::Active)
-            ->where('request_status_receiver', RequestStatusSender::Active)
-            ->where('user_sender_id', $this->loggedInUserId)
-            ->get();
-
-            Log::info("Active Relationships for user {$this->loggedInUserId}: " . json_encode($activeRelations));
-
-            foreach ($activeRelations as $relation) {
-            // Add only sender's own people
-            $senderPersons = Person::where('creator_id', $relation->user_sender_id)
-                ->pluck('id')
-                ->toArray();
-
-            $this->allowedPersonIds = array_merge($this->allowedPersonIds, $senderPersons);
-            }
-
-            // Remove duplicate IDs
-            $this->allowedPersonIds = array_unique($this->allowedPersonIds);
-
-        }
-       
-        Log::info("Final Allowed Person IDs for input.merge_ids_sender: " . json_encode($this->allowedPersonIds));
-
-        // Step 3: Validate Input Merge IDs
         $mergeIds = explode(',', $value);
         $this->invalidIds = array_diff($mergeIds, $this->allowedPersonIds);
 
-        Log::info("Invalid IDs for input.merge_ids_sender: " . json_encode($this->invalidIds));
-
-        // Validation passes if there are no invalid IDs
         return empty($this->invalidIds);
     }
 
@@ -94,5 +39,47 @@ class MergeValidateMergeIdsSender implements Rule
             . implode(', ', $this->invalidIds) 
             . '. Only the following IDs are allowed: ' 
             . implode(', ', $this->allowedPersonIds) . '.';
+    }
+
+    private function fetchAllowedPersonIds()
+    {
+        // Fetch Complete Relationships
+        $completeRelations = UserMergeRequest::where('status', MergeStatus::Complete)
+            ->where('user_sender_id', $this->loggedInUserId)
+            ->get();
+
+        if ($completeRelations->isNotEmpty()) {
+            return $this->getPersonIdsForCompleteRelations($completeRelations);
+        }
+
+        // Fetch Active Relationships if no Complete Relationships found
+        $activeRelations = UserMergeRequest::where('request_status_sender', RequestStatusSender::Active)
+            ->where('request_status_receiver', RequestStatusSender::Active)
+            ->where('user_sender_id', $this->loggedInUserId)
+            ->pluck('user_sender_id')
+            ->toArray();
+
+        return $this->getPersonIdsForCreators($activeRelations);
+    }
+
+    private function getPersonIdsForCompleteRelations($relations)
+    {
+        $userIds = $relations->pluck('user_sender_id')
+            ->merge($relations->pluck('user_receiver_id'))
+            ->unique()
+            ->toArray();
+
+        return $this->getPersonIdsForCreators($userIds);
+    }
+
+    private function getPersonIdsForCreators($creatorIds)
+    {
+        if (empty($creatorIds)) {
+            return [];
+        }
+
+        return Person::whereIn('creator_id', $creatorIds)
+            ->pluck('id')
+            ->toArray();
     }
 }

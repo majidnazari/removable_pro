@@ -80,7 +80,16 @@ input SendMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Valida
     merge_ids_receiver: String 
 }
 
-input testSenderInput {
+input SendConfirmMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendConfirmMergeRequestToOtherFamilyInputValidator")
+{
+    id: ID!
+    merge_ids_sender: String
+    merge_ids_receiver: String 
+
+    status:MergeStatus
+}
+
+input SenderInput {
 
     id: ID!
    

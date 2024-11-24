@@ -79,7 +79,7 @@ final class UpdateMergeRequestReceiver
 
         }
 
-        if($UserMergeRequest->merge_status_sender != RequestStatusSender::Active->value){
+        if($UserMergeRequest->merge_status_sender != RequestStatusSender::Active->value && ($args['merge_status_receiver'] === RequestStatusReceiver::Active->value)){
             return Error::createLocatedError("UserMergeRequest-FIRST_MERGE_SENDER_MUST_MAKE_REQUEST_ACTIVE" );
 
         } 

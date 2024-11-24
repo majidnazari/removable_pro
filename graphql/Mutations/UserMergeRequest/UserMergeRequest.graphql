@@ -40,3 +40,7 @@
 SendMergeRequestToOtherFamily(input: SendMergeRequestToOtherFamilyInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\SendMergeRequestToOtherFamily@resolveUserMergeRequest") 
+
+SendConfirmMergeRequestToOtherFamily(input: SendConfirmMergeRequestToOtherFamilyInput! @spread): UserMergeRequest 
+    @guard(with: ["api"]) 
+    @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\SendConfirmMergeRequestToOtherFamily@resolveUserConfirmMergeRequest") 

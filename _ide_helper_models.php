@@ -1132,7 +1132,7 @@ namespace App\Models{
  * @property int $merge_status_sender  1=Active 2=Cancel 3=Suspend
  * @property string|null $merge_sender_expired_at
  * @property int $merge_status_receiver  1=Active 2=Refused 3=Suspend
- * @property int $status  1=Active 2=Inactive 3=Susspend 4=Complete
+ * @property int $status  1=Active 2=Inactive 3=Suspend 4=Complete
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeIdsReceiver($value)
