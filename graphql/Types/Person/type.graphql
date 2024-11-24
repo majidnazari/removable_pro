@@ -83,3 +83,8 @@ type AncestryTree {
     mine: AncestryTreeNode
     related_node: AncestryTreeNode
 }
+
+type AncestryTrees {
+    mine: AncestryTreeNode
+    related_nodes: [AncestryTreeNode]
+}

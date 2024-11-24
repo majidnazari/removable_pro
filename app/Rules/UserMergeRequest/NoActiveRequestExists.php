@@ -2,6 +2,7 @@
 
 namespace App\Rules\UserMergeRequest;
 
+use App\GraphQL\Enums\MergeStatus;
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\UserMergeRequest;
 use App\GraphQL\Enums\RequestStatusSender;
@@ -22,6 +23,7 @@ class NoActiveRequestExists implements Rule
     {
         return !UserMergeRequest::where('user_sender_id', $this->senderId)
             ->where('request_status_sender', RequestStatusSender::Active->value)
+            ->where('status','!=' ,MergeStatus::Complete->value)
             ->exists();
     }
 

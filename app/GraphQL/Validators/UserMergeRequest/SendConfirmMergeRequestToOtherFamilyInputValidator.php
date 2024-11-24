@@ -13,6 +13,8 @@ use App\Rules\UserMergeRequest\MergeEqualCountIds;
 use App\Rules\UserMergeRequest\MergeRequestIdExists;
 use App\Rules\UserMergeRequest\MergeValidateAllStatusesAreActive;
 use App\Rules\UserMergeRequest\MergeEnsureNotEmpty;
+use App\Rules\UserMergeRequest\PreventChangeCompleteStatus;
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -49,6 +51,7 @@ class SendConfirmMergeRequestToOtherFamilyInputValidator extends Validator
                 new MergeRequestIdExists(), 
                 new MergeValidateNodeIdsInMergeIds($userMergeRequestId, $mergeIdsSender, $mergeIdsReceiver), // Validate sender and receiver node IDs
                 new MergeValidateAllStatusesAreActive($userMergeRequestId, $this->userId),
+                new PreventChangeCompleteStatus($this->arg('id')),
             ],
             'merge_ids_sender' => [
                 'required',

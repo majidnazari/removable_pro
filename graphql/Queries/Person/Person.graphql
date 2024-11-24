@@ -18,4 +18,4 @@ getPersonFatherOfMother(id: ID! ): Person @guard(with: ["api"])
 
 
  getPersonAncestryWithActiveMerge( id:ID ,depth: Int!): AncestryTree @guard(with: ["api"])  @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestryWithActiveMerge")
- getPersonAncestryWithCompleteMerge( id:ID ,depth: Int!): AncestryTree @guard(with: ["api"])  @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestryWithCompleteMerge")
+ getPersonAncestryWithCompleteMerge( id:ID ,depth: Int!): AncestryTrees @guard(with: ["api"])  @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestryWithCompleteMerge")
