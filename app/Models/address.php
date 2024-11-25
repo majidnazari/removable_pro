@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\GraphQL\Enums\Status;
-use App\Traits\HasStatusEnum;
+use Eloquent;
 
 /**
  * 
@@ -41,31 +39,12 @@ use App\Traits\HasStatusEnum;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereAreaId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereBuilderNo($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereCountryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereFloorNo($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereLat($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereLocationTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereLon($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address wherePersonId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereProvinceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereStreetName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereUnitNo($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Address query() 
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withoutTrashed()
  * @mixin \Eloquent
  */
-class Address extends \Eloquent
+class Address extends Eloquent
 {
     protected $fillable = [
         'creator_id',
@@ -84,7 +63,8 @@ class Address extends \Eloquent
         'lon',
         'status',
     ];
-    use HasFactory, SoftDeletes;// HasStatusEnum;
+    use HasFactory;
+    use SoftDeletes;
 
     // protected $casts = [
     //     'status' => Status::class,
@@ -92,50 +72,48 @@ class Address extends \Eloquent
 
 
     public const TABLE_NAME = 'addresses';
-    public const ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-    public const PERSON_ID = 'person_id';
-    public const AREA_ID = 'area_id';
-    public const CITY_ID = 'city_id';
-    public const PROVINCE_ID = 'province_id';
-    public const COUNTRY_ID = 'country_id';
-
     protected $table = self::TABLE_NAME;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+    public const COLUMN_PERSON_ID = 'person_id';
+    public const COLUMN_AREA_ID = 'area_id';
+    public const COLUMN_CITY_ID = 'city_id';
+    public const COLUMN_PROVINCE_ID = 'province_id';
+    public const COLUMN_COUNTRY_ID = 'country_id';
+
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, self::CREATOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, self::EDITOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
     }
 
     public function Person()
     {
-        return $this->belongsTo(Person::class, self::PERSON_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_PERSON_ID);
     }
 
     public function Area()
     {
-        return $this->belongsTo(Area::class, self::AREA_ID);
+        return $this->belongsTo(Area::class, self::COLUMN_AREA_ID);
     }
     public function City()
     {
-        return $this->belongsTo(City::class, self::CITY_ID);
+        return $this->belongsTo(City::class, self::COLUMN_CITY_ID);
     }
 
     public function Province()
     {
-        return $this->belongsTo(Province::class, self::PROVINCE_ID);
+        return $this->belongsTo(Province::class, self::COLUMN_PROVINCE_ID);
     }
     public function Country()
     {
-        return $this->belongsTo(Country::class, self::COUNTRY_ID);
+        return $this->belongsTo(Country::class, self::COLUMN_COUNTRY_ID);
     }
-
-    // Accessor to get status as string
-
 }

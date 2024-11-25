@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Eloquent;
 
 /**
  * 
@@ -25,32 +24,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereUpdatedAt($value)
+ 
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent withoutTrashed()
  * @mixin \Eloquent
  */
-class CategoryContent extends \Eloquent
+class CategoryContent extends Eloquent
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
         'title',
         'status',
     ];
 
     public const TABLE_NAME = 'category_contents';
+    protected $table = self::TABLE_NAME;
+
     public const COLUMN_ID = 'id';
     public const CREATOR_ID = 'creator_id';
     public const EDITOR_ID = 'editor_id';
 
     public const CATEGORY_CONTENT_ID = 'category_content_id';
 
-    protected $table = self::TABLE_NAME;
 
     public function FamilyBoards()
     {

@@ -46,6 +46,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withoutTrashed()
+ * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereBuilderNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereCityId($value)
@@ -65,9 +68,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereStreetName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereUnitNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withoutTrashed()
- * @mixin \Eloquent
  */
 	class Address extends \Eloquent {}
 }
@@ -89,6 +89,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area withoutTrashed()
+ * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereCityId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereCreatedAt($value)
@@ -96,9 +99,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Area withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Area withoutTrashed()
- * @mixin \Eloquent
  */
 	class Area extends \Eloquent {}
 }
@@ -122,15 +122,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent withoutTrashed()
+ * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent withoutTrashed()
- * @mixin \Eloquent
  */
 	class CategoryContent extends \Eloquent {}
 }
