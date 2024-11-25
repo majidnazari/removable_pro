@@ -4,25 +4,17 @@ namespace App\GraphQL\Mutations\Person;
 
 use App\Models\Person;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\Persons\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
-
 use Carbon\Carbon;
+use App\Traits\AuthUserTrait;
+
 use Log;
-use Illuminate\Support\Facades\Auth;
-use Exception;
+
 final class CreatePerson
 {
+    use AuthUserTrait;
     protected $userId;
-
-    public const NONE=0;
-    public const ACTIVE=1;
     /**
      * @param  null  $_
      * 
@@ -35,21 +27,14 @@ final class CreatePerson
     public function resolvePerson($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user = Auth::guard('api')->user();
+        $this->userId = $this->getUserId();
 
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;;
-        Log::info("the user is:" .$this->userId . "and is_owner is:" .$args['is_owner'] );
+        //Log::info("the user is:" .$this->userId . "and is_owner is:" .$args['is_owner'] );
 
         $PersonModel = [
             "creator_id" => $this->userId,
             //"editor_id" => $args['editor_id'] ?? null,
             "node_code" => Carbon::now()->format('YmdHisv'),
-            //"node_level_x" => $args['node_level_x'] ?? 0,
-            //"node_level_y" => $args['node_level_y'] ?? 0,
             "first_name" => $args['first_name'],
             "last_name" => $args['last_name'],
             "gender" => $args['gender'] ?? 0,

@@ -4,23 +4,17 @@ namespace App\GraphQL\Mutations\Memory;
 
 use App\Models\Memory;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\Memorys\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Storage;
 use App\GraphQL\Enums\Status;
-use Illuminate\Support\Facades\Auth;
-use Exception;
-
+use App\Traits\AuthUserTrait;
 
 use Log;
 
 final class CreateMemory
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -34,14 +28,7 @@ final class CreateMemory
     }
     public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;;
+        $this->userId = $this->getUserId();
 
         $MemoryModel = [
             "creator_id" => $this->userId,

@@ -11,7 +11,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\UserAnswer;
+use App\Traits\AuthUserTrait;
+
 use App\GraphQL\Enums\Status;
 
 use DB;
@@ -59,12 +60,7 @@ class Register extends BaseAuthResolver
             'password' => $args['password'],
         ]);
         $user = $model->where(config('lighthouse-graphql-passport.username'), $args[config('lighthouse-graphql-passport.username')])->first();
-        // Log::info("the model of fetched is" . json_encode($user));
-        // Log::info("the makeRequest and credentials is" . json_encode($credentials));
-
-       // $response = $this->makeRequest($credentials);
-        //Log::info("the response  is:" . json_encode($response));
-
+        
         $response['user'] = $user;
         event(new Registered($user));
 

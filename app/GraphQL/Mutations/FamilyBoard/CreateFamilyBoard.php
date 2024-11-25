@@ -4,21 +4,16 @@ namespace App\GraphQL\Mutations\FamilyBoard;
 
 use App\Models\FamilyBoard;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\FamilyBoards\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
-use Illuminate\Support\Facades\Auth;
-use Exception;
+use App\Traits\AuthUserTrait;
 
 use Log;
 
 final class CreateFamilyBoard
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -32,14 +27,8 @@ final class CreateFamilyBoard
     public function resolveFamilyBoard($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
 
-        //Log::info("the args are:" . json_encode($args));
-        $user = Auth::guard('api')->user();
+        $this->userId = $this->getUserId();
 
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;
         $FamilyBoardResult=[
             "creator_id" =>  $this->userId,
             "category_content_id" => $args['category_content_id'],

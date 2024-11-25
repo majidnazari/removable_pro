@@ -7,10 +7,13 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
+
 use Exception;
 
 final class UpdatePersonChild
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -23,13 +26,8 @@ final class UpdatePersonChild
     }
     public function resolvePersonChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user = Auth::guard('api')->user();
+        $this->userId = $this->getUserId();
 
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;;
         //args["user_id_creator"]=$this->userId;
         $PersonChildResult=PersonChild::find($args['id']);
         $personChildmodel=$args;

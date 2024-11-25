@@ -7,10 +7,13 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
+
 use Exception;
 
 final class UpdateScore
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -23,12 +26,8 @@ final class UpdateScore
     }
     public function resolveScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-        //args["user_id_creator"]=$this->userId;
+        $this->userId = $this->getUserId();
+        
         $ScoreResult=Score::find($args['id']);
         
         if(!$ScoreResult)

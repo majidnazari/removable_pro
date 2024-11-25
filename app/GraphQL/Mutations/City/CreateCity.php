@@ -11,12 +11,13 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-use Illuminate\Support\Facades\Auth;
-use Exception;
+use App\Traits\AuthUserTrait;
+
 use Log;
 
 final class CreateCity
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -30,14 +31,8 @@ final class CreateCity
     public function resolveCity($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
 
-        //Log::info("the args are:" . json_encode($args));
-        $user = Auth::guard('api')->user();
+        $this->userId = $this->getUserId();
 
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;
         $CityResult=[
             "province_id" => $args['province_id'],
             "title" => $args['title'],

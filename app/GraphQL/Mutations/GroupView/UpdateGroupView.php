@@ -6,12 +6,13 @@ use App\Models\GroupView;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-use Illuminate\Support\Facades\Auth;
-use Exception;
+use App\Traits\AuthUserTrait;
+
 
 
 final class UpdateGroupView
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -24,13 +25,8 @@ final class UpdateGroupView
     }
     public function resolveGroupView($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user = Auth::guard('api')->user();
+        $this->userId = $this->getUserId();
 
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;;
         //args["user_id_creator"]=$user_id;
         $GroupViewResult=GroupView::find($args['id']);
         

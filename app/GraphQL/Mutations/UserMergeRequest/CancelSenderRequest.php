@@ -7,10 +7,13 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
+
 use Exception;
 
 final class CancelSenderRequest
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -23,12 +26,8 @@ final class CancelSenderRequest
     }
     public function resolveCancelSenderRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-        //args["user_id_creator"]=$this->userId;
+        
+        $this->userId = $this->getUserId();
 
         $UserMergeRequestResult=UserMergeRequest::where( 'creator_id',$this->userId)->first();
         

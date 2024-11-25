@@ -8,23 +8,22 @@ use App\Models\PersonChild;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\Status;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
 use Exception;
+
+
 use Log;
 
 final class MergePersons
 {
+    use AuthUserTrait;
     protected $userId;
 
     public function resolvemerge($rootValue, array $args)
     {
-        $user = Auth::guard('api')->user();
+        
+        $this->userId = $this->getUserId();
 
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;;
         //Log::info("the user id is:" .  $auth_id);
 
         $primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);

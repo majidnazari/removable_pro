@@ -5,20 +5,18 @@ namespace App\GraphQL\Mutations\PersonDetails;
 use App\GraphQL\Enums\PhysicalCondition;
 use App\Models\PersonDetail;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\PersonDetails\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Storage;
 use App\GraphQL\Enums\Status;
+use App\Traits\AuthUserTrait;
 
 use Log;
 
 final class CreatePersonDetails
 {
+    use AuthUserTrait;
+    protected $userId;
     /**
      * @param  null  $_
      * 
@@ -30,6 +28,7 @@ final class CreatePersonDetails
     }
     public function resolvePersonDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
 
         $isExist = PersonDetail::where('person_id', $args['person_id'])->first();
         

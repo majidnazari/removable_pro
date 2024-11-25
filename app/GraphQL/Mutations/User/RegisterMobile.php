@@ -14,6 +14,8 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\LoginAttempt;
 use App\GraphQL\Enums\Status;
+use App\Traits\AuthUserTrait;
+
 
 
 use GraphQL\Error\Error;

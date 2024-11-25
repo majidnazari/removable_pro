@@ -8,12 +8,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\MergeStatus;
+use App\Traits\AuthUserTrait;
+
 use Exception;
 use Log;
 
 class SendConfirmMergeRequestToOtherFamily
 {
     use PersonMergeTrait;
+    use AuthUserTrait;
 
     protected $userId;
 
@@ -24,16 +27,10 @@ class SendConfirmMergeRequestToOtherFamily
 
     public function resolveUserConfirmMergeRequest($rootValue, array $args)
     {
-        $user = Auth::guard('api')->user();
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;
-
+        $this->userId = $this->getUserId();
+    
         $mergeIdsSender = $args['merge_ids_sender'];        
         $mergeIdsReceiver = $args['merge_ids_receiver'];
-
        
         DB::beginTransaction();
 

@@ -5,20 +5,18 @@ namespace App\GraphQL\Mutations\PersonMarriage;
 use App\GraphQL\Enums\MarriageStatus;
 use App\Models\PersonMarriage;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\PersonMarriages\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
-use Log;
+use App\Traits\AuthUserTrait;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use Log;
+
 
 final class CreatePersonMarriage
 {
+    use AuthUserTrait;
     protected $userId;
    
     /**
@@ -33,16 +31,8 @@ final class CreatePersonMarriage
     public function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
+        $this->userId = $this->getUserId();
 
-
-        //Log::info("the args are:" . json_encode($args));
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;;
         $PersonMarriageModel = [
             "creator_id" => $this->userId,
 

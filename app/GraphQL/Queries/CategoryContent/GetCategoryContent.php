@@ -5,9 +5,12 @@ namespace App\GraphQL\Queries\CategoryContent;
 use App\Models\CategoryContent;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\Traits\AuthUserTrait;
+
 
 final class GetCategoryContent
 {
+    use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -18,6 +21,8 @@ final class GetCategoryContent
     }
     function resolveCategoryContent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
+
         $CategoryContent = CategoryContent::where('id', $args['id']);       
         return $CategoryContent->first();
     }

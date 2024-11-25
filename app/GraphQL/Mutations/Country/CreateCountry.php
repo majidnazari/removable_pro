@@ -4,19 +4,15 @@ namespace App\GraphQL\Mutations\Country;
 
 use App\Models\Country;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-use Illuminate\Support\Facades\Auth;
-use Exception;
+use App\Traits\AuthUserTrait;
+
 use Log;
 
 final class CreateCountry
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -28,16 +24,9 @@ final class CreateCountry
         // TODO implement the resolver
     }
     public function resolveCountry($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {        
+    {   
+        $this->userId = $this->getUserId();
 
-        //Log::info("the args are:" . json_encode($args));
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;
         $CountryResult=[
             "title" => $args['title'],
             "code" => $args['code']            

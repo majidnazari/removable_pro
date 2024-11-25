@@ -11,10 +11,11 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\UserAnswer;
+use App\Traits\AuthUserTrait;
+use Exception;
+
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
-
 
 use DB;
 use Log;
@@ -22,6 +23,7 @@ use Log;
 class ForgotPassword extends BaseAuthResolver
 {
   
+    use AuthUserTrait;
     /**
      * @param $rootValue
      * @param  array  $args
@@ -31,8 +33,10 @@ class ForgotPassword extends BaseAuthResolver
      *
      * @throws \Exception
      */
-    public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo):array|Error
     {
+        $this->userId = $this->getUserId();
+
         $expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");
         //$cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
 
@@ -43,10 +47,11 @@ class ForgotPassword extends BaseAuthResolver
 
         if(!$user)
         {
-            throw new \RuntimeException('User not found');
+            return  Error::createLocatedError("User not found");
         }
     
-        if ($user->code_expired_at && Carbon::parse($user->code_expired_at)->gt(Carbon::now())) {
+        if ($user->code_expired_at && Carbon::parse($user->code_expired_at)->gt(Carbon::now())) 
+        {
             return  Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
         }
         
@@ -77,7 +82,7 @@ class ForgotPassword extends BaseAuthResolver
 
         if(!$user)
         {
-            throw new \RuntimeException('User not found');
+            return Error::createLocatedError('User not found');
         }
     
         //Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));

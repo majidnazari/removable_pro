@@ -5,9 +5,12 @@ namespace App\GraphQL\Queries\PersonMarriage;
 use App\Models\PersonMarriage;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\Traits\AuthUserTrait;
+
 
 final class GetPersonMarriage
 {
+    use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -18,6 +21,8 @@ final class GetPersonMarriage
     }
     function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
+
         $PersonMarriage = PersonMarriage::where('id', $args['id']);       
         return $PersonMarriage->first();
     }

@@ -4,19 +4,16 @@ namespace App\GraphQL\Mutations\Province;
 
 use App\Models\Province;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-use Log;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
+
 use Exception;
 
 final class CreateProvince
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -29,13 +26,8 @@ final class CreateProvince
     }
     public function resolveProvince($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
+        $this->userId = $this->getUserId();
 
-        //Log::info("the args are:" . json_encode($args));
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
         $ProvinceResult=[
             "country_id" => $args['country_id'],
             "title" => $args['title'],

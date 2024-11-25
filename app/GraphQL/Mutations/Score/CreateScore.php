@@ -4,20 +4,18 @@ namespace App\GraphQL\Mutations\Score;
 
 use App\Models\Score;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
+
 use Exception;
 use Log;
 
 final class CreateScore
 {
+    use  AuthUserTrait;
     protected $userId;
    
     /**
@@ -30,13 +28,8 @@ final class CreateScore
     }
     public function resolveScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
+        $this->userId = $this->getUserId();
 
-        //Log::info("the args are:" . json_encode($args));
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
         $ScoreResult=[
             "status" => $args['status'] ?? Status::Active,
             "title" => $args['title'],

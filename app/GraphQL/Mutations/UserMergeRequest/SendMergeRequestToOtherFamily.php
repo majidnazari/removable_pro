@@ -4,11 +4,6 @@ namespace App\GraphQL\Mutations\UserMergeRequest;
 
 use App\Models\UserMergeRequest;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
@@ -19,11 +14,14 @@ use App\models\User;
 use App\models\Person;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
+
 use Exception;
 use Log;
 
 final class SendMergeRequestToOtherFamily
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -36,17 +34,8 @@ final class SendMergeRequestToOtherFamily
     }
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-        $this->userId = $user->id;    
-
-        // Validate inputs using the custom validator
-        //$this->validate($args);
-
+        $this->userId = $this->getUserId();
+ 
         // Fetch the sender person
         $userMergeRequest = UserMergeRequest::where('id',$args['id'])
         //->where('status',MergeStatus::Active)

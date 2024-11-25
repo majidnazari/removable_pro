@@ -6,10 +6,13 @@ use App\Models\PersonChild;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
 use Exception;
+
+
 final class DeletePersonChild
 {
+    use AuthUserTrait;
     protected $userId;
 
     /**
@@ -22,13 +25,9 @@ final class DeletePersonChild
     }
     public function resolvePersonChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
-        }
-
-        $this->userId = $user->id;;        
+       
+        $this->userId = $this->getUserId();
+      
         $PersonChildResult=PersonChild::find($args['id']);
         
         if(!$PersonChildResult)
@@ -41,7 +40,6 @@ final class DeletePersonChild
 
         $PersonChildResult_filled= $PersonChildResult->delete();  
         return $PersonChildResult;
-
         
     }
 
