@@ -1,4 +1,0 @@
-
-    createUserVolumeExtra(input: CreateUserVolumeExtraInput! @spread): UserVolumeExtra @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\UserVolumeExtra\\CreateUserVolumeExtra@resolveUserVolumeExtra") 
-    updateUserVolumeExtra(id: ID!, input: UpdateUserVolumeExtraInput! @spread): UserVolumeExtra @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\UserVolumeExtra\\UpdateUserVolumeExtra@resolveUserVolumeExtra") 
-    deleteUserVolumeExtra(id: ID!): UserVolumeExtra @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\UserVolumeExtra\\DeleteUserVolumeExtra@resolveUserVolumeExtra") 
