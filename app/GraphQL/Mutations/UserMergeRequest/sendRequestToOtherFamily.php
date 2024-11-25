@@ -34,7 +34,7 @@ final class SendRequestToOtherFamily
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $this->userId = $this->getUserId();
+        $this->user_sender_id= $this->getUserId();
 
         // Fetch the sender person
         $person = Person::find($args['node_sender_id']);

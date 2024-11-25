@@ -23,7 +23,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
 {
     protected $userId;
 
-    public function __construct()
+    public function __construct() 
     {
         // Ensure a user is authenticated
         $user = Auth::guard('api')->user();
