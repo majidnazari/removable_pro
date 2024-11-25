@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent;
 
 
 /**
@@ -23,35 +24,30 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event withoutTrashed()
+
  * @mixin \Eloquent
  */
-class Event extends \Eloquent
+class Event extends Eloquent
 {
     protected $fillable = [
         'title',
         'status',
     ];
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     public const TABLE_NAME = 'events';
-    public const COLUMN_ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-
-    public const EVENT_ID = 'event_id';
     protected $table = self::TABLE_NAME;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+
+    public const COLUMN_EVENT_ID = 'event_id';
 
     public function FamilyEvents()
     {
-        return $this->hasMany(FamilyEvent::class, self::EVENT_ID);
+        return $this->hasMany(FamilyEvent::class, self::COLUMN_EVENT_ID);
     }
 
 }

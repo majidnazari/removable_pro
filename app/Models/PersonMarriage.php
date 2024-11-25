@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent;
 
 
 /**
@@ -35,23 +36,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereDivorceDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereManId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereMarriageDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereMarriageStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage whereWomanId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonMarriage withoutTrashed()
+
  * @mixin \Eloquent
  */
-class PersonMarriage extends \Eloquent
+class PersonMarriage extends Eloquent
 {
     protected $fillable = [
         'man_id',
@@ -63,43 +51,45 @@ class PersonMarriage extends \Eloquent
         'marriage_date',
         'divorce_date',
     ];
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     public const TABLE_NAME = 'person_marriages';
-    //public const COLUMN_ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-
-    public const MAN_ID = 'man_id';
-    public const WOMAN_ID = 'woman_id';
-    public const PERSON_MARRIAGE_ID = 'person_marriage_id';
-    public const CHILD_ID = 'child_id';
-    public const ID = 'id';
     protected $table = self::TABLE_NAME;
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+
+    public const COLUMN_MAN_ID = 'man_id';
+    public const COLUMN_WOMAN_ID = 'woman_id';
+    public const COLUMN_PERSON_MARRIAGE_ID = 'person_marriage_id';
+    public const COLUMN_CHILD_ID = 'child_id';
+  
+
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, self::CREATOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, self::EDITOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
     }
 
     public function Man()
     {
-        return $this->belongsTo(Person::class, self::MAN_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_MAN_ID);
     }
 
     public function Woman()
     {
-        return $this->belongsTo(Person::class, self::WOMAN_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_WOMAN_ID);
     }
 
     public function PersonChild()
     {
-        return $this->hasMany(PersonChild::class, self::PERSON_MARRIAGE_ID);
+        return $this->hasMany(PersonChild::class, self::COLUMN_PERSON_MARRIAGE_ID);
     }
 
     public function Children()
@@ -107,10 +97,10 @@ class PersonMarriage extends \Eloquent
         return $this->hasManyThrough(
             Person::class,
             PersonChild::class,
-            self::PERSON_MARRIAGE_ID, // Foreign key on the `PersonChild` table
-            self::ID,               // Foreign key on the `Person` table
-            self::ID,               // Local key on the `PersonMarriage` table
-            self::CHILD_ID          // Local key on the `PersonChild` table
+            self::COLUMN_PERSON_MARRIAGE_ID, // Foreign key on the `PersonChild` table
+            self::COLUMN_ID,               // Foreign key on the `Person` table
+            self::COLUMN_ID,               // Local key on the `PersonMarriage` table
+            self::COLUMN_CHILD_ID          // Local key on the `PersonChild` table
         );
     }
 

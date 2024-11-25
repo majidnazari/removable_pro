@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent;
 
 
 /**
@@ -23,37 +24,31 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Province query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereCountryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Province whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Province withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Province withoutTrashed()
+ 
  * @mixin \Eloquent
  */
-class Province extends \Eloquent
+class Province extends Eloquent
 {
     protected $fillable = [
         'country_id',
         'title',
         'code',
     ];
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     public const TABLE_NAME = 'provinces';
-    public const COLUMN_ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-
-    public const COUNTRY_ID = 'country_id';
     protected $table = self::TABLE_NAME;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+
+    public const COLUMN_COUNTRY_ID = 'country_id';
 
     public function Country()
     {
-        return $this->belongsTo(Country::class, self::COUNTRY_ID);
+        return $this->belongsTo(Country::class, self::COLUMN_COUNTRY_ID);
     }
 
 }

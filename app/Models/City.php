@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent;
 
 
 /**
@@ -23,39 +24,33 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereProvinceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|City whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|City withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|City withoutTrashed()
+ 
  * @mixin \Eloquent
  */
-class City extends \Eloquent
+class City extends Eloquent
 {
     protected $fillable = [
         'province_id',
         'title',
         'code',
     ];
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
 
     public const TABLE_NAME = 'cities';
-    public const COLUMN_ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-
-    public const PROVINCE_ID = 'province_id';
     protected $table = self::TABLE_NAME;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+
+    public const COLUMN_PROVINCE_ID = 'province_id';
 
 
     public function Province()
     {
-        return $this->belongsTo(Province::class, self::PROVINCE_ID);
+        return $this->belongsTo(Province::class, self::COLUMN_PROVINCE_ID);
     }
     // public function Area()
     // {

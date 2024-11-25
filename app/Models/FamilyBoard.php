@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent;
 
 
 /**
@@ -30,25 +31,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCategoryContentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereFilePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereSelectedDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard withoutTrashed()
+
  * @mixin \Eloquent
  */
-class FamilyBoard extends \Eloquent
+class FamilyBoard extends Eloquent
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
         'creator_id',
         'editor_id',
@@ -60,26 +49,27 @@ class FamilyBoard extends \Eloquent
         'status',
     ];
     public const TABLE_NAME = 'family_boards';
-    public const COLUMN_ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-
-    public const CATEGORY_CONTENT_ID = 'category_content_id';
     protected $table = self::TABLE_NAME;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+
+    public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, self::CREATOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, self::EDITOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
     }
 
     public function Category()
     {
-        return $this->belongsTo(CategoryContent::class, self::CATEGORY_CONTENT_ID);
+        return $this->belongsTo(CategoryContent::class, self::COLUMN_CATEGORY_CONTENT_ID);
     }
 
 

@@ -39,10 +39,11 @@ use Eloquent;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address query() 
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Address query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withoutTrashed()
  * @mixin \Eloquent
+ 
  */
 class Address extends Eloquent
 {

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent;
 
 
 /**
@@ -30,44 +31,46 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \App\Models\Person $sender
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeExpiredAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeIsRead($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeReceiverId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeSenderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereReceiverId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestExpiredAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestIsRead($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereSenderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest query() 
  * @method static \Database\Factories\UserMergeRequestFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereHassan($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest withoutTrashed()
+ 
  * @property string|null $request_expired_at
+ * @property int $creator_id
+ * @property int|null $editor_id
+ * @property int $user_sender_id
+ * @property int $node_sender_id
+ * @property int $user_receiver_id
+ * @property int $node_receiver_id
+ * @property int $request_status_sender  1=Active 2=Cancel 3=Suspend
+ * @property string|null $request_sender_expired_at
+ * @property int $request_status_receiver 1=Active 2=Refused 3=Suspend
+ * @property string|null $merge_ids_sender
+ * @property string|null $merge_ids_receiver
+ * @property int $merge_status_sender  1=Active 2=Cancel 3=Suspend
+ * @property string|null $merge_sender_expired_at
+ * @property int $merge_status_receiver  1=Active 2=Refused 3=Suspend
+ * @property int $status  1=Active 2=Inactive 3=Suspend 4=Complete
+ 
  * @mixin \Eloquent
  */
-class UserMergeRequest extends \Eloquent
+class UserMergeRequest extends Eloquent
 {
 
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     public const TABLE_NAME = 'user_merge_requests';
-    public const ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-    public const USER_SENDER_ID = 'user_sender_id';
-    public const NODE_SENDER_ID = 'node_sender_id';
-    public const USER_Receiver_ID = 'user_receiver_id';
-    public const MERGE_SENDER_ID = 'merge_sender_id';
-    public const MERGE_Receiver_ID = 'merge_receiver_id';
     protected $table = self::TABLE_NAME;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+    public const COLUMN_USER_SENDER_ID = 'user_sender_id';
+    public const COLUMN_NODE_SENDER_ID = 'node_sender_id';
+    public const COLUMN_USER_RECEIVER_ID = 'user_receiver_id';
+    public const COLUMN_MERGE_SENDER_ID = 'merge_sender_id';
+    public const COLUMN_MERGE_RECEIVER_ID = 'merge_receiver_id';
 
 
     protected $fillable = [
@@ -90,22 +93,22 @@ class UserMergeRequest extends \Eloquent
 
     public function sender()
     {
-        return $this->belongsTo(Person::class, self::USER_SENDER_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_USER_SENDER_ID);
     }
 
     public function receiver()
     {
-        return $this->belongsTo(Person::class, self::USER_Receiver_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_USER_RECEIVER_ID);
     }
 
     public function mergeSender()
     {
-        return $this->belongsTo(Person::class, self::MERGE_SENDER_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_MERGE_SENDER_ID);
     }
 
     public function mergeReceiver()
     {
-        return $this->belongsTo(Person::class, self::MERGE_Receiver_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_MERGE_RECEIVER_ID);
     }
 
 }

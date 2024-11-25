@@ -24,10 +24,10 @@ use Eloquent;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent query()
- 
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|CategoryContent withoutTrashed()
  * @mixin \Eloquent
+ 
  */
 class CategoryContent extends Eloquent
 {
@@ -42,18 +42,18 @@ class CategoryContent extends Eloquent
     protected $table = self::TABLE_NAME;
 
     public const COLUMN_ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
 
-    public const CATEGORY_CONTENT_ID = 'category_content_id';
+    public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
 
 
     public function FamilyBoards()
     {
-        return $this->hasMany(FamilyBoard::class, self::CATEGORY_CONTENT_ID);
+        return $this->hasMany(FamilyBoard::class, self::COLUMN_CATEGORY_CONTENT_ID);
     }
     public function Memories()
     {
-        return $this->hasMany(Memory::class, self::CATEGORY_CONTENT_ID);
+        return $this->hasMany(Memory::class, self::COLUMN_CATEGORY_CONTENT_ID);
     }
 }

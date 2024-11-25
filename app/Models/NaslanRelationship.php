@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent;
 
 
 /**
@@ -22,20 +23,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship wherePriority($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|NaslanRelationship withoutTrashed()
+ 
  * @mixin \Eloquent
  */
-class NaslanRelationship extends  \Eloquent
+class NaslanRelationship extends  Eloquent
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
         "title",
         "priority",
@@ -43,10 +37,11 @@ class NaslanRelationship extends  \Eloquent
     ] ;
 
     public const TABLE_NAME = 'naslan_relations';
-    public const COLUMN_ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-  
-    public const CATEGORY_CONTENT_ID = 'category_content_id';
     protected $table = self::TABLE_NAME;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+  
+    public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
 }

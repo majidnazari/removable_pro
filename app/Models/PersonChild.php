@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent;
 
 
 /**
@@ -31,21 +32,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereChildId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereChildKind($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereChildStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild wherePersonMarriageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonChild withoutTrashed()
+ 
  * @mixin \Eloquent
  */
-class PersonChild extends \Eloquent
+class PersonChild extends Eloquent
 {
     protected $fillable = [
         'creator_id',
@@ -56,33 +46,35 @@ class PersonChild extends \Eloquent
         'child_status',
         'status',
     ];
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     public const TABLE_NAME = 'person_children';
-    public const COLUMN_ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-
-    public const PERSON_MARRIAGE_ID = 'person_marriage_id';
-    public const CHILD_ID = 'child_id';
     protected $table = self::TABLE_NAME;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+
+    public const COLUMN_PERSON_MARRIAGE_ID = 'person_marriage_id';
+    public const COLUMN_CHILD_ID = 'child_id';
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, self::CREATOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_CREATOR_ID);
     }
     public function Editor()
     {
-        return $this->belongsTo(User::class, self::EDITOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
     }
 
     public function PersonMarriage()
     {
-        return $this->belongsTo(PersonMarriage::class, self::PERSON_MARRIAGE_ID);
+        return $this->belongsTo(PersonMarriage::class, self::COLUMN_PERSON_MARRIAGE_ID);
     }
     public function WhoseChild()
     {
-        return $this->belongsTo(Person::class, self::CHILD_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_CHILD_ID);
     }
 
 }

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Eloquent;
 
-
 /**
  * 
  *
@@ -22,10 +21,11 @@ use Eloquent;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Area query() 
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Area query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Area withoutTrashed()
  * @mixin \Eloquent
+ 
  */
 class Area extends Eloquent
 {
@@ -41,13 +41,13 @@ class Area extends Eloquent
     protected $table = self::TABLE_NAME;
 
     public const COLUMN_ID = 'id';
-    public const CITY_ID = 'city_id';
+    public const COLUMN_CITY_ID = 'city_id';
 
 
 
     public function City()
     {
-        return $this->belongsTo(City::class, self::CITY_ID);
+        return $this->belongsTo(City::class, self::COLUMN_CITY_ID);
     }
 
 }

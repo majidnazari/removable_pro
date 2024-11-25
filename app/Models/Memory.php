@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Eloquent;
 
 
 /**
@@ -34,25 +35,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCategoryContentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereGroupViewId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereIsShownAfterDeath($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory wherePersonId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory withoutTrashed()
+ 
  * @mixin \Eloquent
  */
-class Memory extends \Eloquent
+class Memory extends Eloquent
 {
     protected $fillable = [
         'person_id',
@@ -66,37 +52,39 @@ class Memory extends \Eloquent
         'is_shown_after_death',
         'status',
     ];
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
     public const TABLE_NAME = 'memories';
-    public const COLUMN_ID = 'id';
-    public const CREATOR_ID = 'creator_id';
-    public const EDITOR_ID = 'editor_id';
-
-    public const CATEGORY_CONTENT_ID = 'category_content_id';
-    public const PERSON_ID = 'person_id';
-    public const GROUP_VIEW_ID = 'group_view_id';
     protected $table = self::TABLE_NAME;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_CREATOR_ID = 'creator_id';
+    public const COLUMN_EDITOR_ID = 'editor_id';
+
+    public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
+    public const COLUMN_PERSON_ID = 'person_id';
+    public const COLUMN_GROUP_VIEW_ID = 'group_view_id';
 
     public function Person()
     {
-        return $this->belongsTo(Person::class, self::PERSON_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_PERSON_ID);
     }
     public function Category()
     {
-        return $this->belongsTo(CategoryContent::class, self::CATEGORY_CONTENT_ID);
+        return $this->belongsTo(CategoryContent::class, self::COLUMN_CATEGORY_CONTENT_ID);
     }
     public function GroupView()
     {
-        return $this->belongsTo(GroupView::class, self::GROUP_VIEW_ID);
+        return $this->belongsTo(GroupView::class, self::COLUMN_GROUP_VIEW_ID);
     }
 
     public function Creator()
     {
-        return $this->belongsTo(User::class, self::CREATOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_CREATOR_ID);
     }
 
     public function Editor()
     {
-        return $this->belongsTo(User::class, self::EDITOR_ID);
+        return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
     }
 }
