@@ -32,12 +32,13 @@ class DeleteModelFiles extends Command
         $baseName = ucfirst($model);
         $pathsToDelete = [
             "app/Models/$baseName.php",
-            "app/Http/Controllers/{$baseName}Controller.php",
+            "database/factories/{$baseName}Factory.php",
+            "database/seeders/{$baseName}Seeder.php",
             "app/Http/Requests/Store{$baseName}Request.php",
             "app/Http/Requests/Update{$baseName}Request.php",
+            "app/Http/Controllers/{$baseName}Controller.php",
             "app/Policies/{$baseName}Policy.php",
             "app/Http/Resources/{$baseName}Resource.php",
-            "database/factories/{$baseName}Factory.php",
         ];
 
         // Find and delete migration file(s)

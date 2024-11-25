@@ -1,7 +1,0 @@
-
-getVolumeExtra(id: ID!): VolumeExtra @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\VolumeExtra\\GetVolumeExtra@resolveVolumeExtra") 
-    getVolumeExtras(
-        first: Int, 
-        page: Int, 
-        # filter: VolumeExtraFilterInput
-    ): [VolumeExtra!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\VolumeExtra\\GetVolumeExtras@resolveVolumeExtra")

@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategoryContentSeeder::class,
             EventSeeder::class,
-            SubscriptionSeeder::class,
             PersonSeeder::class,
             PersonDetailSeeder::class,
             PersonMarriageSeeder::class,
@@ -35,11 +34,6 @@ class DatabaseSeeder extends Seeder
             FamilyEventSeeder::class,
             ScoreSeeder::class,
             PersonScoreSeeder::class,
-            UserSubscriptionSeeder::class,
-            ClanSeeder::class,
-            ClanMemberSeeder::class,
-            VolumeExtraSeeder::class,
-            UserVolumeExtraSeeder::class,
 
             CountrySeeder::class,
             ProvinceSeeder::class,
@@ -47,11 +41,6 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             AddressSeeder::class,
             FamilyBoardSeeder::class,
-
-            QuestionSeeder::class,
-            UserAnswerSeeder::class,
-            UserMobileSeeder::class,
-            IpTrackingSeeder::class,
             // NaslanRelationshipSeeder::class,
 
         ]);
