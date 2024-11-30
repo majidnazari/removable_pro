@@ -8,10 +8,14 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\UserLoggedOut;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\AuthenticationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
+use App\Traits\AuthUserTrait;
 
 
 class Logout extends BaseAuthResolver
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param $rootValue
      * @param  array  $args
@@ -23,10 +27,12 @@ class Logout extends BaseAuthResolver
      */
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        if (! Auth::guard('api')->check()) {
-            throw new AuthenticationException('Not Authenticated', 'Not Authenticated');
-        }
-        $user = Auth::guard('api')->user();
+        // if (! Auth::guard('api')->check()) {
+        //     throw new AuthenticationException('Not Authenticated', 'Not Authenticated');
+        // }
+        // $user = Auth::guard('api')->user();
+        
+        $user=$this->getUser();
         // revoke user's token
         Auth::guard('api')->user()->token()->revoke();
 

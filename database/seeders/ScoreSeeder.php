@@ -16,17 +16,17 @@ class ScoreSeeder extends Seeder
         $data=[
             [
                 'title' => "محبوبیت رفتاری",                
-                'status' => 'Active',                
+                'status' => 1,                
                 'created_at' => now(),
             ],
             [
                 'title' => "محبوبیت علمی",                
-                'status' => 'Active',                
+                'status' => 1,                
                 'created_at' => now(),
             ],
             [
                 'title' => "محبوبیت مالی",                   
-                'status' => 'Active',                
+                'status' => 1,                
                 'created_at' => now(),
             ],
             

@@ -6,9 +6,13 @@ use App\Models\CategoryContent;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
 
 final class DeleteCategoryContent
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,13 +23,19 @@ final class DeleteCategoryContent
     }
     public function resolveCategoryContent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+       
+        $this->userId = $this->getUserId();
+       
         $CategoryContentResult=CategoryContent::find($args['id']);
         
         if(!$CategoryContentResult)
         {
             return Error::createLocatedError("CategoryContent-DELETE-RECORD_NOT_FOUND");
         }
+        
+        $CategoryContentResult->editor_id=$this->userId ;
+        $CategoryContentResult->save();
+
         $CategoryContentResult_filled= $CategoryContentResult->delete();  
         return $CategoryContentResult;
 

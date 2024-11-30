@@ -5,9 +5,12 @@ namespace App\GraphQL\Queries\PersonDetails;
 use App\Models\PersonDetail;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\Traits\AuthUserTrait;
+
 
 final class GetPersonDetail
 {
+    use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -18,6 +21,8 @@ final class GetPersonDetail
     }
     function resolvePersonDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
+
         $personDetail = PersonDetail::find($args['id']);       
 
          // If the person has a profile picture, build the full URL

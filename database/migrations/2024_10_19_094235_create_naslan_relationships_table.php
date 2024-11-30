@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->tinyInteger('priority')->default(1);
-            $table->enum('status',["Active","Inactive","None"])->default("None");
+            //$table->enum('status',["Active","Inactive","None"])->default("None");
+
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=suspend ");   
+
             
             $table->timestamps();
             $table->softDeletes();

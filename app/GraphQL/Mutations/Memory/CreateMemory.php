@@ -4,19 +4,19 @@ namespace App\GraphQL\Mutations\Memory;
 
 use App\Models\Memory;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\Memorys\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Storage;
+use App\GraphQL\Enums\Status;
+use App\Traits\AuthUserTrait;
 
 use Log;
 
 final class CreateMemory
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * 
@@ -28,9 +28,10 @@ final class CreateMemory
     }
     public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
 
         $MemoryModel = [
-            "creator_id" => 1,
+            "creator_id" => $this->userId,
             "person_id" => $args['person_id'],
             "category_content_id" => $args['category_content_id'],
             "group_view_id" => $args['group_view_id'],            
@@ -110,7 +111,7 @@ final class CreateMemory
         $MemoryModel['content']=$path ?? "";
         $MemoryModel['description']= $args['description'] ?? "";
         $MemoryModel['is_shown_after_death']= $args['is_shown_after_death'] ?? false;
-        $MemoryModel['status']= $args['status'] ?? "None";
+        $MemoryModel['status']= $args['status'] ?? Status::None;
         
         $MemoryModelResult = Memory::create($MemoryModel);
         return $MemoryModelResult;

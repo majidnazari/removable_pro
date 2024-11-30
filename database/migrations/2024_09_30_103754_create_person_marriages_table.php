@@ -30,9 +30,16 @@ return new class extends Migration
             
             //$table->foreign('man_id')->references('id')->on('people')->onDelete('cascade');
             //$table->foreign('woman_id')->references('id')->on('people')->onDelete('cascade')->nullable();
-            $table->enum('marriage_status',["Related","Notrelated","Suspend","None"])->default("None");
+            //$table->enum('marriage_status',["Related","Notrelated","Suspend","None"])->default("None");
             //$table->enum('spouse_status',["Alive","Dead","Divorce","Unkown","None"])->default("None");
-            $table->enum('status',["Active","Inactive","None"])->default("Active");
+            //$table->enum('status',["Active","Inactive","None"])->default("Active");
+            //$table->string('marriage_status', 20)->default("None");
+            //$table->string('status', 20)->default("None");
+
+            $table->tinyInteger('marriage_status', )->default(0)->comment(" 0=none 1=Related 2=Notrelated  3=suspend ");   
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=suspend ");   
+
+
 
             $table->datetime('marriage_date')->nullable();
             $table->datetime('divorce_date')->nullable();

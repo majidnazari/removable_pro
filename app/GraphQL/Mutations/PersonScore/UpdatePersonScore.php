@@ -6,10 +6,16 @@ use App\Models\PersonScore;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
 
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 final class UpdatePersonScore
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,16 +26,18 @@ final class UpdatePersonScore
     }
     public function resolvePersonScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
-        //args["user_id_creator"]=$user_id;
+        $this->userId = $this->getUserId();
+
+        //args["user_id_creator"]=$this->userId;
         $PersonScoreResult=PersonScore::find($args['id']);
         $PersonScoremodel=$args;
-        $PersonScoremodel['editor_id']=1;
+        $PersonScoremodel['editor_id']=$this->userId;
         
         if(!$PersonScoreResult)
         {
             return Error::createLocatedError("PersonScore-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$this->userId;
         $PersonScoreResult_filled= $PersonScoreResult->fill($PersonScoremodel);
         $PersonScoreResult->save();       
        

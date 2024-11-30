@@ -1,35 +1,43 @@
 <?php
-
 namespace App\Rules\PersonChild;
 
 use Illuminate\Contracts\Validation\Rule;
+use App\Models\PersonMarriage; // Make sure this is the correct model
 
 class NotSelfChild implements Rule
 {
-    protected $personChildId;
+    protected $personMarriageId;
 
     /**
      * Create a new rule instance.
      *
-     * @param  int  $personChildId  The ID of the PersonChild record
+     * @param  int  $personMarriageId  The ID of the marriage to validate against
      * @return void
      */
-    public function __construct($personChildId)
+    public function __construct($personMarriageId)
     {
-        $this->personChildId = $personChildId;
+        $this->personMarriageId = $personMarriageId;
     }
 
     /**
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  mixed  $value  The ID of the child
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        // Check if the child_id is the same as the personChildId (self-reference)
-        return $value != $this->personChildId;
+        // Retrieve the marriage record by ID
+        $marriage = PersonMarriage::find($this->personMarriageId);
+
+        // If marriage record is not found, fail the validation
+        if (!$marriage) {
+            return false;
+        }
+
+        // Check if child_id (value) matches man_id (father) or woman_id (mother)
+        return $value != $marriage->man_id && $value != $marriage->woman_id;
     }
 
     /**
@@ -39,6 +47,6 @@ class NotSelfChild implements Rule
      */
     public function message()
     {
-        return 'A person cannot be their own child.';
+        return 'A person cannot be their own child or their parent’s child.';
     }
 }

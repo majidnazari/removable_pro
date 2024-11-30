@@ -5,9 +5,12 @@ namespace App\GraphQL\Queries\Memory;
 use App\Models\Memory;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\Traits\AuthUserTrait;
+
 
 final class GetMemories
 {
+    use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -18,6 +21,8 @@ final class GetMemories
     }
     function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
+
         $memories = Memory::where('deleted_at', null);
         return $memories;
     }

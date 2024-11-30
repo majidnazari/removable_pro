@@ -1,7 +1,7 @@
 
-getCity(id: ID!): City @field(resolver: "App\\GraphQL\\Queries\\City\\GetCity@resolveCity") 
+getCity(id: ID!): City @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\City\\GetCity@resolveCity") 
     getCities(
         first: Int, 
         page: Int, 
         # filter: CityFilterInput
-    ): [City!]! @paginate(builder: "App\\GraphQL\\Queries\\City\\GetCities@resolveCity")
+    ): [City!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\City\\GetCities@resolveCity")

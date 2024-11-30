@@ -1,6 +1,5 @@
 
 
-
 type FamilyBoard {
     
     id: ID!
@@ -12,7 +11,7 @@ type FamilyBoard {
     selected_date: String!
     file_path: String!
     description: String!
-    status: String 
+    status: Status 
     created_at: DateTime
     updated_at: DateTime
 }
@@ -24,7 +23,7 @@ input CreateFamilyBoardInput {
     selected_date: String!
     file_path: String!
     description: String!
-    status: String 
+    # status: Status 
 
 }
 
@@ -35,5 +34,5 @@ input UpdateFamilyBoardInput {
     selected_date: String!
     file_path: String!
     description: String!
-    status: String 
+    status: Status 
 }

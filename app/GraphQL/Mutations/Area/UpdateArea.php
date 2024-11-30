@@ -6,10 +6,11 @@ use App\Models\Area;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-
+use App\Traits\AuthUserTrait;
 
 final class UpdateArea
 {
+    use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,7 +21,9 @@ final class UpdateArea
     }
     public function resolveArea($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        
+        $this->userId = $this->getUserId();
+
         //args["user_id_creator"]=$user_id;
         $AreaResult=Area::find($args['id']);
         

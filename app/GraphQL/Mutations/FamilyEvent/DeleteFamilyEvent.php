@@ -6,9 +6,14 @@ use App\Models\FamilyEvent;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
+
 
 final class DeleteFamilyEvent
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,13 +24,17 @@ final class DeleteFamilyEvent
     }
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $this->userId = $this->getUserId();
+       
         $FamilyEventResult=FamilyEvent::find($args['id']);
         
         if(!$FamilyEventResult)
         {
             return Error::createLocatedError("FamilyEvent-DELETE-RECORD_NOT_FOUND");
         }
+        $FamilyEventResult->editor_id=  $this->userId ;
+        $FamilyEventResult->save();
+
         $FamilyEventResult_filled= $FamilyEventResult->delete();  
         return $FamilyEventResult;
 

@@ -4,17 +4,20 @@ namespace App\GraphQL\Mutations\PersonScore;
 
 use App\Models\PersonScore;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\PersonScore\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
+
+use Exception;
 use Log;
 
 final class CreatePersonScore
 {
+    use AuthUserTrait;
+    protected $userId;
+   
     /**
      * @param  null  $_
      * 
@@ -26,16 +29,15 @@ final class CreatePersonScore
     }
     public function resolvePersonScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
 
-        //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
         $PersonScoreModel = [
-            "creator_id" => 1,
+            "creator_id" =>  $this->userId,
             "person_id" => $args['person_id'],
             "score_id" => $args['score_id'],
             
             "score_level" => $args['score_level'] ,
-            "status" => $args['status'] ?? 'None', // Default to 'None' if not provided
+            "status" => $args['status'] ?? Status::Active, // Default to 'None' if not provided
         ];
         
         // Check if a similar details profile already exists for the same person_id

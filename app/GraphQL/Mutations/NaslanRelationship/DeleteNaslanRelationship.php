@@ -6,9 +6,14 @@ use App\Models\NaslanRelationship;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
+
 
 final class DeleteNaslanRelationship
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,13 +24,18 @@ final class DeleteNaslanRelationship
     }
     public function resolveNaslanRelationship($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $this->userId = $this->getUserId();
+       
         $NaslanRelationshipResult=NaslanRelationship::find($args['id']);
         
         if(!$NaslanRelationshipResult)
         {
             return Error::createLocatedError("NaslanRelationship-DELETE-RECORD_NOT_FOUND");
         }
+
+        $NaslanRelationshipResult->editor_id= $this->userId;
+        $NaslanRelationshipResult->save();
+
         $NaslanRelationshipResult_filled= $NaslanRelationshipResult->delete();  
         return $NaslanRelationshipResult;
 

@@ -11,10 +11,15 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
+
 use Log;
 
 final class CreateCity
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -26,8 +31,8 @@ final class CreateCity
     public function resolveCity($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
 
-        //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $this->userId = $this->getUserId();
+
         $CityResult=[
             "province_id" => $args['province_id'],
             "title" => $args['title'],

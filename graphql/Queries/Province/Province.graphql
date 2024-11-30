@@ -1,7 +1,7 @@
 
-getProvince(id: ID!): Province @field(resolver: "App\\GraphQL\\Queries\\Province\\GetProvince@resolveProvince") 
+getProvince(id: ID!): Province @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Province\\GetProvince@resolveProvince") 
     getProvinces(
         first: Int, 
         page: Int, 
         # filter: ProvinceFilterInput
-    ): [Province!]! @paginate(builder: "App\\GraphQL\\Queries\\Province\\GetProvinces@resolveProvince")
+    ): [Province!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Province\\GetProvinces@resolveProvince")

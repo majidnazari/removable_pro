@@ -4,17 +4,18 @@ namespace App\GraphQL\Mutations\FamilyBoard;
 
 use App\Models\FamilyBoard;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\FamilyBoards\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+use App\Traits\AuthUserTrait;
+
 use Log;
 
 final class CreateFamilyBoard
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -26,16 +27,16 @@ final class CreateFamilyBoard
     public function resolveFamilyBoard($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
 
-        //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $this->userId = $this->getUserId();
+
         $FamilyBoardResult=[
-            "creator_id" => 1,
+            "creator_id" =>  $this->userId,
             "category_content_id" => $args['category_content_id'],
             "title" => $args['title'],
             "selected_date" => $args['selected_date'],
             "file_path" => $args['file_path'],
             "description" => $args['description'],
-            "status" => $args['status']            
+            "status" => $args['status']   ?? status::Active         
         ];
         $is_exist= FamilyBoard::where('title',$args['title'])->where('status',$args['status'])->first();
         if($is_exist)

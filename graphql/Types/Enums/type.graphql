@@ -1,0 +1,63 @@
+enum Status {
+    Blocked @enum(value: -1)
+    None @enum(value: 0)
+    Active @enum(value: 1)
+    Inactive @enum(value: 2)
+    Suspended @enum(value: 3)
+    New @enum(value: 4)
+}
+enum MergeStatus {
+   
+    Active @enum(value: 1)
+    Inactive @enum(value: 2)
+    Suspended @enum(value: 3)
+    Complete @enum(value: 4)
+}
+
+enum MarriageStatus 
+{
+    None @enum(value: 0)
+    Related @enum(value: 1)
+    NotRelated @enum(value: 2)
+    suspend @enum(value: 3)
+     
+}
+
+enum ChildKind 
+{
+    None @enum(value: 0)
+    DirectChild @enum(value: 1)
+    MotherChild @enum(value: 2)
+    FatherChild @enum(value: 3)
+     
+}
+
+enum ChildStatus 
+{
+    None @enum(value: 0)
+    WithFamily @enum(value: 1)
+    Separated @enum(value: 2)
+}
+enum PhysicalCondition 
+{
+    None @enum(value: 0)
+    Healthy @enum(value: 1)
+    Handicapped @enum(value: 2)
+    Dead @enum(value: 3)
+     
+}
+enum RequestStatusSender 
+{
+    Active @enum(value: 1)
+    Cancel @enum(value: 2)
+    Suspend @enum(value: 3)
+     
+}
+
+enum RequestStatusReceiver 
+{
+    Active @enum(value: 1)
+    Refused @enum(value: 2)
+    Suspend @enum(value: 3)
+     
+}

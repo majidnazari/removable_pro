@@ -6,9 +6,14 @@ use App\Models\FamilyBoard;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
+
 
 final class DeleteFamilyBoard
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,13 +24,17 @@ final class DeleteFamilyBoard
     }
     public function resolveFamilyBoard($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $this->userId = $this->getUserId();
+       
         $FamilyBoardResult=FamilyBoard::find($args['id']);
         
         if(!$FamilyBoardResult)
         {
             return Error::createLocatedError("FamilyBoard-DELETE-RECORD_NOT_FOUND");
         }
+        $FamilyBoardResult->editor_id=  $this->userId;
+        $FamilyBoardResult->save();
+
         $FamilyBoardResult_filled= $FamilyBoardResult->delete();  
         return $FamilyBoardResult;
 

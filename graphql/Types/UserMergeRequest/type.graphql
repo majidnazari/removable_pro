@@ -1,0 +1,130 @@
+type UserMergeRequest {
+
+    id: ID!
+    creator_id: ID
+    editor_id: ID
+
+    user_sender_id: ID
+    node_sender_id: ID
+
+    user_receiver_id: ID
+    node_receiver_id: ID!
+
+    request_status_sender: RequestStatusSender
+    request_sender_expired_at: String
+    request_status_receiver: RequestStatusReceiver
+
+    merge_ids_sender: String
+    merge_ids_receiver: String
+
+
+    merge_status_sender: RequestStatusSender
+    merge_sender_expired_at: String
+    merge_status_receiver: RequestStatusReceiver
+
+    status: MergeStatus
+
+    created_at: String
+    updated_at: String
+}
+
+
+input CreateUserMergeRequestInput {
+
+    # user_sender_id: ID!
+    node_sender_id: ID!
+
+    user_receiver_id: ID!
+
+    request_status_sender: RequestStatusSender
+    request_sender_expired_at: String
+    request_status_receiver: RequestStatusReceiver
+
+}
+
+input SendRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendRequestToOtherFamilyInputValidator")
+{
+
+    # user_sender_id: ID!
+    node_sender_id: ID!
+   
+}
+
+input UpdateRequestSenderInput {
+
+    request_status_sender: RequestStatusSender
+   
+}
+
+input UpdateRequestReceiverInput {
+
+   request_status_receiver: RequestStatusReceiver
+   
+}
+input UpdateMergeRequestReceiverInput {
+
+   merge_status_receiver: RequestStatusReceiver
+   
+}
+
+input UpdateMergeRequestSenderInput {
+
+   merge_status_sender: RequestStatusSender
+   
+}
+
+input SendMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendMergeRequestToOtherFamilyInputValidator")
+{
+    id: ID!
+    merge_ids_sender: String
+    merge_ids_receiver: String 
+}
+
+input SendConfirmMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendConfirmMergeRequestToOtherFamilyInputValidator")
+{
+    id: ID!
+    merge_ids_sender: String
+    merge_ids_receiver: String 
+
+    status:MergeStatus
+}
+
+input SenderInput {
+
+    id: ID!
+   
+    merge_ids_sender: String
+    merge_ids_receiver: String
+
+    merge_status_sender: RequestStatusSender
+    merge_sender_expired_at: String
+    
+    
+}
+
+# input UpdateMergeRequestReceiverInput {
+
+    
+#     merge_status_receiver: RequestStatusReceiver
+    
+# }
+
+input UpdateUserMergeRequestAllInput {
+
+    id: ID!
+    # user_sender_id: ID!
+    node_sender_id: ID!
+
+    user_receiver_id: ID!
+    request_status_sender: RequestStatusSender
+    request_sender_expired_at: String
+    request_status_receiver: RequestStatusReceiver
+
+    merge_ids_sender: String
+    merge_ids_receiver: String
+
+
+    merge_status_sender: RequestStatusSender
+    merge_sender_expired_at: String
+    merge_status_receiver: RequestStatusReceiver
+}

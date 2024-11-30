@@ -3,13 +3,15 @@
 namespace App\GraphQL\Mutations\Event;
 
 use App\Models\Event;
+use App\Traits\AuthUserTrait;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-
-
 final class UpdateEvent
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,7 +22,8 @@ final class UpdateEvent
     }
     public function resolveEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $this->userId = $this->getUserId();
+
         //args["user_id_creator"]=$user_id;
         $EventResult=Event::find($args['id']);
         
@@ -28,6 +31,8 @@ final class UpdateEvent
         {
             return Error::createLocatedError("Event-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']= $this->userId;
+
         $EventResult_filled= $EventResult->fill($args);
         $EventResult->save();       
        

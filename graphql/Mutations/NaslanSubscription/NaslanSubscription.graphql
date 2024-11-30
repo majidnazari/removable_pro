@@ -1,4 +1,0 @@
-
-    createNaslanSubscription(input: CreateNaslanSubscriptionInput! @spread): NaslanSubscription @field(resolver: "App\\GraphQL\\Mutations\\NaslanSubscription\\CreateNaslanSubscription@resolveNaslanSubscription") 
-    updateNaslanSubscription(id: ID!, input: UpdateNaslanSubscriptionInput! @spread): NaslanSubscription @field(resolver: "App\\GraphQL\\Mutations\\NaslanSubscription\\UpdateNaslanSubscription@resolveNaslanSubscription") 
-    deleteNaslanSubscription(id: ID!): NaslanSubscription @field(resolver: "App\\GraphQL\\Mutations\\NaslanSubscription\\DeleteNaslanSubscription@resolveNaslanSubscription") 

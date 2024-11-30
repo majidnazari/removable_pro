@@ -6,9 +6,14 @@ use App\Models\City;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
+
 
 final class DeleteCity
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,13 +24,19 @@ final class DeleteCity
     }
     public function resolveCity($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $this->userId = $this->getUserId();
+  
         $CityResult=City::find($args['id']);
         
         if(!$CityResult)
         {
             return Error::createLocatedError("City-DELETE-RECORD_NOT_FOUND");
         }
+
+        $CityResult->editor_id= $this->userId;
+        $CityResult->save();
+
+
         $CityResult_filled= $CityResult->delete();  
         return $CityResult;
 

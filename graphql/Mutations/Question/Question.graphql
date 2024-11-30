@@ -1,4 +1,0 @@
-
-    createQuestion(input: CreateQuestionInput! @spread): Question @field(resolver: "App\\GraphQL\\Mutations\\Question\\CreateQuestion@resolveQuestion") 
-    updateQuestion(id: ID!, input: UpdateQuestionInput! @spread): Question @field(resolver: "App\\GraphQL\\Mutations\\Question\\UpdateQuestion@resolveQuestion") 
-    deleteQuestion(id: ID!): Question @field(resolver: "App\\GraphQL\\Mutations\\Question\\DeleteQuestion@resolveQuestion") 

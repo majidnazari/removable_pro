@@ -80,17 +80,30 @@ input RegisterInput {
 }
 input CompleteUserRegistrationInput {
     user_id: ID!
-    question_id: ID! @rules(apply: [ "required"])
-    answer: String @rules(apply: [ "required"])
+    # question_id: ID! @rules(apply: [ "required"])
+    # answer: String @rules(apply: [ "required"])
     # email: String! @rules(apply: ["required", "email", "unique:users,email"])
     password: String! @rules(apply: ["required", "confirmed", "min:8"])
     password_confirmation: String!
 }
 
 input RegisterMobileInput {
-    country_code: String! @rules(apply: [ "required", "string"]),
-    mobile: String! @rules(apply: [ "required", "string", "unique:users,mobile"])
+    country_code: String! @rules(apply: [ "required", "string","max:6"]),
+    mobile: String! @rules(apply: [ "required", "string","max:12"])
    
+}
+
+input ForgotPasswordSendCodeInput {
+    country_code: String! @rules(apply: [ "required", "string","max:6"]),
+    mobile: String! @rules(apply: [ "required", "string","max:12"])   
+}
+
+input ForgotPasswordVerifyCodeInput {
+    country_code: String! @rules(apply: [ "required", "string","max:6"]),
+    mobile: String! @rules(apply: [ "required", "string","max:12"])   
+    code: String! @rules(apply: [ "required", "string"])   
+    password: String! @rules(apply: ["required", "confirmed", "min:8"])
+    password_confirmation: String!
 }
 
 input VerifyMobileInput {

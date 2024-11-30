@@ -4,17 +4,18 @@ namespace App\GraphQL\Mutations\FamilyEvent;
 
 use App\Models\FamilyEvent;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\FamilyEvents\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+use App\Traits\AuthUserTrait;
+
 use Log;
 
 final class CreateFamilyEvent
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -25,16 +26,15 @@ final class CreateFamilyEvent
     }
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     { 
-       
-        //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        $this->userId = $this->getUserId();
+
         $FamilyEventResult=[
-            "creator_id" => 1,
+            "creator_id" =>  $this->userId,
             "person_id" => $args['person_id'],
             "event_id" => $args['event_id'],
             // "title" => $args['title'],
             "event_date" => $args['event_date'],
-            "status" => $args['status']            
+            "status" => $args['status'] ?? Status::Active           
         ];
         $is_exist= FamilyEvent::where('person_id',$args['person_id'])
         ->where('status',$args['status'])

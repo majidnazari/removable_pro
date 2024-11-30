@@ -6,9 +6,14 @@ use App\Models\Favorite;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
+
 
 final class DeleteFavorite
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,13 +24,19 @@ final class DeleteFavorite
     }
     public function resolveFavorite($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        
+        $this->userId = $this->getUserId();
+        
         $FavoriteResult=Favorite::find($args['id']);
         
         if(!$FavoriteResult)
         {
             return Error::createLocatedError("Favorite-DELETE-RECORD_NOT_FOUND");
         }
+
+        $FavoriteResult->editor_id= $this->userId;
+        $FavoriteResult->save();
+
         $FavoriteResult_filled= $FavoriteResult->delete();  
         return $FavoriteResult;
 

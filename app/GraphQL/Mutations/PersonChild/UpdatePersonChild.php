@@ -6,10 +6,16 @@ use App\Models\PersonChild;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
 
+use Exception;
 
 final class UpdatePersonChild
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,16 +26,18 @@ final class UpdatePersonChild
     }
     public function resolvePersonChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
-        //args["user_id_creator"]=$user_id;
+        $this->userId = $this->getUserId();
+
+        //args["user_id_creator"]=$this->userId;
         $PersonChildResult=PersonChild::find($args['id']);
         $personChildmodel=$args;
-        $personChildmodel['editor_id']=1;
+        $personChildmodel['editor_id']=$this->userId;
         
         if(!$PersonChildResult)
         {
             return Error::createLocatedError("PersonChild-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$this->userId;
         $PersonChildResult_filled= $PersonChildResult->fill($personChildmodel);
         $PersonChildResult->save();       
        

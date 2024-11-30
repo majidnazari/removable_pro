@@ -4,17 +4,17 @@ namespace App\GraphQL\Mutations\Person;
 
 use App\Models\Person;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\Persons\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+use Carbon\Carbon;
+use App\Traits\AuthUserTrait;
+
 use Log;
 
 final class CreatePerson
 {
+    use AuthUserTrait;
+    protected $userId;
     /**
      * @param  null  $_
      * 
@@ -27,29 +27,30 @@ final class CreatePerson
     public function resolvePerson($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
+        $this->userId = $this->getUserId();
 
-        //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
+        //Log::info("the user is:" .$this->userId . "and is_owner is:" .$args['is_owner'] );
+
         $PersonModel = [
-            "creator_id" => 1,
+            "creator_id" => $this->userId,
             //"editor_id" => $args['editor_id'] ?? null,
-            "node_code" => $args['node_code'] ?? "Nas_".Rand(0000000000,99999999999),
-            "node_level_x" => $args['node_level_x'] ?? 0,
-            "node_level_y" => $args['node_level_y'] ?? 0,
+            "node_code" => Carbon::now()->format('YmdHisv'),
             "first_name" => $args['first_name'],
             "last_name" => $args['last_name'],
+            "gender" => $args['gender'] ?? 0,
             "birth_date" => $args['birth_date'] ?? null,
             "death_date" => $args['death_date'] ?? null,
+            "mobile" => $args['mobile'] ?? null,
             "is_owner" => $args['is_owner'] ?? false,
-            "status" => $args['status'] ?? "None"
+            "status" => $args['status'] ?? status::Active
         ];
         
-        $is_exist = Person::where('first_name' , $args['first_name'])
-        ->where('last_name' , $args['last_name'])
-        ->first();
-        if ($is_exist) {
-            return Error::createLocatedError("Person-CREATE-RECORD_IS_EXIST");
-        }
+        // $is_exist = Person::where('first_name' , $args['first_name'])
+        // ->where('last_name' , $args['last_name'])
+        // ->first();
+        // if ($is_exist) {
+        //     return Error::createLocatedError("Person-CREATE-RECORD_IS_EXIST");
+        // }
         $PersonResult = Person::create($PersonModel);
         return $PersonResult;
     }

@@ -1,23 +1,20 @@
 
 
-enum Status {
-    Active
-    Inactive
-    None
-}
+
 type Person {
     id: ID!
     creator_id: ID
     editor_id: ID
     node_code: String
-    node_level_x: Int
-    node_level_y: Int
+    # node_level_x: Int
+    # node_level_y: Int
     first_name: String!
     last_name: String!
     birth_date: String
     death_date: String
+    mobile:String
     is_owner: Boolean
-    gendar: Int # the 1 is man and 0 is woman
+    gender: Int # the 1 is man and 0 is woman
     status: Status
     created_at: DateTime
     updated_at: DateTime
@@ -37,18 +34,18 @@ type Person {
 
 input CreatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\CreatePersonInputValidator") {
 
-    creator_id: ID
-    editor_id: ID
-    node_code: String
-    node_level_x: Int
-    node_level_y: Int
+    # creator_id: ID
+    # editor_id: ID
+    # node_code: String
+   
     first_name: String!
     last_name: String!
-    birth_date: String
+    birth_date: String!
     death_date: String
+    mobile:String
     is_owner: Boolean
-    gendar: Int
-    status: Status
+    gender: Int
+    # status: Status
 }
 
 input UpdatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\UpdatePersonInputValidator") {
@@ -57,16 +54,18 @@ input UpdatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\Upd
     last_name: String
     birth_date: String
     death_date: String
+    mobile:String
     is_owner: Boolean
-    gendar: Int
-    status: Status
+    gender: Int
+    # status: Status
 }
 
 input DeletePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\DeletePersonValidator") {
     id: ID!
 }
 
-type AncestryTree {
+
+type AncestryTreeNode {
     person_id: ID
     first_name: String
     last_name: String
@@ -77,5 +76,15 @@ type AncestryTree {
 type AncestryNode {
     id: ID
     name: String
-    ancestry: AncestryTree
+    ancestry: AncestryTreeNode
+}
+
+type AncestryTree {
+    mine: AncestryTreeNode
+    related_node: AncestryTreeNode
+}
+
+type AncestryTrees {
+    mine: AncestryTreeNode
+    related_nodes: [AncestryTreeNode]
 }

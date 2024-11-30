@@ -6,10 +6,16 @@ use App\Models\PersonMarriage;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
 
+use Exception;
 
 final class UpdatePersonMarriage
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,16 +26,19 @@ final class UpdatePersonMarriage
     }
     public function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
-        //args["user_id_creator"]=$user_id;
+       
+        $this->userId = $this->getUserId();
+
+        //args["user_id_creator"]=$this->userId;
         $PersonMarriageResult=PersonMarriage::find($args['id']);
         $PersonMarriagemodel=$args;
-        $PersonMarriagemodel['editor_id']=1;
+        $PersonMarriagemodel['editor_id']=$this->userId;
         
         if(!$PersonMarriageResult)
         {
             return Error::createLocatedError("PersonMarriage-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$this->userId;
         $PersonMarriageResult_filled= $PersonMarriageResult->fill($PersonMarriagemodel);
         $PersonMarriageResult->save();       
        

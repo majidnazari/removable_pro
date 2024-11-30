@@ -22,7 +22,11 @@ class ChildAfterMarriageDate implements Rule
         $marriage = PersonMarriage::find($this->personMarriageId);
 
         // Check if the marriage date is before the child’s birth date
-        return $marriage && $child && Carbon::parse($marriage->marriage_date)->lt($child->birth_date);
+        //return $marriage && $child && Carbon::parse($marriage->marriage_date)->lt($child->birth_date);
+
+        return $marriage
+            && $child
+            && Carbon::parse($marriage->marriage_date)->lt(Carbon::parse($child->birth_date));
     }
 
     public function message()

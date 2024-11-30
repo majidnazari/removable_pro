@@ -24,7 +24,7 @@ class FamilyBoardSeeder extends Seeder
                 "file_path"=> "voice1.mp3",
                 "selected_date" => Carbon::now()->format("Y-m-d"),
                 "description" => "it is the best event that happend",
-                "status" =>"Active",
+                "status" =>1,
                 'created_at' => now(),
             ],
             [
@@ -34,7 +34,7 @@ class FamilyBoardSeeder extends Seeder
                 "file_path"=> "voice۲.mp3",
                 "selected_date" => Carbon::now()->addMonths(3)->format("Y-m-d"),
                 "description" => "it longest night during in the year",
-                "status" =>"Active",
+                "status" =>1,
                 'created_at' => now(),
             ],
         ];

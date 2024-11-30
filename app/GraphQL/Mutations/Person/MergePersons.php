@@ -7,99 +7,172 @@ use App\Models\PersonMarriage;
 use App\Models\PersonChild;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\DB;
+use App\GraphQL\Enums\Status;
+use App\Traits\AuthUserTrait;
+use Exception;
+
+
+use Log;
 
 final class MergePersons
 {
+    use AuthUserTrait;
+    protected $userId;
+
     public function resolvemerge($rootValue, array $args)
     {
-        // Ensure the larger ID is assigned to $secondaryPersonId for deletion
+        
+        $this->userId = $this->getUserId();
+
+        //Log::info("the user id is:" .  $auth_id);
+
         $primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);
         $secondaryPersonId = max($args['primaryPersonId'], $args['secondaryPersonId']);
 
-        // Start transaction to ensure data integrity
         DB::beginTransaction();
 
         try {
-            // Retrieve primary and secondary persons
-            $primaryPerson = Person::find($primaryPersonId);
-            $secondaryPerson = Person::find($secondaryPersonId);
+            $primaryPerson = Person::where('id',$primaryPersonId)->where('status',Status::Active)->first();
+            $secondaryPerson = Person::where('id',$secondaryPersonId)->where('status',Status::Active)->first();;
 
             if (!$primaryPerson || !$secondaryPerson) {
                 throw new Error("One or both persons do not exist.");
             }
+            // Check if both persons have the same gender
+            if ($primaryPerson->gender !== $secondaryPerson->gender) {
+                throw new Error("Persons cannot be merged because they have different genders.");
+            }
 
-            // Step 1: Merge marriages
-            $this->mergeMarriages($primaryPersonId, $secondaryPersonId);
+            $this->mergeMarriages($primaryPersonId, $secondaryPersonId, auth_id: $this->userId);
+            $this->mergeChildren($primaryPersonId, $secondaryPersonId, auth_id: $this->userId);
 
-            // Step 2: Merge children relationships
-            $this->mergeChildren($primaryPersonId, $secondaryPersonId);
-
-            // Step 3: Delete the secondary person (larger ID)
+            $secondaryPerson->editor_id = $this->userId;
+            $secondaryPerson->save();
             $secondaryPerson->delete();
 
-            // Commit the transaction
             DB::commit();
 
-            return $primaryPerson;
-
-        } catch (\Exception $e) {
-            // Rollback transaction if any error occurs
+        } catch (Exception $e) {
             DB::rollback();
             throw new Error("Failed to merge persons: " . $e->getMessage());
         }
+
+        $this->cleanupDuplicates($this->userId);
+        return $primaryPerson;
     }
 
-    private function mergeMarriages($primaryPersonId, $secondaryPersonId)
+    private function mergeMarriages($primaryPersonId, $secondaryPersonId, $auth_id)
     {
-        PersonMarriage::where(function ($query) use ($secondaryPersonId) {
+
+        //Log::info("merge of marriage is running and the params are:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+        PersonMarriage::where(function ($query) use ($primaryPersonId, $secondaryPersonId) {
             $query->where('man_id', $secondaryPersonId)
-                  ->orWhere('woman_id', $secondaryPersonId);
-        })->each(function ($marriage) use ($primaryPersonId, $secondaryPersonId) {
-            
+                ->orWhere('woman_id', $secondaryPersonId);
+        })->each(function ($marriage) use ($primaryPersonId, $secondaryPersonId, $auth_id) {
+
             $existingMarriage = PersonMarriage::where(function ($query) use ($primaryPersonId, $marriage) {
                 $query->where(function ($q) use ($primaryPersonId, $marriage) {
                     $q->where('man_id', $primaryPersonId)
-                      ->where('woman_id', $marriage->woman_id);
+                        ->where('woman_id', $marriage->woman_id);
                 })->orWhere(function ($q) use ($primaryPersonId, $marriage) {
                     $q->where('man_id', $marriage->man_id)
-                      ->where('woman_id', $primaryPersonId);
+                        ->where('woman_id', $primaryPersonId);
                 });
             })->first();
 
             if ($existingMarriage) {
-                // Update all child records referencing the duplicate marriage to point to the existing one
                 PersonChild::where('person_marriage_id', $marriage->id)
-                    ->update(['person_marriage_id' => $existingMarriage->id]);
-
-                // Delete the duplicate marriage
+                    ->update(['person_marriage_id' => $existingMarriage->id,'editor_id' =>$auth_id ]);
+                //$marriage->editor_id = $auth_id;  // Set the editor ID
+                $marriage->save();
                 $marriage->delete();
+       //Log::info("existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+
             } else {
-                // Update marriage to point to the primary person
                 $marriage->man_id = $marriage->man_id == $secondaryPersonId ? $primaryPersonId : $marriage->man_id;
                 $marriage->woman_id = $marriage->woman_id == $secondaryPersonId ? $primaryPersonId : $marriage->woman_id;
+                $marriage->editor_id = $auth_id;  // Set the editor ID
                 $marriage->save();
+        //Log::info("else of existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+
             }
         });
     }
 
-    private function mergeChildren($primaryPersonId, $secondaryPersonId)
+    private function mergeChildren($primaryPersonId, $secondaryPersonId, $auth_id)
     {
-        PersonChild::where('child_id', $secondaryPersonId)
-            ->orWhere('person_marriage_id', $secondaryPersonId)
-            ->each(function ($child) use ($primaryPersonId, $secondaryPersonId) {
-                $existingChild = PersonChild::where('child_id', $primaryPersonId)
-                    ->where('person_marriage_id', $child->person_marriage_id)
-                    ->first();
+        PersonChild::where(function ($query) use ($secondaryPersonId) {
+            $query->where('child_id', $secondaryPersonId)
+                ->orWhere('person_marriage_id', $secondaryPersonId);
+        })->each(function ($child) use ($primaryPersonId, $secondaryPersonId, $auth_id) {
+            $existingChild = PersonChild::where('child_id', $primaryPersonId)
+                ->where('person_marriage_id', $child->person_marriage_id)
+                ->first();
 
-                if ($existingChild) {
-                    // Delete the duplicate child relationship
-                    $child->delete();
-                } else {
-                    // Update child relationship to point to the primary person
-                    $child->child_id = $child->child_id == $secondaryPersonId ? $primaryPersonId : $child->child_id;
-                    $child->person_marriage_id = $child->person_marriage_id == $secondaryPersonId ? $primaryPersonId : $child->person_marriage_id;
-                    $child->save();
-                }
-            });
+            if ($existingChild) {
+                $child->editor_id = $auth_id;  // Set the editor ID
+                $child->save();
+                $child->delete();
+        //Log::info("existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+
+            } else {
+                $child->child_id = $child->child_id == $secondaryPersonId ? $primaryPersonId : $child->child_id;
+                $child->person_marriage_id = $child->person_marriage_id == $secondaryPersonId ? $primaryPersonId : $child->person_marriage_id;
+                $child->editor_id = $auth_id;  // Set the editor ID
+                $child->save();
+
+        //Log::info("not existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+
+            }
+        });
     }
+
+    // private function cleanupDuplicates()
+    // {
+    //     // Step 1: Clean up duplicate marriages across the entire PersonMarriage table
+    //     PersonMarriage::all()->groupBy(function ($marriage) {
+    //         // Group by unique man-woman pairs to detect duplicates
+    //         return $marriage->man_id . '-' . $marriage->woman_id;
+    //     })->each(function ($duplicates) {
+    //         $duplicates->shift(); // Keep the first record in each group
+    //         $duplicates->each->delete(); // Delete the rest in each group
+    //     });
+
+    //     // Step 2: Clean up duplicate children relationships across the entire PersonChild table
+    //     PersonChild::all()->groupBy(function ($child) {
+    //         // Group by unique child and person_marriage_id to detect duplicates
+    //         return $child->child_id . '-' . $child->person_marriage_id;
+    //     })->each(function ($duplicates) {
+    //         $duplicates->shift(); // Keep the first record in each group
+    //         $duplicates->each->delete(); // Delete the rest in each group
+    //     });
+    // }
+
+    private function cleanupDuplicates($auth_id)
+    {
+        // Clean up duplicate marriages across the entire PersonMarriage table
+        PersonMarriage::all()->groupBy(function ($marriage) {
+            return $marriage->man_id . '-' . $marriage->woman_id;
+        })->each(function ($duplicates) use ($auth_id) {
+            $duplicates->shift(); // Keep the first record in each group
+            $duplicates->each(function ($marriage) use ($auth_id) {
+                $marriage->editor_id = $auth_id;
+                $marriage->save();
+                $marriage->delete(); // Delete the rest in each group
+            });
+        });
+
+        // Clean up duplicate children relationships across the entire PersonChild table
+        PersonChild::all()->groupBy(function ($child) {
+            return $child->child_id . '-' . $child->person_marriage_id;
+        })->each(function ($duplicates) use ($auth_id) {
+            $duplicates->shift(); // Keep the first record in each group
+            $duplicates->each(function ($child) use ($auth_id) {
+                $child->editor_id = $auth_id;
+                $child->save();
+                $child->delete(); // Delete the rest in each group
+            });
+        });
+    }
+
 }

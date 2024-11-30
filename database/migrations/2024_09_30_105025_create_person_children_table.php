@@ -26,9 +26,15 @@ return new class extends Migration
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
 
 
-            $table->enum('child_kind',["Direct_child","Mother_child","Father_child","Adoption","None"])->default("Direct_child");
-            $table->enum('child_status',["With_family","Separated","None"])->default("With_family");
-            $table->enum('status',["Active","Inactive","None"])->default("Active");
+            // $table->enum('child_kind',["Direct_child","Mother_child","Father_child","Adoption","None"])->default("Direct_child");
+            // $table->enum('child_status',["With_family","Separated","None"])->default("With_family");
+            // $table->enum('status',["Active","Inactive","None"])->default("Active");
+
+            $table->tinyInteger('child_kind', )->default(0)->comment("0=none  1=Direct_child 2=Mother_child 3=Father_child 4=Adoption ");   
+            $table->tinyInteger('child_status', )->default(0)->comment("0=none  1=With_family 2=Separated");   
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=suspend ");   
+
+
             //$table->datetime('birth_date')->nullable();
             //$table->datetime('death_date')->nullable();
             $table->timestamps();

@@ -6,10 +6,14 @@ use App\Models\Favorite;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
 
 
 final class UpdateFavorite
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,7 +24,8 @@ final class UpdateFavorite
     }
     public function resolveFavorite($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $this->userId = $this->getUserId();
+
         //args["user_id_creator"]=$user_id;
         $FavoriteResult=Favorite::find($args['id']);
         
@@ -28,6 +33,7 @@ final class UpdateFavorite
         {
             return Error::createLocatedError("Favorite-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$this->userId;
         $FavoriteResult_filled= $FavoriteResult->fill($args);
         $FavoriteResult->save();       
        

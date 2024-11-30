@@ -1,144 +1,82 @@
 
-scalar Upload
-  @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
-  
-#import Types/Country/type.graphql
-#import Types/Province/type.graphql
-#import Types/City/type.graphql
-#import Types/Area/type.graphql
-#import Types/Address/type.graphql
-#import Types/CategoryContent/type.graphql
-#import Types/Clan/type.graphql
-#import Types/ClanMember/type.graphql
-#import Types/Event/type.graphql
-#import Types/FamilyBoard/type.graphql
-#import Types/FamilyEvent/type.graphql
-#import Types/Favorite/type.graphql
-#import Types/GroupView/type.graphql
-#import Types/Memory/type.graphql
-#import Types/Person/type.graphql
-#import Types/PersonChild/type.graphql
-#import Types/PersonMarriage/type.graphql
-#import Types/PersonDetails/type.graphql
-#import Types/PersonScore/type.graphql
-#import Types/Question/type.graphql
-#import Types/Score/type.graphql
-#import Types/NaslanSubscription/type.graphql
-#import Types/VolumeExtra/type.graphql
-#import Types/UserVolumeExtra/type.graphql
-#import Types/NaslanRelationship/type.graphql
-
-"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
-
-"Indicates what fields are available at the top level of a query operation."
-type Query {
-    "Find a single user by an identifying attribute."
-    user(
-      "Search by primary key."
-      id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
-      mobile: String @where(operator: "like")
-
-      "Search by email address."
-      email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
-    ): User @find
-
-    "List multiple users."
-    users(
-      "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
-      mobile: String @where(operator: "like")
-    ): [User!]! @paginate(defaultCount: 10)
-
-    #import Queries/Country/Country.graphql
-    #import Queries/Province/Province.graphql
-    #import Queries/City/City.graphql
-    #import Queries/Area/Area.graphql
-    #import Queries/Address/Address.graphql
-    #import Queries/CategoryContent/CategoryContent.graphql
-    #import Queries/Clan/Clan.graphql
-    #import Queries/ClanMember/ClanMember.graphql
-    #import Queries/Event/Event.graphql
-    #import Queries/FamilyBoard/FamilyBoard.graphql
-    #import Queries/FamilyEvent/FamilyEvent.graphql
-    #import Queries/Favorite/Favorite.graphql
-    #import Queries/GroupView/GroupView.graphql
-    #import Queries/Memory/Memory.graphql
-    #import Queries/Person/Person.graphql
-    #import Queries/PersonChild/PersonChild.graphql
-    #import Queries/PersonMarriage/PersonMarriage.graphql
-    #import Queries/PersonDetails/PersonDetails.graphql
-    #import Queries/PersonScore/PersonScore.graphql
-    #import Queries/Question/Question.graphql
-    #import Queries/Score/Score.graphql
-    #import Queries/NaslanSubscription/NaslanSubscription.graphql
-    #import Queries/VolumeExtra/VolumeExtra.graphql
-    #import Queries/UserVolumeExtra/UserVolumeExtra.graphql
-    #import Queries/NaslanRelationship/NaslanRelationship.graphql
-}
-
-"Account of a person who utilizes this application."
-type User {
-    "Unique primary key."
-    id: ID!
-
-    "Non-unique name."
-    mobile: String!
-
-    "Unique email address."
-    email: String
-
-    "When the email was verified."
-    email_verified_at: DateTime
-
-    "When the account was created."
-    created_at: DateTime!
-
-    "When the account was last updated."
-    updated_at: DateTime!
-}
+    scalar Upload
+      @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
+    scalar DateTime 
+      @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 
-extend type Mutation {
+      #import Types/Enums/type.graphql
+      #import Types/User/type.graphql
+      #import Types/Country/type.graphql
+      #import Types/Province/type.graphql
+      #import Types/City/type.graphql
+      #import Types/Area/type.graphql
+      #import Types/Address/type.graphql
+      #import Types/CategoryContent/type.graphql
+      #import Types/Event/type.graphql
+      #import Types/FamilyBoard/type.graphql
+      #import Types/FamilyEvent/type.graphql
+      #import Types/Favorite/type.graphql
+      #import Types/GroupView/type.graphql
+      #import Types/Memory/type.graphql
+      #import Types/Person/type.graphql
+      #import Types/PersonChild/type.graphql
+      #import Types/PersonMarriage/type.graphql
+      #import Types/PersonDetails/type.graphql
+      #import Types/PersonScore/type.graphql
+      #import Types/Score/type.graphql
+      #import Types/NaslanRelationship/type.graphql
+      #import Types/UserMergeRequest/type.graphql
 
-    # upload(file: Upload!): String
-    
-    login(input: LoginInput @spread): AuthPayload! @field(resolver: "App\\GraphQL\\Mutations\\User\\Login@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve")
-    # refreshToken(input: RefreshTokenInput @spread): RefreshTokenPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve")
-    logout: LogoutResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Logout@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Logout@resolve")
-    #forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve")
-    #updateForgottenPassword(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve")
-    register(input: RegisterInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve")
-    registerMobile(input: RegisterMobileInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@resolve") 
-    VerifyMobile(input: VerifyMobileInput @spread): VerifyMobileResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@VerifyMobileresolve") 
-    CompleteUserRegistration(input: CompleteUserRegistrationInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@CompleteUserRegistrationresolve") 
-    #socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")
-    #verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
-    #updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
 
-   #import Mutations/Country/Country.graphql
-   #import Mutations/Province/Province.graphql
-   #import Mutations/City/City.graphql
-   #import Mutations/Area/Area.graphql
-   #import Mutations/Address/Address.graphql
-   #import Mutations/CategoryContent/CategoryContent.graphql
-   #import Mutations/Clan/Clan.graphql
-   #import Mutations/ClanMember/ClanMember.graphql
-   #import Mutations/Event/Event.graphql
-   #import Mutations/FamilyBoard/FamilyBoard.graphql
-   #import Mutations/FamilyEvent/FamilyEvent.graphql
-   #import Mutations/Favorite/Favorite.graphql
-   #import Mutations/GroupView/GroupView.graphql
-   #import Mutations/Memory/Memory.graphql
-   #import Mutations/Person/Person.graphql
-   #import Mutations/PersonChild/PersonChild.graphql
-   #import Mutations/PersonMarriage/PersonMarriage.graphql
-   #import Mutations/PersonDetails/PersonDetails.graphql
-   #import Mutations/PersonScore/PersonScore.graphql
-   #import Mutations/Question/Question.graphql
-   #import Mutations/Score/Score.graphql
-   #import Mutations/NaslanSubscription/NaslanSubscription.graphql
-   #import Mutations/VolumeExtra/VolumeExtra.graphql
-   #import Mutations/UserVolumeExtra/UserVolumeExtra.graphql
-   #import Mutations/NaslanRelationship/NaslanRelationship.graphql
+    type Query {
 
-}
+        #import Queries/User/User.graphql
+        #import Queries/Country/Country.graphql
+        #import Queries/Province/Province.graphql
+        #import Queries/City/City.graphql
+        #import Queries/Area/Area.graphql
+        #import Queries/Address/Address.graphql
+        #import Queries/CategoryContent/CategoryContent.graphql
+        #import Queries/Event/Event.graphql
+        #import Queries/FamilyBoard/FamilyBoard.graphql
+        #import Queries/FamilyEvent/FamilyEvent.graphql
+        #import Queries/Favorite/Favorite.graphql
+        #import Queries/GroupView/GroupView.graphql
+        #import Queries/Memory/Memory.graphql
+        #import Queries/Person/Person.graphql
+        #import Queries/PersonChild/PersonChild.graphql
+        #import Queries/PersonMarriage/PersonMarriage.graphql
+        #import Queries/PersonDetails/PersonDetails.graphql
+        #import Queries/PersonScore/PersonScore.graphql
+        #import Queries/Score/Score.graphql
+        #import Queries/NaslanRelationship/NaslanRelationship.graphql
+        #import Queries/UserMergeRequest/UserMergeRequest.graphql
+
+    }
+
+    extend type Mutation {
+
+      #import Mutations/User/User.graphql
+      #import Mutations/Country/Country.graphql
+      #import Mutations/Province/Province.graphql
+      #import Mutations/City/City.graphql
+      #import Mutations/Area/Area.graphql
+      #import Mutations/Address/Address.graphql
+      #import Mutations/CategoryContent/CategoryContent.graphql
+      #import Mutations/Event/Event.graphql
+      #import Mutations/FamilyBoard/FamilyBoard.graphql
+      #import Mutations/FamilyEvent/FamilyEvent.graphql
+      #import Mutations/Favorite/Favorite.graphql
+      #import Mutations/GroupView/GroupView.graphql
+      #import Mutations/Memory/Memory.graphql
+      #import Mutations/Person/Person.graphql
+      #import Mutations/PersonChild/PersonChild.graphql
+      #import Mutations/PersonMarriage/PersonMarriage.graphql
+      #import Mutations/PersonDetails/PersonDetails.graphql
+      #import Mutations/PersonScore/PersonScore.graphql
+      #import Mutations/Score/Score.graphql
+      #import Mutations/NaslanRelationship/NaslanRelationship.graphql
+      #import Mutations/UserMergeRequest/UserMergeRequest.graphql
+
+    }

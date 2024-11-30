@@ -1,7 +1,7 @@
 
-getCategoryContent(id: ID!): CategoryContent @field(resolver: "App\\GraphQL\\Queries\\CategoryContent\\GetCategoryContent@resolveCategoryContent") 
+getCategoryContent(id: ID!): CategoryContent @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\CategoryContent\\GetCategoryContent@resolveCategoryContent") 
     getCategoryContents(
         first: Int, 
         page: Int, 
         # filter: CategoryContentFilterInput
-    ): [CategoryContent!]! @paginate(builder: "App\\GraphQL\\Queries\\CategoryContent\\GetCategoryContents@resolveCategoryContent")
+    ): [CategoryContent!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\CategoryContent\\GetCategoryContents@resolveCategoryContent")

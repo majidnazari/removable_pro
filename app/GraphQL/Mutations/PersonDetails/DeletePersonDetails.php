@@ -6,11 +6,17 @@ use App\Models\PersonDetail;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
 
+use Exception;
 use Log;
 
 final class DeletePersonDetails
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,7 +27,9 @@ final class DeletePersonDetails
     }
     public function resolvePersonDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+       
+        $this->userId = $this->getUserId();
+      
         $PersonDetailResult=PersonDetail::find($args['id']);
         
         if(!$PersonDetailResult)
@@ -40,6 +48,9 @@ final class DeletePersonDetails
                 //Log::info("Deleted old image: " . $oldImagePath);
             }
         }
+
+        $PersonDetailResult->editor_id= $this->userId;
+        $PersonDetailResult->save(); 
 
         $PersonDetailResult_filled= $PersonDetailResult->delete();  
         return $PersonDetailResult;

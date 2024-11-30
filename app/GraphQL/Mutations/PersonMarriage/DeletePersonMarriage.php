@@ -6,9 +6,15 @@ use App\Models\PersonMarriage;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
 
+use Exception;
 final class DeletePersonMarriage
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,7 +25,9 @@ final class DeletePersonMarriage
     }
     public function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+       
+        $this->userId = $this->getUserId();
+       
         $PersonMarriageResult=PersonMarriage::find($args['id']);
         
         if(!$PersonMarriageResult)
@@ -31,6 +39,9 @@ final class DeletePersonMarriage
             return Error::createLocatedError("PersonMarriage-HAS_CHILDREN!");
 
         }
+
+        $PersonMarriageResult->editor_id= $this->userId;
+        $PersonMarriageResult->save(); 
 
         $PersonMarriageResult_filled= $PersonMarriageResult->delete();  
         return $PersonMarriageResult;

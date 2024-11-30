@@ -6,10 +6,15 @@ use App\Models\CategoryContent;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
+
 
 
 final class UpdateCategoryContent
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,7 +25,8 @@ final class UpdateCategoryContent
     }
     public function resolveCategoryContent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        $this->userId = $this->getUserId();
+
         //args["user_id_creator"]=$user_id;
         $CategoryContentResult=CategoryContent::find($args['id']);
         

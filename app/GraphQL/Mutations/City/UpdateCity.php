@@ -4,12 +4,14 @@ namespace App\GraphQL\Mutations\City;
 
 use App\Models\City;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-
+use App\Traits\AuthUserTrait;
 
 final class UpdateCity
 {
+   use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,7 +22,9 @@ final class UpdateCity
     }
     public function resolveCity($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        
+        $this->userId = $this->getUserId();
+
         //args["user_id_creator"]=$user_id;
         $CityResult=City::find($args['id']);
         

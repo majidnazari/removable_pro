@@ -6,10 +6,14 @@ use App\Models\Country;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\Traits\AuthUserTrait;
 
 
 final class UpdateCountry
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,7 +24,9 @@ final class UpdateCountry
     }
     public function resolveCountry($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        //$user_id=auth()->guard('api')->user()->id;
+        
+        $this->userId = $this->getUserId();
+
         //args["user_id_creator"]=$user_id;
         $CountryResult=Country::find($args['id']);
         
@@ -28,6 +34,8 @@ final class UpdateCountry
         {
             return Error::createLocatedError("Country-UPDATE-RECORD_NOT_FOUND");
         }
+        $args['editor_id']=$this->userId;
+
         $CountryResult_filled= $CountryResult->fill($args);
         $CountryResult->save();       
        

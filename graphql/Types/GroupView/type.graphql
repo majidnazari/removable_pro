@@ -6,7 +6,7 @@ type GroupView {
     creator_id: ID!
     editor_id: ID
     title: String   
-    status: String  
+    status: Status  
     created_at: DateTime
     updated_at: DateTime
 
@@ -18,11 +18,11 @@ type GroupView {
 input CreateGroupViewInput {
 
     title: String   
-    status: String  
+    status: Status  
 }
 
 input UpdateGroupViewInput {
 
     title: String   
-    status: String
+    status: Status
 }

@@ -1,0 +1,7 @@
+
+getUser(id: ID!): User @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\User\\GetUser@resolveUser") 
+    getUsers(
+        first: Int, 
+        page: Int, 
+        # filter: UserFilterInput
+    ): [User!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\User\\GetUsers@resolveUser")

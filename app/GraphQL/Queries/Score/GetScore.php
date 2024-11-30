@@ -5,9 +5,12 @@ namespace App\GraphQL\Queries\Score;
 use App\Models\Score;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\Traits\AuthUserTrait;
+
 
 final class GetScore
 {
+    use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -18,6 +21,8 @@ final class GetScore
     }
     function resolveScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
+
         $Score = Score::where('id', $args['id']);       
         return $Score->first();
     }

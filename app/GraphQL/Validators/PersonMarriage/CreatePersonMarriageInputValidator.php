@@ -8,6 +8,9 @@ use App\Rules\PersonMarriage\NotCloseRelativeMarriage;
 use App\Rules\PersonMarriage\MarriageBeforeDivorceDate;
 use App\Rules\PersonMarriage\OneActiveMarriage;
 use App\Rules\PersonMarriage\UniqueMarriage;
+use App\Rules\PersonMarriage\OppositeGenderMarriage;
+use App\Rules\Share\MatchCreator;
+use App\Models\Person;
 
 class CreatePersonMarriageInputValidator extends GraphQLValidator
 {
@@ -26,6 +29,8 @@ class CreatePersonMarriageInputValidator extends GraphQLValidator
                 new NotSelfMarriage($manId, $womanId),
                 new NotCloseRelativeMarriage($manId, $womanId),
                 new UniqueMarriage($manId, $womanId),
+               // new OppositeGenderMarriage($manId, $womanId), // Ensure opposite gender marriage
+                new MatchCreator(Person::class,[$manId, $womanId]), // Apply the custom rule to check all IDs
             ],
             'woman_id' => [
                 'required',

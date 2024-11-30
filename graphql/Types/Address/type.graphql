@@ -21,13 +21,13 @@ type Address {
     unit_no: String
     lat: Float
     lon: Float
-    status: String
+    status: Status
     created_at: DateTime
     updated_at: DateTime
 }
 
 input CreateAddressInput {
-    creator_id: ID
+    # creator_id: ID
     person_id: ID!
     country_id: ID!
     province_id: ID
@@ -40,12 +40,12 @@ input CreateAddressInput {
     unit_no: String
     lat: Float
     lon: Float
-    status: String
+    status: Status
 }
 
 input UpdateAddressInput {
    
-    editor_id: ID
+    # editor_id: ID
     person_id: ID
     country_id: ID
     province_id: ID
@@ -58,5 +58,5 @@ input UpdateAddressInput {
     unit_no: String
     lat: Float
     lon: Float
-    status: String
+    status: Status
 }

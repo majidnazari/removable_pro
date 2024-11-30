@@ -22,18 +22,20 @@ return new class extends Migration {
 
             $table->string('node_code')->unique()->index();
             //$table->string('family_code'); // like FA001 a code for each family node that can be used in Clan or other somewhere. and it is the same for me and my parrents and my children.
-            $table->integer('node_level_x')->default(1)->index();
-            $table->integer('node_level_y')->default(1)->index();
+            //$table->integer('node_level_x')->default(1)->index();
+            //$table->integer('node_level_y')->default(1)->index();
             //$table->string('naslan_id')->nullable()->unique();
             //$table->string('referal_code')->nullable()->unique();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
+            $table->string('first_name',length:30)->nullable();
+            $table->string('last_name',length:30)->nullable();
             $table->datetime('birth_date')->nullable();
             $table->datetime('death_date')->nullable();
+            $table->string('country_code',length:6)->nullable();
+            $table->string('mobile',length:12)->nullable();
             //$table->string('mobile');
             $table->boolean('is_owner')->defalut(false);
-            //$table->enum('gendar', ["Male", "Female", "None"])->default("None");   
-            $table->smallInteger('gendar', )->default(1)->comment("1 is man 0 is woman");   
+            //$table->enum('gender', ["Male", "Female", "None"])->default("None");   
+            $table->tinyInteger('gender', )->default(1)->comment("1 is man 0 is woman");   
 
             //$table->string('family_title')->nullable();
             //$table->string('father_first_name')->nullable();
@@ -42,7 +44,11 @@ return new class extends Migration {
 
 
 
-            $table->enum('status', ["Active", "Inactive", "Suspend", "None"])->default("None");
+            //$table->string('status', 20)->default("None");
+            $table->tinyInteger('status', )->default(0)->comment("-1 = Blocked 0=none  1=active 2=inactive 3=suspend ");   
+
+
+            //$table->enum('status', ["Active", "Inactive", "Suspend", "None"])->default("None");
 
             $table->timestamps();
             $table->softDeletes();

@@ -2,7 +2,7 @@
 type CategoryContent {
     id: ID!
     title: String!
-    status: String
+    status: Status
     created_at: DateTime
     updated_at: DateTime
 
@@ -11,11 +11,11 @@ type CategoryContent {
 input CreateCategoryContentInput {
     
     title: String!
-    status: String
+    status: Status
 }
 
 input UpdateCategoryContentInput {
    
     title: String
-    status: String
+    status: Status
 }

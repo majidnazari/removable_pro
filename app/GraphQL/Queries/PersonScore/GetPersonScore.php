@@ -5,9 +5,12 @@ namespace App\GraphQL\Queries\PersonScore;
 use App\Models\PersonScore;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\Traits\AuthUserTrait;
+
 
 final class GetPersonScore
 {
+    use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -18,6 +21,8 @@ final class GetPersonScore
     }
     function resolvePersonScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
+
         $PersonScore = PersonScore::where('id', $args['id']);       
         return $PersonScore->first();
     }

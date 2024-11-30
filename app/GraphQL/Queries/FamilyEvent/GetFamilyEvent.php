@@ -5,9 +5,12 @@ namespace App\GraphQL\Queries\FamilyEvent;
 use App\Models\FamilyEvent;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\Traits\AuthUserTrait;
+
 
 final class GetFamilyEvent
 {
+    use AuthUserTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -18,6 +21,8 @@ final class GetFamilyEvent
     }
     function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
+        
         $FamilyEvent = FamilyEvent::where('id', $args['id']);       
         return $FamilyEvent->first();
     }

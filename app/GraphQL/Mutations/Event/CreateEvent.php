@@ -4,17 +4,18 @@ namespace App\GraphQL\Mutations\Event;
 
 use App\Models\Event;
 use GraphQL\Type\Definition\ResolveInfo;
-use App\Models\GroupUser;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Joselfonseca\LighthouseGraphQLPassport\Events\PasswordUpdated;
-use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use App\GraphQL\Enums\Status;
+use App\Traits\AuthUserTrait;
+
 use Log;
 
 final class CreateEvent
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -24,14 +25,13 @@ final class CreateEvent
         // TODO implement the resolver
     }
     public function resolveEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {        
+    {    
+        $this->userId = $this->getUserId();
 
-        //Log::info("the args are:" . json_encode($args));
-        //$user_id=auth()->guard('api')->user()->id;
         $EventResult=[
-            "creator_id" => 1,
+            "creator_id" =>  $this->userId,
             "title" => $args['title'],
-            "status" => $args['status']            
+            "status" => $args['status'] ?? Status::Active,           
         ];
         $is_exist= Event::where('title',$args['title'])->where('status',$args['status'])->first();
         if($is_exist)

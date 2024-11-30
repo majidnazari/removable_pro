@@ -1,7 +1,7 @@
 
-getPersonDetail(id: ID!): PersonDetail @field(resolver: "App\\GraphQL\\Queries\\PersonDetails\\GetPersonDetail@resolvePersonDetail") 
+getPersonDetail(id: ID!): PersonDetail @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\PersonDetails\\GetPersonDetail@resolvePersonDetail") 
     getPersonDetails(
         first: Int, 
         page: Int, 
         # filter: PersonDetailFilterInput
-    ): [PersonDetail!]! @paginate(builder: "App\\GraphQL\\Queries\\PersonDetails\\GetPersonDetails@resolvePersonDetail")
+    ): [PersonDetail!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\PersonDetails\\GetPersonDetails@resolvePersonDetail")

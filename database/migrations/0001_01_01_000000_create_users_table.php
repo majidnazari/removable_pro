@@ -14,34 +14,29 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('creator_id'); // foreign key for the user
-            // $table->unsignedBigInteger('editor_id')->nullable();
-
-            //$table->string('name');
-            $table->string('country_code',11);
-            $table->string('mobile',11)->unique()->index();
+          
+            $table->string('country_code',6);
+            $table->string('mobile',18)->unique()->index();
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->boolean(column: 'mobile_is_veryfied')->default(false);
+            $table->boolean(column: 'mobile_is_verified')->default(false);
 
             $table->string('password')->nullable();
             $table->string(column: 'sent_code')->nullable();
             $table->string(column: 'code_expired_at')->nullable();
-            $table->tinyInteger(column: 'today_attemp')->default(0);
-            $table->string('date_attemp')->nullable();
+            $table->integer('password_change_attempts')->default(0);
+            $table->timestamp('last_password_change_attempt')->nullable();
+            //$table->tinyInteger(column: 'user_attempt_time')->default(0);
+            $table->timestamp('last_attempt_at')->nullable();
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none 1=active 2=inactive 3=suspend 4=New");   
 
-            $table->unsignedBigInteger('total_attemp')->default(0);
+            //$table->tinyInteger('blocked_attempts_count')->default(0);
+            //$table->timestamp('blocked_until')->nullable();
+            //$table->string('blocked_until')->nullable();
+            //$table->string('status', 20)->default("None");
+            //$table->string('status', ["Active", "Inactive", "Suspend","Blocked","New", "None"])->default("None");
 
-            $table->string('expire_blocked_time')->nullable();
-            $table->unsignedSmallInteger('number_of_blocked_times')->default(0);
-
-
-            //$table->string(column: 'ip')->nullable();
-            //$table->tinyInteger(column: 'ip_attemp')->default(0);
-            //$table->string(column: 'ip_attemp_date')->nullable();
-
-
-            $table->enum('status', ["Active", "Inactive", "Suspend","Blocked", "None"])->default("None");
+            //$table->unique(['country_code', 'mobile'], 'unique_country_code_mobile');
 
             $table->rememberToken();
             $table->timestamps();

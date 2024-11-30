@@ -6,9 +6,15 @@ use App\Models\Province;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\AuthUserTrait;
 
+use Exception;
 final class DeleteProvince
 {
+    use AuthUserTrait;
+    protected $userId;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -19,13 +25,19 @@ final class DeleteProvince
     }
     public function resolveProvince($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-       // $user_id=auth()->guard('api')->user()->id;        
+        $this->userId = $this->getUserId();
+       
         $ProvinceResult=Province::find($args['id']);
         
         if(!$ProvinceResult)
         {
             return Error::createLocatedError("Province-DELETE-RECORD_NOT_FOUND");
         }
+
+        $ProvinceResult->editor_id= $this->userId;
+        $ProvinceResult->save(); 
+
+
         $ProvinceResult_filled= $ProvinceResult->delete();  
         return $ProvinceResult;
 

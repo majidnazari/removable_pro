@@ -1,7 +1,7 @@
 
-getPersonScore(id: ID!): PersonScore @field(resolver: "App\\GraphQL\\Queries\\PersonScore\\GetPersonScore@resolvePersonScore") 
+getPersonScore(id: ID!): PersonScore @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\PersonScore\\GetPersonScore@resolvePersonScore") 
     getPersonScores(
         first: Int, 
         page: Int, 
         # filter: PersonScoreFilterInput
-    ): [PersonScore!]! @paginate(builder: "App\\GraphQL\\Queries\\PersonScore\\GetPersonScores@resolvePersonScore")
+    ): [PersonScore!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\PersonScore\\GetPersonScores@resolvePersonScore")

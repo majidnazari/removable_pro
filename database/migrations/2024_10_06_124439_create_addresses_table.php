@@ -39,9 +39,12 @@ return new class extends Migration
             //$table->string('image')->nullable();          
             $table->decimal('lat')->nullable();
             $table->decimal('lon')->nullable();
-            //$table->enum('gendar', ["Male", "Female", "None"])->default("None");   --person_detail
+            //$table->enum('gender', ["Male", "Female", "None"])->default("None");   --person_detail
             //$table->enum('physical_condition', ["Healthy", "Handicapped", "None"])->default("Healthy"); --person_detail
-            $table->enum('status', ["Active", "Inactive", "Suspend", "None"])->default("None");
+            //$table->enum('status', ["Active", "Inactive", "Suspend", "None"])->default("None");
+
+            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=suspend ");   
+
 
             $table->timestamps();
             $table->softDeletes();

@@ -4,7 +4,7 @@ type Event {
     
     id: ID!
     title: String!
-    status: String 
+    status: Status 
     created_at: DateTime
     updated_at: DateTime
 }
@@ -12,12 +12,12 @@ type Event {
 input CreateEventInput {
 
     title: String!
-    status: String   
+    status: Status   
 
 }
 
 input UpdateEventInput {
 
    title: String!
-   status: String
+   status: Status
 }
