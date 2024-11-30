@@ -8,6 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use App\GraphQL\Enums\RequestStatusSender;
+use App\GraphQL\Enums\MergeStatus;
 use App\models\User;
 use App\models\Person;
 use Carbon\Carbon;
@@ -50,6 +51,7 @@ final class UpdateRequestSender
             ->where('id','!=', $args['id'])
             // ->where('user_receiver_id', $user_receiver->id)
             ->where('request_status_sender',  RequestStatusSender::Active->value)
+            ->where('status', '!=', MergeStatus::Complete->value)
             ->first();
 
         if ($is_exist) {
