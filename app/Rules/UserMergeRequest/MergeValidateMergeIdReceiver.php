@@ -14,10 +14,13 @@ class MergeValidateMergeIdReceiver implements Rule
     protected $loggedInUserId;
     protected $allowedPersonIds = [];
     protected $invalidIds = [];
+    protected $id;
+    protected $user_receiver_id;
 
-    public function __construct($loggedInUserId)
+    public function __construct($loggedInUserId,$user_request_id)
     {
         $this->loggedInUserId = $loggedInUserId;
+        $this->id = $user_request_id;
     }
 
     public function passes($attribute, $value)
@@ -45,11 +48,21 @@ class MergeValidateMergeIdReceiver implements Rule
     private function fetchAllowedPersonIds()
     {
         // Fetch Complete Relationships
-        $completeRelations = UserMergeRequest::where('status', MergeStatus::Complete)
-            //->where('user_receiver_id', $this->loggedInUserId)
-            ->where('user_sender_id', $this->loggedInUserId)
-            ->get();
+        // $completeRelations = UserMergeRequest::where('status', MergeStatus::Complete)
+        //    // ->where('user_receiver_id', $this->loggedInUserId)
+        //     ->where('user_sender_id', $this->loggedInUserId)
+        //     ->get();
 
+         $this->user_receiver_id = UserMergeRequest::where('id', $this->id)->first()->user_receiver_id;
+
+         Log::info("the request is: ".  $this->user_receiver_id);
+
+           
+        $completeRelations = UserMergeRequest::where('status', MergeStatus::Complete)
+                   ->where('user_receiver_id',   $this->user_receiver_id)
+                    ->orWhere('user_sender_id',   $this->user_receiver_id)
+                    ->get();
+                
             Log::info("the complete are:". json_encode($completeRelations));
 
         if ($completeRelations->isNotEmpty()) {
@@ -57,12 +70,15 @@ class MergeValidateMergeIdReceiver implements Rule
         }
 
         // Fetch Active Relationships if no Complete Relations found
-        $activeRelations = UserMergeRequest::where('request_status_sender', RequestStatusSender::Active)
-            ->where('request_status_receiver', RequestStatusSender::Active)
-            ->where('user_sender_id', $this->loggedInUserId)
-            ->pluck('user_sender_id')
-            //->pluck('user_receiver_id')
-            ->toArray();
+        // $activeRelations = UserMergeRequest::where('request_status_sender', RequestStatusSender::Active)
+        //     ->where('request_status_receiver', RequestStatusSender::Active)
+        //     ->where('user_sender_id', $this->loggedInUserId)
+        //     //->pluck('user_sender_id')
+        //     ->pluck('user_receiver_id')
+        //     ->toArray();
+        
+        $activeRelations[]=$this->user_receiver_id ;
+             Log::info("the all active as a creators are:" . json_encode( $activeRelations));
 
         return $this->getPersonIdsForCreators($activeRelations);
     }

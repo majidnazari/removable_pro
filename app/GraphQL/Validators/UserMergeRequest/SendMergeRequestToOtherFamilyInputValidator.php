@@ -65,7 +65,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
                 'string',
                 new MergeNoDuplicateIds(),
                 // new MergeValidateMergeIdsWithinActiveRelations($this->userId),
-                new MergeValidateMergeIdReceiver($this->userId),
+                new MergeValidateMergeIdReceiver($this->userId,$userMergeRequestId),
 
             ],
 
