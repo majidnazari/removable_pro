@@ -45,7 +45,8 @@ class MergeValidateMergeIdReceiver implements Rule
     {
         // Fetch Complete Relationships
         $completeRelations = UserMergeRequest::where('status', MergeStatus::Complete)
-            ->where('user_receiver_id', $this->loggedInUserId)
+            //->where('user_receiver_id', $this->loggedInUserId)
+            ->where('user_sender_id', $this->loggedInUserId)
             ->get();
 
         if ($completeRelations->isNotEmpty()) {
