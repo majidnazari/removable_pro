@@ -56,7 +56,8 @@ class MergeValidateMergeIdReceiver implements Rule
         $activeRelations = UserMergeRequest::where('request_status_sender', RequestStatusSender::Active)
             ->where('request_status_receiver', RequestStatusSender::Active)
             ->where('user_sender_id', $this->loggedInUserId)
-            ->pluck('user_receiver_id')
+            ->pluck('user_sender_id')
+            //->pluck('user_receiver_id')
             ->toArray();
 
         return $this->getPersonIdsForCreators($activeRelations);
