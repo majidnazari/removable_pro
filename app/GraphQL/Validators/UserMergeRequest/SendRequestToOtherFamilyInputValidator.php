@@ -57,11 +57,11 @@ class SendRequestToOtherFamilyInputValidator extends Validator
 
                 new NodeSenderExists(),
                 new NodeSenderNotOwner(),
-                new ReceiverExists(),
+                //new ReceiverExists(),
                 new SenderCannotSendToItself($this->user_sender_id),
                 new ReceiverHasOwner(),
-                new SenderNodeAndReceiverNodeSameGender(),
-                new UserSenderReceiverStatusCompleteOnce(),
+                new SenderNodeAndReceiverNodeSameGender($this->user_sender_id),
+                new UserSenderReceiverStatusCompleteOnce($this->user_sender_id),
             ],
         ];
     }
