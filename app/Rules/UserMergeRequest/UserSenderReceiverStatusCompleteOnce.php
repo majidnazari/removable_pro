@@ -73,7 +73,7 @@ class UserSenderReceiverStatusCompleteOnce implements Rule
     /**
      * Get the validation error message.
      *
-     * @return string
+     * @return bool
      */
     private function failValidation($message)
     {
