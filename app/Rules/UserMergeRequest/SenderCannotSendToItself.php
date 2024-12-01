@@ -5,7 +5,7 @@ namespace App\Rules\UserMergeRequest;
 use App\Models\PersonChild;
 use Illuminate\Contracts\Validation\Rule;
 
-class SenderAndReceiverAreDifferent implements Rule
+class SenderCannotSendToItself implements Rule
 {
     protected $senderId;
 

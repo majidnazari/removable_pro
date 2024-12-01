@@ -14,8 +14,10 @@ use App\Rules\UserMergeRequest\NoActiveRequestExists;
 use App\Rules\UserMergeRequest\NodeSenderExists;
 use App\Rules\UserMergeRequest\NodeSenderNotOwner;
 use App\Rules\UserMergeRequest\ReceiverExists;
-use App\Rules\UserMergeRequest\SenderAndReceiverAreDifferent;
+use App\Rules\UserMergeRequest\SenderCannotSendToItself;
 use App\Rules\UserMergeRequest\ReceiverHasOwner;
+use App\Rules\UserMergeRequest\SenderNodeAndReceiverNodeSameGender;
+use App\Rules\UserMergeRequest\UserSenderReceiverStatusCompleteOnce;
 
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
@@ -51,13 +53,15 @@ class SendRequestToOtherFamilyInputValidator extends Validator
                 'exists:people,id',
                 new PersonHasValidMobile(),
                 new PersonIsAccessibleBySender($this->user_sender_id),
-                new NoActiveRequestExists($this->user_sender_id),
+                new NoActiveRequestExists($this->user_sender_id), 
 
                 new NodeSenderExists(),
                 new NodeSenderNotOwner(),
                 new ReceiverExists(),
-                new SenderAndReceiverAreDifferent($this->user_sender_id),
+                new SenderCannotSendToItself($this->user_sender_id),
                 new ReceiverHasOwner(),
+                new SenderNodeAndReceiverNodeSameGender(),
+                new UserSenderReceiverStatusCompleteOnce(),
             ],
         ];
     }
