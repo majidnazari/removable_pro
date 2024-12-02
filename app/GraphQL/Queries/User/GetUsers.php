@@ -6,6 +6,7 @@ use App\Models\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\GraphQL\Enums\Role;
 use Log;
 
 final class GetUsers
@@ -21,11 +22,13 @@ final class GetUsers
     }
     function resolveUser($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        $this->user = $this->getUser();
 
+        //Log::info("the user type  " . $this->user->isAdmin() . " and the user role is:" .$this->user->role  .  "and the enum role is:" . Role::Admin->value );
         //$user_id=$this->getUserId();
        
-        $Users = ( $this->userId ==1) ? User::where('deleted_at', null) : User::where('id', $this->userId )->where('deleted_at', null) ;
+        //$Users = ( $this->user->role === Role::Admin->value) ? User::where('deleted_at', null) : User::where('id', $this->user->id )->where('deleted_at', null) ;
+        $Users = $this->user->isAdmin()  ? User::where('deleted_at', null) : User::where('id', $this->user->id )->where('deleted_at', null) ;
 
         //log::info("the Scores is:" . json_encode($UserMergeRequests));
         return $Users;

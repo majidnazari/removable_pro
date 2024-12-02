@@ -61,3 +61,11 @@ enum RequestStatusReceiver
     Suspend @enum(value: 3)
      
 }
+
+enum Role 
+{
+    Admin @enum(value: 1)
+    Supporter @enum(value: 2)
+    User @enum(value: 3)
+     
+}

@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
+use App\GraphQL\Enums\Role;
+
 use Eloquent;
 
 use Log;
@@ -29,6 +31,7 @@ use Log;
  * @property string|null $last_password_change_attempt
  * @property \Illuminate\Support\Carbon|null $last_attempt_at
  * @property string $status
+ * @property string $role
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -97,6 +100,7 @@ class User extends Authenticatable
         'last_password_change_attempt',
         'last_attempt_at',
         'status',
+        'role',
         'remember_token',
         'avatar',
     ];
@@ -193,12 +197,25 @@ class User extends Authenticatable
         return $this->hasMany(Memory::class, self::COLUMN_EDITOR_ID);
     }
    
-
-
     protected $casts = [
         'last_attempt_at' => 'datetime',
         'code_expired_at' => 'datetime', // if also necessary
         'blocked_until' => 'datetime',    // if also necessary
     ];
+
+    public function isAdmin()
+    {
+        return $this->role === Role::Admin->value;
+    }
+
+    public function isSupporter()
+    {
+        return $this->role === Role::Supporter->value;
+    }
+
+    public function isUser()
+    {
+        return $this->role === Role::User->value;
+    }
 
 }

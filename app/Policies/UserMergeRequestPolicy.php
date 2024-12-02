@@ -21,7 +21,13 @@ class UserMergeRequestPolicy
      */
     public function view(User $user, UserMergeRequest $userMergeRequest): bool
     {
-        //
+        // Admins can view all requests
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        // Normal users can only view requests where they are sender or receiver
+        return $userMergeRequest->user_sender_id === $user->id || $userMergeRequest->user_receiver_id === $user->id;
     }
 
     /**

@@ -29,6 +29,8 @@ final class GetUserMergeRequests
         ->orWhere('user_receiver_id',$this->userId)
         ->where('deleted_at', null);
 
+        
+
         //log::info("the Scores is:" . json_encode($UserMergeRequests));
         return $UserMergeRequests;
     }
