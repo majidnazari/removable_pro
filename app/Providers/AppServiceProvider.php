@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use App\Models\UserMergeRequest;
+use App\Policies\UserMergeRequestPolicy;
+use Illuminate\Support\Facades\Gate;
+
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +31,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensExpireIn(now()->addDays(1));
         Passport::refreshTokensExpireIn(now()->addDays(3));
         Passport::personalAccessTokensExpireIn(now()->addMonths(1));
+
+        //Gate::policy(UserMergeRequest::class, UserMergeRequestPolicy::class);
     }
 }

@@ -69,3 +69,8 @@ enum Role
     User @enum(value: 3)
      
 }
+
+enum SortOrder {
+    ASC
+    DESC
+}

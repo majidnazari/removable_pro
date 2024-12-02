@@ -1,7 +1,29 @@
 
-getUserMergeRequest(id: ID!): UserMergeRequest @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\UserMergeRequest\\GetUserMergeRequest@resolveUserMergeRequest") 
+    getUserMergeRequest(id: ID!): UserMergeRequest 
+    @guard(with:["api"]) 
+    # @can(ability: "viewAny", find: "id" ) 
+    @field(resolver: "App\\GraphQL\\Queries\\UserMergeRequest\\GetUserMergeRequest@resolveUserMergeRequest") 
+
+
     getUserMergeRequests(
         first: Int, 
         page: Int, 
+
+        creator_id: Int,
+        editor_id: Int,
+        user_sender_id: Int,
+        node_sender_id: Int,
+        user_receiver_id: Int,
+        node_receiver_id: Int,
+        request_status_sender: Int,
+        request_status_receiver: Int,
+        merge_status_sender: Int,
+        merge_status_receiver: Int,
+        status: Int
+
+         orderBy:[OrderByClause!] @orderBy
         # filter: UserMergeRequestFilterInput
-    ): [UserMergeRequest!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\UserMergeRequest\\GetUserMergeRequests@resolveUserMergeRequest")
+    ): [UserMergeRequest]
+    @guard(with:["api"])
+    #  @can(ability: "view", model: "App\\Models\\UserMergeRequest")  
+     @paginate(builder: "App\\GraphQL\\Queries\\UserMergeRequest\\GetUserMergeRequests@resolveUserMergeRequest")

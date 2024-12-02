@@ -109,4 +109,12 @@ class UserMergeRequest extends Eloquent
         return $this->belongsTo(Person::class, self::COLUMN_MERGE_RECEIVER_ID);
     }
 
+
+    // Define the columns that need to be checked
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

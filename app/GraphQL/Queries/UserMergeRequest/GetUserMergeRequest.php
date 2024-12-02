@@ -3,13 +3,17 @@
 namespace App\GraphQL\Queries\UserMergeRequest;
 
 use App\Models\UserMergeRequest;
+use App\Models\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
+
 
 final class GetUserMergeRequest
 {
     use AuthUserTrait;
+    use AuthorizesUser;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -20,9 +24,13 @@ final class GetUserMergeRequest
     }
     function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
 
-        $UserMergeRequest = UserMergeRequest::where('id', $args['id']);       
-        return $UserMergeRequest->first();
+        $userMergeRequest = $this->getModelByAuthorization(UserMergeRequest::class, $args);
+
+        return $userMergeRequest;
+        // $this->userId = $this->getUserId();
+
+        // $UserMergeRequest = UserMergeRequest::where('id', $args['id']);       
+        // return $UserMergeRequest->first();
     }
 }

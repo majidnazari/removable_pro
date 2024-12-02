@@ -6,11 +6,14 @@ use App\Models\Area;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 
 
 final class GetArea
 {
     use AuthUserTrait;
+    use AuthorizesUser;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +24,11 @@ final class GetArea
     }
     function resolveArea($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
+        // $Area = Area::where('id', $args['id']);       
+        // return $Area->first();
 
-        $Area = Area::where('id', $args['id']);       
-        return $Area->first();
+        $area = $this->getModelByAuthorization(Area::class, $args);
+        return $area;
     }
 }

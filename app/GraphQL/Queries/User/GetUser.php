@@ -21,9 +21,16 @@ final class GetUser
     }
     function resolveUser($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        $this->user = $this->getUser();
+        
 
-        $User = User::where('id', $args['id']);       
+        $User = 
+        $this->user->isAdmin() || $this->user->isSupporter() 
+        ?
+         User::where('id', $args['id'])
+        : 
+         User::where('id', $args['id'])->where('country_code', $this->user->country_code)->where('mobile', $this->user->mobile);  
+
         return $User->first();
     }
 }

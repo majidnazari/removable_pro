@@ -218,4 +218,13 @@ class User extends Authenticatable
         return $this->role === Role::User->value;
     }
 
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "country_code", 
+            "mobile", 
+             
+        ];
+    }
+
 }

@@ -6,11 +6,14 @@ use App\Models\Address;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 
 
 final class GetAddresses
 {
     use AuthUserTrait;
+    use AuthorizesUser;
+
     protected $userId;
     /**
      * @param  null  $_
@@ -22,9 +25,12 @@ final class GetAddresses
     }
     function resolveAddress($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
+        // $Addresss = Address::where('deleted_at', null)->with("City");
+        // return $Addresss;
 
-        $Addresss = Address::where('deleted_at', null)->with("City");
-        return $Addresss;
+
+        $addresses = $this->getModelByAuthorization(Address::class, $args);
+        return $addresses;
     }
 }

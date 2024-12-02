@@ -18,7 +18,7 @@ final class GetUsers
      */
     public function __invoke($_, array $args)
     {
-        // TODO implement the resolver
+        // TODO implement the resolver 
     }
     function resolveUser($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
@@ -28,7 +28,12 @@ final class GetUsers
         //$user_id=$this->getUserId();
        
         //$Users = ( $this->user->role === Role::Admin->value) ? User::where('deleted_at', null) : User::where('id', $this->user->id )->where('deleted_at', null) ;
-        $Users = $this->user->isAdmin()  ? User::where('deleted_at', null) : User::where('id', $this->user->id )->where('deleted_at', null) ;
+        $Users = $this->user->isAdmin() || $this->user->isSupporter()
+        ? 
+        User::where('deleted_at', null) 
+        : 
+        User::where('id', $this->user->id )->where('deleted_at', null) 
+        ;
 
         //log::info("the Scores is:" . json_encode($UserMergeRequests));
         return $Users;

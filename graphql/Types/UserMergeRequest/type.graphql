@@ -8,7 +8,7 @@ type UserMergeRequest {
     node_sender_id: ID
 
     user_receiver_id: ID
-    node_receiver_id: ID!
+    node_receiver_id: ID
 
     request_status_sender: RequestStatusSender
     request_sender_expired_at: String
