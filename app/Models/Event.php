@@ -49,4 +49,10 @@ class Event extends Eloquent
         return $this->hasMany(FamilyEvent::class, self::COLUMN_EVENT_ID);
     }
 
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

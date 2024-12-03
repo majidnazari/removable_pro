@@ -7,11 +7,13 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
-
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 
 final class DeleteFamilyEvent
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -25,6 +27,8 @@ final class DeleteFamilyEvent
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
+        $this->checkMutationAuthorization(FamilyEvent::class, AuthAction::Delete, $args);
+
        
         $FamilyEventResult=FamilyEvent::find($args['id']);
         

@@ -117,4 +117,11 @@ class Address extends Eloquent
     {
         return $this->belongsTo(Country::class, self::COLUMN_COUNTRY_ID);
     }
+
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

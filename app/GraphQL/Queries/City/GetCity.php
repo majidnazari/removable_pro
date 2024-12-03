@@ -6,11 +6,14 @@ use App\Models\City;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 
 
 final class GetCity
 {
     use AuthUserTrait;
+    use AuthorizesUser;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +24,11 @@ final class GetCity
     }
     function resolveCity($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
 
-        $City = City::where('id', $args['id']);       
+        // $City = City::where('id', $args['id']);       
+        // return $City->first();
+        $City = $this->getModelByAuthorization(City::class, $args);
         return $City->first();
     }
 }

@@ -7,12 +7,15 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 
 
 
 final class UpdateCategoryContent
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -26,6 +29,8 @@ final class UpdateCategoryContent
     public function resolveCategoryContent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
+        $this->checkMutationAuthorization(CategoryContent::class, AuthAction::Delete, $args);
+
 
         //args["user_id_creator"]=$user_id;
         $CategoryContentResult=CategoryContent::find($args['id']);

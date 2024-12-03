@@ -56,6 +56,13 @@ class City extends Eloquent
     // {
     //     return $this->belongsTo(Province::class, 'province_id');
     // }
+
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }
 
 

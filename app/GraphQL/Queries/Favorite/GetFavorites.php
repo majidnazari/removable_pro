@@ -6,11 +6,15 @@ use App\Models\Favorite;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
+use App\Traits\SearchQueryBuilder;
 
 
 final class GetFavorites
 {
     use AuthUserTrait;
+    use AuthorizesUser;
+    use SearchQueryBuilder;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +25,13 @@ final class GetFavorites
     }
     function resolveFavorite($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
 
-        $Favorites = Favorite::where('deleted_at', null);
-        return $Favorites;
+        // $Favorites = Favorite::where('deleted_at', null);
+        // return $Favorites;
+
+        $query = $this->getModelByAuthorization(Favorite::class, $args, true);
+        $query = $this->applySearchFilters( $query, $args);
+        return  $query;
     }
 }

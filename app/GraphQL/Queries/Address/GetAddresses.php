@@ -7,12 +7,14 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesUser;
+use App\Traits\SearchQueryBuilder;
 
 
 final class GetAddresses
 {
     use AuthUserTrait;
     use AuthorizesUser;
+    use SearchQueryBuilder;
 
     protected $userId;
     /**
@@ -29,8 +31,8 @@ final class GetAddresses
         // $Addresss = Address::where('deleted_at', null)->with("City");
         // return $Addresss;
 
-
-        $addresses = $this->getModelByAuthorization(Address::class, $args);
-        return $addresses;
+        $query = $this->getModelByAuthorization(Address::class, $args, true);
+        $query = $this->applySearchFilters( $query, $args);
+        return  $query;
     }
 }

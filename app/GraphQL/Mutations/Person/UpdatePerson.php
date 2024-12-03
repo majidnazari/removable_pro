@@ -8,12 +8,15 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Rules\Person\UniquePerson;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 use Log;
 
 
 final class UpdatePerson
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -28,6 +31,7 @@ final class UpdatePerson
     {  
 
         $this->userId = $this->getUserId();
+        $this->checkMutationAuthorization(Person::class, AuthAction::Update, $args);
 
         //args["user_id_creator"]=$user_id;
 

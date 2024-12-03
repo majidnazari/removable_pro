@@ -8,12 +8,17 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
+
 
 use Exception;
 
 final class DeleteUserMergeRequest
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
+
     protected $userId;
 
     /**
@@ -26,7 +31,9 @@ final class DeleteUserMergeRequest
     }
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
-        $this->userId = $this->getUserId();
+        $this->user = $this->getUser();
+
+        $this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Delete, $args);
         
         $UserMergeRequestResult=UserMergeRequest::find($args['id']);
         
@@ -35,7 +42,7 @@ final class DeleteUserMergeRequest
             return Error::createLocatedError("UserMergeRequest-DELETE-RECORD_NOT_FOUND");
         }
 
-        $UserMergeRequestResult->editor_id= $this->userId;
+        $UserMergeRequestResult->editor_id= $this->user->id;
         $UserMergeRequestResult->save(); 
 
         $UserMergeRequestResult_filled= $UserMergeRequestResult->delete();  

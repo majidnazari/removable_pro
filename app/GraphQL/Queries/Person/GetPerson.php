@@ -11,12 +11,14 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 use App\Traits\FindOwnerTrait;
 use Log;
 
 final class GetPerson
 {
     use AuthUserTrait;
+    use AuthorizesUser;
     use FindOwnerTrait;
     /**
      * @param  null  $_

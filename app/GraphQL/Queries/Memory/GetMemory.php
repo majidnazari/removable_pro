@@ -6,11 +6,13 @@ use App\Models\Memory;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 
 
 final class GetMemory
 {
     use AuthUserTrait;
+    use AuthorizesUser;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +23,12 @@ final class GetMemory
     }
     function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
 
-        $Memory = Memory::where('id', $args['id']);       
+        // $Memory = Memory::where('id', $args['id']);       
+        // return $Memory->first();
+
+        $Memory = $this->getModelByAuthorization(Memory::class, $args);
         return $Memory->first();
     }
 }

@@ -15,6 +15,9 @@ use App\models\Person;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
+
 
 use Exception;
 use Log;
@@ -22,6 +25,7 @@ use Log;
 final class SendMergeRequestToOtherFamily
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -34,8 +38,9 @@ final class SendMergeRequestToOtherFamily
     }
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
- 
+        $this->user = $this->getUser();
+    
+        $this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Update, $args);
         // Fetch the sender person
         $userMergeRequest = UserMergeRequest::where('id',$args['id'])
         //->where('status',MergeStatus::Active)

@@ -3,6 +3,23 @@ getPerson(id: ID!): Person @guard(with: ["api"]) @field(resolver: "App\\GraphQL\
 getPersons(
         first: Int, 
         page: Int, 
+        creator_id: Int,
+        editor_id: Int,
+        node_code: String,
+        first_name: String,
+        last_name: String,
+        birth_date: String,
+        death_date: String,
+        country_code: String,
+        mobile: String,
+
+        is_owner: Int,
+
+        gender: Int,
+       
+        status: Status,
+
+        orderBy:[OrderByClause!] @orderBy
         # filter: PersonFilterInput
     ): [Person!]! @guard(with: ["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Person\\GetPersons@resolvePerson")
 

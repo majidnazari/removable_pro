@@ -8,11 +8,14 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 
 use Exception;
 final class DeletePersonScore
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -26,6 +29,9 @@ final class DeletePersonScore
     public function resolvePersonScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
+
+        $this->checkMutationAuthorization(PersonScore::class, AuthAction::Delete, $args);
+
       
         $PersonScoreResult=PersonScore::find($args['id']);
         

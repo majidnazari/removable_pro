@@ -3,5 +3,10 @@ getCity(id: ID!): City @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Quer
     getCities(
         first: Int, 
         page: Int, 
+        province_id: Int,
+     
+        title: String,
+      
+        orderBy:[OrderByClause!] @orderBy
         # filter: CityFilterInput
     ): [City!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\City\\GetCities@resolveCity")

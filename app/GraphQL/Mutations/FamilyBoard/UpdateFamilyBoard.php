@@ -7,11 +7,13 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
-
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 
 final class UpdateFamilyBoard
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -26,6 +28,8 @@ final class UpdateFamilyBoard
     {  
        
         $this->userId = $this->getUserId();
+        $this->checkMutationAuthorization(FamilyBoard::class, AuthAction::Delete, $args);
+
 
         //args["user_id_creator"]=$user_id;
         $FamilyBoardResult=FamilyBoard::find($args['id']);

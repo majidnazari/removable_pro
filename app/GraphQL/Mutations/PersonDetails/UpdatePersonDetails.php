@@ -11,6 +11,8 @@ use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 use Exception;
 use Log;
 
@@ -18,6 +20,7 @@ use Log;
 final class UpdatePersonDetails
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -31,6 +34,9 @@ final class UpdatePersonDetails
     public function resolvePersonDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
+
+        $this->checkMutationAuthorization(PersonDetail::class, AuthAction::Update, $args);
+
 
         //args["user_id_creator"]=$this->userId;
         $personDetail = PersonDetail::find($args['id']);

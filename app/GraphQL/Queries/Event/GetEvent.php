@@ -6,11 +6,14 @@ use App\Models\Event;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 
 
 final class GetEvent
 {
     use AuthUserTrait;
+    use AuthorizesUser;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +24,11 @@ final class GetEvent
     }
     function resolveEvent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
 
-        $Event = Event::where('id', $args['id']);       
+        // $Event = Event::where('id', $args['id']);       
+        // return $Event->first();
+        $Event = $this->getModelByAuthorization(Event::class, $args);
         return $Event->first();
     }
 }

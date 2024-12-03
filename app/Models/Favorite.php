@@ -71,4 +71,11 @@ class Favorite extends Eloquent
     {
         return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
     }
+
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

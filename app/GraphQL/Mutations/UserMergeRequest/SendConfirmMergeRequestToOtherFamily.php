@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\MergeStatus;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
+
 
 use Exception;
 use Log;
@@ -17,6 +20,8 @@ class SendConfirmMergeRequestToOtherFamily
 {
     use PersonMergeTrait;
     use AuthUserTrait;
+    use checkMutationAuthorization;
+
 
     protected $userId;
 
@@ -27,8 +32,10 @@ class SendConfirmMergeRequestToOtherFamily
 
     public function resolveUserConfirmMergeRequest($rootValue, array $args)
     {
-        $this->userId = $this->getUserId();
+        $this->user = $this->getUser();
     
+        $this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Delete, $args);
+
         $mergeIdsSender = $args['merge_ids_sender'];        
         $mergeIdsReceiver = $args['merge_ids_receiver'];
        
@@ -41,7 +48,7 @@ class SendConfirmMergeRequestToOtherFamily
                 throw new Error("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
             }
 
-            if ($userMergeRequest->user_sender_id !== $this->userId) {
+            if ($userMergeRequest->user_sender_id !== $this->user->id) {
                 throw new Error("UserMergeRequest-UNAUTHORIZED_ACCESS!");
             }
 
@@ -54,7 +61,7 @@ class SendConfirmMergeRequestToOtherFamily
             
                 //Log::info("The sender is: {$senderId} and the receiver is: {$receiverId}");
             
-                $this->mergePersonsByIds($senderId, $receiverId, $this->userId);
+                $this->mergePersonsByIds($senderId, $receiverId, $this->user->id);
             }
             
             // Update the status to Complete

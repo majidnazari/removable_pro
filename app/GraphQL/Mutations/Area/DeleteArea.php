@@ -7,11 +7,13 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
-
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 
 final class DeleteArea
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -26,6 +28,8 @@ final class DeleteArea
     {  
        
         $this->userId = $this->getUserId();
+        $this->checkMutationAuthorization(Area::class, AuthAction::Delete, $args);
+
 
         $AreaResult=Area::find($args['id']);
         

@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Support\Facades\Schema;
+use Log;
 
 trait SearchQueryBuilder
 {
@@ -21,16 +22,25 @@ trait SearchQueryBuilder
         // Apply filters for each argument that matches a column
         foreach ($args as $key => $value) {
             if (in_array($key, $columns) && !is_null($value)) {
-                $query->where($key, $value);
+                // Get column type using the database schema
+                $columnType = Schema::getColumnType($table, $key);
+                // If the column is a string, apply a LIKE query
+                if ($columnType == 'varchar' || $columnType == 'text') {
+               // Log::info("the column name is:" . $key . " and the type of column is :" .  $columnType);
+
+                    $query->where($key, 'LIKE', '%' . $value . '%'); // Use LIKE for string columns
+                } else {
+                    $query->where($key, $value); // Exact match for other types
+                }
             }
         }
 
-        // Apply ordering if 'orderBy' is provided
-        if (isset($args['orderBy']) && is_array($args['orderBy'])) {
-            foreach ($args['orderBy'] as $order) {
-                $query->orderBy($order['column'], $order['order']);
-            }
-        }
+        // // Apply ordering if 'orderBy' is provided
+        // if (isset($args['orderBy']) && is_array($args['orderBy'])) {
+        //     foreach ($args['orderBy'] as $order) {
+        //         $query->orderBy($order['column'], $order['order']);
+        //     }
+        // }
 
         return $query;
     }

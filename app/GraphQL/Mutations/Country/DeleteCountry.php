@@ -7,10 +7,13 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 
 final class DeleteCountry
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -25,6 +28,8 @@ final class DeleteCountry
     {  
         
         $this->userId = $this->getUserId();
+        $this->checkMutationAuthorization(Country::class, AuthAction::Delete, $args);
+
  
         $CountryResult=Country::find($args['id']);
         

@@ -15,11 +15,11 @@
         node_sender_id: Int,
         user_receiver_id: Int,
         node_receiver_id: Int,
-        request_status_sender: Int,
-        request_status_receiver: Int,
-        merge_status_sender: Int,
-        merge_status_receiver: Int,
-        status: Int
+        request_status_sender: RequestStatusSender,
+        request_status_receiver: RequestStatusReceiver,
+        merge_status_sender: RequestStatusSender,
+        merge_status_receiver: RequestStatusReceiver,
+        status: MergeStatus
 
          orderBy:[OrderByClause!] @orderBy
         # filter: UserMergeRequestFilterInput

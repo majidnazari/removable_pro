@@ -6,11 +6,13 @@ use App\Models\PersonMarriage;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 
 
 final class GetPersonMarriage
 {
     use AuthUserTrait;
+    use AuthorizesUser;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +23,12 @@ final class GetPersonMarriage
     }
     function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
 
-        $PersonMarriage = PersonMarriage::where('id', $args['id']);       
-        return $PersonMarriage->first();
+        // $PersonMarriage = PersonMarriage::where('id', $args['id']);       
+        // return $PersonMarriage->first();
+
+        $user = $this->getModelByAuthorization(PersonMarriage::class, $args);
+        return $user->first();
     }
 }

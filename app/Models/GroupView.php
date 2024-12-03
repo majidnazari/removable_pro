@@ -42,4 +42,11 @@ class GroupView extends Eloquent
     public const COLUMN_EDITOR_ID = 'editor_id';
 
     public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
+
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

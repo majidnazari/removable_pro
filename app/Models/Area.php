@@ -50,4 +50,11 @@ class Area extends Eloquent
         return $this->belongsTo(City::class, self::COLUMN_CITY_ID);
     }
 
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
+
 }

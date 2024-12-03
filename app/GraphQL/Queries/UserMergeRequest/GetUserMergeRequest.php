@@ -27,7 +27,7 @@ final class GetUserMergeRequest
 
         $userMergeRequest = $this->getModelByAuthorization(UserMergeRequest::class, $args);
 
-        return $userMergeRequest;
+        return $userMergeRequest->first();
         // $this->userId = $this->getUserId();
 
         // $UserMergeRequest = UserMergeRequest::where('id', $args['id']);       

@@ -15,12 +15,17 @@ use Carbon\Carbon;
 use Log;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
+
 
 use Exception;
 
 final class SendRequestToOtherFamily
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
+
     protected $user_sender_id;
 
     /**
@@ -33,6 +38,8 @@ final class SendRequestToOtherFamily
     }
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
+
+        //$this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Create, $args);
 
         $this->user_sender_id= $this->getUserId();
 

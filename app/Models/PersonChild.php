@@ -77,4 +77,11 @@ class PersonChild extends Eloquent
         return $this->belongsTo(Person::class, self::COLUMN_CHILD_ID);
     }
 
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
+
 }

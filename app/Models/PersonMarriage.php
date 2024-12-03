@@ -104,5 +104,11 @@ class PersonMarriage extends Eloquent
         );
     }
 
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 
 }

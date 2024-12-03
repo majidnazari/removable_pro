@@ -3,5 +3,17 @@ getMemory(id: ID!): Memory @guard(with:["api"]) @field(resolver: "App\\GraphQL\\
     getMemories(
         first: Int, 
         page: Int, 
+        person_id: Int,
+        category_content_id: Int,
+        group_view_id: Int,
+        creator_id: Int,
+        editor_id: Int,
+        content: String,
+        title: String,
+        description: String,
+        is_shown_after_death: Boolean,
+             
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy
         # filter: MemoryFilterInput
     ): [Memory!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Memory\\GetMemories@resolveMemory")

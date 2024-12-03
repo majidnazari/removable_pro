@@ -24,6 +24,7 @@ final class MergePersons
         
         $this->userId = $this->getUserId();
 
+
         //Log::info("the user id is:" .  $auth_id);
 
         $primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);

@@ -3,5 +3,22 @@ getAddress(id: ID!): Address @guard(with:["api"]) @field(resolver: "App\\GraphQL
     getAddresses(
         first: Int, 
         page: Int, 
+      
+        creator_id: Int,
+        editor_id: Int,
+        person_id: Int,
+        country_id: Int,
+        province_id: Int,
+        city_id: Int,
+        area_id: Int,
+
+        location_title: String,
+        street_name: String,
+        builder_no: Int,
+        floor_no: Int,
+        unit_no: Int,
+        
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy 
         # filter: AddressFilterInput
     ): [Address!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Address\\GetAddresses@resolveAddress")

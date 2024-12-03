@@ -7,10 +7,13 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 
 final class UpdateArea
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -23,6 +26,8 @@ final class UpdateArea
     {  
         
         $this->userId = $this->getUserId();
+        $this->checkMutationAuthorization(Area::class, AuthAction::Delete, $args);
+
 
         //args["user_id_creator"]=$user_id;
         $AreaResult=Area::find($args['id']);

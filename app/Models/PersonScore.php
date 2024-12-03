@@ -74,4 +74,11 @@ class PersonScore extends Eloquent
     {
         return $this->belongsTo(Score::class, self::COLUMN_SCORE_ID);
     }
+
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

@@ -8,12 +8,16 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
+
 
 use Exception;
 
 final class CancelSenderRequest
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -27,20 +31,25 @@ final class CancelSenderRequest
     public function resolveCancelSenderRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         
-        $this->userId = $this->getUserId();
+        $this->user = $this->getUser();
 
-        $UserMergeRequestResult=UserMergeRequest::where( 'creator_id',$this->userId)->first();
+        $this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Update, $args);
+
+
+        $UserMergeRequestResult=UserMergeRequest::where( $this->user->creator_id,$this->user->id)->first();
         
         if(!$UserMergeRequestResult)
         {
             return Error::createLocatedError("UserSendeRequest-UPDATE-RECORD_NOT_FOUND");
         }
-        $UserMergeRequestResult->editor_id=$this->userId;
+        $UserMergeRequestResult->editor_id=$this->user->id;
         
         $UserMergeRequestResult_filled= $UserMergeRequestResult->fill($args);
         $UserMergeRequestResult->save();       
        
         return $UserMergeRequestResult;
+
+       
 
         
     }

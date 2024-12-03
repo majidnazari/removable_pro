@@ -29,6 +29,7 @@ final class CreateScore
     public function resolveScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
         $this->userId = $this->getUserId();
+        
 
         $ScoreResult=[
             "status" => $args['status'] ?? Status::Active,

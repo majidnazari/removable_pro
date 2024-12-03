@@ -3,5 +3,10 @@ getArea(id: ID!): Area @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Quer
     getAreas(
         first: Int, 
         page: Int, 
+        city_id: Int,
+      
+        title: String,
+      
+        orderBy:[OrderByClause!] @orderBy
         # filter: AreaFilterInput
     ): [Area!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Area\\GetAreas@resolveArea")

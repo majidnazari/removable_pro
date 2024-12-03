@@ -6,11 +6,16 @@ use App\Models\Area;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
+use App\Traits\SearchQueryBuilder;
 
 
 final class GetAreas
 {
     use AuthUserTrait;
+    use AuthorizesUser;
+    use SearchQueryBuilder;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +26,8 @@ final class GetAreas
     }
     function resolveArea($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
-
-        $areas = Area::where('deleted_at', null)->with("City");
-        return $areas;
+        $query = $this->getModelByAuthorization(Area::class, $args, true);
+        $query = $this->applySearchFilters( $query, $args);
+        return  $query;
     }
 }

@@ -3,5 +3,9 @@ getEvent(id: ID!): Event @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Qu
     getEvents(
         first: Int, 
         page: Int, 
+       
+        title: String,
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy
         # filter: EventFilterInput
     ): [Event!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Event\\GetEvents@resolveEvent")

@@ -8,13 +8,15 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
-
+use App\Traits\checkMutationAuthorization;
+use App\GraphQL\Enums\AuthAction;
 use Exception;
 use Log;
 
 final class DeletePersonDetails
 {
     use AuthUserTrait;
+    use checkMutationAuthorization;
     protected $userId;
 
     /**
@@ -29,6 +31,8 @@ final class DeletePersonDetails
     {  
        
         $this->userId = $this->getUserId();
+        $this->checkMutationAuthorization(PersonDetail::class, AuthAction::Delete, $args);
+
       
         $PersonDetailResult=PersonDetail::find($args['id']);
         

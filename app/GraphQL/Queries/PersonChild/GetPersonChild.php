@@ -6,11 +6,13 @@ use App\Models\PersonChild;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 
 
 final class GetPersonChild
 {
     use AuthUserTrait;
+    use AuthorizesUser;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +23,12 @@ final class GetPersonChild
     }
     function resolvePersonChild($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
 
-        $PersonChild = PersonChild::where('id', $args['id']);       
+        // $PersonChild = PersonChild::where('id', $args['id']);       
+        // return $PersonChild->first();
+
+        $PersonChild = $this->getModelByAuthorization(PersonChild::class, $args);
         return $PersonChild->first();
     }
 }

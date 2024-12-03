@@ -3,5 +3,19 @@ getPersonMarriage(id: ID!): PersonMarriage @guard(with:["api"]) @field(resolver:
     getPersonMarriages(
         first: Int, 
         page: Int, 
+
+        man_id: Int,
+        woman_id: Int,
+        creator_id: Int,
+        editor_id: Int,
+
+        marriage_date: String,
+        divorce_date: String,
+
+        marriage_status: Status,
+        status:Status,
+
+        orderBy:[OrderByClause!] @orderBy
+
         # filter: PersonMarriageFilterInput
     ): [PersonMarriage!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\PersonMarriage\\GetPersonMarriages@resolvePersonMarriage")

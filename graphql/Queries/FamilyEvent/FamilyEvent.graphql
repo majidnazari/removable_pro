@@ -3,5 +3,12 @@ getFamilyEvent(id: ID!): FamilyEvent @guard(with:["api"]) @field(resolver: "App\
     getFamilyEvents(
         first: Int, 
         page: Int, 
+        person_id: Int,
+        creator_id: Int,
+        editor_id: Int,
+        event_id: Int,
+        event_date: String,
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy
         # filter: FamilyEventFilterInput
     ): [FamilyEvent!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\FamilyEvent\\GetFamilyEvents@resolveFamilyEvent")
