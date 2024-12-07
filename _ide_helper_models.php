@@ -457,6 +457,41 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $creator_id
+ * @property int $user_id
+ * @property string|null $message
+ * @property int $notif_status  1=Read 2=NotRead
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif query()
+ * @mixin \Eloquent
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\User $Creator
+ * @property-read \App\Models\User $RelatedUser
+ * @method static \Database\Factories\NotifFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif notRead()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereNotifStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif withoutTrashed()
+ */
+	class Notif extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $creator_id
  * @property int|null $editor_id
  * @property string $node_code
  * @property int $node_level_x
@@ -794,6 +829,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $Notifs
+ * @property-read int|null $notifs_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCodeExpiredAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCountryCode($value)

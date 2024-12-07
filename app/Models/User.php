@@ -196,6 +196,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Memory::class, self::COLUMN_EDITOR_ID);
     }
+    public function Notifs()
+    {
+        return $this->hasMany(Notif::class, self::COLUMN_USER_ID);
+    }
    
     protected $casts = [
         'last_attempt_at' => 'datetime',

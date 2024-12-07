@@ -1,0 +1,13 @@
+
+getNotif(id: ID!): Notif @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Notif\\GetNotif@resolveNotif") 
+    getNotifs(
+        first: Int, 
+        page: Int, 
+        creator_id: Int,
+        user_id: Int,
+        message: String,
+        notif_status: NotifStatus,
+       
+        orderBy:[OrderByClause!] @orderBy
+        # filter: NotifFilterInput
+    ): [Notif!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Notif\\GetNotifs@resolveNotif")

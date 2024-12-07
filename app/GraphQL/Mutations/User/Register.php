@@ -12,6 +12,7 @@ use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Traits\AuthUserTrait;
+use App\Events\UserRegistered;
 
 use App\GraphQL\Enums\Status;
 
@@ -121,6 +122,10 @@ class Register extends BaseAuthResolver
         //Log::info("cred is:".  json_encode($credentials));
 
         $response = $this->makeRequest($credentials);
+
+        //Log::info("the event must run here and user ise:" . json_encode($user));
+        // Fire the UserRegistered event after user is fully registered
+        event(new UserRegistered($user));
        
         return [
             'tokens' =>$response,

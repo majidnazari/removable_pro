@@ -1,0 +1,23 @@
+
+type Notif {
+  id: ID!
+  creator_id: Int
+  user_id: Int
+  message: String
+  notif_status: NotifStatus
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+input CreateNotifInput {
+  creator_id: Int!
+  user_id: Int!
+  message: String
+  notif_status: NotifStatus
+}
+
+input UpdateNotifInput {
+  id: ID!
+  message: String
+  notif_status: NotifStatus
+}
