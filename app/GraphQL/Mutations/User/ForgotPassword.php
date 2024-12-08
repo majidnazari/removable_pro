@@ -15,7 +15,7 @@ use App\Traits\AuthUserTrait;
 use Exception;
 
 use GraphQL\Error\Error;
-use App\GraphQL\Enums\Status;
+use App\GraphQL\Enums\UserStatus;
 
 use DB;
 use Log;
@@ -41,7 +41,7 @@ class ForgotPassword extends BaseAuthResolver
         //$cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
 
         $user=User::where('mobile',$args['country_code'].$args['mobile'])
-        ->where('status',Status::Active )
+        ->where('status',UserStatus::Active )
         ->where('mobile_is_verified',true)
         ->first();
 
@@ -76,7 +76,7 @@ class ForgotPassword extends BaseAuthResolver
         //$cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
 
         $user=User::where('mobile',$args['country_code'].$args['mobile'])
-        ->where('status',Status::Active)
+        ->where('status',UserStatus::Active)
         ->where('sent_code',operator: $args['code'])        
         ->where('mobile_is_verified',true)->first();
 

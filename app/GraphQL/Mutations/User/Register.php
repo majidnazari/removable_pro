@@ -14,7 +14,7 @@ use App\Models\User;
 use App\Traits\AuthUserTrait;
 use App\Events\UserRegistered;
 
-use App\GraphQL\Enums\Status;
+use App\GraphQL\Enums\UserStatus;
 
 use DB;
 use Log;
@@ -97,7 +97,7 @@ class Register extends BaseAuthResolver
     {
 
         $user=User::where('id',$args['user_id'])
-        ->where('status',Status::New)
+        ->where('status',UserStatus::New)
         ->whereNull('password')
         ->first();
         if(!$user)
@@ -110,7 +110,7 @@ class Register extends BaseAuthResolver
         //$pureMobileNumber = substr($user->mobile, $countryCodeLength); // remove country code prefix
 
         $user->password=Hash::make($args['password']);
-        $user->status=Status::Active;
+        $user->status=UserStatus::Active;
         $user->save();
         
         $credentials = $this->buildCredentials([
