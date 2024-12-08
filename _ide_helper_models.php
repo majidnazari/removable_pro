@@ -22,7 +22,6 @@ namespace App\Models{
  * @property int|null $country_id
  * @property int|null $province_id
  * @property int|null $city_id
- * @property int|null $area_id
  * @property string|null $location_title
  * @property string|null $street_name
  * @property int|null $builder_no
@@ -49,7 +48,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withoutTrashed()
  * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereBuilderNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereCityId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereCountryId($value)

@@ -16,7 +16,7 @@ use Eloquent;
  * @property int|null $country_id
  * @property int|null $province_id
  * @property int|null $city_id
- * @property int|null $area_id
+ 
  * @property string|null $location_title
  * @property string|null $street_name
  * @property int|null $builder_no
@@ -54,7 +54,6 @@ class Address extends Eloquent
         'country_id',
         'province_id',
         'city_id',
-        'area_id',
         'location_title',
         'street_name',
         'builder_no',
@@ -79,7 +78,6 @@ class Address extends Eloquent
     public const COLUMN_CREATOR_ID = 'creator_id';
     public const COLUMN_EDITOR_ID = 'editor_id';
     public const COLUMN_PERSON_ID = 'person_id';
-    public const COLUMN_AREA_ID = 'area_id';
     public const COLUMN_CITY_ID = 'city_id';
     public const COLUMN_PROVINCE_ID = 'province_id';
     public const COLUMN_COUNTRY_ID = 'country_id';
@@ -100,10 +98,7 @@ class Address extends Eloquent
         return $this->belongsTo(Person::class, self::COLUMN_PERSON_ID);
     }
 
-    public function Area()
-    {
-        return $this->belongsTo(Area::class, self::COLUMN_AREA_ID);
-    }
+    
     public function City()
     {
         return $this->belongsTo(City::class, self::COLUMN_CITY_ID);

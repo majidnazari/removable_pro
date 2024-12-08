@@ -17,22 +17,22 @@ class AreaSeeder extends Seeder
         //
         $data = [
             [
-                "city_id" => 2,
+                "city_id" => 1,
                 "title" => "ناحیه ۱",               
                 'created_at' => now(),
             ],
             [
-                "city_id" => 2,
+                "city_id" => 1,
                 "title" => "ناحیه ۲",               
                 'created_at' => now(),
             ],
             [
-                "city_id" => 2,
+                "city_id" => 1,
                 "title" => "ناحیه ۳",               
                 'created_at' => now(),
             ],
             [
-                "city_id" => 2,
+                "city_id" => 1,
                 "title" => "ناحیه ۴",               
                 'created_at' => now(),
             ],

@@ -20,6 +20,8 @@ final class GetPerson
     use AuthUserTrait;
     use AuthorizesUser;
     use FindOwnerTrait;
+    private $rootAncestors = [];
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -124,11 +126,18 @@ final class GetPerson
                 //Log::warning("No valid owner found for user_id: $user_id.");
                 return null;
             }
+        
 
+            [$mineAncestry,$this->rootAncestors] = $minePerson->getFullBinaryAncestry($depth);
+
+            // Get the heads for the user ancestry
+           
+            Log::info("the all heades are:" . json_encode( $this->rootAncestors));
             // Fetch and return only the user's own ancestry tree
             return [
-                'mine' => $minePerson->getFullBinaryAncestry($depth),
+                'mine' => $mineAncestry,
                 'related_node' => null,
+                'heads' => $this->rootAncestors
             ];
         }
 
@@ -158,8 +167,8 @@ final class GetPerson
         }
 
         // Fetch the ancestry tree for both "mine" and "related_node"
-        $mineAncestry = $minePerson->getFullBinaryAncestry($depth);
-        $relatedAncestry = $relatedPerson->getFullBinaryAncestry($depth);
+        [$mineAncestry,$this->rootAncestors] = $minePerson->getFullBinaryAncestry($depth);
+        [$relatedAncestry,$this->rootAncestors] = $relatedPerson->getFullBinaryAncestry($depth);
 
         // Log the ancestry trees
         //Log::info("Mine ancestry tree: " . json_encode($mineAncestry));
@@ -169,6 +178,7 @@ final class GetPerson
         return [
             'mine' => $mineAncestry,
             'related_node' => $relatedAncestry,
+            'heads' => $this->rootAncestors
         ];
     }
 
@@ -192,7 +202,7 @@ final class GetPerson
             return null;
         }
 
-        $mineAncestry = $minePerson->getFullBinaryAncestry($depth);
+        [$mineAncestry,$this->rootAncestors] = $minePerson->getFullBinaryAncestry($depth);
         $relatedNodes = [];
 
         foreach ($relations as $relation) {
@@ -204,7 +214,7 @@ final class GetPerson
             // Fetch the related person's ancestry
             $relatedPerson = $this->findOwner($relatedUserId);
             if ($relatedPerson) {
-                $relatedNodes[] = $relatedPerson->getFullBinaryAncestry($depth);
+                [$relatedNodes[],$this->rootAncestors] = $relatedPerson->getFullBinaryAncestry($depth);
             }
         }
 
@@ -212,6 +222,7 @@ final class GetPerson
         return [
             'mine' => $mineAncestry,
             'related_nodes' => $relatedNodes,
+            'heads' => $this->rootAncestors
         ];
     }
 

@@ -10,7 +10,6 @@ getAddress(id: ID!): Address @guard(with:["api"]) @field(resolver: "App\\GraphQL
         country_id: Int,
         province_id: Int,
         city_id: Int,
-        area_id: Int,
 
         location_title: String,
         street_name: String,

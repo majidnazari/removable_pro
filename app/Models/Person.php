@@ -70,6 +70,7 @@ class Person extends Eloquent
     ];
     use HasFactory;
     use SoftDeletes;
+    private $rootAncestors = [];
 
     public const TABLE_NAME = 'people';
     protected $table = self::TABLE_NAME;
@@ -86,7 +87,7 @@ class Person extends Eloquent
     public const COLUMN_WOMAN_ID = 'woman_id';
     public const COLUMN_PERSONCHILD = 'PersonChild';
     public const COLUMN_SCORE_ID = 'score_id';
-    
+
 
 
     public function Creator()
@@ -239,7 +240,28 @@ class Person extends Eloquent
     public function getFullBinaryAncestry($depth = 3)
     {
         //Log::info("Starting ancestry crawl for Person ID: " . $this->id . " with depth: " . $depth);
-        return $this->crawlAncestors($this, $depth);
+        // return $this->crawlAncestors($this, $depth);
+
+        $result = $this->crawlAncestors($this, $depth);
+
+        // Map $this->rootAncestors to extract only id, first_name, and last_name
+        // $heads = array_map(function ($ancestor) {
+        //     return [
+        //         'id' => $ancestor['person_id'],
+        //         'first_name' => $ancestor['first_name'],
+        //         'last_name' => $ancestor['last_name']
+        //     ];
+        // }, $this->rootAncestors);
+
+         // Add 'order' field to each ancestor in $this->rootAncestors
+        foreach ($this->rootAncestors as $index => &$ancestor) {
+            $ancestor['order'] = $index + 1; // Add order starting from 1
+        }
+
+        // Log the simplified heads array
+        Log::info("All top-level ancestors: " . json_encode($this->rootAncestors));
+
+        return [$result,$this->rootAncestors];
     }
 
     private function crawlAncestors($person, $depth)
@@ -258,14 +280,19 @@ class Person extends Eloquent
 
         if (!$parentMarriage) {
             //Log::info("No parent marriage found; Person ID: " . $person->id . " is likely a root ancestor.");
-            return [
+            $rootAncestor = [
                 'person_id' => $person->id,
                 'first_name' => $person->first_name,
                 'last_name' => $person->last_name,
                 'father' => null,
                 'mother' => null,
-              
             ];
+
+            // Add this ancestor to the rootAncestors array
+            $this->rootAncestors[] = $rootAncestor;
+
+            return $rootAncestor;
+
         }
 
         // Identify the father and mother from the parent marriage
@@ -277,6 +304,7 @@ class Person extends Eloquent
         // Recursive calls for both father and mother, reducing the depth for each level
         $fatherAncestry = $father ? $this->crawlAncestors($father, $depth - 1) : null;
         $motherAncestry = $mother ? $this->crawlAncestors($mother, $depth - 1) : null;
+
 
         // Build and return the binary ancestry tree for the current person
         return [
@@ -292,7 +320,8 @@ class Person extends Eloquent
                 'id' => $mother ? $mother->id : null,
                 'name' => $mother ? $mother->first_name . ' ' . $mother->last_name : null,
                 'ancestry' => $motherAncestry  // This continues the recursion on the maternal line
-            ]
+            ],
+            //'heade' => $this->rootAncestors
         ];
     }
 
@@ -300,7 +329,7 @@ class Person extends Eloquent
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 

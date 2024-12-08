@@ -82,9 +82,18 @@ type AncestryNode {
 type AncestryTree {
     mine: AncestryTreeNode
     related_node: AncestryTreeNode
+    heads: [Head]
 }
 
 type AncestryTrees {
     mine: AncestryTreeNode
     related_nodes: [AncestryTreeNode]
+    heads: [Head]
+}
+
+type Head {
+  person_id: ID
+  order: Int
+  first_name: String
+  last_name: String
 }
