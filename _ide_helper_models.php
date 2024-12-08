@@ -22,7 +22,6 @@ namespace App\Models{
  * @property int|null $country_id
  * @property int|null $province_id
  * @property int|null $city_id
- * @property int|null $area_id
  * @property string|null $location_title
  * @property string|null $street_name
  * @property int|null $builder_no

@@ -202,7 +202,7 @@ final class GetPerson
             return null;
         }
 
-        $mineAncestry = $minePerson->getFullBinaryAncestry($depth);
+        [$mineAncestry,$this->rootAncestors] = $minePerson->getFullBinaryAncestry($depth);
         $relatedNodes = [];
 
         foreach ($relations as $relation) {
@@ -214,7 +214,7 @@ final class GetPerson
             // Fetch the related person's ancestry
             $relatedPerson = $this->findOwner($relatedUserId);
             if ($relatedPerson) {
-                $relatedNodes[] = $relatedPerson->getFullBinaryAncestry($depth);
+                [$relatedNodes[],$this->rootAncestors] = $relatedPerson->getFullBinaryAncestry($depth);
             }
         }
 
@@ -222,6 +222,7 @@ final class GetPerson
         return [
             'mine' => $mineAncestry,
             'related_nodes' => $relatedNodes,
+            'heads' => $this->rootAncestors
         ];
     }
 

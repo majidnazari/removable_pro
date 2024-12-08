@@ -253,6 +253,11 @@ class Person extends Eloquent
         //     ];
         // }, $this->rootAncestors);
 
+         // Add 'order' field to each ancestor in $this->rootAncestors
+        foreach ($this->rootAncestors as $index => &$ancestor) {
+            $ancestor['order'] = $index + 1; // Add order starting from 1
+        }
+
         // Log the simplified heads array
         Log::info("All top-level ancestors: " . json_encode($this->rootAncestors));
 

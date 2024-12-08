@@ -93,6 +93,7 @@ type AncestryTrees {
 
 type Head {
   person_id: ID
+  order: Int
   first_name: String
   last_name: String
 }

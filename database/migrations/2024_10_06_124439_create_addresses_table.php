@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('country_id')->nullable(); // foreign key
             $table->unsignedBigInteger('province_id')->nullable(); // foreign key
             $table->unsignedBigInteger('city_id')->nullable(); // foreign key
-            $table->unsignedBigInteger('area_id')->nullable(); // foreign key
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
@@ -27,7 +26,6 @@ return new class extends Migration
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
-            $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
 
 
             $table->string('location_title')->nullable(); 

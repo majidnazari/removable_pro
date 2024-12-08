@@ -12,7 +12,6 @@ type Address {
     province: Province
     city_id: ID
     City:City
-    area_id: ID
     Area: Area
     location_title: String
     street_name: String
@@ -32,7 +31,6 @@ input CreateAddressInput {
     country_id: ID!
     province_id: ID
     city_id: ID
-    area_id: ID
     location_title: String
     street_name: String
     builder_no: String
@@ -50,7 +48,6 @@ input UpdateAddressInput {
     country_id: ID
     province_id: ID
     city_id: ID
-    area_id: ID
     location_title: String
     street_name: String
     builder_no: String
