@@ -98,9 +98,7 @@ class Address extends Eloquent
         return $this->belongsTo(Person::class, self::COLUMN_PERSON_ID);
     }
 
-    public function Area()
-    {
-    }
+    
     public function City()
     {
         return $this->belongsTo(City::class, self::COLUMN_CITY_ID);

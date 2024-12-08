@@ -48,7 +48,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address withoutTrashed()
  * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereBuilderNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereCityId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Address whereCountryId($value)
