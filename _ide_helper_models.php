@@ -113,7 +113,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Province $Area
  * @property-read \App\Models\Province $Province
  * @method static \Database\Factories\CityFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City newModelQuery()
@@ -433,11 +432,20 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif query()
  * @mixin \Eloquent
- * @property-read \App\Models\User|null $Creator
- * @property-read \App\Models\User|null $RelatedUser
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\User $Creator
+ * @property-read \App\Models\User $RelatedUser
  * @method static \Database\Factories\NotifFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif notRead()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereNotifStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif withoutTrashed()
  */
@@ -857,6 +865,25 @@ namespace App\Models{
  * @property int $merge_status_receiver  1=Active 2=Refused 3=Suspend
  * @property int $status  1=Active 2=Inactive 3=Suspend 4=Complete
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeIdsReceiver($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeIdsSender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeSenderExpiredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeStatusReceiver($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereMergeStatusSender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereNodeReceiverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereNodeSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestSenderExpiredAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestStatusReceiver($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereRequestStatusSender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereUserReceiverId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest whereUserSenderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserMergeRequest withoutTrashed()
  */

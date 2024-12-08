@@ -81,7 +81,7 @@ class Person extends Eloquent
 
     public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
     public const COLUMN_CHILD_ID = 'child_id';
-    public const COLUMN_ADDRESS_ID = 'Addrss_id';
+    public const COLUMN_ADDRESS_ID = 'address_id';
     public const COLUMN_PERSON_ID = 'person_id';
     public const COLUMN_MAN_ID = 'man_id';
     public const COLUMN_WOMAN_ID = 'woman_id';
@@ -109,7 +109,7 @@ class Person extends Eloquent
 
     public function Addresses()
     {
-        return $this->hasMany(Address::class, self::COLUMN_ADDRESS_ID);
+        return $this->hasMany(Address::class, self::COLUMN_PERSON_ID);
     }
 
     public function Memories()

@@ -38,7 +38,6 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             ProvinceSeeder::class,
             CitySeeder::class,
-            AreaSeeder::class,
             AddressSeeder::class,
             FamilyBoardSeeder::class,
             // NaslanRelationshipSeeder::class,

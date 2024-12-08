@@ -17,7 +17,6 @@ use Eloquent;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Province $Area
  * @property-read \App\Models\Province $Province
  * @method static \Database\Factories\CityFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|City newModelQuery()
@@ -52,10 +51,7 @@ class City extends Eloquent
     {
         return $this->belongsTo(Province::class, self::COLUMN_PROVINCE_ID);
     }
-    // public function Area()
-    // {
-    //     return $this->belongsTo(Province::class, 'province_id');
-    // }
+   
 
     public static function getAuthorizationColumns()
     {
