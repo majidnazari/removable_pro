@@ -168,7 +168,7 @@ final class GetPerson
 
         // Fetch the ancestry tree for both "mine" and "related_node"
         [$mineAncestry,$this->rootAncestors] = $minePerson->getFullBinaryAncestry($depth);
-        [$relatedAncestry,$this->rootAncestors] = $relatedPerson->getFullBinaryAncestry($depth);
+        [$relatedAncestry,$this->rootAncestors] = $relatedPerson->getFullBinaryAncestry($depth); 
 
         // Log the ancestry trees
         //Log::info("Mine ancestry tree: " . json_encode($mineAncestry));
@@ -214,7 +214,7 @@ final class GetPerson
             // Fetch the related person's ancestry
             $relatedPerson = $this->findOwner($relatedUserId);
             if ($relatedPerson) {
-                [$relatedNodes[],$this->rootAncestors] = $relatedPerson->getFullBinaryAncestry($depth);
+                [$relatedNodes[]] = $relatedPerson->getFullBinaryAncestry($depth);
             }
         }
 
