@@ -104,14 +104,14 @@ class Address extends Eloquent
         return $this->belongsTo(City::class, self::COLUMN_CITY_ID);
     }
 
-    public function Province()
-    {
-        return $this->belongsTo(Province::class, self::COLUMN_PROVINCE_ID);
-    }
-    public function Country()
-    {
-        return $this->belongsTo(Country::class, self::COLUMN_COUNTRY_ID);
-    }
+    // public function Province()
+    // {
+    //     return $this->belongsTo(Province::class, self::COLUMN_PROVINCE_ID);
+    // }
+    // public function Country()
+    // {
+    //     return $this->belongsTo(Country::class, self::COLUMN_COUNTRY_ID);
+    // }
 
     public static function getAuthorizationColumns()
     {

@@ -10,7 +10,6 @@
       #import Types/Country/type.graphql
       #import Types/Province/type.graphql
       #import Types/City/type.graphql
-      #import Types/Area/type.graphql
       #import Types/Address/type.graphql
       #import Types/CategoryContent/type.graphql
       #import Types/Event/type.graphql
@@ -35,7 +34,6 @@
         #import Queries/Country/Country.graphql
         #import Queries/Province/Province.graphql
         #import Queries/City/City.graphql
-        #import Queries/Area/Area.graphql
         #import Queries/Address/Address.graphql
         #import Queries/CategoryContent/CategoryContent.graphql
         #import Queries/Event/Event.graphql
@@ -61,7 +59,6 @@
       #import Mutations/Country/Country.graphql
       #import Mutations/Province/Province.graphql
       #import Mutations/City/City.graphql
-      #import Mutations/Area/Area.graphql
       #import Mutations/Address/Address.graphql
       #import Mutations/CategoryContent/CategoryContent.graphql
       #import Mutations/Event/Event.graphql
