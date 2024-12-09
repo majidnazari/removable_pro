@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Person;
+use App\Models\Memory;
 use App\Models\PersonMarriage;
 use App\Models\PersonChild;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,10 @@ trait PersonMergeTrait
 
             $this->mergeMarriages($primaryPersonId, $secondaryPersonId, $authId);
             $this->mergeChildren($primaryPersonId, $secondaryPersonId, $authId);
+
+            // Update references in other tables
+            $this->updateMemoryReferences($secondaryPersonId, $primaryPersonId);
+
 
             // Mark secondary person as deleted
             $secondaryPerson->editor_id = $authId;
@@ -105,6 +110,19 @@ trait PersonMergeTrait
                 $child->person_marriage_id = $child->person_marriage_id == $secondaryPersonId ? $primaryPersonId : $child->person_marriage_id;
                 $child->editor_id = $authId;
                 $child->save();
+            }
+        });
+    }
+
+
+    // Update Memory references
+    private function updateMemoryReferences($oldPersonId, $newPersonId)
+    {
+        Memory::where('person_id', $oldPersonId)->chunk(100, function ($events) use ($newPersonId) {
+            foreach ($events as $event) {
+                // You update the record, but you still need to call `save()` to persist the change
+                $event->person_id = $newPersonId;
+                $event->save(); // Save after updating the record
             }
         });
     }

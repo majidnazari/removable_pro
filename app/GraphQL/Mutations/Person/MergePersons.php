@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations\Person;
 
 use App\Models\Person;
+use App\Models\Memory;
 use App\Models\PersonMarriage;
 use App\Models\PersonChild;
 use GraphQL\Error\Error;
@@ -21,7 +22,7 @@ final class MergePersons
 
     public function resolvemerge($rootValue, array $args)
     {
-        
+
         $this->userId = $this->getUserId();
 
 
@@ -33,8 +34,9 @@ final class MergePersons
         DB::beginTransaction();
 
         try {
-            $primaryPerson = Person::where('id',$primaryPersonId)->where('status',Status::Active)->first();
-            $secondaryPerson = Person::where('id',$secondaryPersonId)->where('status',Status::Active)->first();;
+            $primaryPerson = Person::where('id', $primaryPersonId)->where('status', Status::Active)->first();
+            $secondaryPerson = Person::where('id', $secondaryPersonId)->where('status', Status::Active)->first();
+            ;
 
             if (!$primaryPerson || !$secondaryPerson) {
                 throw new Error("One or both persons do not exist.");
@@ -46,6 +48,9 @@ final class MergePersons
 
             $this->mergeMarriages($primaryPersonId, $secondaryPersonId, auth_id: $this->userId);
             $this->mergeChildren($primaryPersonId, $secondaryPersonId, auth_id: $this->userId);
+
+            // Update references in other tables
+            $this->updateMemoryReferences($secondaryPersonId, $primaryPersonId);
 
             $secondaryPerson->editor_id = $this->userId;
             $secondaryPerson->save();
@@ -83,18 +88,18 @@ final class MergePersons
 
             if ($existingMarriage) {
                 PersonChild::where('person_marriage_id', $marriage->id)
-                    ->update(['person_marriage_id' => $existingMarriage->id,'editor_id' =>$auth_id ]);
+                    ->update(['person_marriage_id' => $existingMarriage->id, 'editor_id' => $auth_id]);
                 //$marriage->editor_id = $auth_id;  // Set the editor ID
                 $marriage->save();
                 $marriage->delete();
-       //Log::info("existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+                //Log::info("existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
 
             } else {
                 $marriage->man_id = $marriage->man_id == $secondaryPersonId ? $primaryPersonId : $marriage->man_id;
                 $marriage->woman_id = $marriage->woman_id == $secondaryPersonId ? $primaryPersonId : $marriage->woman_id;
                 $marriage->editor_id = $auth_id;  // Set the editor ID
                 $marriage->save();
-        //Log::info("else of existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+                //Log::info("else of existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
 
             }
         });
@@ -114,7 +119,7 @@ final class MergePersons
                 $child->editor_id = $auth_id;  // Set the editor ID
                 $child->save();
                 $child->delete();
-        //Log::info("existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+                //Log::info("existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
 
             } else {
                 $child->child_id = $child->child_id == $secondaryPersonId ? $primaryPersonId : $child->child_id;
@@ -122,12 +127,24 @@ final class MergePersons
                 $child->editor_id = $auth_id;  // Set the editor ID
                 $child->save();
 
-        //Log::info("not existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+                //Log::info("not existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
 
             }
         });
     }
 
+
+    // Update Memory references
+    private function updateMemoryReferences($oldPersonId, $newPersonId)
+    {
+        Memory::where('person_id', $oldPersonId)->chunk(100, function ($events) use ($newPersonId) {
+            foreach ($events as $event) {
+                // You update the record, but you still need to call `save()` to persist the change
+                $event->person_id = $newPersonId;
+                $event->save(); // Save after updating the record
+            }
+        });
+    }
     // private function cleanupDuplicates()
     // {
     //     // Step 1: Clean up duplicate marriages across the entire PersonMarriage table
