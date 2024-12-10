@@ -20,6 +20,7 @@ final class MergePersons
     use AuthUserTrait;
     protected $userId;
 
+
     public function resolvemerge($rootValue, array $args)
     {
 
@@ -31,12 +32,28 @@ final class MergePersons
         $primaryPersonId = min($args['primaryPersonId'], $args['secondaryPersonId']);
         $secondaryPersonId = max($args['primaryPersonId'], $args['secondaryPersonId']);
 
+        Log::info("mergePersonsByIds:" . $primaryPersonId . " - " . $secondaryPersonId . " - " . $this->userId);
+
+
+        Log::info("the primaryPersonId is:" . $primaryPersonId);
+        Log::info("the secondaryPersonId is:" . $secondaryPersonId);
+        Log::info("the authId is:" . $this->userId);
+
         DB::beginTransaction();
 
         try {
             $primaryPerson = Person::where('id', $primaryPersonId)->where('status', Status::Active)->first();
             $secondaryPerson = Person::where('id', $secondaryPersonId)->where('status', Status::Active)->first();
-            ;
+
+
+            if ($secondaryPerson->is_owner && !$primaryPerson->is_owner) {
+                Log::info("Switching primary and secondary as secondaryPerson is the owner.");
+                [$primaryPerson, $secondaryPerson] = [$secondaryPerson, $primaryPerson];
+                [$primaryPersonId, $secondaryPersonId] = [$primaryPerson->id, $secondaryPerson->id];
+            }
+
+            // Log::info("Switching:" . $primaryPersonId . " - " . $secondaryPersonId);
+
 
             if (!$primaryPerson || !$secondaryPerson) {
                 throw new Error("One or both persons do not exist.");
@@ -46,8 +63,8 @@ final class MergePersons
                 throw new Error("Persons cannot be merged because they have different genders.");
             }
 
-            $this->mergeMarriages($primaryPersonId, $secondaryPersonId, auth_id: $this->userId);
-            $this->mergeChildren($primaryPersonId, $secondaryPersonId, auth_id: $this->userId);
+            $this->mergeMarriages($primaryPerson, $secondaryPerson, auth_id: $this->userId);
+            //$this->mergeChildren($primaryPerson, $secondaryPerson, auth_id: $this->userId);
 
             // Update references in other tables
             $this->updateMemoryReferences($secondaryPersonId, $primaryPersonId);
@@ -67,70 +84,125 @@ final class MergePersons
         return $primaryPerson;
     }
 
-    private function mergeMarriages($primaryPersonId, $secondaryPersonId, $auth_id)
+    private function mergeMarriages($primaryPerson, $secondaryPerson, $auth_id)
     {
+        // Get the gender of the primary person to determine whether to check man_id or woman_id
+        //$primaryPerson = Person::find($primaryPersonId);
+        if (!$primaryPerson) {
+            Log::error("Primary person not found: " . $primaryPerson);
+            return;
+        }
 
-        //Log::info("merge of marriage is running and the params are:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
-        PersonMarriage::where(function ($query) use ($primaryPersonId, $secondaryPersonId) {
-            $query->where('man_id', $secondaryPersonId)
-                ->orWhere('woman_id', $secondaryPersonId);
-        })->each(function ($marriage) use ($primaryPersonId, $secondaryPersonId, $auth_id) {
+        // Determine whether to check man_id or woman_id based on gender
+        $primaryIsMan = ($primaryPerson->gender == 1); // 1 for man, 0 for woman
+        $secondaryGenderField = $primaryGenderField = $primaryIsMan ? 'man_id' : 'woman_id';
 
-            $existingMarriage = PersonMarriage::where(function ($query) use ($primaryPersonId, $marriage) {
-                $query->where(function ($q) use ($primaryPersonId, $marriage) {
-                    $q->where('man_id', $primaryPersonId)
-                        ->where('woman_id', $marriage->woman_id);
-                })->orWhere(function ($q) use ($primaryPersonId, $marriage) {
-                    $q->where('man_id', $marriage->man_id)
-                        ->where('woman_id', $primaryPersonId);
-                });
-            })->first();
+        Log::info("gender {$primaryPerson->gender} is for id {$primaryPerson->id} ");
 
-            if ($existingMarriage) {
-                PersonChild::where('person_marriage_id', $marriage->id)
-                    ->update(['person_marriage_id' => $existingMarriage->id, 'editor_id' => $auth_id]);
-                //$marriage->editor_id = $auth_id;  // Set the editor ID
-                $marriage->save();
-                $marriage->delete();
-                //Log::info("existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+        // Find all marriages where the secondary person is involved (either as man or woman)
+        $query = PersonMarriage::where(function ($query) use ($secondaryPerson, $secondaryGenderField) {
+            $query->where($secondaryGenderField, $secondaryPerson->id);
+        });
 
-            } else {
-                $marriage->man_id = $marriage->man_id == $secondaryPersonId ? $primaryPersonId : $marriage->man_id;
-                $marriage->woman_id = $marriage->woman_id == $secondaryPersonId ? $primaryPersonId : $marriage->woman_id;
-                $marriage->editor_id = $auth_id;  // Set the editor ID
-                $marriage->save();
-                //Log::info("else of existingMarriage:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
+        // Log the SQL query
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        $fullSql = vsprintf(str_replace('?', '%s', $sql), $bindings);
+        Log::info("mergeMarriages query: " . $fullSql);
 
+        // Iterate through each marriage involving the secondary person
+        $query->each(function ($marriage) use ($primaryPerson, $secondaryPerson, $auth_id, $primaryGenderField, $secondaryGenderField) {
+            // Update the marriage with the primary person's ID
+            $marriage->{$primaryGenderField} = $primaryPerson->id;  // Update the man_id or woman_id
+            //$marriage->{$secondaryGenderField} = $primaryPersonId->id;  // Update the other side of the marriage
+
+            // Update the marriage and save
+            $marriage->editor_id = $auth_id;
+            $marriage->save();
+            Log::info("Updated marriage for primary person ID " . $primaryPerson->id);//. " and secondary person ID " . $secondaryPerson->id);
+        });
+
+        // Find and update all children of the secondary person
+        $childrenQuery = PersonChild::where('child_id', $secondaryPerson->id);
+
+        // Log the SQL query for the PersonChild lookup
+        $sqlChildren = $childrenQuery->toSql();
+        $bindingsChildren = $childrenQuery->getBindings();
+        $fullSqlChildren = vsprintf(str_replace('?', '%s', $sqlChildren), $bindingsChildren);
+        Log::info("mergeChildren query: " . $fullSqlChildren);
+
+        // Iterate through each child and update the child_id to the primary person
+        $childrenQuery->each(function ($child) use ($primaryPerson, $secondaryPerson, $auth_id) {
+            // Log the child before any update
+            Log::info("Updating child with ID: " . $child->id);
+
+            // Update the child reference to primaryPersonId
+            if ($child->child_id == $secondaryPerson->id) {
+                $child->child_id = $primaryPerson->id;
+                $child->editor_id = $auth_id;
+                $child->save();
+
+                Log::info("Updated child to reflect merge: " . json_encode($child));
             }
         });
+
+        // Delete the secondary person
+        // After all the references are updated, delete the secondary person
+        $secondaryPerson = Person::find($secondaryPerson->id);
+        if ($secondaryPerson) {
+            // Ensure the secondary person exists before attempting to delete
+            Log::info("Deleting secondary person with ID: " . $secondaryPerson->id);
+            $secondaryPerson->delete();  // Delete the secondary person
+            Log::info("Successfully deleted secondary person: " . $secondaryPerson->id);
+        } else {
+            // If no secondary person is found by ID, log the error
+            Log::error("No secondary person found to delete with ID: " . $secondaryPerson->id);
+        }
     }
 
-    private function mergeChildren($primaryPersonId, $secondaryPersonId, $auth_id)
+
+    private function mergeChildren($primaryPerson, $secondaryPerson, $auth_id)
     {
-        PersonChild::where(function ($query) use ($secondaryPersonId) {
-            $query->where('child_id', $secondaryPersonId)
-                ->orWhere('person_marriage_id', $secondaryPersonId);
-        })->each(function ($child) use ($primaryPersonId, $secondaryPersonId, $auth_id) {
-            $existingChild = PersonChild::where('child_id', $primaryPersonId)
-                ->where('person_marriage_id', $child->person_marriage_id)
-                ->first();
+        // Get the primary and secondary person to check if they exist
+        //$primaryPerson = Person::find($primaryPersonId);
+        //$secondaryPerson = Person::find($secondaryPersonId);
 
-            if ($existingChild) {
-                $child->editor_id = $auth_id;  // Set the editor ID
+        if (!$primaryPerson || !$secondaryPerson) {
+            Log::error("Primary or Secondary person not found.");
+            return;
+        }
+
+
+        // Query for all PersonChild records where child_id = secondaryPersonId
+        $query = PersonChild::where('child_id', $secondaryPerson->id);
+
+        // Log the SQL query for the PersonChild lookup
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+        $fullSql = vsprintf(str_replace('?', '%s', $sql), $bindings);
+        Log::info("mergeChildren query: " . $fullSql);
+
+        // Iterate through each PersonChild record and update accordingly
+        $query->each(function ($child) use ($primaryPerson, $secondaryPerson, $auth_id) {
+            // Log the child before any update
+            Log::info("Updating child with ID: " . $child->id);
+
+            // Update all references where child_id = secondaryPersonId to primaryPersonId
+            if ($child->child_id == $secondaryPerson->id) {
+                // Update child_id to primaryPersonId
+                $child->child_id = $primaryPerson->id;
+                // Update person_marriage_id to reflect the correct marriage
+                //$child->person_marriage_id = $personMarriage->id;
+                $child->editor_id = $auth_id;
                 $child->save();
-                $child->delete();
-                //Log::info("existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
 
-            } else {
-                $child->child_id = $child->child_id == $secondaryPersonId ? $primaryPersonId : $child->child_id;
-                $child->person_marriage_id = $child->person_marriage_id == $secondaryPersonId ? $primaryPersonId : $child->person_marriage_id;
-                $child->editor_id = $auth_id;  // Set the editor ID
-                $child->save();
-
-                //Log::info("not existingChild:" .$primaryPersonId . " - " . $secondaryPersonId . " - ".  $auth_id);
-
+                Log::info("Updated child to reflect merge: " . json_encode($child));
             }
         });
+
+        // After all the references are updated, delete the secondary person (secondaryPersonId)
+        $secondaryPerson->delete();
+        Log::info("Deleted secondary person: " . $secondaryPerson->id);
     }
 
 
@@ -145,26 +217,6 @@ final class MergePersons
             }
         });
     }
-    // private function cleanupDuplicates()
-    // {
-    //     // Step 1: Clean up duplicate marriages across the entire PersonMarriage table
-    //     PersonMarriage::all()->groupBy(function ($marriage) {
-    //         // Group by unique man-woman pairs to detect duplicates
-    //         return $marriage->man_id . '-' . $marriage->woman_id;
-    //     })->each(function ($duplicates) {
-    //         $duplicates->shift(); // Keep the first record in each group
-    //         $duplicates->each->delete(); // Delete the rest in each group
-    //     });
-
-    //     // Step 2: Clean up duplicate children relationships across the entire PersonChild table
-    //     PersonChild::all()->groupBy(function ($child) {
-    //         // Group by unique child and person_marriage_id to detect duplicates
-    //         return $child->child_id . '-' . $child->person_marriage_id;
-    //     })->each(function ($duplicates) {
-    //         $duplicates->shift(); // Keep the first record in each group
-    //         $duplicates->each->delete(); // Delete the rest in each group
-    //     });
-    // }
 
     private function cleanupDuplicates($auth_id)
     {
@@ -172,25 +224,50 @@ final class MergePersons
         PersonMarriage::all()->groupBy(function ($marriage) {
             return $marriage->man_id . '-' . $marriage->woman_id;
         })->each(function ($duplicates) use ($auth_id) {
-            $duplicates->shift(); // Keep the first record in each group
-            $duplicates->each(function ($marriage) use ($auth_id) {
+            // Keep the first record in each group and remove the rest
+            $firstMarriage = $duplicates->shift(); // Keep the first record
+            //Log::info("Keeping marriage: " . json_encode($firstMarriage));
+    
+            $duplicates->each(function ($marriage) use ($auth_id, $firstMarriage) {
+                // Log the marriage being deleted
+                Log::info("Removing duplicate marriage: " . json_encode($marriage));
+    
+                // Update the corresponding PersonChild entries before deleting the duplicate marriage
+                $updatedCount = PersonChild::where('person_marriage_id', $marriage->id)
+                    ->update(['person_marriage_id' => $firstMarriage->id, 'editor_id' => $auth_id]);
+    
+                // Log the update
+                Log::info("Updated " . $updatedCount . " child(ren) to new person_marriage_id: " . $firstMarriage->id);
+    
+                // Mark the duplicate marriage as deleted
                 $marriage->editor_id = $auth_id;
                 $marriage->save();
-                $marriage->delete(); // Delete the rest in each group
+                $marriage->delete(); // Delete the duplicate marriage
+                Log::info("Deleted duplicate marriage: " . json_encode($marriage));
             });
         });
-
+    
         // Clean up duplicate children relationships across the entire PersonChild table
         PersonChild::all()->groupBy(function ($child) {
             return $child->child_id . '-' . $child->person_marriage_id;
         })->each(function ($duplicates) use ($auth_id) {
-            $duplicates->shift(); // Keep the first record in each group
+            // Keep the first record in each group and remove the rest
+            $firstChild = $duplicates->shift(); // Keep the first record
+            //Log::info("Keeping child: " . json_encode($firstChild));
+    
             $duplicates->each(function ($child) use ($auth_id) {
+                // Log the child being deleted
+                Log::info("Removing duplicate child: " . json_encode($child));
+    
+                // Delete the duplicate child record
                 $child->editor_id = $auth_id;
                 $child->save();
-                $child->delete(); // Delete the rest in each group
+                $child->delete(); // Delete the duplicate child
+                Log::info("Deleted duplicate child: " . json_encode($child));
             });
         });
     }
+    
+
 
 }
