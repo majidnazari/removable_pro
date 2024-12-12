@@ -7,14 +7,14 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
 
 final class DeleteAddress
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -28,7 +28,7 @@ final class DeleteAddress
     {  
        
         $this->userId = $this->getUserId();     
-        $this->checkMutationAuthorization(Address::class, AuthAction::Delete, $args);
+        $this->userAccessibility(Address::class, AuthAction::Delete, $args);
 
         $AddressResult=Address::find($args['id']);
         

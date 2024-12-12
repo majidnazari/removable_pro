@@ -7,14 +7,14 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
 
 final class UpdateFamilyEvent
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
     protected $userId;
 
     /**
@@ -28,7 +28,7 @@ final class UpdateFamilyEvent
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
-        $this->checkMutationAuthorization(FamilyEvent::class, AuthAction::Delete, $args);
+       $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
 
         //args["user_id_creator"]=$user_id;
         $FamilyEventResult=FamilyEvent::find($args['id']);

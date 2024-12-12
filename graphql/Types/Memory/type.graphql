@@ -7,7 +7,7 @@ type Memory {
     editor_id: ID
     person_id: ID!
     category_content_id:ID!
-    group_view_id:ID!
+    group_category_id:ID!
     content: String
     title: String   
     description: String
@@ -21,25 +21,25 @@ type Memory {
     # Person: Person
 }
 
-input CreateMemoryInput {
+input CreateMemoryInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
 
     person_id: ID!
     category_content_id:ID!
-    group_view_id:ID!
+    group_category_id:ID!
     
-    content: Upload
+    # content: Upload
     title: String   
     description: String
     is_shown_after_death: Boolean
    # status: Status  
 }
 
-input UpdateMemoryInput {
+input UpdateMemoryInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
 
     person_id: ID!
     category_content_id:ID!
-    group_view_id:ID!
-    content: Upload
+    group_category_id:ID!
+    # content: Upload
     title: String   
     description: String
     is_shown_after_death: Boolean

@@ -11,7 +11,7 @@ use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 use Log;
@@ -20,7 +20,7 @@ use Log;
 final class UpdatePersonDetails
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
     protected $userId;
 
     /**
@@ -35,7 +35,7 @@ final class UpdatePersonDetails
     {
         $this->userId = $this->getUserId();
 
-        $this->checkMutationAuthorization(PersonDetail::class, AuthAction::Update, $args);
+       $this->userAccessibility(PersonDetail::class, AuthAction::Update, $args);
 
 
         //args["user_id_creator"]=$this->userId;

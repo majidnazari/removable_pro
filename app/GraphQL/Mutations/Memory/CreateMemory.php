@@ -34,7 +34,7 @@ final class CreateMemory
             "creator_id" => $this->userId,
             "person_id" => $args['person_id'],
             "category_content_id" => $args['category_content_id'],
-            "group_view_id" => $args['group_view_id'],            
+            "group_category_id" => $args['group_category_id'],            
             "title" => $args['title'],
             // "content" => $args['content'],
             // "description" => $args['description'],
@@ -111,7 +111,7 @@ final class CreateMemory
         $MemoryModel['content']=$path ?? "";
         $MemoryModel['description']= $args['description'] ?? "";
         $MemoryModel['is_shown_after_death']= $args['is_shown_after_death'] ?? false;
-        $MemoryModel['status']= $args['status'] ?? Status::None;
+        $MemoryModel['status']= $args['status'] ?? Status::Active;
         
         $MemoryModelResult = Memory::create($MemoryModel);
         return $MemoryModelResult;

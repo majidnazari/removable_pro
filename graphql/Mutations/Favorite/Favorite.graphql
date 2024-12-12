@@ -1,4 +1,4 @@
 
-createGroupView(input: CreateGroupViewInput! @spread): GroupView @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupView\\CreateGroupView@resolveGroupView") 
-    updateGroupView(id: ID!, input: UpdateGroupViewInput! @spread): GroupView  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupView\\UpdateGroupView@resolveGroupView") 
-    deleteGroupView(id: ID!): GroupView @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupView\\DeleteGroupView@resolveGroupView") 
+createGroupCategory(input: CreateGroupCategoryInput! @spread): GroupCategory @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupCategory\\CreateGroupCategory@resolveGroupCategory") 
+    updateGroupCategory(id: ID!, input: UpdateGroupCategoryInput! @spread): GroupCategory  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupCategory\\UpdateGroupCategory@resolveGroupCategory") 
+    deleteGroupCategory(id: ID!): GroupCategory @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupCategory\\DeleteGroupCategory@resolveGroupCategory") 

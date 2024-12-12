@@ -1,0 +1,4 @@
+
+createGroupDetail(input: CreateGroupDetailInput! @spread): GroupDetail @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupDetail\\CreateGroupDetail@resolveGroupDetail") 
+    updateGroupDetail(id: ID!, input: UpdateGroupDetailInput! @spread): GroupDetail @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupDetail\\UpdateGroupDetail@resolveGroupDetail") 
+    deleteGroupDetail(id: ID!): GroupDetail @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupDetail\\DeleteGroupDetail@resolveGroupDetail") 

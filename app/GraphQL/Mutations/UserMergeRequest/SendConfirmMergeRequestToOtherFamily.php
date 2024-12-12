@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\MergeStatus;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -20,7 +20,7 @@ class SendConfirmMergeRequestToOtherFamily
 {
     use PersonMergeTrait;
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
 
 
     protected $userId;
@@ -34,7 +34,7 @@ class SendConfirmMergeRequestToOtherFamily
     {
         $this->user = $this->getUser();
     
-        $this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Delete, $args);
+       $this->userAccessibility(UserMergeRequest::class, AuthAction::Delete, $args);
 
         $mergeIdsSender = $args['merge_ids_sender'];        
         $mergeIdsReceiver = $args['merge_ids_receiver'];

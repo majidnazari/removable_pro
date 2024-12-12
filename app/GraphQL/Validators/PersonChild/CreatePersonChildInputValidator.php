@@ -18,11 +18,6 @@ use App\Rules\Share\MatchCreator;
 use App\Rules\Share\DateNotInFuture;
 
 
-
-
-
-
-
 class CreatePersonChildInputValidator extends GraphQLValidator
 {
     /**

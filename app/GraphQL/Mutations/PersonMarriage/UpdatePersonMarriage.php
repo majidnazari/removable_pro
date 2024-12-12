@@ -8,7 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
 use Exception;
@@ -16,7 +16,7 @@ use Exception;
 final class UpdatePersonMarriage
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
     protected $userId;
 
     /**
@@ -31,7 +31,7 @@ final class UpdatePersonMarriage
     {  
        
         $this->userId = $this->getUserId();
-        $this->checkMutationAuthorization(PersonMarriage::class, AuthAction::Update, $args);
+       $this->userAccessibility(PersonMarriage::class, AuthAction::Update, $args);
 
 
         //args["user_id_creator"]=$this->userId;

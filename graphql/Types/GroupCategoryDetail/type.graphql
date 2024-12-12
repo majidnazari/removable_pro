@@ -1,0 +1,28 @@
+type GroupCategoryDetail {
+    id: ID
+    creator_id: ID
+    editor_id: ID
+    group_category_id: ID
+    group_id: ID
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+    Creator: User
+    Editor: User
+    GroupCategory: GroupCategory
+    Group: Group
+}
+
+# Input Type for Creating a GroupCategoryDetail
+input CreateGroupCategoryDetailInput {
+    group_category_id: ID!
+    group_id: ID!
+    status: Status!
+}
+
+# Input Type for Updating a GroupCategoryDetail
+input UpdateGroupCategoryDetailInput {
+    group_category_id: ID
+    group_id: ID
+    status: Status
+}

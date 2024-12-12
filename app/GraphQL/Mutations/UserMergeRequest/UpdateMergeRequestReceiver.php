@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use Log;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
 use Exception;
@@ -23,7 +23,7 @@ use Exception;
 final class UpdateMergeRequestReceiver
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
 
     protected $user_receiver_id;
 
@@ -39,7 +39,7 @@ final class UpdateMergeRequestReceiver
     {
         $this->user_receiver_id = $this->getUserId();
     
-        $this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Update, $args);
+       $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
 
         $data = [
            // "editor_id" => $user_sender_id,

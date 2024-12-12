@@ -8,7 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -17,7 +17,7 @@ use Exception;
 final class UpdateProvince
 {
    use AuthUserTrait;
-   use checkMutationAuthorization;
+   use AuthorizesMutation;
     protected $userId;
 
     /**
@@ -32,7 +32,7 @@ final class UpdateProvince
     {  
        
         $this->userId = $this->getUserId();
-        $this->checkMutationAuthorization(Province::class, AuthAction::Delete, $args);
+       $this->userAccessibility(Province::class, AuthAction::Delete, $args);
 
         //args["user_id_creator"]=$this->userId;
         $ProvinceResult=Province::find($args['id']);

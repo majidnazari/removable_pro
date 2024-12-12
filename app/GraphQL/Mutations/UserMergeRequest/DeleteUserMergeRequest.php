@@ -8,7 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -17,7 +17,7 @@ use Exception;
 final class DeleteUserMergeRequest
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
 
     protected $userId;
 
@@ -33,7 +33,7 @@ final class DeleteUserMergeRequest
     {  
         $this->user = $this->getUser();
 
-        $this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Delete, $args);
+       $this->userAccessibility(UserMergeRequest::class, AuthAction::Delete, $args);
         
         $UserMergeRequestResult=UserMergeRequest::find($args['id']);
         

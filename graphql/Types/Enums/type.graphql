@@ -1,10 +1,16 @@
-enum Status {
+enum UserStatus {
     Blocked @enum(value: -1)
     None @enum(value: 0)
     Active @enum(value: 1)
     Inactive @enum(value: 2)
     Suspended @enum(value: 3)
     New @enum(value: 4)
+}
+enum Status {
+   
+    Active @enum(value: 1)
+    Inactive @enum(value: 2)
+   
 }
 enum NotifStatus {
     Read @enum(value: 1)

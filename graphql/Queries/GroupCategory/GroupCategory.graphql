@@ -1,0 +1,12 @@
+
+getGroupCategory(id: ID!): GroupCategory  @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\GroupCategory\\GetGroupCategory@resolveGroupCategory") 
+    getGroupCategories(
+        first: Int, 
+        page: Int, 
+       
+        title: String,
+            
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy
+        # filter: GroupCategoryFilterInput
+    ): [GroupCategory!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\GroupCategory\\GetGroupCategories@resolveGroupCategory")

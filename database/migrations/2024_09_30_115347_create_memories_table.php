@@ -18,14 +18,14 @@ return new class extends Migration
 
             $table->unsignedBigInteger('person_id')->index();
             $table->unsignedBigInteger('category_content_id')->index();
-            $table->unsignedBigInteger('group_view_id')->index();
+            $table->unsignedBigInteger('group_category_id')->index();
 
             $table->unsignedBigInteger('creator_id'); 
             $table->unsignedBigInteger('editor_id')->nullable();
             
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('category_content_id')->references('id')->on('category_contents')->onDelete('cascade');
-            $table->foreign('group_view_id')->references('id')->on('group_views')->onDelete('cascade');
+            $table->foreign('group_category_id')->references('id')->on('group_categories')->onDelete('cascade');
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
 
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->boolean('is_shown_after_death')->default(0);
             //$table->enum('status',["Active","Inactive","None"])->default("Active");
 
-            $table->tinyInteger('status', )->default(0)->comment("1=Active 2=Inactive");   
+            $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive");   
 
 
             $table->timestamps();

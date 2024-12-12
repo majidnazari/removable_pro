@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             PersonDetailSeeder::class,
             PersonMarriageSeeder::class,
             FavoriteSeeder::class,
-            GroupViewSeeder::class,
+            GroupCategorySeeder::class,
             MemorySeeder::class,
             PersonChildSeeder::class,
             FamilyEventSeeder::class,

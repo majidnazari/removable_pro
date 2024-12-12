@@ -32,7 +32,7 @@ return new class extends Migration
 
             $table->tinyInteger('child_kind', )->default(0)->comment("0=none  1=Direct_child 2=Mother_child 3=Father_child 4=Adoption ");   
             $table->tinyInteger('child_status', )->default(0)->comment("0=none  1=With_family 2=Separated");   
-            $table->tinyInteger('status', )->default(0)->comment("1=Active 2=Inactive");   
+            $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive");   
 
 
             //$table->datetime('birth_date')->nullable();
