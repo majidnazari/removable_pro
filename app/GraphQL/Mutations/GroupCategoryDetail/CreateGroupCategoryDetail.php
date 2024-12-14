@@ -27,7 +27,8 @@ final class CreateGroupCategoryDetail
  
         $GroupCategoryDetailModel=[
             "creator_id" =>  $this->userId,
-            "title" => $args['title'],          
+            "group_category_id" => $args['group_category_id'],          
+            "group_id" => $args['group_id'],          
             "status" => $args['status'] ?? Status::Active            
         ];
         $is_exist= GroupCategoryDetail::where($GroupCategoryDetailModel)->first();

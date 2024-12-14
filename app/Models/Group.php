@@ -63,7 +63,8 @@ class Group extends Eloquent
 
     public function people()
     {
-        return $this->hasManyThrough(Person::class, GroupDetail::class);
+        // Retrieve people via the GroupDetails relationship
+        return $this->hasManyThrough(Person::class, GroupDetail::class, 'group_id', 'id', 'id', 'person_id');
     }
     
     public static function getAuthorizationColumns()

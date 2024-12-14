@@ -8,6 +8,9 @@ type GroupCategory {
     updated_at: DateTime
     Creator: User
     Editor: User
+    GroupCategoryDetails:[GroupCategoryDetail]
+    people: [Person] @field(resolver: "App\\GraphQL\\Queries\\GroupCategoryDetail\\GroupCategoryDetailResolver@getAllPeopleFromCategories")
+
 }
 
 # Input Type for Creating a GroupCategory

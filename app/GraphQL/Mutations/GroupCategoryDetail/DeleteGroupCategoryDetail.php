@@ -29,7 +29,7 @@ final class DeleteGroupCategoryDetail
     {  
         
         $this->userId = $this->getUserId();
-       $this->userAccessibility(GroupCategoryDetail::class, AuthAction::Delete, $args);
+        $this->userAccessibility(GroupCategoryDetail::class, AuthAction::Delete, $args);
 
     
         $GroupCategoryDetailResult=GroupCategoryDetail::find($args['id']);

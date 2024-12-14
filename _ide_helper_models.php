@@ -216,6 +216,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard query()
  * @mixin \Eloquent
+ * @property int|null $group_category_id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCategoryContentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatorId($value)
@@ -223,6 +224,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereFilePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereGroupCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereSelectedDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereStatus($value)
@@ -258,12 +260,16 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent query()
  * @mixin \Eloquent
+ * @property int $category_content_id
+ * @property int|null $group_category_id
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCategoryContentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereEventDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereEventId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereGroupCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent wherePersonId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereStatus($value)
@@ -299,11 +305,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite query()
  * @mixin \Eloquent
+ * @property int|null $group_category_id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereGroupCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite wherePersonId($value)
@@ -404,7 +412,7 @@ namespace App\Models{
  * @property string|null $image
  * @property string|null $title
  * @property string|null $description
- * @property int $star 0=none  1=1 2=2 3=3 4=4 5=5
+ * @property int $star 0=none  1=One 2=Two 3=Three 4=Four 5=Five
  * @property int $status 1=Active 2=Inactive
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -433,7 +441,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail withoutTrashed()
  * @mixin Eloquent
- * @property-read \App\Models\GroupCategory|null $GroupCategory
+ * @property int $group_category_id
+ * @property int $group_id
+ * @property-read \App\Models\GroupCategory $GroupCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Person> $personsInRelatedGroups
+ * @property-read int|null $persons_in_related_groups_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereGroupCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereGroupId($value)
  */
 	class GroupCategoryDetail extends \Eloquent {}
 }
@@ -507,7 +521,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory query()
  * @mixin \Eloquent
- * @property int $group_category_id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCategoryContentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCreatedAt($value)
@@ -515,7 +528,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereGroupViewId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereGroupCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereIsShownAfterDeath($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory wherePersonId($value)
@@ -795,10 +808,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore query()
  * @mixin \Eloquent
+ * @property int|null $group_category_id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore whereGroupCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore wherePersonId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PersonScore whereScoreId($value)

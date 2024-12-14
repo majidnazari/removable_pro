@@ -16,8 +16,10 @@ class UserOwnsRecordValidator extends GraphQLValidator
      */
     protected array $tableMap = [
         'person_id' => 'people',
-        'group_category_id' => 'group_categories',
         'group_id' => 'groups',
+
+        'category_content_id' => 'category_contents',
+        'group_category_id' => 'group_categories',
         // Add more mappings as needed
     ];
 
@@ -30,8 +32,13 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
     public function rules(): array
     {
-        $userId = $this->getUserId(); // Logged-in user's ID
+        $rules = [];
+        $user = $this->getUser(); // Logged-in user's ID
 
+        if ($user->isAdmin() || $user->isSupporter()) {
+            // Admins and Supporters can perform any action
+            return $rules;
+        }
         /** @var \Nuwave\Lighthouse\Execution\Arguments\ArgumentSet $arguments */
         $arguments = $this->args;
 
@@ -46,7 +53,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
         Log::info("Fields detected for validation: " . json_encode($fields));
 
-        $rules = [];
+      
 
         // Apply validation rules dynamically for each '_id' field
         foreach ($fields as $fieldName => $value) {
@@ -57,10 +64,10 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
             // Skip creator_id check for excluded fields
             if (!in_array($fieldName, $this->excludedFields)) {
-                $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $userId) {
+                $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user) {
                     $exists = DB::table($tableName)
                         ->where('id', $value)
-                        ->where('creator_id', $userId)
+                        ->where('creator_id', $user->id)
                         ->exists();
 
                     Log::info("Validation check for {$attribute} in {$tableName}: " . json_encode($exists));

@@ -18,6 +18,7 @@ type Memory {
 
     Creator: User
     Editor: User
+    GroupCategory: GroupCategory
     # Person: Person
 }
 

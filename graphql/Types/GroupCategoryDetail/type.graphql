@@ -11,17 +11,19 @@ type GroupCategoryDetail {
     Editor: User
     GroupCategory: GroupCategory
     Group: Group
+    personsInRelatedGroups:[Person]
+    # people: [Person] @field(resolver: "App\\GraphQL\\Queries\\GroupCategoryDetail\\GroupCategoryDetailResolver@getAllPeopleFromCategories")
 }
 
 # Input Type for Creating a GroupCategoryDetail
-input CreateGroupCategoryDetailInput {
+input CreateGroupCategoryDetailInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator") {
     group_category_id: ID!
     group_id: ID!
     status: Status!
 }
 
 # Input Type for Updating a GroupCategoryDetail
-input UpdateGroupCategoryDetailInput {
+input UpdateGroupCategoryDetailInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator") {
     group_category_id: ID
     group_id: ID
     status: Status

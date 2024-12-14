@@ -53,6 +53,10 @@ class GroupDetail extends Eloquent
     {
         return $this->belongsTo(Person::class, self::COLUMN_PERSON_ID);
     }
+    // public function People()
+    // {
+    //     return $this->hasMany(Person::class, self::COLUMN_PERSON_ID);
+    // }
 
     public function Creator()
     {

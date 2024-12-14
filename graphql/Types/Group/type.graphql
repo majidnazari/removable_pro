@@ -8,6 +8,7 @@ type Group {
     updated_at: DateTime
     Creator: User
     Editor: User
+    GroupDetails:[GroupDetail]
 }
 
 # Input Type for Creating a Group

@@ -32,6 +32,7 @@ final class GetGroupCategoryDetails
 
         $query = $this->getModelByAuthorization(GroupCategoryDetail::class, $args, true);
         $query = $this->applySearchFilters( $query, $args);
+        $query->with('personsInRelatedGroups'); 
         return  $query;
     }
 }
