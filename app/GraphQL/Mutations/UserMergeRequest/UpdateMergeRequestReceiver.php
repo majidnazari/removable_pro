@@ -52,6 +52,13 @@ final class UpdateMergeRequestReceiver
             return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
 
+        // $this->checkDuplicate(
+        //     new UserMergeRequest(),
+        //     $args,
+        //     ['id','editor_id','created_at', 'updated_at'],
+        //     $args['id']
+        // );
+
         $is_exist = UserMergeRequest::where('user_receiver_id', $this->user_receiver_id)
         ->where('id','!=', $args['id'])
         // ->where('user_receiver_id', $user_receiver->id)

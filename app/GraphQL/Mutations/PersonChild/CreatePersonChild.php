@@ -10,12 +10,15 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
+use App\Traits\DuplicateCheckTrait;
 
 use Log;
 
 final class CreatePersonChild
 {
     use AuthUserTrait;
+    use DuplicateCheckTrait;
+
     protected $userId;
 
    
@@ -42,12 +45,14 @@ final class CreatePersonChild
             "status" => $args['status'] ?? status::Active // Default to 'Active' if not provided
         ];
         
-        $is_exist = PersonChild::where('person_marriage_id' , $args['person_marriage_id'])
-        ->where('child_id' , $args['child_id'])
-            ->first();
-        if ($is_exist) {
-            return Error::createLocatedError("PersonChild-CREATE-RECORD_IS_EXIST");
-        }
+        // $is_exist = PersonChild::where('person_marriage_id' , $args['person_marriage_id'])
+        // ->where('child_id' , $args['child_id'])
+        //     ->first();
+        // if ($is_exist) {
+        //     return Error::createLocatedError("PersonChild-CREATE-RECORD_IS_EXIST");
+        // }
+
+        $this->checkDuplicate(new PersonChild(),  $PersonChildModel);
         $PersonChildResult = PersonChild::create($PersonChildModel);
         return $PersonChildResult;
     }

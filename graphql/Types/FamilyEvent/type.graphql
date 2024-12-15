@@ -18,7 +18,7 @@ type FamilyEvent {
     Event: Event
 }
 
-input CreateFamilyEventInput {
+input CreateFamilyEventInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
 
     person_id: ID!    
     event_id: ID!    
@@ -28,7 +28,7 @@ input CreateFamilyEventInput {
 
 }
 
-input UpdateFamilyEventInput {
+input UpdateFamilyEventInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
 
     person_id: ID!   
     event_id: ID!    

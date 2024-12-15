@@ -53,6 +53,16 @@ final class UpdateMergeRequestSender
             return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
 
+        // $this->checkDuplicate(
+        //     new UserMergeRequest(),
+        //    [
+        //     'request_status_sender' => RequestStatusSender::Active->value,
+        //     'request_status_sender' =>  RequestStatusSender::Active->value ,
+        //     'merge_status_sender' =>  RequestStatusSender::Active->value
+        //    ],
+        //     ['id','editor_id','created_at', 'updated_at'],
+        //     $args['id']
+        // );
         $is_exist = UserMergeRequest::where('user_sender_id',  $this->user_sender_id)
             ->where('id','!=', $args['id'])
             // ->where('user_receiver_id', $user_receiver->id)

@@ -8,12 +8,15 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
+use App\Traits\DuplicateCheckTrait;
 
 use Log;
 
 final class CreateGroupDetail
 {
     use AuthUserTrait;
+    use DuplicateCheckTrait;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -33,11 +36,12 @@ final class CreateGroupDetail
             "title" => $args['title'],          
             //"status" => $args['status'] ?? Status::Active            
         ];
-        $is_exist= GroupDetail::where($GroupDetailModel)->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("GroupDetail-CREATE-RECORD_IS_EXIST");
-         }
+        // $is_exist= GroupDetail::where($GroupDetailModel)->first();
+        // if($is_exist)
+        //  {
+        //          return Error::createLocatedError("GroupDetail-CREATE-RECORD_IS_EXIST");
+        //  }
+        $this->checkDuplicate(new GroupDetail(),  $GroupDetailModel);
         $GroupDetailResult=GroupDetail::create($GroupDetailModel);
         return $GroupDetailResult;
     }

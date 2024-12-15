@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 
 use Exception;
@@ -17,6 +18,7 @@ final class UpdateScore
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use DuplicateCheckTrait;
 
     protected $userId;
 
@@ -31,7 +33,7 @@ final class UpdateScore
     public function resolveScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
-       $this->userAccessibility(Score::class, AuthAction::Update, $args);
+        $this->userAccessibility(Score::class, AuthAction::Update, $args);
         
         $ScoreResult=Score::find($args['id']);
         
@@ -39,6 +41,13 @@ final class UpdateScore
         {
             return Error::createLocatedError("Score-UPDATE-RECORD_NOT_FOUND");
         }
+
+        $this->checkDuplicate(
+            new Score(),
+            $args,
+            ['id','editor_id','created_at', 'updated_at'],
+            $args['id']
+        );
         $args['editor_id']=$this->userId;
         
         $ScoreResult_filled= $ScoreResult->fill($args);

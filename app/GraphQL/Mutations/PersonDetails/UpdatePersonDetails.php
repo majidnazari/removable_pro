@@ -12,6 +12,7 @@ use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 use Log;
@@ -21,6 +22,8 @@ final class UpdatePersonDetails
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use DuplicateCheckTrait;
+
     protected $userId;
 
     /**
@@ -46,7 +49,12 @@ final class UpdatePersonDetails
         if (!$personDetail) {
             return Error::createLocatedError("PersonDetails-UPDATE-RECORD_NOT_FOUND");
         }
-
+        $this->checkDuplicate(
+            new PersonDetail(),
+            $args,
+            ['id','editor_id','created_at', 'updated_at'],
+            $args['id']
+        );
         // Fetch existing record if it exists
         //$personDetail = PersonDetail::find($args['id']); // Assuming you pass `id` to identify the record
 

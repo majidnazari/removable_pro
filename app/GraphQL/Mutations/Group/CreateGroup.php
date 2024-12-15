@@ -10,6 +10,7 @@ use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesUser;
 use App\Traits\SearchQueryBuilder;
+use App\Traits\DuplicateCheckTrait;
 
 
 use Log;
@@ -19,6 +20,8 @@ final class CreateGroup
     use AuthUserTrait;
     use AuthorizesUser;
     use SearchQueryBuilder;
+    use DuplicateCheckTrait;
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -36,11 +39,13 @@ final class CreateGroup
             "title" => $args['title'],          
             "status" => $args['status'] ?? Status::Active            
         ];
-        $is_exist= Group::where($GroupModel)->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("Group-CREATE-RECORD_IS_EXIST");
-         }
+        // $is_exist= Group::where($GroupModel)->first();
+        // if($is_exist)
+        //  {
+        //          return Error::createLocatedError("Group-CREATE-RECORD_IS_EXIST");
+        //  }
+
+        $this->checkDuplicate(new Group(),  $GroupModel);
         $GroupResult=Group::create($GroupModel);
         return $GroupResult;
     }

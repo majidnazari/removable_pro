@@ -11,12 +11,15 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesUser;
 use App\Traits\SearchQueryBuilder;
 use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 
 
 final class UpdateGroup
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use DuplicateCheckTrait;
+
 
     protected $userId;
 
@@ -37,6 +40,12 @@ final class UpdateGroup
         if (!$GroupResult) {
             return Error::createLocatedError("Group-UPDATE-RECORD_NOT_FOUND");
         }
+        $this->checkDuplicate(
+            new Group(),
+            $args,
+            ['id','editor_id','created_at', 'updated_at'],
+            $args['id']
+        );
         $args['editor_id'] = $this->userId;
         $GroupResult_filled = $GroupResult->fill($args);
         $GroupResult->save();

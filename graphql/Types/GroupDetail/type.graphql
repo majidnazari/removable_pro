@@ -24,7 +24,7 @@ input CreateGroupDetailInput @validator(class: "App\\GraphQL\\Validators\\Share\
 }
 
 # Input Type for Updating a GroupDetail
-input UpdateGroupDetailInput {
+input UpdateGroupDetailInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
     group_id: ID
     person_id: ID
     title: String

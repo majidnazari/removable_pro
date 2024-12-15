@@ -8,6 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -16,6 +17,8 @@ final class UpdateGroupDetail
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use DuplicateCheckTrait;
+
     protected $userId;
 
     /**
@@ -29,7 +32,7 @@ final class UpdateGroupDetail
     public function resolveGroupDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
-       $this->userAccessibility(GroupDetail::class, AuthAction::Update, $args);
+        $this->userAccessibility(GroupDetail::class, AuthAction::Update, $args);
 
 
         //args["user_id_creator"]=$user_id;
@@ -39,6 +42,12 @@ final class UpdateGroupDetail
         {
             return Error::createLocatedError("GroupDetail-UPDATE-RECORD_NOT_FOUND");
         }
+        $this->checkDuplicate(
+            new GroupDetail(),
+            $args,
+            ['id','editor_id','created_at', 'updated_at'],
+            $args['id']
+        );
         $args['editor_id']= $this->userId;
         $GroupDetailResult_filled= $GroupDetailResult->fill($args);
         $GroupDetailResult->save();       

@@ -8,12 +8,15 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\GraphQL\Enums\Status;
 use Carbon\Carbon;
 use App\Traits\AuthUserTrait;
+use App\Traits\DuplicateCheckTrait;
 
 use Log;
 
 final class CreatePerson
 {
     use AuthUserTrait;
+    use DuplicateCheckTrait;
+
     protected $userId;
     /**
      * @param  null  $_
@@ -51,6 +54,7 @@ final class CreatePerson
         // if ($is_exist) {
         //     return Error::createLocatedError("Person-CREATE-RECORD_IS_EXIST");
         // }
+        $this->checkDuplicate(new Person(),  $PersonModel);
         $PersonResult = Person::create($PersonModel);
         return $PersonResult;
     }

@@ -24,7 +24,7 @@ type Favorite {
     # Person: Person
 }
 
-input CreateFavoriteInput {
+input CreateFavoriteInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
 
     # creator_id: ID!
     # editor_id: ID
@@ -39,7 +39,7 @@ input CreateFavoriteInput {
 
 }
 
-input UpdateFavoriteInput {
+input UpdateFavoriteInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
 
     # creator_id: ID!
     # editor_id: ID

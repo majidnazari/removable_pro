@@ -32,7 +32,10 @@ type Person {
 }
 
 
-input CreatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\CreatePersonInputValidator") {
+input CreatePersonInput 
+@validator(class: "App\\GraphQL\\Validators\\Person\\CreatePersonInputValidator") 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
 
     # creator_id: ID
     # editor_id: ID
@@ -48,7 +51,10 @@ input CreatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\Cre
     # status: Status
 }
 
-input UpdatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\UpdatePersonInputValidator") {
+input UpdatePersonInput 
+@validator(class: "App\\GraphQL\\Validators\\Person\\UpdatePersonInputValidator")
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+ {
 
     first_name: String
     last_name: String
@@ -60,7 +66,10 @@ input UpdatePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\Upd
     # status: Status
 }
 
-input DeletePersonInput @validator(class: "App\\GraphQL\\Validators\\Person\\DeletePersonValidator") {
+input DeletePersonInput 
+@validator(class: "App\\GraphQL\\Validators\\Person\\DeletePersonValidator") 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
     id: ID!
 }
 

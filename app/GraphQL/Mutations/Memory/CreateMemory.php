@@ -9,12 +9,15 @@ use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Storage;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
+use App\Traits\DuplicateCheckTrait;
 
 use Log;
 
 final class CreateMemory
 {
     use AuthUserTrait;
+    use DuplicateCheckTrait;
+
     protected $userId;
 
     /**
@@ -34,26 +37,25 @@ final class CreateMemory
             "creator_id" => $this->userId,
             "person_id" => $args['person_id'],
             "category_content_id" => $args['category_content_id'],
-            "group_category_id" => $args['group_category_id'],            
+            "group_category_id" => $args['group_category_id'],
             "title" => $args['title'],
             // "content" => $args['content'],
             // "description" => $args['description'],
             // "is_shown_after_death" => $args['is_shown_after_death'],
             // "status" => $args['status']
         ];
-      
+
 
         //Log::info("the args are:" . $args['content']);
-       
-        $is_exist = Memory::where($MemoryModel)->first();
-        if ($is_exist) {
-            return Error::createLocatedError("Memory-CREATE-RECORD_IS_EXIST");
-        }
-      
-        $path="";
-       
-        if (isset($args['content'])) 
-        {
+
+        // $is_exist = Memory::where($MemoryModel)->first();
+        // if ($is_exist) {
+        //     return Error::createLocatedError("Memory-CREATE-RECORD_IS_EXIST");
+        // }
+
+        $path = "";
+
+        if (isset($args['content'])) {
             $file = $args['content'];
             if (!$file->isValid()) {
                 throw new Error('Invalid file upload.');
@@ -85,13 +87,13 @@ final class CreateMemory
             //         throw new Error('Invalid category_content_id.');
             // }
 
-            $allowedFileTypes = ['jpg', 'jpeg', 'png', 'gif','mp3','mp4'];
+            $allowedFileTypes = ['jpg', 'jpeg', 'png', 'gif', 'mp3', 'mp4'];
             $maxFileSize = 10 * 1024 * 1024; // 1 MB
 
             $extension = $file->getClientOriginalExtension();
             $fileSize = $file->getSize();
 
-           // Log::info("the file nme is: " . $args['person_id'] . '.' . $file->getClientOriginalExtension());
+            // Log::info("the file nme is: " . $args['person_id'] . '.' . $file->getClientOriginalExtension());
 
             if (!in_array(strtolower($extension), $allowedFileTypes)) {
                 throw new Error('Invalid file type. Allowed types: ' . implode(', ', $allowedFileTypes));
@@ -102,17 +104,21 @@ final class CreateMemory
             }
 
             $path = $args['person_id'] . '.' . $file->getClientOriginalExtension();
-            Storage::disk('public')->put("memories/".$path, file_get_contents($file->getRealPath()));
-            
+            Storage::disk('public')->put("memories/" . $path, file_get_contents($file->getRealPath()));
+
             $profilePictureUrl = Storage::url($path);
             $args['content'] = $profilePictureUrl;
         }
 
-        $MemoryModel['content']=$path ?? "";
-        $MemoryModel['description']= $args['description'] ?? "";
-        $MemoryModel['is_shown_after_death']= $args['is_shown_after_death'] ?? false;
-        $MemoryModel['status']= $args['status'] ?? Status::Active;
-        
+        $this->checkDuplicate(
+            new Memory(),
+            $MemoryModel
+        );
+        $MemoryModel['content'] = $path ?? "";
+        $MemoryModel['description'] = $args['description'] ?? "";
+        $MemoryModel['is_shown_after_death'] = $args['is_shown_after_death'] ?? false;
+        $MemoryModel['status'] = $args['status'] ?? Status::Active;
+
         $MemoryModelResult = Memory::create($MemoryModel);
         return $MemoryModelResult;
 

@@ -22,7 +22,9 @@ type Memory {
     # Person: Person
 }
 
-input CreateMemoryInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
+input CreateMemoryInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
 
     person_id: ID!
     category_content_id:ID!
@@ -35,7 +37,9 @@ input CreateMemoryInput @validator(class: "App\\GraphQL\\Validators\\Share\\User
    # status: Status  
 }
 
-input UpdateMemoryInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
+input UpdateMemoryInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
 
     person_id: ID!
     category_content_id:ID!

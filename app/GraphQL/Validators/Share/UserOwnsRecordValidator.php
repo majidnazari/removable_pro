@@ -18,7 +18,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
         'person_id' => 'people',
         'group_id' => 'groups',
 
-        'category_content_id' => 'category_contents',
+       // 'category_content_id' => 'category_contents',
         'group_category_id' => 'group_categories',
         // Add more mappings as needed
     ];

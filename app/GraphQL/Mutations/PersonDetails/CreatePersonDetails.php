@@ -10,12 +10,15 @@ use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Storage;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
+use App\Traits\DuplicateCheckTrait;
 
 use Log;
 
 final class CreatePersonDetails
 {
     use AuthUserTrait;
+    use DuplicateCheckTrait;
+
     protected $userId;
     /**
      * @param  null  $_
@@ -30,12 +33,13 @@ final class CreatePersonDetails
     {
         $this->userId = $this->getUserId();
 
-        $isExist = PersonDetail::where('person_id', $args['person_id'])->first();
+        // $isExist = PersonDetail::where('person_id', $args['person_id'])->first();
         
-        if ($isExist) {
-            return Error::createLocatedError("PersonDetail-CREATE-RECORD_IS_EXIST");
-        }        
+        // if ($isExist) {
+        //     return Error::createLocatedError("PersonDetail-CREATE-RECORD_IS_EXIST");
+        // }        
        
+        $this->checkDuplicate(new PersonDetail(),  $args['person_id']);
         //Log::info("the args are: " . $args['profile_picture']);
         $path="";
         // Check if the file exists in the input

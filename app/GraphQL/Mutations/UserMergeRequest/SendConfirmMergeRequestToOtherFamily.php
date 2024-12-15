@@ -10,6 +10,7 @@ use GraphQL\Error\Error;
 use App\GraphQL\Enums\MergeStatus;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -21,6 +22,7 @@ class SendConfirmMergeRequestToOtherFamily
     use PersonMergeTrait;
     use AuthUserTrait;
     use AuthorizesMutation;
+    use DuplicateCheckTrait;
 
 
     protected $userId;
@@ -47,6 +49,12 @@ class SendConfirmMergeRequestToOtherFamily
             if (!$userMergeRequest) {
                 throw new Error("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
             }
+            $this->checkDuplicate(
+                new UserMergeRequest(),
+                $args,
+                ['id','editor_id','created_at', 'updated_at'],
+                $args['id']
+            );
 
             if ($userMergeRequest->user_sender_id !== $this->user->id) {
                 throw new Error("UserMergeRequest-UNAUTHORIZED_ACCESS!");

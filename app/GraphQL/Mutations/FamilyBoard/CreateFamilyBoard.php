@@ -8,12 +8,14 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
+use App\Traits\DuplicateCheckTrait;
 
 use Log;
 
 final class CreateFamilyBoard
 {
     use AuthUserTrait;
+    use DuplicateCheckTrait;
     protected $userId;
 
     /**
@@ -31,18 +33,18 @@ final class CreateFamilyBoard
 
         $FamilyBoardResult=[
             "creator_id" =>  $this->userId,
-            "category_content_id" => $args['category_content_id'],
-            "title" => $args['title'],
-            "selected_date" => $args['selected_date'],
-            "file_path" => $args['file_path'],
-            "description" => $args['description'],
-            "status" => $args['status']   ?? status::Active         
+            "category_content_id" => $args['category_content_id'] ?? null,
+            "group_category_id" => $args['group_category_id'] ?? null,
+            "title" => $args['title'] ,
+            "selected_date" => $args['selected_date'] ?? null,
+            "file_path" => $args['file_path'] ?? null,
+            "description" => $args['description'] ?? null,
+            "status" => $args['status']  ?? Status::Active         
         ];
-        $is_exist= FamilyBoard::where('title',$args['title'])->where('status',$args['status'])->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("FamilyBoard-CREATE-RECORD_IS_EXIST");
-         }
+       
+         // Dynamic duplicate check: Pass column(s) and values
+         $this->checkDuplicate(new FamilyBoard(), ['title' => $args['title'] , 'status' => Status::Active]);
+
         $FamilyBoardResult_result=FamilyBoard::create($FamilyBoardResult);
         return $FamilyBoardResult_result;
     }

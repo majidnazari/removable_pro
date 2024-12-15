@@ -199,6 +199,7 @@ namespace App\Models{
  * @property int $creator_id
  * @property int|null $editor_id
  * @property int $category_content_id
+ * @property int $group_category_id
  * @property string $title
  * @property string $selected_date
  * @property string|null $file_path
@@ -216,7 +217,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard query()
  * @mixin \Eloquent
- * @property int|null $group_category_id
+ * @property-read \App\Models\CategoryContent $CategoryContent
+ * @property-read \App\Models\GroupCategory|null $GroupCategory
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCategoryContentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatorId($value)

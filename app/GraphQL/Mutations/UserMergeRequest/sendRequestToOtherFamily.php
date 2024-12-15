@@ -16,6 +16,7 @@ use Log;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -25,6 +26,7 @@ final class SendRequestToOtherFamily
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use DuplicateCheckTrait;
 
     protected $user_sender_id;
 
@@ -69,7 +71,10 @@ final class SendRequestToOtherFamily
             "status" => MergeStatus::Suspend,
 
         ];
-
+        $this->checkDuplicate(
+            new UserMergeRequest(),
+            $UserMergeRequestResult
+        );
         // Create the UserMergeRequest
         return UserMergeRequest::create($UserMergeRequestResult);
     }

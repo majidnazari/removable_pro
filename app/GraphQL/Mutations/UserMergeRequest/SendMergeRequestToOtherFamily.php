@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -26,6 +27,8 @@ final class SendMergeRequestToOtherFamily
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use DuplicateCheckTrait;
+
     protected $userId;
 
     /**
@@ -40,7 +43,7 @@ final class SendMergeRequestToOtherFamily
     {
         $this->user = $this->getUser();
     
-       $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
+        $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
         // Fetch the sender person
         $userMergeRequest = UserMergeRequest::where('id',$args['id'])
         //->where('status',MergeStatus::Active)
@@ -53,6 +56,12 @@ final class SendMergeRequestToOtherFamily
             return Error::createLocatedError("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
         }
        
+        $this->checkDuplicate(
+            new UserMergeRequest(),
+            $args,
+            ['id','editor_id','created_at', 'updated_at'],
+            $args['id']
+        );
         // Prepare data for creating UserMergeRequest
         $data= [
            

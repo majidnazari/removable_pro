@@ -11,14 +11,14 @@ type PersonDetail {
 }
 
 
-input CreatePersonDetailsInput {
+input CreatePersonDetailsInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator") {
     person_id: ID!
     profile_picture: Upload
     # gender: gender = None
     physical_condition: PhysicalCondition = Healthy
 }
 
-input UpdatePersonDetailsInput {
+input UpdatePersonDetailsInput  @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator") {
     
     person_id: ID!
     profile_picture: Upload
