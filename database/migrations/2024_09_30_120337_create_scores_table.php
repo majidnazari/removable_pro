@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title');
             //$table->enum('status',["Active","Inactive","None"])->default("Active");
 
-            $table->tinyInteger('status', )->default(0)->comment("1=Active 2=Inactive");   
+            $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive");   
 
            
             $table->timestamps();

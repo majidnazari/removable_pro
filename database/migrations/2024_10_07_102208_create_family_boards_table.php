@@ -15,20 +15,22 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
-            $table->unsignedBigInteger('category_content_id');
+            $table->unsignedBigInteger('category_content_id')->nullable();
+            $table->unsignedBigInteger('group_category_id')->nullable();
 
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('category_content_id')->references('id')->on('category_contents')->onDelete('cascade');
+            $table->foreign('group_category_id')->references('id')->on('group_categories')->onDelete('cascade');
 
             $table->string('title');
-            $table->datetime('selected_date');
+            $table->datetime('selected_date')->nullable();
             $table->string('file_path')->nullable();
-            $table->string('description');
+            $table->string('description')->nullable();
             //$table->enum('status',["Active","Inactive","None"])->default("Active");
 
-            $table->tinyInteger('status', )->default(0)->comment("1=Active 2=Inactive");   
+            $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive");   
 
 
 

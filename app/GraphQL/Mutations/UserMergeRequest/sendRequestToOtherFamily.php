@@ -15,7 +15,8 @@ use Carbon\Carbon;
 use Log;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -24,7 +25,8 @@ use Exception;
 final class SendRequestToOtherFamily
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
+    use DuplicateCheckTrait;
 
     protected $user_sender_id;
 
@@ -39,7 +41,7 @@ final class SendRequestToOtherFamily
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        //$this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Create, $args);
+        //$this->AuthorizesMutation(UserMergeRequest::class, AuthAction::Create, $args);
 
         $this->user_sender_id= $this->getUserId();
 
@@ -69,7 +71,10 @@ final class SendRequestToOtherFamily
             "status" => MergeStatus::Suspend,
 
         ];
-
+        $this->checkDuplicate(
+            new UserMergeRequest(),
+            $UserMergeRequestResult
+        );
         // Create the UserMergeRequest
         return UserMergeRequest::create($UserMergeRequestResult);
     }

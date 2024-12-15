@@ -17,7 +17,10 @@ type PersonChild {
 }
 
 
-input CreatePersonChildInput @validator(class: "App\\GraphQL\\Validators\\PersonChild\\CreatePersonChildInputValidator")  {
+input CreatePersonChildInput 
+@validator(class: "App\\GraphQL\\Validators\\PersonChild\\CreatePersonChildInputValidator") 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+ {
 
     person_marriage_id: ID
     child_id: ID
@@ -27,7 +30,10 @@ input CreatePersonChildInput @validator(class: "App\\GraphQL\\Validators\\Person
    
 }
 
-input UpdatePersonChildInput  @validator(class: "App\\GraphQL\\Validators\\PersonChild\\UpdatePersonChildInputValidator") {
+input UpdatePersonChildInput 
+ @validator(class: "App\\GraphQL\\Validators\\PersonChild\\UpdatePersonChildInputValidator") 
+ @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+ {
 
     person_marriage_id: ID
     child_id: ID
@@ -37,12 +43,16 @@ input UpdatePersonChildInput  @validator(class: "App\\GraphQL\\Validators\\Perso
    
 }
 
-input DeletePersonChildInput @validator(class: "App\\GraphQL\\Validators\\PersonChild\\DeletePersonChildInputValidator")
+input DeletePersonChildInput 
+@validator(class: "App\\GraphQL\\Validators\\PersonChild\\DeletePersonChildInputValidator")
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
 {
     id: ID!
 }
 
-input DeletePersonChildByChildIdInput @validator(class: "App\\GraphQL\\Validators\\PersonChild\\DeletePersonChildByChildIdInputValidator")
+input DeletePersonChildByChildIdInput 
+@validator(class: "App\\GraphQL\\Validators\\PersonChild\\DeletePersonChildByChildIdInputValidator")
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
 {
     child_id: ID!
 }

@@ -10,6 +10,7 @@ class MatchCreator implements Rule
 {
     protected $modelClass;
     protected $ids;
+    protected $userId;
     protected $errorMessage;
 
     /**

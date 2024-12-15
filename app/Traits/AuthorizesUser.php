@@ -42,10 +42,11 @@ trait AuthorizesUser
                         //$q->where($column, $this->user->id);
                         //$q->where($column, $this->user->{$column});
                         $q->where($column, $this->user->{$column} ?? $this->user->id);
-                    } else {
+                    } 
+                    //else {
                         // Log a warning if the column doesn't exist
                         //Log::warning("Column does NOT exist on model table: " . $column);
-                    }
+                    //}
                 }
             });
         }
@@ -54,15 +55,15 @@ trait AuthorizesUser
             $query->where('id', $args['id']);
         }
 
-        $querylog = $query->toBase(); // Get the base query builder (which contains the bindings)
+        // $querylog = $query->toBase(); // Get the base query builder (which contains the bindings)
 
-        $sql = $querylog->toSql(); // Get the SQL query with placeholders (?)
+        // $sql = $querylog->toSql(); // Get the SQL query with placeholders (?)
 
-        $bindings = $querylog->getBindings(); // Get the bindings (parameters)
+        // $bindings = $querylog->getBindings(); // Get the bindings (parameters)
 
-        $fullQuery = vsprintf(str_replace('?', '%s', $sql), $bindings); // Replace placeholders with actual values
+        // $fullQuery = vsprintf(str_replace('?', '%s', $sql), $bindings); // Replace placeholders with actual values
 
-        Log::info("The query is: " . $fullQuery);
+        // Log::info("The query is: " . $fullQuery);
 
 
         //return $fetchAll ? $query : $query->first();

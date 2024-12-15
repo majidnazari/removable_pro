@@ -9,7 +9,7 @@ use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
 use Exception;
@@ -18,7 +18,7 @@ use Log;
 final class CreateUserMergeRequest
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
 
     protected $userId;
    
@@ -33,7 +33,7 @@ final class CreateUserMergeRequest
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
         $this->user = $this->getUser();
-        //$this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Create, $args);
+        //$this->AuthorizesMutation(UserMergeRequest::class, AuthAction::Create, $args);
 
         // $UserMergeRequestResult=[
         //     "status" => $args[' '] ?? Status::Active,

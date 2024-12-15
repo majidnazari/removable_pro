@@ -1,0 +1,26 @@
+type GroupCategory {
+    id: ID
+    creator_id: ID
+    editor_id: ID
+    title: String
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+    Creator: User
+    Editor: User
+    GroupCategoryDetails:[GroupCategoryDetail]
+    people: [Person] @field(resolver: "App\\GraphQL\\Queries\\GroupCategoryDetail\\GroupCategoryDetailResolver@getAllPeopleFromCategories")
+
+}
+
+# Input Type for Creating a GroupCategory
+input CreateGroupCategoryInput {
+    title: String!
+    status: Status!
+}
+
+# Input Type for Updating a GroupCategory
+input UpdateGroupCategoryInput {
+    title: String
+    status: Status
+}

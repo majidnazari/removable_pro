@@ -8,7 +8,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Rules\Person\UniquePerson;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 use Log;
 
@@ -16,7 +17,9 @@ use Log;
 final class UpdatePerson
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
+    use DuplicateCheckTrait;
+
     protected $userId;
 
     /**
@@ -31,7 +34,7 @@ final class UpdatePerson
     {  
 
         $this->userId = $this->getUserId();
-        $this->checkMutationAuthorization(Person::class, AuthAction::Update, $args);
+        $this->userAccessibility(Person::class, AuthAction::Update, $args);
 
         //args["user_id_creator"]=$user_id;
 
@@ -54,6 +57,12 @@ final class UpdatePerson
         {
             return Error::createLocatedError("Person-UPDATE-RECORD_NOT_FOUND");
         }
+        $this->checkDuplicate(
+            new Person(),
+            $args,
+            ['id','editor_id','created_at', 'updated_at'],
+            $args['id']
+        );
         $args['editor_id']=$this->userId ;
         $PersonResult_filled= $PersonResult->fill($args);
         $PersonResult->save();       

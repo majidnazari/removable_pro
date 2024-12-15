@@ -16,7 +16,10 @@
       #import Types/FamilyBoard/type.graphql
       #import Types/FamilyEvent/type.graphql
       #import Types/Favorite/type.graphql
-      #import Types/GroupView/type.graphql
+      #import Types/Group/type.graphql
+      #import Types/GroupDetail/type.graphql
+      #import Types/GroupCategory/type.graphql
+      #import Types/GroupCategoryDetail/type.graphql
       #import Types/Memory/type.graphql
       #import Types/Person/type.graphql
       #import Types/PersonChild/type.graphql
@@ -40,7 +43,10 @@
         #import Queries/FamilyBoard/FamilyBoard.graphql
         #import Queries/FamilyEvent/FamilyEvent.graphql
         #import Queries/Favorite/Favorite.graphql
-        #import Queries/GroupView/GroupView.graphql
+        #import Queries/Group/Group.graphql
+        #import Queries/GroupDetail/GroupDetail.graphql
+        #import Queries/GroupCategory/GroupCategory.graphql
+        #import Queries/GroupCategoryDetail/GroupCategoryDetail.graphql
         #import Queries/Memory/Memory.graphql
         #import Queries/Person/Person.graphql
         #import Queries/PersonChild/PersonChild.graphql
@@ -65,7 +71,10 @@
       #import Mutations/FamilyBoard/FamilyBoard.graphql
       #import Mutations/FamilyEvent/FamilyEvent.graphql
       #import Mutations/Favorite/Favorite.graphql
-      #import Mutations/GroupView/GroupView.graphql
+      #import Mutations/Group/Group.graphql
+      #import Mutations/GroupDetail/GroupDetail.graphql
+      #import Mutations/GroupCategory/GroupCategory.graphql
+      #import Mutations/GroupCategoryDetail/GroupCategoryDetail.graphql
       #import Mutations/Memory/Memory.graphql
       #import Mutations/Person/Person.graphql
       #import Mutations/PersonChild/PersonChild.graphql

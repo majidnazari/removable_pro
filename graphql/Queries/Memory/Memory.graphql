@@ -5,7 +5,7 @@ getMemory(id: ID!): Memory @guard(with:["api"]) @field(resolver: "App\\GraphQL\\
         page: Int, 
         person_id: Int,
         category_content_id: Int,
-        group_view_id: Int,
+        group_category_id: Int,
         creator_id: Int,
         editor_id: Int,
         content: String,

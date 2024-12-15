@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\DuplicateCheckTrait;
 
 use Exception;
 use Log;
@@ -16,6 +17,8 @@ use Log;
 final class CreatePersonScore
 {
     use AuthUserTrait;
+    use DuplicateCheckTrait;
+
     protected $userId;
    
     /**
@@ -41,11 +44,16 @@ final class CreatePersonScore
         ];
         
         // Check if a similar details profile already exists for the same person_id
-        $is_exist = PersonScore::where('person_id', $args['person_id'])->first();
+        // $is_exist = PersonScore::where('person_id', $args['person_id'])->first();
         
-        if ($is_exist) {
-            return Error::createLocatedError("PersonScore-CREATE-RECORD_IS_EXIST");
-        }
+        // if ($is_exist) {
+        //     return Error::createLocatedError("PersonScore-CREATE-RECORD_IS_EXIST");
+        // }
+
+        $this->checkDuplicate(
+            new PersonScore(),
+            $PersonScoreModel
+        );
         $PersonScoreResult = PersonScore::create($PersonScoreModel);
         return $PersonScoreResult;
     }

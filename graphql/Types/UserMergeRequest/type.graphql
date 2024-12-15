@@ -42,7 +42,8 @@ input CreateUserMergeRequestInput {
 
 }
 
-input SendRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendRequestToOtherFamilyInputValidator")
+input SendRequestToOtherFamilyInput 
+@validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendRequestToOtherFamilyInputValidator")
 {
 
     # user_sender_id: ID!
@@ -73,14 +74,16 @@ input UpdateMergeRequestSenderInput {
    
 }
 
-input SendMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendMergeRequestToOtherFamilyInputValidator")
+input SendMergeRequestToOtherFamilyInput 
+@validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendMergeRequestToOtherFamilyInputValidator")
 {
     id: ID!
     merge_ids_sender: String
     merge_ids_receiver: String 
 }
 
-input SendConfirmMergeRequestToOtherFamilyInput @validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendConfirmMergeRequestToOtherFamilyInputValidator")
+input SendConfirmMergeRequestToOtherFamilyInput 
+@validator(class: "App\\GraphQL\\Validators\\UserMergeRequest\\SendConfirmMergeRequestToOtherFamilyInputValidator")
 {
     id: ID!
     merge_ids_sender: String

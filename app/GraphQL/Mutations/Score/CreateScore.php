@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\DuplicateCheckTrait;
 
 use Exception;
 use Log;
@@ -16,6 +17,8 @@ use Log;
 final class CreateScore
 {
     use  AuthUserTrait;
+    use DuplicateCheckTrait;
+
     protected $userId;
    
     /**
@@ -35,11 +38,15 @@ final class CreateScore
             "status" => $args['status'] ?? Status::Active,
             "title" => $args['title'],
         ];
-        $is_exist= Score::where('title',$args['title'])->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("Score-CREATE-RECORD_IS_EXIST");
-         }
+        // $is_exist= Score::where('title',$args['title'])->first();
+        // if($is_exist)
+        //  {
+        //          return Error::createLocatedError("Score-CREATE-RECORD_IS_EXIST");
+        //  }
+        $this->checkDuplicate(
+            new Score(),
+            $ScoreResult
+        );
         $ScoreResult_result=Score::create($ScoreResult);
         return $ScoreResult_result;
     }

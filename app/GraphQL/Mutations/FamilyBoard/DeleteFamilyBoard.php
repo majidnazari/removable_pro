@@ -7,13 +7,13 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
 final class DeleteFamilyBoard
 {
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
     protected $userId;
 
     /**
@@ -27,7 +27,7 @@ final class DeleteFamilyBoard
     public function resolveFamilyBoard($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
-        $this->checkMutationAuthorization(FamilyBoard::class, AuthAction::Delete, $args);
+       $this->userAccessibility(FamilyBoard::class, AuthAction::Delete, $args);
 
        
         $FamilyBoardResult=FamilyBoard::find($args['id']);

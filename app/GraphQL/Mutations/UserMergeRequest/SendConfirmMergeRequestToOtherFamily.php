@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\DB;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\MergeStatus;
 use App\Traits\AuthUserTrait;
-use App\Traits\checkMutationAuthorization;
+use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -20,7 +21,8 @@ class SendConfirmMergeRequestToOtherFamily
 {
     use PersonMergeTrait;
     use AuthUserTrait;
-    use checkMutationAuthorization;
+    use AuthorizesMutation;
+    use DuplicateCheckTrait;
 
 
     protected $userId;
@@ -34,7 +36,7 @@ class SendConfirmMergeRequestToOtherFamily
     {
         $this->user = $this->getUser();
     
-        $this->checkMutationAuthorization(UserMergeRequest::class, AuthAction::Delete, $args);
+       $this->userAccessibility(UserMergeRequest::class, AuthAction::Delete, $args);
 
         $mergeIdsSender = $args['merge_ids_sender'];        
         $mergeIdsReceiver = $args['merge_ids_receiver'];
@@ -47,6 +49,12 @@ class SendConfirmMergeRequestToOtherFamily
             if (!$userMergeRequest) {
                 throw new Error("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
             }
+            $this->checkDuplicate(
+                new UserMergeRequest(),
+                $args,
+                ['id','editor_id','created_at', 'updated_at'],
+                $args['id']
+            );
 
             if ($userMergeRequest->user_sender_id !== $this->user->id) {
                 throw new Error("UserMergeRequest-UNAUTHORIZED_ACCESS!");

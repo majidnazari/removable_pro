@@ -18,7 +18,10 @@ type PersonMarriage {
     updated_at: String
 }
 
-input CreatePersonMarriageInput  @validator(class: "App\\GraphQL\\Validators\\PersonMarriage\\CreatePersonMarriageInputValidator") {
+input CreatePersonMarriageInput  
+@validator(class: "App\\GraphQL\\Validators\\PersonMarriage\\CreatePersonMarriageInputValidator")
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+ {
 
     man_id: ID!
     woman_id: ID!
@@ -30,7 +33,10 @@ input CreatePersonMarriageInput  @validator(class: "App\\GraphQL\\Validators\\Pe
     divorce_date: String
 }
 
-input UpdatePersonMarriageInput @validator(class: "App\\GraphQL\\Validators\\PersonMarriage\\UpdatePersonMarriageInputValidator") {
+input UpdatePersonMarriageInput 
+@validator(class: "App\\GraphQL\\Validators\\PersonMarriage\\UpdatePersonMarriageInputValidator")
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+ {
 
     man_id: ID!
     woman_id: ID!
@@ -42,6 +48,9 @@ input UpdatePersonMarriageInput @validator(class: "App\\GraphQL\\Validators\\Per
     divorce_date: String
 }
 
-input DeletePersonMarriageInput @validator(class: "App\\GraphQL\\Validators\\PersonMarriage\\DeletePersonMarriageInputValidator") {
+input DeletePersonMarriageInput 
+@validator(class: "App\\GraphQL\\Validators\\PersonMarriage\\DeletePersonMarriageInputValidator") 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
     id: ID!
 }

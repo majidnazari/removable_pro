@@ -15,6 +15,7 @@ use Eloquent;
  * @property int $creator_id
  * @property int|null $editor_id
  * @property int $category_content_id
+ * @property int $group_category_id
  * @property string $title
  * @property string $selected_date
  * @property string|null $file_path
@@ -42,6 +43,7 @@ class FamilyBoard extends Eloquent
         'creator_id',
         'editor_id',
         'category_content_id',
+        'group_category_id',
         'title',
         'selected_date',
         'file_path',
@@ -56,6 +58,7 @@ class FamilyBoard extends Eloquent
     public const COLUMN_EDITOR_ID = 'editor_id';
 
     public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
+    public const COLUMN_GROUP_CATEGORY_ID = 'group_category_id';
 
     public function Creator()
     {
@@ -67,11 +70,14 @@ class FamilyBoard extends Eloquent
         return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
     }
 
-    public function Category()
+    public function CategoryContent()
     {
         return $this->belongsTo(CategoryContent::class, self::COLUMN_CATEGORY_CONTENT_ID);
     }
-
+    public function GroupCategory()
+    {
+        return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);
+    }
 
 
     public static function getAuthorizationColumns()
