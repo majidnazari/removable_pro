@@ -80,6 +80,16 @@ enum Role
      
 }
 
+enum Star 
+{
+    One @enum(value: 1)
+    Two @enum(value: 2)
+    Three @enum(value: 3)
+    Four @enum(value: 4)
+    Five @enum(value: 5)
+     
+}
+
 enum SortOrder {
     ASC
     DESC

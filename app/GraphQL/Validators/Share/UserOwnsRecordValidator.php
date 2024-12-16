@@ -28,6 +28,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
      */
     protected array $excludedFields = [
         'category_content_id', // Example: no creator_id validation for this field
+        'event_id', // Example: no creator_id validation for this field
     ];
 
     public function rules(): array

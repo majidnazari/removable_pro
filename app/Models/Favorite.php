@@ -15,6 +15,7 @@ use Eloquent;
  * @property int $creator_id
  * @property int|null $editor_id
  * @property int $person_id
+ * @property int $group_category_id
  * @property string|null $image
  * @property string|null $title
  * @property string|null $description
@@ -40,6 +41,7 @@ class Favorite extends Eloquent
         'creator_id',
         'editor_id',
         'person_id',
+        'group_category_id',
         'image',
         'title',
         'description',
@@ -56,12 +58,16 @@ class Favorite extends Eloquent
     public const COLUMN_EDITOR_ID = 'editor_id';
 
     public const COLUMN_PERSON_ID = 'person_id';
+    public const COLUMN_GROUP_CATEGORY_ID = 'group_category_id';
 
     public function Person()
     {
         return $this->belongsTo(Person::class, self::COLUMN_PERSON_ID);
     }
-
+    public function GroupCategory()
+    {
+        return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);
+    }
     public function Creator()
     {
         return $this->belongsTo(User::class, self::COLUMN_CREATOR_ID);
@@ -75,7 +81,7 @@ class Favorite extends Eloquent
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

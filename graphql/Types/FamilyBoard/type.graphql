@@ -3,7 +3,7 @@
 type FamilyBoard {
     
     id: ID!
-    creator_id: ID!
+    creator_id: ID
     editor_id: ID
     category_content_id: ID
     group_category_id: ID   

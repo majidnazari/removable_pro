@@ -7,7 +7,8 @@ type FamilyEvent {
     editor_id: ID
     person_id: ID!
     event_id: ID!    
-
+    category_content_id: ID
+    group_category_id: ID 
     
     # title: String
     event_date: String  
@@ -18,8 +19,12 @@ type FamilyEvent {
     Event: Event
 }
 
-input CreateFamilyEventInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
+input CreateFamilyEventInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
 
+    category_content_id: ID!    
+    group_category_id: ID   
     person_id: ID!    
     event_id: ID!    
     # title: String
@@ -28,11 +33,14 @@ input CreateFamilyEventInput @validator(class: "App\\GraphQL\\Validators\\Share\
 
 }
 
-input UpdateFamilyEventInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
+input UpdateFamilyEventInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
 
     person_id: ID!   
     event_id: ID!    
-
+    category_content_id: ID!    
+    group_category_id: ID   
     # title: String
     event_date: String  
     status: Status 

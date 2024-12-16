@@ -6,7 +6,7 @@ getFavorite(id: ID!): Favorite @guard(with:["api"]) @field(resolver: "App\\Graph
         person_id: Int,
         creator_id: Int,
         editor_id: Int,
-        star: String,
+        star: Star,
         title: String,
         description: String,
       

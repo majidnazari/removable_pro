@@ -33,7 +33,7 @@ return new class extends Migration
            // $table->enum('score_level',["Excellent","Verygood","Good","NotBad","Bad","None"])->default("None");
           // $table->enum('status',["Active","a","None"])->default("Active");
 
-            $table->tinyInteger('score_level', )->default(0)->comment("0=None  1=bad 2=NotBad 3=Verygood 4=Excellent ");   
+            $table->tinyInteger('score_level', )->default(0)->comment("0=None  1=Bad 2=NotBad 3=Good 4=Verygood 5=Excellent");   
             $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive");   
 
             $table->timestamps();

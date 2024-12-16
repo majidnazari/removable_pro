@@ -245,6 +245,8 @@ namespace App\Models{
  * @property int $id
  * @property int $person_id
  * @property int $event_id
+ * @property int $category_content_id
+ * @property int $group_category_id
  * @property int $creator_id
  * @property int|null $editor_id
  * @property string $event_date
@@ -262,8 +264,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent query()
  * @mixin \Eloquent
- * @property int $category_content_id
- * @property int|null $group_category_id
+ * @property-read \App\Models\CategoryContent $CategoryContent
+ * @property-read \App\Models\GroupCategory|null $GroupCategory
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCategoryContentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCreatorId($value)
@@ -290,6 +292,7 @@ namespace App\Models{
  * @property int $creator_id
  * @property int|null $editor_id
  * @property int $person_id
+ * @property int $group_category_id
  * @property string|null $image
  * @property string|null $title
  * @property string|null $description
@@ -307,7 +310,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite query()
  * @mixin \Eloquent
- * @property int|null $group_category_id
+ * @property-read \App\Models\GroupCategory|null $GroupCategory
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereDeletedAt($value)

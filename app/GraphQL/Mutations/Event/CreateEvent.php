@@ -29,7 +29,7 @@ final class CreateEvent
         $this->userId = $this->getUserId();
 
         $EventResult=[
-            "creator_id" =>  $this->userId,
+            //"creator_id" =>  $this->userId,
             "title" => $args['title'],
             "status" => $args['status'] ?? Status::Active,           
         ];
