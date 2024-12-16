@@ -6,11 +6,14 @@ use App\Models\User;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 
 
 final class GetUser
 {
     use  AuthUserTrait;
+    use AuthorizesUser;
+  
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +24,19 @@ final class GetUser
     }
     function resolveUser($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->user = $this->getUser();
+        
 
-        $User = User::where('id', $args['id']);       
-        return $User->first();
+        // $User = 
+        // $this->user->isAdmin() || $this->user->isSupporter() 
+        // ?
+        //  User::where('id', $args['id'])
+        // : 
+        //  User::where('id', $args['id'])->where('country_code', $this->user->country_code)->where('mobile', $this->user->mobile);  
+
+        // return $User->first();
+
+        $user = $this->getModelByAuthorization(User::class, $args);
+        return $user->first();
     }
 }

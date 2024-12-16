@@ -7,11 +7,17 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
+use App\GraphQL\Enums\AuthAction;
 
 
 final class UpdateFavorite
 {
     use AuthUserTrait;
+    use AuthorizesMutation;
+    use DuplicateCheckTrait;
+     
     protected $userId;
 
     /**
@@ -25,6 +31,8 @@ final class UpdateFavorite
     public function resolveFavorite($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
+        $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
+
 
         //args["user_id_creator"]=$user_id;
         $FavoriteResult=Favorite::find($args['id']);
@@ -33,6 +41,13 @@ final class UpdateFavorite
         {
             return Error::createLocatedError("Favorite-UPDATE-RECORD_NOT_FOUND");
         }
+
+        $this->checkDuplicate(
+            new Favorite(),
+            $args,
+            ['id','editor_id','created_at', 'updated_at'],
+            $args['id']
+        );
         $args['editor_id']=$this->userId;
         $FavoriteResult_filled= $FavoriteResult->fill($args);
         $FavoriteResult->save();       

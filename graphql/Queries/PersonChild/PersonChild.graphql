@@ -3,5 +3,15 @@ getPersonChild(id: ID!): PersonChild  @guard(with:["api"]) @field(resolver: "App
     getPersonChilds(
         first: Int, 
         page: Int, 
+        creator_id: Int,
+        editor_id: Int,
+        person_marriage_id: Int,
+        child_id: Int,
+
+        child_kind: ChildKind,
+        child_status: ChildStatus,   
+        status: Status,
+
+        orderBy:[OrderByClause!] @orderBy
         # filter: PersonChildFilterInput
     ): [PersonChild!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\PersonChild\\GetPersonChilds@resolvePersonChild")

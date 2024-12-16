@@ -3,5 +3,10 @@ getUser(id: ID!): User @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Quer
     getUsers(
         first: Int, 
         page: Int, 
+        country_code: String,
+        mobile: String,
+        status: Status,
+        role: Role
+        orderBy:[OrderByClause!] @orderBy
         # filter: UserFilterInput
     ): [User!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\User\\GetUsers@resolveUser")

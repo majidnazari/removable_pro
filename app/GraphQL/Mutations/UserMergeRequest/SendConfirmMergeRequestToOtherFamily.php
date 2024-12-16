@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\DB;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\MergeStatus;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
+use App\GraphQL\Enums\AuthAction;
+
 
 use Exception;
 use Log;
@@ -17,6 +21,9 @@ class SendConfirmMergeRequestToOtherFamily
 {
     use PersonMergeTrait;
     use AuthUserTrait;
+    use AuthorizesMutation;
+    use DuplicateCheckTrait;
+
 
     protected $userId;
 
@@ -27,8 +34,10 @@ class SendConfirmMergeRequestToOtherFamily
 
     public function resolveUserConfirmMergeRequest($rootValue, array $args)
     {
-        $this->userId = $this->getUserId();
+        $this->user = $this->getUser();
     
+       $this->userAccessibility(UserMergeRequest::class, AuthAction::Delete, $args);
+
         $mergeIdsSender = $args['merge_ids_sender'];        
         $mergeIdsReceiver = $args['merge_ids_receiver'];
        
@@ -40,8 +49,14 @@ class SendConfirmMergeRequestToOtherFamily
             if (!$userMergeRequest) {
                 throw new Error("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
             }
+            $this->checkDuplicate(
+                new UserMergeRequest(),
+                $args,
+                ['id','editor_id','created_at', 'updated_at'],
+                $args['id']
+            );
 
-            if ($userMergeRequest->user_sender_id !== $this->userId) {
+            if ($userMergeRequest->user_sender_id !== $this->user->id) {
                 throw new Error("UserMergeRequest-UNAUTHORIZED_ACCESS!");
             }
 
@@ -52,9 +67,9 @@ class SendConfirmMergeRequestToOtherFamily
             foreach (array_map(null, $mergeIdsSender, $mergeIdsReceiver) as $pair) {
                 [$senderId, $receiverId] = $pair;
             
-                //Log::info("The sender is: {$senderId} and the receiver is: {$receiverId}");
+                Log::info("before mergePersonsByIds is: {$senderId} and the receiver is: {$receiverId}");
             
-                $this->mergePersonsByIds($senderId, $receiverId, $this->userId);
+                $this->mergePersonsByIds($senderId, $receiverId, $this->user->id);
             }
             
             // Update the status to Complete

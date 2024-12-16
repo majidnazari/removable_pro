@@ -196,7 +196,7 @@ return [
         'directives' => 'App\\GraphQL\\Directives',
         'validators' => 'App\\GraphQL\\Validators',
     ],
-
+   
     /*
     |--------------------------------------------------------------------------
     | Security

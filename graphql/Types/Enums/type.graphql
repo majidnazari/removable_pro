@@ -1,10 +1,20 @@
-enum Status {
+enum UserStatus {
     Blocked @enum(value: -1)
     None @enum(value: 0)
     Active @enum(value: 1)
     Inactive @enum(value: 2)
     Suspended @enum(value: 3)
     New @enum(value: 4)
+}
+enum Status {
+   
+    Active @enum(value: 1)
+    Inactive @enum(value: 2)
+   
+}
+enum NotifStatus {
+    Read @enum(value: 1)
+    NotRead @enum(value: 2)
 }
 enum MergeStatus {
    
@@ -60,4 +70,27 @@ enum RequestStatusReceiver
     Refused @enum(value: 2)
     Suspend @enum(value: 3)
      
+}
+
+enum Role 
+{
+    Admin @enum(value: 1)
+    Supporter @enum(value: 2)
+    User @enum(value: 3)
+     
+}
+
+enum Star 
+{
+    One @enum(value: 1)
+    Two @enum(value: 2)
+    Three @enum(value: 3)
+    Four @enum(value: 4)
+    Five @enum(value: 5)
+     
+}
+
+enum SortOrder {
+    ASC
+    DESC
 }

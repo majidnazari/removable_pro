@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('profile_picture')->nullable();    
             //$table->enum('physical_condition', ["Healthy", "Handicapped","Dead", "None"])->default("Healthy");    
 
-            $table->tinyInteger('physical_condition', )->default(0)->comment(" 0=none  1=Healthy 2=Handicapped 3=Dead ");   
+            $table->tinyInteger('physical_condition', )->default(0)->comment(" 0=None  1=Healthy 2=Handicapped 3=Dead ");   
 
             $table->timestamps();
             $table->softDeletes();

@@ -10,14 +10,16 @@
       #import Types/Country/type.graphql
       #import Types/Province/type.graphql
       #import Types/City/type.graphql
-      #import Types/Area/type.graphql
       #import Types/Address/type.graphql
       #import Types/CategoryContent/type.graphql
       #import Types/Event/type.graphql
       #import Types/FamilyBoard/type.graphql
       #import Types/FamilyEvent/type.graphql
       #import Types/Favorite/type.graphql
-      #import Types/GroupView/type.graphql
+      #import Types/Group/type.graphql
+      #import Types/GroupDetail/type.graphql
+      #import Types/GroupCategory/type.graphql
+      #import Types/GroupCategoryDetail/type.graphql
       #import Types/Memory/type.graphql
       #import Types/Person/type.graphql
       #import Types/PersonChild/type.graphql
@@ -25,8 +27,8 @@
       #import Types/PersonDetails/type.graphql
       #import Types/PersonScore/type.graphql
       #import Types/Score/type.graphql
-      #import Types/NaslanRelationship/type.graphql
       #import Types/UserMergeRequest/type.graphql
+      #import Types/Notif/type.graphql
 
 
     type Query {
@@ -35,14 +37,16 @@
         #import Queries/Country/Country.graphql
         #import Queries/Province/Province.graphql
         #import Queries/City/City.graphql
-        #import Queries/Area/Area.graphql
         #import Queries/Address/Address.graphql
         #import Queries/CategoryContent/CategoryContent.graphql
         #import Queries/Event/Event.graphql
         #import Queries/FamilyBoard/FamilyBoard.graphql
         #import Queries/FamilyEvent/FamilyEvent.graphql
         #import Queries/Favorite/Favorite.graphql
-        #import Queries/GroupView/GroupView.graphql
+        #import Queries/Group/Group.graphql
+        #import Queries/GroupDetail/GroupDetail.graphql
+        #import Queries/GroupCategory/GroupCategory.graphql
+        #import Queries/GroupCategoryDetail/GroupCategoryDetail.graphql
         #import Queries/Memory/Memory.graphql
         #import Queries/Person/Person.graphql
         #import Queries/PersonChild/PersonChild.graphql
@@ -50,8 +54,8 @@
         #import Queries/PersonDetails/PersonDetails.graphql
         #import Queries/PersonScore/PersonScore.graphql
         #import Queries/Score/Score.graphql
-        #import Queries/NaslanRelationship/NaslanRelationship.graphql
         #import Queries/UserMergeRequest/UserMergeRequest.graphql
+        #import Queries/Notif/Notif.graphql
 
     }
 
@@ -61,14 +65,16 @@
       #import Mutations/Country/Country.graphql
       #import Mutations/Province/Province.graphql
       #import Mutations/City/City.graphql
-      #import Mutations/Area/Area.graphql
       #import Mutations/Address/Address.graphql
       #import Mutations/CategoryContent/CategoryContent.graphql
       #import Mutations/Event/Event.graphql
       #import Mutations/FamilyBoard/FamilyBoard.graphql
       #import Mutations/FamilyEvent/FamilyEvent.graphql
       #import Mutations/Favorite/Favorite.graphql
-      #import Mutations/GroupView/GroupView.graphql
+      #import Mutations/Group/Group.graphql
+      #import Mutations/GroupDetail/GroupDetail.graphql
+      #import Mutations/GroupCategory/GroupCategory.graphql
+      #import Mutations/GroupCategoryDetail/GroupCategoryDetail.graphql
       #import Mutations/Memory/Memory.graphql
       #import Mutations/Person/Person.graphql
       #import Mutations/PersonChild/PersonChild.graphql
@@ -76,7 +82,7 @@
       #import Mutations/PersonDetails/PersonDetails.graphql
       #import Mutations/PersonScore/PersonScore.graphql
       #import Mutations/Score/Score.graphql
-      #import Mutations/NaslanRelationship/NaslanRelationship.graphql
       #import Mutations/UserMergeRequest/UserMergeRequest.graphql
+      #import Mutations/Notif/Notif.graphql
 
     }

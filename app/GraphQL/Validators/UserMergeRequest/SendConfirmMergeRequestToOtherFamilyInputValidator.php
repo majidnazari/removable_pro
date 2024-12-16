@@ -66,7 +66,7 @@ class SendConfirmMergeRequestToOtherFamilyInputValidator extends Validator
                 'required',
                 'string',
                 new MergeNoDuplicateIds(),
-                new MergeValidateMergeIdReceiver($this->userId),
+                new MergeValidateMergeIdReceiver($this->userId, $userMergeRequestId),
                 new MergeEnsureNotEmpty('merge_ids_receiver'),
 
             ],

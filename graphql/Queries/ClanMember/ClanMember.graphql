@@ -1,8 +1,0 @@
-
-    
-    getClanMember(id: ID!): ClanMember @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\ClanMember\\GetClanMember@resolveClanMember") 
-    getClanMembers(
-        first: Int, 
-        page: Int, 
-        # filter: ClanMemberFilterInput
-    ): [ClanMember!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\ClanMember\\GetClanMembers@resolveClanMember")

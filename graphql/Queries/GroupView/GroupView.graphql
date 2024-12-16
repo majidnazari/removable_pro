@@ -1,7 +1,0 @@
-
-getGroupView(id: ID!): GroupView  @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\GroupView\\GetGroupView@resolveGroupView") 
-    getGroupViews(
-        first: Int, 
-        page: Int, 
-        # filter: GroupViewFilterInput
-    ): [GroupView!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\GroupView\\GetGroupViews@resolveGroupView")

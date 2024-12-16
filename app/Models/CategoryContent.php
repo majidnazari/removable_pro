@@ -56,4 +56,10 @@ class CategoryContent extends Eloquent
     {
         return $this->hasMany(Memory::class, self::COLUMN_CATEGORY_CONTENT_ID);
     }
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

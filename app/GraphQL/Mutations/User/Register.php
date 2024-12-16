@@ -12,8 +12,9 @@ use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Traits\AuthUserTrait;
+use App\Events\UserRegistered;
 
-use App\GraphQL\Enums\Status;
+use App\GraphQL\Enums\UserStatus;
 
 use DB;
 use Log;
@@ -96,7 +97,7 @@ class Register extends BaseAuthResolver
     {
 
         $user=User::where('id',$args['user_id'])
-        ->where('status',Status::New)
+        ->where('status',UserStatus::New)
         ->whereNull('password')
         ->first();
         if(!$user)
@@ -109,7 +110,7 @@ class Register extends BaseAuthResolver
         //$pureMobileNumber = substr($user->mobile, $countryCodeLength); // remove country code prefix
 
         $user->password=Hash::make($args['password']);
-        $user->status=Status::Active;
+        $user->status=UserStatus::Active;
         $user->save();
         
         $credentials = $this->buildCredentials([
@@ -121,6 +122,10 @@ class Register extends BaseAuthResolver
         //Log::info("cred is:".  json_encode($credentials));
 
         $response = $this->makeRequest($credentials);
+
+        //Log::info("the event must run here and user ise:" . json_encode($user));
+        // Fire the UserRegistered event after user is fully registered
+        event(new UserRegistered($user));
        
         return [
             'tokens' =>$response,

@@ -7,11 +7,11 @@ input RefreshTokenInput {
     refresh_token: String
 }
 
-type User {
-    id: ID!
-    mobile: String!
-    email: String
-}
+# type User {
+#     id: ID!
+#     mobile: String!
+#     email: String
+# }
 
 type AuthPayload {
     access_token: String

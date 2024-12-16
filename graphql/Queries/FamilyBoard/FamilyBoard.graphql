@@ -3,5 +3,12 @@ getFamilyBoard(id: ID!): FamilyBoard  @guard(with:["api"]) @field(resolver: "App
     getFamilyBoards(
         first: Int, 
         page: Int, 
+        category_content_id: Int,
+        creator_id: Int,
+        editor_id: Int,
+        selected_date: String,
+        title: String,
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy
         # filter: FamilyBoardFilterInput
     ): [FamilyBoard!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\FamilyBoard\\GetFamilyBoards@resolveFamilyBoard")

@@ -1,4 +1,0 @@
-
-createArea(input: CreateAreaInput! @spread): Area @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Area\\CreateArea@resolveArea") 
-    updateArea(id: ID!, input: UpdateAreaInput! @spread): Area @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Area\\UpdateArea@resolveArea") 
-    deleteArea(id: ID!): Area @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Area\\DeleteArea@resolveArea") 

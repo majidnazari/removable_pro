@@ -6,11 +6,13 @@ use App\Models\Country;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
 
 
 final class GetCountry
 {
     use AuthUserTrait;
+    use AuthorizesUser;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -21,9 +23,12 @@ final class GetCountry
     }
     function resolveCountry($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
 
-        $country = Country::where('id', $args['id']);       
-        return $country->first();
+        // $country = Country::where('id', $args['id']);       
+        // return $country->first();
+
+        $Country = $this->getModelByAuthorization(Country::class, $args);
+        return $Country->first();
     }
 }

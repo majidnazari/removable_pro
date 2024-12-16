@@ -7,12 +7,16 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
+use App\GraphQL\Enums\Star;
 use App\Traits\AuthUserTrait;
+use App\Traits\DuplicateCheckTrait;
 use Log;
 
 final class CreateFavorite
 {
     use AuthUserTrait;
+    use DuplicateCheckTrait;
+
     protected $userId;
 
     /**
@@ -35,14 +39,16 @@ final class CreateFavorite
             "image" => $args['image'],
             "title" => $args['title'],
             "description" => $args['description'],
-            "star" => $args['star'],
-            "status" => $args['status'] ?? Status::Active           
+            "star" => $args['star'] ?? Star::Five   ,
+            "status" => $args['status']  ?? status::Active       
         ];
-        $is_exist= Favorite::where($FavoriteModel)->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("Favorite-CREATE-RECORD_IS_EXIST");
-         }
+        // $is_exist= Favorite::where($FavoriteModel)->first();
+        // if($is_exist)
+        //  {
+        //          return Error::createLocatedError("Favorite-CREATE-RECORD_IS_EXIST");
+        //  }
+
+        $this->checkDuplicate(new Favorite(), $FavoriteModel);
         $FavoriteResult=Favorite::create($FavoriteModel);
         return $FavoriteResult;
     }

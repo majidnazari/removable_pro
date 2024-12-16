@@ -3,36 +3,44 @@
 type FamilyBoard {
     
     id: ID!
-    creator_id: ID!
+    creator_id: ID
     editor_id: ID
-    category_content_id: ID!
+    category_content_id: ID
+    group_category_id: ID   
     
-    title: String!
-    selected_date: String!
-    file_path: String!
-    description: String!
+    title: String
+    selected_date: String
+    file_path: String
+    description: String
     status: Status 
     created_at: DateTime
     updated_at: DateTime
 }
 
-input CreateFamilyBoardInput {
+input CreateFamilyBoardInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
 
     category_content_id: ID!    
+    group_category_id: ID   
     title: String!
-    selected_date: String!
-    file_path: String!
-    description: String!
+    selected_date: String
+    file_path: String
+    description: String
     # status: Status 
 
 }
 
-input UpdateFamilyBoardInput {
+input UpdateFamilyBoardInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
 
-    category_content_id: ID!    
-    title: String!
-    selected_date: String!
-    file_path: String!
-    description: String!
+    category_content_id: ID 
+    group_category_id: ID   
+
+    title: String
+    selected_date: String
+    file_path: String
+    description: String
     status: Status 
 }

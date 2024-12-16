@@ -3,5 +3,14 @@ getFavorite(id: ID!): Favorite @guard(with:["api"]) @field(resolver: "App\\Graph
     getFavorites(
         first: Int, 
         page: Int, 
+        person_id: Int,
+        creator_id: Int,
+        editor_id: Int,
+        star: Star,
+        title: String,
+        description: String,
+      
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy
         # filter: FavoriteFilterInput
     ): [Favorite!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Favorite\\GetFavorites@resolveFavorite")

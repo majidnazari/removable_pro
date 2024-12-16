@@ -7,12 +7,15 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesMutation;
+use App\GraphQL\Enums\AuthAction;
 use Exception;
 
 
 final class DeletePersonChild
 {
     use AuthUserTrait;
+    use AuthorizesMutation;
     protected $userId;
 
     /**
@@ -27,6 +30,8 @@ final class DeletePersonChild
     {  
        
         $this->userId = $this->getUserId();
+       $this->userAccessibility(PersonChild::class, AuthAction::Delete, $args);
+
       
         $PersonChildResult=PersonChild::find($args['id']);
         

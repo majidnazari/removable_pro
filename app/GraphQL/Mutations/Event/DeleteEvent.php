@@ -7,11 +7,14 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesMutation;
+use App\GraphQL\Enums\AuthAction;
 
 
 final class DeleteEvent
 {
     use AuthUserTrait;
+    use AuthorizesMutation;
     protected $userId;
 
     /**
@@ -25,6 +28,8 @@ final class DeleteEvent
     public function resolveEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
+       $this->userAccessibility(Event::class, AuthAction::Delete, $args);
+
   
         $EventResult=Event::find($args['id']);
         

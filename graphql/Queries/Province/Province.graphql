@@ -3,5 +3,9 @@ getProvince(id: ID!): Province @guard(with:["api"]) @field(resolver: "App\\Graph
     getProvinces(
         first: Int, 
         page: Int, 
+        country_id: Int,
+        title: String,
+      
+        orderBy:[OrderByClause!] @orderBy
         # filter: ProvinceFilterInput
     ): [Province!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Province\\GetProvinces@resolveProvince")

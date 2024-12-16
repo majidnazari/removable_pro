@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('country_id')->nullable(); // foreign key
             $table->unsignedBigInteger('province_id')->nullable(); // foreign key
             $table->unsignedBigInteger('city_id')->nullable(); // foreign key
-            $table->unsignedBigInteger('area_id')->nullable(); // foreign key
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
@@ -27,7 +26,6 @@ return new class extends Migration
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
-            $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
 
 
             $table->string('location_title')->nullable(); 
@@ -43,7 +41,7 @@ return new class extends Migration
             //$table->enum('physical_condition', ["Healthy", "Handicapped", "None"])->default("Healthy"); --person_detail
             //$table->enum('status', ["Active", "Inactive", "Suspend", "None"])->default("None");
 
-            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=suspend ");   
+            $table->tinyInteger('status', )->default(0)->comment("1=Active 2=Inactive");   
 
 
             $table->timestamps();

@@ -6,6 +6,8 @@ use App\Models\PersonScore;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
+use App\Traits\SearchQueryBuilder;
 
 
 use Log;
@@ -13,6 +15,8 @@ use Log;
 final class GetPersonScores
 {
     use AuthUserTrait;
+    use AuthorizesUser;
+    use SearchQueryBuilder;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -23,11 +27,15 @@ final class GetPersonScores
     }
     function resolvePersonScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
 
-        $PersonScores = PersonScore::where('deleted_at', null);
+        // $PersonScores = PersonScore::where('deleted_at', null);
 
-        //log::info("the Scores is:" . json_encode($PersonScores));
-        return $PersonScores;
+        // //log::info("the Scores is:" . json_encode($PersonScores));
+        // return $PersonScores;
+
+        $query = $this->getModelByAuthorization(PersonScore::class, $args, true);
+        $query = $this->applySearchFilters( $query, $args);
+        return  $query;
     }
 }

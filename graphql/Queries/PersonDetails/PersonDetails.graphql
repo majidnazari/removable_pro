@@ -3,5 +3,11 @@ getPersonDetail(id: ID!): PersonDetail @guard(with:["api"]) @field(resolver: "Ap
     getPersonDetails(
         first: Int, 
         page: Int, 
+
+        person_id: Int,
+        physical_condition:Status,
+
+        orderBy:[OrderByClause!] @orderBy
+
         # filter: PersonDetailFilterInput
     ): [PersonDetail!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\PersonDetails\\GetPersonDetails@resolvePersonDetail")

@@ -7,11 +7,14 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesMutation;
+use App\GraphQL\Enums\AuthAction;
 
 
 final class DeleteFavorite
 {
     use AuthUserTrait;
+    use AuthorizesMutation;
     protected $userId;
 
     /**
@@ -26,6 +29,8 @@ final class DeleteFavorite
     {  
         
         $this->userId = $this->getUserId();
+       $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
+
         
         $FavoriteResult=Favorite::find($args['id']);
         

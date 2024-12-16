@@ -3,5 +3,9 @@ getCategoryContent(id: ID!): CategoryContent @guard(with:["api"]) @field(resolve
     getCategoryContents(
         first: Int, 
         page: Int, 
+       
+        title: String,
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy
         # filter: CategoryContentFilterInput
     ): [CategoryContent!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\CategoryContent\\GetCategoryContents@resolveCategoryContent")

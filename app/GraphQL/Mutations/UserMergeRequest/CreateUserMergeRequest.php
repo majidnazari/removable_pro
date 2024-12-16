@@ -9,6 +9,8 @@ use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesMutation;
+use App\GraphQL\Enums\AuthAction;
 
 use Exception;
 use Log;
@@ -16,6 +18,8 @@ use Log;
 final class CreateUserMergeRequest
 {
     use AuthUserTrait;
+    use AuthorizesMutation;
+
     protected $userId;
    
     /**
@@ -28,19 +32,20 @@ final class CreateUserMergeRequest
     }
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {        
-        $this->userId = $this->getUserId();
+        $this->user = $this->getUser();
+        //$this->AuthorizesMutation(UserMergeRequest::class, AuthAction::Create, $args);
 
-        $UserMergeRequestResult=[
-            "status" => $args[' '] ?? Status::Active,
-            "title" => $args['title'],
-            "description" => $args['description']   ?? ""          
-        ];
-        $is_exist= UserMergeRequest::where('title',$args['title'])->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("UserMergeRequest-CREATE-RECORD_IS_EXIST");
-         }
-        $UserMergeRequestResult_result=UserMergeRequest::create($UserMergeRequestResult);
-        return $UserMergeRequestResult_result;
+        // $UserMergeRequestResult=[
+        //     "status" => $args[' '] ?? Status::Active,
+        //     "title" => $args['title'],
+        //     "description" => $args['description']   ?? ""          
+        // ];
+        // $is_exist= UserMergeRequest::where('title',$args['title'])->first();
+        // if($is_exist)
+        //  {
+        //          return Error::createLocatedError("UserMergeRequest-CREATE-RECORD_IS_EXIST");
+        //  }
+        // $UserMergeRequestResult_result=UserMergeRequest::create($UserMergeRequestResult);
+        // return $UserMergeRequestResult_result;
     }
 }

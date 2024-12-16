@@ -4,5 +4,9 @@
     getcountries(
         first: Int, 
         page: Int, 
+       
+        title: String,
+       
+        orderBy:[OrderByClause!] @orderBy
         # filter: CountryFilterInput
     ): [Country!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Country\\GetCountries@resolveCountry")

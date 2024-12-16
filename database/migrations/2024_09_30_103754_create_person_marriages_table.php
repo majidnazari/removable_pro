@@ -16,16 +16,18 @@ return new class extends Migration
         Schema::create('person_marriages', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('man_id')->index(); // foreign key
-            $table->unsignedBigInteger('woman_id')->index(); // foreign key for the spouse
             $table->unsignedBigInteger('creator_id'); // foreign key for the spouse
             $table->unsignedBigInteger('editor_id')->nullable();
+            $table->unsignedBigInteger('man_id')->index(); // foreign key
+            $table->unsignedBigInteger('woman_id')->index(); // foreign key for the spouse
+            
             
             // Define foreign keys
-            $table->foreign('man_id')->references('id')->on('people')->onDelete('cascade');
-            $table->foreign('woman_id')->references('id')->on('people')->onDelete('cascade');
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('man_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('woman_id')->references('id')->on('people')->onDelete('cascade');
+          
 
             
             //$table->foreign('man_id')->references('id')->on('people')->onDelete('cascade');
@@ -36,8 +38,8 @@ return new class extends Migration
             //$table->string('marriage_status', 20)->default("None");
             //$table->string('status', 20)->default("None");
 
-            $table->tinyInteger('marriage_status', )->default(0)->comment(" 0=none 1=Related 2=Notrelated  3=suspend ");   
-            $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none  1=active 2=inactive 3=suspend ");   
+            $table->tinyInteger('marriage_status', )->default(0)->comment(" 0=None 1=Related 2=Notrelated  3=suspend ");   
+            $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive");   
 
 
 

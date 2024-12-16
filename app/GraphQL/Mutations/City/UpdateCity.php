@@ -8,10 +8,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesMutation;
+use App\GraphQL\Enums\AuthAction;
 
 final class UpdateCity
 {
    use AuthUserTrait;
+   use AuthorizesMutation;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -24,6 +27,8 @@ final class UpdateCity
     {  
         
         $this->userId = $this->getUserId();
+       $this->userAccessibility(City::class, AuthAction::Delete, $args);
+
 
         //args["user_id_creator"]=$user_id;
         $CityResult=City::find($args['id']);

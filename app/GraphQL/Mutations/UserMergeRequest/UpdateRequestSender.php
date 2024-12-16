@@ -15,12 +15,16 @@ use Carbon\Carbon;
 use Log;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesMutation;
+use App\GraphQL\Enums\AuthAction;
 
 use Exception;
 
 final class UpdateRequestSender
 {
     use AuthUserTrait;
+    use AuthorizesMutation;
+
     protected $user_sender_id;
 
     /**
@@ -34,6 +38,7 @@ final class UpdateRequestSender
     public function resolveUpdateRequestSender($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->user_sender_id = $this->getUserId();
+       $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
 
         $data = [
             "editor_id" =>  $this->user_sender_id,

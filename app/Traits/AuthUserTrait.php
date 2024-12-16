@@ -38,7 +38,7 @@ trait AuthUserTrait
         }
 
         $this->user = $user;
-        return  $this->userId;//auth()->guard('api')->user()?->id; // Use null safe operator to handle unauthenticated cases
+        return  $this->user;//auth()->guard('api')->user()?->id; // Use null safe operator to handle unauthenticated cases
     }
 }
 

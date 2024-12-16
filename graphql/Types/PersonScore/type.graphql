@@ -16,7 +16,9 @@ type PersonScore {
     updated_at: String
 }
 
-input CreatePersonScoreInput {
+input CreatePersonScoreInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator") 
+{
 
     person_id: ID
     score_id: ID
@@ -24,7 +26,9 @@ input CreatePersonScoreInput {
     #status: Status
 }
 
-input UpdatePersonScoreInput {
+input UpdatePersonScoreInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
     
     person_id: ID
     score_id: ID

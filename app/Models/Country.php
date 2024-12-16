@@ -43,5 +43,11 @@ class Country extends Eloquent
     public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
 
 
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }
 

@@ -6,11 +6,16 @@ use App\Models\Address;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesUser;
+use App\Traits\SearchQueryBuilder;
 
 
 final class GetAddresses
 {
     use AuthUserTrait;
+    use AuthorizesUser;
+    use SearchQueryBuilder;
+
     protected $userId;
     /**
      * @param  null  $_
@@ -22,9 +27,12 @@ final class GetAddresses
     }
     function resolveAddress($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $this->userId = $this->getUserId();
+        // $this->userId = $this->getUserId();
+        // $Addresss = Address::where('deleted_at', null)->with("City");
+        // return $Addresss;
 
-        $Addresss = Address::where('deleted_at', null)->with("City");
-        return $Addresss;
+        $query = $this->getModelByAuthorization(Address::class, $args, true);
+        $query = $this->applySearchFilters( $query, $args);
+        return  $query;
     }
 }

@@ -8,11 +8,14 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Traits\AuthorizesMutation;
+use App\GraphQL\Enums\AuthAction;
 
 use Exception;
 final class DeletePersonMarriage
 {
     use AuthUserTrait;
+    use AuthorizesMutation;
     protected $userId;
 
     /**
@@ -27,6 +30,8 @@ final class DeletePersonMarriage
     {  
        
         $this->userId = $this->getUserId();
+       $this->userAccessibility(PersonMarriage::class, AuthAction::Delete, $args);
+
        
         $PersonMarriageResult=PersonMarriage::find($args['id']);
         

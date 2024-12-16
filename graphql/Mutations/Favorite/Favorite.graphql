@@ -1,4 +1,4 @@
 
-createGroupView(input: CreateGroupViewInput! @spread): GroupView @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupView\\CreateGroupView@resolveGroupView") 
-    updateGroupView(id: ID!, input: UpdateGroupViewInput! @spread): GroupView  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupView\\UpdateGroupView@resolveGroupView") 
-    deleteGroupView(id: ID!): GroupView @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupView\\DeleteGroupView@resolveGroupView") 
+createFavorite(input: CreateFavoriteInput! @spread): Favorite @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\CreateFavorite@resolveFavorite") 
+    updateFavorite(id: ID!, input: UpdateFavoriteInput! @spread): Favorite  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\UpdateFavorite@resolveFavorite") 
+    deleteFavorite(id: ID!): Favorite @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\DeleteFavorite@resolveFavorite") 
