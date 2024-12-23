@@ -196,9 +196,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Memory::class, self::COLUMN_EDITOR_ID);
     }
-    public function Notifs()
+    // public function Notifs()
+    // {
+    //     return $this->hasMany(Notif::class, self::COLUMN_USER_ID);
+    // }
+    public function Notifications()
     {
-        return $this->hasMany(Notif::class, self::COLUMN_USER_ID);
+        return $this->morphMany(Notif::class, 'notifiable');
     }
    
     protected $casts = [

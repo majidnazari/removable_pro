@@ -217,8 +217,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard query()
  * @mixin \Eloquent
- * @property-read \App\Models\CategoryContent $CategoryContent
+ * @property-read \App\Models\CategoryContent|null $CategoryContent
  * @property-read \App\Models\GroupCategory|null $GroupCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
+ * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCategoryContentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatorId($value)
@@ -266,6 +268,8 @@ namespace App\Models{
  * @mixin \Eloquent
  * @property-read \App\Models\CategoryContent $CategoryContent
  * @property-read \App\Models\GroupCategory|null $GroupCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
+ * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCategoryContentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCreatorId($value)
@@ -311,6 +315,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite query()
  * @mixin \Eloquent
  * @property-read \App\Models\GroupCategory|null $GroupCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
+ * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereDeletedAt($value)
@@ -526,6 +532,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory query()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
+ * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCategoryContentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCreatedAt($value)
@@ -584,9 +592,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif query()
  * @mixin \Eloquent
+ * @property int $notifiable_id
+ * @property string $notifiable_type
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\User $Creator
- * @property-read \App\Models\User $RelatedUser
+ * @property-read \App\Models\User|null $RelatedUser
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $notifiable
  * @method static \Database\Factories\NotifFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif notRead()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif onlyTrashed()
@@ -596,8 +607,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereNotifStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereNotifiableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereNotifiableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif withoutTrashed()
  */
@@ -949,8 +961,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $Notifs
- * @property-read int|null $notifs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $Notifications
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCodeExpiredAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCountryCode($value)

@@ -10,6 +10,8 @@ use App\Traits\AuthorizesUser;
 use App\Traits\SearchQueryBuilder;
 use App\Traits\GetsPeopleInGroups;
 
+use Log;
+
 
 final class GetMemories
 {
@@ -35,10 +37,14 @@ final class GetMemories
         $query = $this->getModelByAuthorization(Memory::class, $args, true);
         $query = $this->applySearchFilters( $query, $args);
 
-        // Use the canAccessMemory method to filter based on access rights
-        // $query = $query->get()->filter(function ($memory) {
-        //     return $this->canAccessMemory($memory);
-        // });
+        Log::info("the before filter is :" . json_encode($query->get()));
+
+        //Use the canAccessMemory method to filter based on access rights
+        $query->get()->filter(function ($memory) {
+            $result= $this->canAccessMemory($memory);
+
+            Log::info("the result of final result is:". json_encode($result));
+        });
 
        
         return  $query;

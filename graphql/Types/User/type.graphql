@@ -21,7 +21,8 @@ type User {
 
     "When the account was last updated."
     updated_at: DateTime!
+    Notifications: [Notif]
 
-   notifs: [Notif!]! @field(resolver: "App\\GraphQL\\Queries\\User\\Resolvers\\UserResolver@notifs")
+#    notifs: [Notif!]! @field(resolver: "App\\GraphQL\\Queries\\User\\Resolvers\\UserResolver@notifs")
     
 }

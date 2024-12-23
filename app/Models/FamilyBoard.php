@@ -78,6 +78,10 @@ class FamilyBoard extends Eloquent
     {
         return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);
     }
+    public function notifications()
+    {
+        return $this->morphMany(Notif::class, 'notifiable');
+    }
 
 
     public static function getAuthorizationColumns()
