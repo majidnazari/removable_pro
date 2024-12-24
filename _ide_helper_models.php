@@ -483,22 +483,24 @@ namespace App\Models{
  * @property int $creator_id
  * @property int|null $editor_id
  * @property int $group_id
- * @property int $person_id
+ * @property int $user_id
  * @property string $title
  * @property int $status 1=Active 2=Inactive
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $UserCanSee
+ * @property-read int|null $user_can_see_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail wherePersonId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereUserId($value)
  */
 	class GroupDetail extends \Eloquent {}
 }

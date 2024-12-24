@@ -11,13 +11,15 @@ type GroupDetail {
     Creator: User
     Editor: User
     Group: Group
-    Person: Person
+    # Person: Person
+    UserCanSee: [User]
 }
 
 # Input Type for Creating a GroupDetail
 input CreateGroupDetailInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator") {
     group_id: ID!  
-    person_id: ID! 
+    # person_id: ID! 
+    user_id: ID! 
     
     title: String!
     status: Status!

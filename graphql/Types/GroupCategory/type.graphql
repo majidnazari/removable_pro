@@ -8,7 +8,7 @@ type GroupCategory {
     updated_at: DateTime
     Creator: User
     Editor: User
-    # GroupCategoryDetails:[GroupCategoryDetail]
+    GroupCategoryDetails:[GroupCategoryDetail]
     # people: [Person] @field(resolver: "App\\GraphQL\\Queries\\GroupCategoryDetail\\GroupCategoryDetailResolver@getAllPeopleFromCategories")
 
 }

@@ -28,7 +28,8 @@ class GroupDetail extends Eloquent
     protected $fillable = [
         'creator_id',
         'editor_id',
-        'person_id',
+        // 'person_id',
+        'user_id',
         'group_id',
         'title',
         'status',
@@ -43,20 +44,21 @@ class GroupDetail extends Eloquent
     public const COLUMN_EDITOR_ID = 'editor_id';
 
     public const COLUMN_PERSON_ID = 'person_id';
+    public const COLUMN_USER_ID = 'id';
     public const COLUMN_GROUP_ID = 'group_id';
 
     public function Group()
     {
         return $this->belongsTo(Group::class, self::COLUMN_GROUP_ID);
     }
-    public function Person()
-    {
-        return $this->belongsTo(Person::class, self::COLUMN_PERSON_ID);
-    }
-    // public function People()
+    // public function Person()
     // {
-    //     return $this->hasMany(Person::class, self::COLUMN_PERSON_ID);
+    //     return $this->belongsTo(Person::class, self::COLUMN_PERSON_ID);
     // }
+    public function UserCanSee()
+    {
+        return $this->hasMany(User::class, self::COLUMN_USER_ID);
+    }
 
     public function Creator()
     {

@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\GroupCategoryDetail;
 use App\Models\Memory;
+use App\Models\GroupDetail;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use Log;
@@ -67,10 +68,8 @@ trait GetsPeopleInGroups
      */
     public function canAccessMemory(Memory $memory)
     {
-        $this->user = Auth::user();
+        $this->user = $this->getUser();
         Log::info("the memory is :" . ($memory));
-
-
 
         // $groupCategoryId = $memory->group_category_id;
 
@@ -81,8 +80,6 @@ trait GetsPeopleInGroups
         // Log::info("the people in groups are:" . json_encode($peopleInGroup));
         // Log::info("the the user can see this memory:" . $peopleInGroup->contains('id', $user->id));
         // return $peopleInGroup->contains('id', $user->id);
-
-
 
         // Admin or Supporter: Always return true for full access
         if ($this->user->isAdmin() || $this->user->isSupporter()) {
@@ -95,19 +92,26 @@ trait GetsPeopleInGroups
         }
 
         // Now, check if the memory is associated with a group that the user is allowed to access
-        return $this->hasAccessToGroup($memory);
+        $groupPeople= $this->hasAccessToGroup($memory);
+        return $groupPeople;
     }
 
     private function hasAccessToGroup($memory)
     {
         // Get the logged-in user's ID
-        $userId = $this->userId;
+        $user =  $this->getUser();
 
         // Get all groupCategoryDetails related to the memory
-        $groupCategoryDetails = $memory->groupCategoryDetails;
+        $groupCategoryId = $memory->group_category_id;
+
+        Log::info("the memory :" . json_encode($memory));
+        Log::info("the groupCategoryDetailsis :" . $groupCategoryId);
+
 
         // Extract all group_ids associated with this memory
-        $groupIds = $groupCategoryDetails->pluck('group_id')->toArray();
+        $groupIds = GroupCategoryDetail::where('group_category_id',$groupCategoryId)->pluck('group_id')->toArray();
+
+        Log::info("the groupIds :" . json_encode($groupIds));
 
         // If no groups, return false early
         if (empty($groupIds)) {
@@ -115,17 +119,16 @@ trait GetsPeopleInGroups
         }
 
         // Fetch all person_ids associated with these group_ids in a single query
-        $personIds = \DB::table('group_details')
-            ->whereIn('group_id', $groupIds)
+        $userIdsCanSee = GroupDetail::whereIn('group_id', $groupIds)
             ->whereNull('deleted_at')  // Assuming there's a deleted_at column in group_details
-            ->pluck('person_id')
+            ->pluck('user_id')
             ->toArray();
 
-        Log::info("the user id is is :" . $this->userId);
-        Log::info("the personIds is :" . json_encode($personIds));
+        Log::info("the user id is :" . $this->getUser());
+        Log::info("the userIdsCanSee is :" . json_encode($userIdsCanSee));
 
         // Check if the logged-in user’s person_id is in the list of person_ids
-        return in_array($userId, $personIds);
+        return in_array($user->id, $userIdsCanSee);
     }
 
 }
