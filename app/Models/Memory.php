@@ -63,7 +63,7 @@ class Memory extends Eloquent
 
     public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
     public const COLUMN_PERSON_ID = 'person_id';
-    public const COLUMN_group_category_ID = 'group_category_id';
+    public const COLUMN_GROUP_CATEGORY_ID = 'group_category_id';
 
     public function Person()
     {
@@ -75,7 +75,7 @@ class Memory extends Eloquent
     }
     public function GroupCategory()
     {
-        return $this->belongsTo(GroupCategory::class, self::COLUMN_group_category_ID);
+        return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);
     }
 
     public function Creator()

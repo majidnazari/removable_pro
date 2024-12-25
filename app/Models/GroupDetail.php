@@ -44,12 +44,12 @@ class GroupDetail extends Eloquent
     public const COLUMN_EDITOR_ID = 'editor_id';
 
     public const COLUMN_PERSON_ID = 'person_id';
-    public const COLUMN_USER_ID = 'id';
+    public const COLUMN_USER_ID = 'user_id';
     public const COLUMN_GROUP_ID = 'group_id';
 
     public function Group()
     {
-        return $this->belongsTo(Group::class, self::COLUMN_GROUP_ID);
+        return $this->hasMany(Group::class, self::COLUMN_GROUP_ID);
     }
     // public function Person()
     // {
@@ -57,7 +57,7 @@ class GroupDetail extends Eloquent
     // }
     public function UserCanSee()
     {
-        return $this->hasMany(User::class, self::COLUMN_USER_ID);
+        return $this->belongsTo(User::class, self::COLUMN_USER_ID);
     }
 
     public function Creator()
@@ -68,6 +68,10 @@ class GroupDetail extends Eloquent
     public function Editor()
     {
         return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
+    }
+    public function User()
+    {
+        return $this->belongsTo(User::class, self::COLUMN_USER_ID);
     }
 
     public static function getAuthorizationColumns()

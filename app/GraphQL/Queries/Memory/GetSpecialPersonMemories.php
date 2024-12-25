@@ -35,6 +35,24 @@ final class GetSpecialPersonMemories
     }
     function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+
+        $memory = Memory::with([
+            'GroupCategory.GroupCategoryDetails.Group.GroupDetails.UserCanSee' // Eager load the necessary relationships
+        ])
+            ->find(2);
+        Log::info("memory with with: " . json_encode($memory));
+
+        // Retrieve distinct user_ids from the related group_details
+        $userIds = $memory->GroupCategory
+            ->GroupCategoryDetails
+            ->flatMap(function ($gcd) {
+                return $gcd->Group->GroupDetails->pluck('user_id'); // Get all user_ids from group_details for each group
+            })
+            ->unique(); // Make sure to get unique user_ids
+
+        // Log or return the user_ids
+        Log::info("Distinct user_ids: " . json_encode($userIds));
+
         $this->userId = $this->getUserId();
         $this->personOwner = $this->findOwner();
 
@@ -42,6 +60,7 @@ final class GetSpecialPersonMemories
         $query = Memory::where('deleted_at', null)
             ->where('person_id', $this->personOwner->id);
 
+        Log::info("the query is:" . json_encode($query->get()));
         if ($args['person_id'] == $this->personOwner->id) {
             // Condition 1: If the person_id matches personOwner's id, return all memories for that person_id
         } else {
@@ -50,24 +69,11 @@ final class GetSpecialPersonMemories
                 // First check: creator_id matches logged-in user
                 $subQuery->where('creator_id', $this->userId)
                     ->orWhere(function ($innerQuery) {
-                        // Second check: Check if the logged-in user exists in the group_category_id relation
-    
-                        // Step 1: Get the list of group_category_ids from group_category_details
-                        $groupCategoryIds = GroupCategoryDetail::whereHas('GroupCategory', function ($groupCategoryQuery) {
-                            // Step 2: Get all group_ids from the group_category
-                            $groupCategoryQuery->whereHas('GroupCategoryDetails', function ($groupCategoryDetailsQuery) {
-                                // Step 3: For each group_category_detail, check if the logged-in user exists in group_details
-                                $groupCategoryDetailsQuery->whereHas('Group', function ($groupQuery) {
-                                    $groupQuery->whereHas('GroupDetails', function ($detailsQuery) {
-                                        // Step 4: Check if the logged-in user_id exists in group_details
-                                        $detailsQuery->where('user_id', $this->userId);
-                                    });
-                                });
-                            });
-                        })->pluck('group_category_id'); // Get a list of group_category_ids
-    
-                        // Step 5: Filter memories where the group_category_id matches one of the fetched ids
-                        $innerQuery->whereIn('group_category_id', $groupCategoryIds);
+                        // Step 1: Check if the logged-in user exists in the GroupDetails relationship directly
+                        $innerQuery->whereHas('GroupCategory.GroupCategoryDetails.Group.GroupDetails', function ($groupDetailsQuery) {
+                            // Step 2: Check if the logged-in user_id exists in the group_details
+                            $groupDetailsQuery->where('user_id', $this->userId);
+                        });
                     });
             });
         }

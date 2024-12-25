@@ -85,7 +85,10 @@ class GroupCategoryDetail extends Eloquent
         return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);  // Corrected to use group_category_id
     }
 
-
+    public function GroupDetails()
+    {
+        return $this->hasMany(GroupDetail::class, self::COLUMN_GROUP_ID);
+    }
     public function Creator()
     {
         return $this->belongsTo(User::class, self::COLUMN_CREATOR_ID);

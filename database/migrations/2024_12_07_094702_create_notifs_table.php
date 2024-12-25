@@ -20,7 +20,7 @@ return new class extends Migration {
 
             // Polymorphic columns
             $table->unsignedBigInteger('notifiable_id');
-            $table->string('notifiable_type');
+            $table->string('notifiable_type'); 
             
             $table->string('message', length: 255)->nullable();
 

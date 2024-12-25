@@ -455,6 +455,8 @@ namespace App\Models{
  * @property int $group_category_id
  * @property int $group_id
  * @property-read \App\Models\GroupCategory $GroupCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GroupDetail> $GroupDetails
+ * @property-read int|null $group_details_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Person> $personsInRelatedGroups
  * @property-read int|null $persons_in_related_groups_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereGroupCategoryId($value)
@@ -489,8 +491,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $UserCanSee
- * @property-read int|null $user_can_see_count
+ * @property-read int|null $group_count
+ * @property-read \App\Models\User $User
+ * @property-read \App\Models\User $UserCanSee
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereDeletedAt($value)
