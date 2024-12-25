@@ -37,6 +37,9 @@ return new class extends Migration
             //$table->enum('status',["Active","Inactive","None"])->default("Active");
 
             $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive");   
+            $table->tinyInteger('confirm_status', )->default(3)->comment("1=Accept 2=Reject 3=Suspend");   
+            $table->string('reject_cause')->nullable();
+
 
 
             $table->timestamps();

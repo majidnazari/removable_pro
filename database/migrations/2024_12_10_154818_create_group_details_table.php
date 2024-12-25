@@ -23,10 +23,10 @@ return new class extends Migration
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
 
-            $table->string('title');
+            // $table->string('title');
             $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive"); 
             
             $table->timestamps();

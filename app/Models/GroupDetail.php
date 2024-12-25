@@ -31,7 +31,6 @@ class GroupDetail extends Eloquent
         // 'person_id',
         'user_id',
         'group_id',
-        'title',
         'status',
     ];
     use HasFactory;
@@ -49,7 +48,7 @@ class GroupDetail extends Eloquent
 
     public function Group()
     {
-        return $this->hasMany(Group::class, self::COLUMN_GROUP_ID);
+        return $this->belongsTo(Group::class, self::COLUMN_GROUP_ID);
     }
     // public function Person()
     // {

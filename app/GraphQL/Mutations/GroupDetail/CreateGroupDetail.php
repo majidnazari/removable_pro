@@ -34,7 +34,7 @@ final class CreateGroupDetail
            // "person_id" =>  $args['person_id'],
             "user_id" =>  $args['user_id'],
             "group_id" =>  $args['group_id'],
-            "title" => $args['title'],          
+           // "title" => $args['title'],          
             //"status" => $args['status'] ?? Status::Active            
         ];
         // $is_exist= GroupDetail::where($GroupDetailModel)->first();

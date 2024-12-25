@@ -9,7 +9,7 @@ enum UserStatus: int
     case None = 0;
     case Active = 1;
     case Inactive = 2;
-    case suspend = 3;
+    case Suspend = 3;
     case New = 4;
 
 }

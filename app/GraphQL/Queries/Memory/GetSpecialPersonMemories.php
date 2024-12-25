@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Queries\Memory;
 
+use App\GraphQL\Enums\ConfirmMemoryStatus;
 use App\Models\Memory;
 use App\Models\GroupDetail;
 use App\Models\GroupCategoryDetail;
@@ -57,17 +58,15 @@ final class GetSpecialPersonMemories
         $this->personOwner = $this->findOwner();
 
         // Start with the base query for 'deleted_at' and 'person_id'
-        $query = 
-        isset($args['person_id'] )
-        ?
-        Memory::where('deleted_at', null)->where('person_id', $args['person_id'])
-        :
-        Memory::where('deleted_at', null)->where('person_id', $this->personOwner->id);
+        $query = Memory::where('deleted_at', null)
+            ->where('confirm_status', ConfirmMemoryStatus::Accept->value)
+            ->where('person_id', $args['person_id'] ?? $this->personOwner->id);
+
 
 
         Log::info("the query is:" . json_encode($query->get()));
         if (isset($args['person_id']) && $args['person_id'] != $this->personOwner->id) {
-            
+
             // Condition 2: For another person_id, apply the additional checks
             $query->where(function ($subQuery) {
                 // First check: creator_id matches logged-in user

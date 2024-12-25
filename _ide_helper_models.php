@@ -486,12 +486,10 @@ namespace App\Models{
  * @property int|null $editor_id
  * @property int $group_id
  * @property int $user_id
- * @property string $title
  * @property int $status 1=Active 2=Inactive
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read int|null $group_count
  * @property-read \App\Models\User $User
  * @property-read \App\Models\User $UserCanSee
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereCreatedAt($value)
@@ -501,7 +499,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereUserId($value)
  */
@@ -537,9 +534,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory query()
  * @mixin \Eloquent
+ * @property int $confirm_status 1=Accept 2=Reject 3=Suspend
+ * @property string|null $reject_cause
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
  * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCategoryContentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereConfirmStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCreatorId($value)
@@ -550,6 +550,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereIsShownAfterDeath($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory wherePersonId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereRejectCause($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereUpdatedAt($value)

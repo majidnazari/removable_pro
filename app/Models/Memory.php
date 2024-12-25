@@ -51,6 +51,8 @@ class Memory extends Eloquent
         'description',
         'is_shown_after_death',
         'status',
+        'confirm_status',
+        'reject_cause',
     ];
     use HasFactory;
     use SoftDeletes;
