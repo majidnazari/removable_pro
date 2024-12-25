@@ -36,43 +36,48 @@ final class GetSpecialPersonMemories
     function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
-        $memory = Memory::with([
-            'GroupCategory.GroupCategoryDetails.Group.GroupDetails.UserCanSee' // Eager load the necessary relationships
-        ])
-            ->find(2);
-        Log::info("memory with with: " . json_encode($memory));
+        // $memory = Memory::with([
+        //     'GroupCategory.GroupCategoryDetails.Group.GroupDetails.UserCanSee' // Eager load the necessary relationships
+        // ])
+        //     ->find(2);
+        // Log::info("memory with with: " . json_encode($memory));
 
-        // Retrieve distinct user_ids from the related group_details
-        $userIds = $memory->GroupCategory
-            ->GroupCategoryDetails
-            ->flatMap(function ($gcd) {
-                return $gcd->Group->GroupDetails->pluck('user_id'); // Get all user_ids from group_details for each group
-            })
-            ->unique(); // Make sure to get unique user_ids
+        // // Retrieve distinct user_ids from the related group_details
+        // $userIds = $memory->GroupCategory
+        //     ->GroupCategoryDetails
+        //     ->flatMap(function ($gcd) {
+        //         return $gcd->Group->GroupDetails->pluck('user_id'); // Get all user_ids from group_details for each group
+        //     })
+        //     ->unique(); // Make sure to get unique user_ids
 
-        // Log or return the user_ids
-        Log::info("Distinct user_ids: " . json_encode($userIds));
+        // // Log or return the user_ids
+        // Log::info("Distinct user_ids: " . json_encode($userIds));
 
         $this->userId = $this->getUserId();
         $this->personOwner = $this->findOwner();
 
         // Start with the base query for 'deleted_at' and 'person_id'
-        $query = Memory::where('deleted_at', null)
-            ->where('person_id', $this->personOwner->id);
+        $query = 
+        isset($args['person_id'] )
+        ?
+        Memory::where('deleted_at', null)->where('person_id', $args['person_id'])
+        :
+        Memory::where('deleted_at', null)->where('person_id', $this->personOwner->id);
+
 
         Log::info("the query is:" . json_encode($query->get()));
-        if ($args['person_id'] == $this->personOwner->id) {
-            // Condition 1: If the person_id matches personOwner's id, return all memories for that person_id
-        } else {
+        if (isset($args['person_id']) && $args['person_id'] != $this->personOwner->id) {
+            
             // Condition 2: For another person_id, apply the additional checks
             $query->where(function ($subQuery) {
                 // First check: creator_id matches logged-in user
                 $subQuery->where('creator_id', $this->userId)
                     ->orWhere(function ($innerQuery) {
                         // Step 1: Check if the logged-in user exists in the GroupDetails relationship directly
-                        $innerQuery->whereHas('GroupCategory.GroupCategoryDetails.Group.GroupDetails', function ($groupDetailsQuery) {
+                        $innerQuery->whereHas('GroupCategory.GroupCategoryDetails.Group.GroupDetails.UserCanSee', function ($groupDetailsQuery) {
                             // Step 2: Check if the logged-in user_id exists in the group_details
-                            $groupDetailsQuery->where('user_id', $this->userId);
+                            $groupDetailsQuery->where('id', $this->userId);
+
 
                         });
                     });
