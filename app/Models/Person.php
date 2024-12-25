@@ -168,14 +168,14 @@ class Person extends Eloquent
     public function findRootFatherOfFather()
     {
         // Log current person ID to track recursion
-        Log::info("Checking root ancestor for person ID: " . $this->id);
+        //Log::info("Checking root ancestor for person ID: " . $this->id);
 
         // Find any parent marriage where this person is a child
         $parentMarriage = PersonMarriage::whereHas(self::COLUMN_PERSONCHILD, function ($query) {
             $query->where(self::COLUMN_CHILD_ID, $this->id);
         })->first();
 
-        Log::info("Parent marriage found for person ID {$this->id}: " . json_encode($parentMarriage));
+        //Log::info("Parent marriage found for person ID {$this->id}: " . json_encode($parentMarriage));
 
         // If no parent marriage is found, this person is the root ancestor
         if (!$parentMarriage) {
@@ -215,7 +215,7 @@ class Person extends Eloquent
             $query->where(self::COLUMN_CHILD_ID, $this->id);
         })->get();
 
-        Log::info("ancestry method is :" . json_encode($parentMarriages));
+        //Log::info("ancestry method is :" . json_encode($parentMarriages));
 
         $ancestors = collect();
 
@@ -259,7 +259,7 @@ class Person extends Eloquent
         }
 
         // Log the simplified heads array
-        Log::info("All top-level ancestors: " . json_encode($this->rootAncestors));
+        //Log::info("All top-level ancestors: " . json_encode($this->rootAncestors));
 
         return [$result,$this->rootAncestors];
     }

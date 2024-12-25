@@ -33,7 +33,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
         }
 
         $this->userId = $user->id;
-        Log::info("the user id is:". $this->userId );
+       // Log::info("the user id is:". $this->userId );
     }
 
     /**

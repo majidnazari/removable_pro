@@ -53,7 +53,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
                 return [$key => $argument->value];
             });
 
-        Log::info("Fields detected for validation: " . json_encode($fields));
+        //Log::info("Fields detected for validation: " . json_encode($fields));
 
       
 
@@ -72,7 +72,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
                         ->where('creator_id', $user->id)
                         ->exists();
 
-                    Log::info("Validation check for {$attribute} in {$tableName}: " . json_encode($exists));
+                    //Log::info("Validation check for {$attribute} in {$tableName}: " . json_encode($exists));
 
                     if (!$exists) {
                         $fail("The selected {$attribute} does not belong to the authenticated user.");

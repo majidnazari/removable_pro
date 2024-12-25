@@ -104,7 +104,7 @@ final class GetMemories
         // Get the user’s groups via GroupCategoryDetail
         $user = $this->getUser();
 
-        Log::info("the user id is :" . $user->id);
+       // Log::info("the user id is :" . $user->id);
         $groupCategoryIds = GroupCategoryDetail::whereHas('Group', function ($query) use ($user) {
             // Check if the user is associated with the group through GroupDetail
             $query->whereHas('GroupDetails', function ($query) use ($user) {
@@ -112,7 +112,7 @@ final class GetMemories
             });
         })->pluck('group_category_id')->toArray();
 
-        Log::info("User group category IDs: " . json_encode($groupCategoryIds));
+       // Log::info("User group category IDs: " . json_encode($groupCategoryIds));
 
         return $groupCategoryIds;
     }

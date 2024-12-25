@@ -62,9 +62,7 @@ final class GetSpecialPersonMemories
             ->where('confirm_status', ConfirmMemoryStatus::Accept->value)
             ->where('person_id', $args['person_id'] ?? $this->personOwner->id);
 
-
-
-        Log::info("the query is:" . json_encode($query->get()));
+       // Log::info("the query is:" . json_encode($query->get()));
         if (isset($args['person_id']) && $args['person_id'] != $this->personOwner->id) {
 
             // Condition 2: For another person_id, apply the additional checks
@@ -86,7 +84,7 @@ final class GetSpecialPersonMemories
         // Fetch and log the memories
         $memories = $query;
 
-        Log::info("pall memories can this user see are : " . json_encode($memories->get()));
+       // Log::info("pall memories can this user see are : " . json_encode($memories->get()));
 
         return $memories;
     }

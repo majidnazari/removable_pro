@@ -35,12 +35,12 @@ class SendConfirmMergeRequestToOtherFamily
     public function resolveUserConfirmMergeRequest($rootValue, array $args)
     {
         $this->user = $this->getUser();
-    
-       $this->userAccessibility(UserMergeRequest::class, AuthAction::Delete, $args);
 
-        $mergeIdsSender = $args['merge_ids_sender'];        
+        $this->userAccessibility(UserMergeRequest::class, AuthAction::Delete, $args);
+
+        $mergeIdsSender = $args['merge_ids_sender'];
         $mergeIdsReceiver = $args['merge_ids_receiver'];
-       
+
         DB::beginTransaction();
 
         try {
@@ -52,7 +52,7 @@ class SendConfirmMergeRequestToOtherFamily
             $this->checkDuplicate(
                 new UserMergeRequest(),
                 $args,
-                ['id','editor_id','created_at', 'updated_at'],
+                ['id', 'editor_id', 'created_at', 'updated_at'],
                 $args['id']
             );
 
@@ -60,18 +60,18 @@ class SendConfirmMergeRequestToOtherFamily
                 throw new Error("UserMergeRequest-UNAUTHORIZED_ACCESS!");
             }
 
-            $mergeIdsSender = explode(',', $mergeIdsSender );
-            $mergeIdsReceiver = explode(',',  $mergeIdsReceiver);
+            $mergeIdsSender = explode(',', $mergeIdsSender);
+            $mergeIdsReceiver = explode(',', $mergeIdsReceiver);
 
-            
+
             foreach (array_map(null, $mergeIdsSender, $mergeIdsReceiver) as $pair) {
                 [$senderId, $receiverId] = $pair;
-            
-                Log::info("before mergePersonsByIds is: {$senderId} and the receiver is: {$receiverId}");
-            
+
+                // Log::info("before mergePersonsByIds is: {$senderId} and the receiver is: {$receiverId}");
+
                 $this->mergePersonsByIds($senderId, $receiverId, $this->user->id);
             }
-            
+
             // Update the status to Complete
             $userMergeRequest->status = MergeStatus::Complete;
             $userMergeRequest->merge_ids_sender = $args['merge_ids_sender'];

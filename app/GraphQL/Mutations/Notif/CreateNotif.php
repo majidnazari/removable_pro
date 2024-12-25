@@ -30,7 +30,6 @@ final class CreateNotif
     {        
         $this->userId = $this->getUserId();
         
-
         $NotifResult=[
             // "status" => $args['status'] ?? Status::Active,
             // "title" => $args['title'],

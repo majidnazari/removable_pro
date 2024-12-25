@@ -63,7 +63,7 @@ class GroupCategoryDetailResolver
         $groupCategoryDetails =  $query->select('group_id')->get();
 
         // Log group IDs to ensure they're retrieved correctly
-        Log::info("Group IDs from GroupCategoryDetails: " . json_encode($groupCategoryDetails));
+        //("Group IDs from GroupCategoryDetails: " . json_encode($groupCategoryDetails));
 
         // Initialize an empty collection to hold all people
         $allPeople = collect();
@@ -75,7 +75,7 @@ class GroupCategoryDetailResolver
 
             if ($group) {
                 // Log the group details with people
-                Log::info("Found group: " . json_encode($group));
+                //Log::info("Found group: " . json_encode($group));
 
                 // Step 3: Loop through the group details and add the associated people
                 foreach ($group->GroupDetails as $groupDetail) {
@@ -85,7 +85,7 @@ class GroupCategoryDetailResolver
                     }
                 }
             } else {
-                Log::info("Group with ID " . $categoryDetail->group_id . " not found.");
+                //Log::info("Group with ID " . $categoryDetail->group_id . " not found.");
             }
         }
 
@@ -93,7 +93,7 @@ class GroupCategoryDetailResolver
         $allPeople = $allPeople->unique('id');
 
         // Log final list of all people
-        Log::info("Final list of all people: " . json_encode($allPeople));
+        //Log::info("Final list of all people: " . json_encode($allPeople));
 
         return $allPeople;
     }

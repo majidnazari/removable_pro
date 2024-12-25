@@ -104,14 +104,14 @@ trait GetsPeopleInGroups
         // Get all groupCategoryDetails related to the memory
         $groupCategoryId = $memory->group_category_id;
 
-        Log::info("the memory :" . json_encode($memory));
-        Log::info("the groupCategoryDetailsis :" . $groupCategoryId);
+       // Log::info("the memory :" . json_encode($memory));
+       // Log::info("the groupCategoryDetailsis :" . $groupCategoryId);
 
 
         // Extract all group_ids associated with this memory
         $groupIds = GroupCategoryDetail::where('group_category_id',$groupCategoryId)->pluck('group_id')->toArray();
 
-        Log::info("the groupIds :" . json_encode($groupIds));
+       // Log::info("the groupIds :" . json_encode($groupIds));
 
         // If no groups, return false early
         if (empty($groupIds)) {
@@ -124,8 +124,8 @@ trait GetsPeopleInGroups
             ->pluck('user_id')
             ->toArray();
 
-        Log::info("the user id is :" . $this->getUser());
-        Log::info("the userIdsCanSee is :" . json_encode($userIdsCanSee));
+       // Log::info("the user id is :" . $this->getUser());
+       // Log::info("the userIdsCanSee is :" . json_encode($userIdsCanSee));
 
         // Check if the logged-in user’s person_id is in the list of person_ids
         return in_array($user->id, $userIdsCanSee);
