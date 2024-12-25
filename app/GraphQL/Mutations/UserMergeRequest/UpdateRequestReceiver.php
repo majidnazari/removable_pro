@@ -41,7 +41,7 @@ final class UpdateRequestReceiver
         //$this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
 
         // Specify columns to check (optional)
-        $columnsToCheck = ['creator_id', 'user_receiver_id']; // You can remove or pass null to check just 'creator_id'
+        $columnsToCheck = ['user_receiver_id']; // You can remove or pass null to check just 'creator_id'
 
         // Check if the user matches any of the columns in the array
         $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args, $columnsToCheck);
