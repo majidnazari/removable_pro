@@ -12,7 +12,7 @@ type GroupDetail {
     Editor: User
     Group: Group
     # Person: Person
-    UserCanSee: [User]
+    UserCanSee: User
 }
 
 # Input Type for Creating a GroupDetail

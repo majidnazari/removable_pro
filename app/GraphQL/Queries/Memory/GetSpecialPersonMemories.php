@@ -73,6 +73,7 @@ final class GetSpecialPersonMemories
                         $innerQuery->whereHas('GroupCategory.GroupCategoryDetails.Group.GroupDetails', function ($groupDetailsQuery) {
                             // Step 2: Check if the logged-in user_id exists in the group_details
                             $groupDetailsQuery->where('user_id', $this->userId);
+
                         });
                     });
             });
@@ -81,7 +82,7 @@ final class GetSpecialPersonMemories
         // Fetch and log the memories
         $memories = $query;
 
-        Log::info("person of this user is: " . json_encode($memories));
+        Log::info("pall memories can this user see are : " . json_encode($memories->get()));
 
         return $memories;
     }
