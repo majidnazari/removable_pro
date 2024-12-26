@@ -18,7 +18,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
         'person_id' => 'people',
         'group_id' => 'groups',
 
-       // 'category_content_id' => 'category_contents',
+        // 'category_content_id' => 'category_contents',
         'group_category_id' => 'group_categories',
         // Add more mappings as needed
     ];
@@ -55,7 +55,9 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
         //Log::info("Fields detected for validation: " . json_encode($fields));
 
-      
+        // Get all allowed `creator_id` values: the logged-in user and users connected via `user_merge_requests`
+        $allowedCreatorIds = $this->getAllowedCreatorIds($user->id);
+
 
         // Apply validation rules dynamically for each '_id' field
         foreach ($fields as $fieldName => $value) {
@@ -66,10 +68,10 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
             // Skip creator_id check for excluded fields
             if (!in_array($fieldName, $this->excludedFields)) {
-                $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user) {
+                $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user,$allowedCreatorIds) {
                     $exists = DB::table($tableName)
                         ->where('id', $value)
-                        ->where('creator_id', $user->id)
+                        ->whereIn('creator_id', $allowedCreatorIds)
                         ->exists();
 
                     //Log::info("Validation check for {$attribute} in {$tableName}: " . json_encode($exists));
@@ -90,5 +92,23 @@ class UserOwnsRecordValidator extends GraphQLValidator
     protected function resolveTableName(string $fieldName): string
     {
         return $this->tableMap[$fieldName] ?? str_replace('_id', '', $fieldName) . 's';
+    }
+
+    protected function getAllowedCreatorIds(int $userId): array
+    {
+        // Start with the logged-in user ID
+        $allowedCreatorIds = [$userId];
+
+        // Get all user_receiver_id values where the logged-in user is the sender and status is Complete (4)
+        $connectedUserIds = DB::table('user_merge_requests')
+            ->where('user_sender_id', $userId)
+            ->where('status', 4) // Status = Complete
+            ->pluck('user_receiver_id')
+            ->toArray();
+
+        // Merge the connected user IDs into the allowed IDs
+        $allowedCreatorIds = array_merge($allowedCreatorIds, $connectedUserIds);
+
+        return $allowedCreatorIds;
     }
 }

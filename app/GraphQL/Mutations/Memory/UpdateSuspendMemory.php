@@ -51,7 +51,7 @@ final class UpdateSuspendMemory
 
         if ($MemoryResult->person_id !== $this->findOwner()->id) {
             // If person_id doesn't match, throw an exception
-            return Error::createLocatedError("You don't have permission to change records of other users.");
+            return Error::createLocatedError("This is not your own memory.");
         }
 
 
