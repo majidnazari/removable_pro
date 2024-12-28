@@ -25,9 +25,9 @@ return new class extends Migration
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->foreign('user_sender_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('user_sender_id')->references('id')->on('user')->onDelete('cascade');
             $table->foreign('node_sender_id')->references('id')->on('people')->onDelete('cascade');
-            $table->foreign('user_receiver_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('user_receiver_id')->references('id')->on('user')->onDelete('cascade');
             $table->foreign('node_receiver_id')->references('id')->on('people')->onDelete('cascade');
 
 

@@ -30,6 +30,10 @@ return new class extends Migration {
             $table->timestamp('last_attempt_at')->nullable();
             $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none 1=active 2=inactive 3=suspend 4=New");  
             $table->tinyInteger('role', )->default(3)->comment(" 1=Admin 2=Supporter 3=User");  
+
+            $table->unsignedBigInteger('LFB_ID');
+            $table->foreign('LFB_ID')->references('id')->on('family_boards')->onDelete('cascade');
+
            // $table->enum('role', ['admin', 'supporter', 'user'])->default('user');
  
 
