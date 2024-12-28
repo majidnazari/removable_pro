@@ -25,23 +25,22 @@ final class DeleteFamilyEvent
         // TODO implement the resolver
     }
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
+    {
         $this->userId = $this->getUserId();
-       $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
+        $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
 
-       
-        $FamilyEventResult=FamilyEvent::find($args['id']);
-        
-        if(!$FamilyEventResult)
-        {
+
+        $FamilyEventResult = FamilyEvent::find($args['id']);
+
+        if (!$FamilyEventResult) {
             return Error::createLocatedError("FamilyEvent-DELETE-RECORD_NOT_FOUND");
         }
-        $FamilyEventResult->editor_id=  $this->userId ;
+        $FamilyEventResult->editor_id = $this->userId;
         $FamilyEventResult->save();
 
-        $FamilyEventResult_filled= $FamilyEventResult->delete();  
+        $FamilyEventResult_filled = $FamilyEventResult->delete();
         return $FamilyEventResult;
 
-        
+
     }
 }

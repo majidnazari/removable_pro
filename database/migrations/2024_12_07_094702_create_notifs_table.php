@@ -11,7 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('notifs', function (Blueprint $table) {
-            $table->id();
+
+            $table->unsignedBigInteger('id');
             $table->unsignedBigInteger('creator_id')->index();
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');// the user new created 
 

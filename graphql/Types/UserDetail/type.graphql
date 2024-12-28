@@ -1,0 +1,29 @@
+
+
+type UserDetail {
+    id: ID!
+    creator_id: ID
+    Creator: User    
+    editor_id: ID
+    Editor: User
+    last_seen_family_board_id: ID
+    mobile: String
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+
+}
+
+input CreateUserDetailInput {
+  
+    last_seen_family_board_id: ID
+    mobile: String
+    status: Status
+}
+
+input UpdateUserDetailInput {
+  
+    last_seen_family_board_id: ID
+    mobile: String
+    status: Status
+}

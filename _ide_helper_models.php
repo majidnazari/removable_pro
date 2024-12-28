@@ -997,6 +997,41 @@ namespace App\Models{
 /**
  * 
  *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail query()
+ * @mixin \Eloquent
+ * @property int $id
+ * @property int $creator_id
+ * @property int $editor_id
+ * @property int $last_seen_family_board_id
+ * @property string $mobile
+ * @property int $status 1=Active 2=Inactive
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $Craetor
+ * @property-read \App\Models\User $Editor
+ * @property-read \App\Models\FamilyBoard $FamilyBoard
+ * @method static \Database\Factories\UserDetailFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereLastSeenFamilyBoardId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereMobile($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail withoutTrashed()
+ */
+	class UserDetail extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
  * @property int $id
  * @property int $sender_id
  * @property int $receiver_id

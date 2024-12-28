@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('family_boards', function (Blueprint $table) {
+            
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();

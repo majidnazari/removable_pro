@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_merge_requests', function (Blueprint $table) {
-            $table->id();
+            
+            $table->unsignedBigInteger('id');
+
             $table->unsignedBigInteger('creator_id')->index(); 
             $table->unsignedBigInteger('editor_id')->nullable()->index(); 
 

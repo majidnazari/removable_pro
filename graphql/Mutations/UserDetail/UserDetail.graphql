@@ -1,0 +1,4 @@
+
+    createUserDetail(input: CreateUserDetailInput! @spread): UserDetail @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\UserDetail\\CreateUserDetail@resolveUserDetail") 
+    updateUserDetail(id: ID!, input: UpdateUserDetailInput! @spread): UserDetail @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\UserDetail\\UpdateUserDetail@resolveUserDetail") 
+    deleteUserDetail(id: ID!): UserDetail @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\UserDetail\\DeleteUserDetail@resolveUserDetail") 

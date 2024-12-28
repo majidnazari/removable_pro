@@ -14,7 +14,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('memories', function (Blueprint $table) {
-            $table->id();
+
+          $table->unsignedBigInteger('id');
 
             $table->unsignedBigInteger('creator_id'); 
             $table->unsignedBigInteger('editor_id')->nullable();

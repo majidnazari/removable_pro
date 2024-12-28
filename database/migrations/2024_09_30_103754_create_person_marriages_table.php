@@ -14,7 +14,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('person_marriages', function (Blueprint $table) {
-            $table->id();
+            
+            $table->unsignedBigInteger('id');
 
             $table->unsignedBigInteger('creator_id'); // foreign key for the spouse
             $table->unsignedBigInteger('editor_id')->nullable();

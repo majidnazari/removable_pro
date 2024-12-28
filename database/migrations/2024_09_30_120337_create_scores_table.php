@@ -14,7 +14,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('scores', function (Blueprint $table) {
-            $table->id();            
+
+            $table->id();           
 
             $table->string('title');
             //$table->enum('status',["Active","Inactive","None"])->default("Active");

@@ -14,6 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('family_events', function (Blueprint $table) {
+            
             $table->id();
           
             $table->unsignedBigInteger('creator_id');
