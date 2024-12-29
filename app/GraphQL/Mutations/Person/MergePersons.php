@@ -62,7 +62,7 @@ final class MergePersons
             if ($primaryPerson->gender !== $secondaryPerson->gender) {
                 throw new Error("Persons cannot be merged because they have different genders.");
             }
-            if ($primaryPerson->is_owner == $secondaryPerson->is_owner) {
+            if (($primaryPerson->is_owner == $secondaryPerson->is_owner) && ($primaryPerson->is_owner == 1)) {
                 throw new Error("Persons cannot be merged because they have same owner.");
             }
 
