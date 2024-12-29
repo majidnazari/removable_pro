@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id')->primary();
 
             $table->unsignedBigInteger('creator_id'); // foreign key
             $table->unsignedBigInteger('editor_id')->nullable(); // foreign key

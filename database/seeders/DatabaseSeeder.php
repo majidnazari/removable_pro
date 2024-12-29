@@ -40,6 +40,8 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             AddressSeeder::class,
             FamilyBoardSeeder::class,
+            UserMergeRequestSeeder::class,
+
             // NaslanRelationshipSeeder::class,
 
         ]);

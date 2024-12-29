@@ -976,12 +976,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastAttemptAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastPasswordChangeAttempt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereMobile($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereMobileIsVerified($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePasswordChangeAttempts($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSentCode($value)
@@ -1003,19 +1000,21 @@ namespace App\Models{
  * @mixin \Eloquent
  * @property int $id
  * @property int $creator_id
- * @property int $editor_id
+ * @property int|null $editor_id
  * @property int $last_seen_family_board_id
  * @property string $mobile
  * @property int $status 1=Active 2=Inactive
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\User $Craetor
- * @property-read \App\Models\User $Editor
+ * @property-read \App\Models\User|null $Editor
  * @property-read \App\Models\FamilyBoard $FamilyBoard
  * @method static \Database\Factories\UserDetailFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereLastSeenFamilyBoardId($value)

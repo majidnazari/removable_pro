@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('favorites', function (Blueprint $table) {
             
-            $table->unsignedBigInteger('id');
+            $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
             $table->unsignedBigInteger('person_id')->index(); // foreign key favorite

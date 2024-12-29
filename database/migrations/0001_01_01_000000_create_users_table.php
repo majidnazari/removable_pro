@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             
-            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id')->primary();
           
             $table->string('country_code',6);
             $table->string('mobile',18)->unique()->index();
@@ -25,10 +25,10 @@ return new class extends Migration {
             $table->string('password')->nullable();
             $table->string(column: 'sent_code')->nullable();
             $table->string(column: 'code_expired_at')->nullable();
-            //$table->integer('password_change_attempts')->default(0);
-           // $table->timestamp('last_password_change_attempt')->nullable();
-            //$table->tinyInteger(column: 'user_attempt_time')->default(0);
-           // $table->timestamp('last_attempt_at')->nullable();
+            $table->integer('password_change_attempts')->default(0);
+            $table->timestamp('last_password_change_attempt')->nullable();
+            $table->tinyInteger(column: 'user_attempt_time')->default(0);
+            $table->timestamp('last_attempt_at')->nullable();
             $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=none 1=active 2=inactive 3=suspend 4=New");  
             $table->tinyInteger('role', )->default(3)->comment(" 1=Admin 2=Supporter 3=User");  
 
@@ -72,8 +72,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('users');
+
     }
 };

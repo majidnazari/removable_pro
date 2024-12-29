@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('person_children', function (Blueprint $table) {
             
-            $table->unsignedBigInteger('id');
+            $table->unsignedBigInteger('id')->primary();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
             $table->unsignedBigInteger('person_marriage_id')->index();
