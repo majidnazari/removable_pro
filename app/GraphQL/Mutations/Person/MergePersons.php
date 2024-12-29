@@ -62,8 +62,8 @@ final class MergePersons
             if ($primaryPerson->gender !== $secondaryPerson->gender) {
                 throw new Error("Persons cannot be merged because they have different genders.");
             }
-            if (($primaryPerson->is_owner == $secondaryPerson->is_owner) && ($primaryPerson->is_owner == 1)) {
-                throw new Error("Persons cannot be merged because they have same owner.");
+            if (($secondaryPerson->is_owner == 1) && ($primaryPerson->is_owner == 1)) {
+                throw new Error("two people you have selected  both  are owner!");
             }
 
             $this->mergeMarriages($primaryPerson, $secondaryPerson, auth_id: $this->userId);
