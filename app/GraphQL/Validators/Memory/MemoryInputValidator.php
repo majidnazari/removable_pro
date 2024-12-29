@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Validators;
+namespace App\GraphQL\Validators\Memory;
 
 use Nuwave\Lighthouse\Validation\Validator;
 use Illuminate\Validation\Rule;

@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\FamilyBoard;
 use Carbon\Carbon;
-
+use Log;
 class DeleteOldFamilyBoards extends Command
 {
     /**
@@ -31,8 +31,9 @@ class DeleteOldFamilyBoards extends Command
     {
         // Find and delete FamilyBoards that are older than 2 days from the created_at timestamp
         $deleted = FamilyBoard::where('created_at', '<', Carbon::now()->subDays(2))
-                              ->delete();
+            ->delete();
 
+        Log::info("the delete fb runs");
         $this->info("$deleted FamilyBoard(s) deleted successfully.");
     }
 }
