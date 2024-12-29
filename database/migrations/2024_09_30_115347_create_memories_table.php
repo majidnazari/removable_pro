@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('editor_id')->nullable();
             
             $table->unsignedBigInteger('person_id')->index();
-            $table->unsignedBigInteger('category_content_id')->index()->nullable();
+            $table->unsignedBigInteger('category_content_id')->index();
             $table->unsignedBigInteger('group_category_id')->index();
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
@@ -30,9 +30,9 @@ return new class extends Migration
             $table->foreign('category_content_id')->references('id')->on('category_contents')->onDelete('cascade');
             $table->foreign('group_category_id')->references('id')->on('group_categories')->onDelete('cascade');
             
+            $table->string('title');
 
             $table->string('content')->nullable();// according to the category content may be voice or video or pic or simple text
-            $table->string('title');
             $table->string('description')->nullable();
             $table->boolean('is_shown_after_death')->default(0);
             //$table->enum('status',["Active","Inactive","None"])->default("Active");

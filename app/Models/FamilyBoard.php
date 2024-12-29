@@ -18,7 +18,7 @@ use Eloquent;
  * @property int $group_category_id
  * @property string $title
  * @property string $selected_date
- * @property string|null $file_path
+ * @property string|null $content
  * @property string $description
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -46,7 +46,7 @@ class FamilyBoard extends Eloquent
         'group_category_id',
         'title',
         'selected_date',
-        'file_path',
+        'content',
         'description',
         'status',
     ];

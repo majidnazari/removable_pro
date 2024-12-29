@@ -202,7 +202,7 @@ namespace App\Models{
  * @property int $group_category_id
  * @property string $title
  * @property string $selected_date
- * @property string|null $file_path
+ * @property string|null $content
  * @property string $description
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -217,6 +217,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard query()
  * @mixin \Eloquent
+ * @property string|null $file_path
  * @property-read \App\Models\CategoryContent|null $CategoryContent
  * @property-read \App\Models\GroupCategory|null $GroupCategory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
@@ -967,6 +968,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
  * @mixin \Eloquent
+ * @property int $user_attempt_time
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $Notifications
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCodeExpiredAt($value)
@@ -976,14 +978,18 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastAttemptAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastPasswordChangeAttempt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereMobile($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereMobileIsVerified($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePasswordChangeAttempts($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSentCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUserAttemptTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
  */
