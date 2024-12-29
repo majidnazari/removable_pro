@@ -51,6 +51,14 @@ input CreatePersonInput
     # status: Status
 }
 
+input CreateMergePersonInput 
+@validator(class: "App\\GraphQL\\Validators\\Person\\MergePersonsValidator")
+{
+    primaryPersonId: ID!
+    secondaryPersonId: ID!
+
+}
+
 input UpdatePersonInput 
 @validator(class: "App\\GraphQL\\Validators\\Person\\UpdatePersonInputValidator")
 @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")

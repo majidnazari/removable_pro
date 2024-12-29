@@ -55,16 +55,19 @@ final class MergePersons
             // Log::info("Switching:" . $primaryPersonId . " - " . $secondaryPersonId);
 
 
-            if (!$primaryPerson || !$secondaryPerson) {
-                throw new Error("One or both persons do not exist.");
-            }
-            // Check if both persons have the same gender
-            if ($primaryPerson->gender !== $secondaryPerson->gender) {
-                throw new Error("Persons cannot be merged because they have different genders.");
-            }
-            if (($secondaryPerson->is_owner == 1) && ($primaryPerson->is_owner == 1)) {
-                throw new Error("two people you have selected  both  are owner!");
-            }
+            // if (!$primaryPerson || !$secondaryPerson) {
+            //     throw new Error("One or both persons do not exist.");
+            // }
+            // // Check if both persons have the same gender
+            // if ($primaryPerson->gender !== $secondaryPerson->gender) {
+            //     throw new Error("Persons cannot be merged because they have different genders.");
+            // }
+            // if (($secondaryPerson->is_owner == 1) && ($primaryPerson->is_owner == 1)) {
+            //     throw new Error("two people you have selected  both  are owner!");
+            // }
+            // if ($primaryPerson->id == $secondaryPerson->id) {
+            //     throw new Error("Persons cannot be merged because they are the same.");
+            // }
 
             $this->mergeMarriages($primaryPerson, $secondaryPerson, auth_id: $this->userId);
             //$this->mergeChildren($primaryPerson, $secondaryPerson, auth_id: $this->userId);
