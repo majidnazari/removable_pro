@@ -32,12 +32,9 @@ trait AuthorizesMutation
     protected function userAccessibility(string $modelClass, AuthAction $action, array $args, ?array $columnsToCheck = null): mixed
     {
         $this->user = $this->getUser();
-
+        $modelInstance=null;
         //Log::info("the user loggee din is:" . $this->user);
-        if ($this->user->isAdmin() || $this->user->isSupporter()) {
-            // Admins and Supporters can perform any action
-            return true;
-        }
+
 
         // if (in_array($action, [AuthAction::Update, AuthAction::Delete])) {
         //     $modelInstance = (new $modelClass)->findOrFail($args['id']);
@@ -56,8 +53,17 @@ trait AuthorizesMutation
         $columnsToCheck = $columnsToCheck ?? ['creator_id'];
 
         if (in_array($action, [AuthAction::Update, AuthAction::Delete])) {
+            //Log::info("before fetch FB");
             $modelInstance = (new $modelClass)->findOrFail($args['id']);
-
+            if (!$modelInstance) {
+                // Return a custom error response if the model doesn't exist
+                throw new Exception(message: "Model not found");
+            }
+            Log::info("after fetch FB and ".json_encode($modelInstance));
+            if ($this->user->isAdmin() || $this->user->isSupporter()) {
+                // Admins and Supporters can perform any action
+                return $modelInstance;
+            }
             // Loop through each column to check if the user matches
             $isAuthorized = false;
             foreach ($columnsToCheck as $column) {
@@ -73,6 +79,6 @@ trait AuthorizesMutation
             }
         }
 
-        return true;
+        return $modelInstance;
     }
 }

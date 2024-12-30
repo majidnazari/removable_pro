@@ -43,7 +43,7 @@ final class CreateFamilyBoard
         ];
        
          // Dynamic duplicate check: Pass column(s) and values
-         $this->checkDuplicate(new FamilyBoard(), ['title' => $args['title'] , 'status' => Status::Active]);
+         $this->checkDuplicate(new FamilyBoard(), $FamilyBoardResult);
 
         $FamilyBoardResult_result=FamilyBoard::create($FamilyBoardResult);
         return $FamilyBoardResult_result;
