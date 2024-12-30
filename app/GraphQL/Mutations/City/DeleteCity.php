@@ -8,12 +8,16 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 final class DeleteCity
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
+
     protected $userId;
 
     /**
@@ -25,25 +29,36 @@ final class DeleteCity
         // TODO implement the resolver
     }
     public function resolveCity($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
+    {
         $this->userId = $this->getUserId();
-       $this->userAccessibility(City::class, AuthAction::Delete, $args);
 
-  
-        $CityResult=City::find($args['id']);
-        
-        if(!$CityResult)
-        {
-            return Error::createLocatedError("City-DELETE-RECORD_NOT_FOUND");
+        try {
+
+            $CityResult = $this->userAccessibility(City::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
 
-        $CityResult->editor_id= $this->userId;
-        $CityResult->save();
+        return $this->updateAndDeleteModel($CityResult, $args, $this->userId);
+        //    $this->userAccessibility(City::class, AuthAction::Delete, $args);
 
 
-        $CityResult_filled= $CityResult->delete();  
-        return $CityResult;
+        //     $CityResult=City::find($args['id']);
 
-        
+        //     if(!$CityResult)
+        //     {
+        //         return Error::createLocatedError("City-DELETE-RECORD_NOT_FOUND");
+        //     }
+
+        //     $CityResult->editor_id= $this->userId;
+        //     $CityResult->save();
+
+
+        //     $CityResult_filled= $CityResult->delete();  
+        //     return $CityResult;
+
+
     }
 }

@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 
@@ -19,6 +20,7 @@ final class UpdateFamilyEvent
     use AuthUserTrait;
     use AuthorizesMutation;
     use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
 
     protected $userId;
 
@@ -33,6 +35,23 @@ final class UpdateFamilyEvent
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
+
+        try {
+
+            $FamilyEventResult = $this->userAccessibility(FamilyEvent::class, AuthAction::Update, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+        $this->checkDuplicate(
+            new FamilyEvent(),
+            $args,
+            ['id', 'editor_id', 'created_at', 'updated_at'],
+            excludeId: $args['id']
+        );
+
+        return $this->updateModel($FamilyEventResult, $args, $this->userId);
+
         // $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
 
         // //args["user_id_creator"]=$user_id;
@@ -42,26 +61,26 @@ final class UpdateFamilyEvent
         //     return Error::createLocatedError("FamilyEvent-UPDATE-RECORD_NOT_FOUND");
         // }
 
-        try {
+        // try {
 
-            $FamilyEventResult = $this->userAccessibility(FamilyEvent::class, AuthAction::Update, $args);
+        //     $FamilyEventResult = $this->userAccessibility(FamilyEvent::class, AuthAction::Update, $args);
 
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
 
-        $this->checkDuplicate(
-            new FamilyEvent(),
-            $args,
-            ['id', 'editor_id', 'created_at', 'updated_at'],
-            $args['id']
-        );
+        // $this->checkDuplicate(
+        //     new FamilyEvent(),
+        //     $args,
+        //     ['id', 'editor_id', 'created_at', 'updated_at'],
+        //     $args['id']
+        // );
 
-        $args['editor_id'] = $this->userId;
-        $FamilyEventResult_filled = $FamilyEventResult->fill($args);
-        $FamilyEventResult->save();
+        // $args['editor_id'] = $this->userId;
+        // $FamilyEventResult_filled = $FamilyEventResult->fill($args);
+        // $FamilyEventResult->save();
 
-        return $FamilyEventResult;
+        // return $FamilyEventResult;
 
 
     }

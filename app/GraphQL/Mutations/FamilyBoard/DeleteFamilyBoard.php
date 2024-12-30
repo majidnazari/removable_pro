@@ -8,6 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 
@@ -16,6 +17,7 @@ final class DeleteFamilyBoard
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -29,28 +31,39 @@ final class DeleteFamilyBoard
     public function resolveFamilyBoard($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
+
         try {
 
             $FamilyBoardResult = $this->userAccessibility(FamilyBoard::class, AuthAction::Delete, $args);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
-           
+
         }
 
-        // $FamilyBoardResult = FamilyBoard::find($args['id']);
+        return $this->updateAndDeleteModel($FamilyBoardResult, $args, $this->userId);
+        // try {
 
-        // if (!$FamilyBoardResult) {
-        //     return Error::createLocatedError("FamilyBoard-DELETE-RECORD_NOT_FOUND");
+        //     $FamilyBoardResult = $this->userAccessibility(FamilyBoard::class, AuthAction::Delete, $args);
+
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+           
         // }
+
+        // // $FamilyBoardResult = FamilyBoard::find($args['id']);
+
+        // // if (!$FamilyBoardResult) {
+        // //     return Error::createLocatedError("FamilyBoard-DELETE-RECORD_NOT_FOUND");
+        // // }
        
-        $FamilyBoardResult->update([
-            'editor_id' => $this->userId,
-        ]);
+        // $FamilyBoardResult->update([
+        //     'editor_id' => $this->userId,
+        // ]);
         
-        $FamilyBoardResult->delete();
+        // $FamilyBoardResult->delete();
         
-        return $FamilyBoardResult;
+        // return $FamilyBoardResult;
 
 
     }

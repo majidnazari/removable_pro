@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 
@@ -18,6 +19,7 @@ final class UpdateFavorite
     use AuthUserTrait;
     use AuthorizesMutation;
     use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
 
     protected $userId;
 
@@ -32,6 +34,22 @@ final class UpdateFavorite
     public function resolveFavorite($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
+
+        try {
+
+            $FavoriteResult = $this->userAccessibility(Favorite::class, AuthAction::Update, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+        $this->checkDuplicate(
+            new Favorite(),
+            $args,
+            ['id', 'editor_id', 'created_at', 'updated_at'],
+            excludeId: $args['id']
+        );
+
+        return $this->updateModel($FavoriteResult, $args, $this->userId);
         // $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
 
 
@@ -42,25 +60,25 @@ final class UpdateFavorite
         // {
         //     return Error::createLocatedError("Favorite-UPDATE-RECORD_NOT_FOUND");
         // }
-        try {
+        // try {
 
-            $FavoriteResult = $this->userAccessibility(Favorite::class, AuthAction::Update, $args);
+        //     $FavoriteResult = $this->userAccessibility(Favorite::class, AuthAction::Update, $args);
 
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
 
-        $this->checkDuplicate(
-            new Favorite(),
-            $args,
-            ['id', 'editor_id', 'created_at', 'updated_at'],
-            $args['id']
-        );
-        $args['editor_id'] = $this->userId;
-        $FavoriteResult_filled = $FavoriteResult->fill($args);
-        $FavoriteResult->save();
+        // $this->checkDuplicate(
+        //     new Favorite(),
+        //     $args,
+        //     ['id', 'editor_id', 'created_at', 'updated_at'],
+        //     $args['id']
+        // );
+        // $args['editor_id'] = $this->userId;
+        // $FavoriteResult_filled = $FavoriteResult->fill($args);
+        // $FavoriteResult->save();
 
-        return $FavoriteResult;
+        // return $FavoriteResult;
 
 
     }

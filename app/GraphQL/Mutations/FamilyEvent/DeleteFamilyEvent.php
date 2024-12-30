@@ -8,6 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 
@@ -16,6 +17,7 @@ final class DeleteFamilyEvent
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
 
     protected $userId;
 
@@ -30,6 +32,16 @@ final class DeleteFamilyEvent
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
+        try {
+
+            $FamilyEventResult = $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
+        }
+
+        return $this->updateAndDeleteModel($FamilyEventResult, $args, $this->userId);
         // $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
 
 
@@ -38,18 +50,18 @@ final class DeleteFamilyEvent
         // if (!$FamilyEventResult) {
         //     return Error::createLocatedError("FamilyEvent-DELETE-RECORD_NOT_FOUND");
         // }
-        try {
+        // try {
 
-            $FamilyEventResult = $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
+        //     $FamilyEventResult = $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
 
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-        $FamilyEventResult->editor_id = $this->userId;
-        $FamilyEventResult->save();
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
+        // $FamilyEventResult->editor_id = $this->userId;
+        // $FamilyEventResult->save();
 
-        $FamilyEventResult_filled = $FamilyEventResult->delete();
-        return $FamilyEventResult;
+        // $FamilyEventResult_filled = $FamilyEventResult->delete();
+        // return $FamilyEventResult;
 
 
     }

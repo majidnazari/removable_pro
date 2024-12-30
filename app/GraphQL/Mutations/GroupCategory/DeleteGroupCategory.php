@@ -8,6 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 
@@ -16,6 +17,7 @@ final class DeleteGroupCategory
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -30,6 +32,17 @@ final class DeleteGroupCategory
     {  
         
         $this->userId = $this->getUserId();
+
+        try {
+
+            $GroupCategoryResult = $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
+        }
+
+        return $this->updateAndDeleteModel($GroupCategoryResult, $args, $this->userId);
         // $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
 
     
@@ -40,21 +53,21 @@ final class DeleteGroupCategory
         //     return Error::createLocatedError("GroupCategory-DELETE-RECORD_NOT_FOUND");
         // }
 
-        try {
+        // try {
 
-            $GroupCategoryResult = $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
+        //     $GroupCategoryResult = $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
 
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
 
-        $GroupCategoryResult->update([
-            'editor_id' => $this->userId,
-        ]);
+        // $GroupCategoryResult->update([
+        //     'editor_id' => $this->userId,
+        // ]);
         
-        $GroupCategoryResult->delete();
+        // $GroupCategoryResult->delete();
         
-        return $GroupCategoryResult;
+        // return $GroupCategoryResult;
         
     }
 }
