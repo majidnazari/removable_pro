@@ -8,13 +8,16 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 
 final class DeleteGroup
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -26,25 +29,44 @@ final class DeleteGroup
         // TODO implement the resolver
     }
     public function resolveGroup($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
-        
-        $this->userId = $this->getUserId();
-       $this->userAccessibility(Group::class, AuthAction::Delete, $args);
+    {
 
-    
-        $GroupResult=Group::find($args['id']);
-        
-        if(!$GroupResult)
-        {
-            return Error::createLocatedError("Group-DELETE-RECORD_NOT_FOUND");
+        $this->userId = $this->getUserId();
+
+        try {
+
+            $GroupResult = $this->userAccessibility(Group::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
 
-        $GroupResult->editor_id=  $this->userId;
-        $GroupResult->save();
+        return $this->updateAndDeleteModel($GroupResult, $args, $this->userId);
 
-        $GroupResult_filled= $GroupResult->delete();  
-        return $GroupResult;
+        // $this->userAccessibility(Group::class, AuthAction::Delete, $args);
 
-        
+
+        // $GroupResult = Group::find($args['id']);
+
+        // if (!$GroupResult) {
+        //     return Error::createLocatedError("Group-DELETE-RECORD_NOT_FOUND");
+        // }
+
+        // try {
+
+        //     $GroupResult = $this->userAccessibility(Group::class, AuthAction::Delete, $args);
+
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
+
+        // $GroupResult->editor_id = $this->userId;
+        // $GroupResult->save();
+
+        // $GroupResult_filled = $GroupResult->delete();
+        // return $GroupResult;
+
+
     }
 }

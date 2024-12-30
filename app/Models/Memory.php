@@ -51,6 +51,8 @@ class Memory extends Eloquent
         'description',
         'is_shown_after_death',
         'status',
+        'confirm_status',
+        'reject_cause',
     ];
     use HasFactory;
     use SoftDeletes;
@@ -63,7 +65,7 @@ class Memory extends Eloquent
 
     public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
     public const COLUMN_PERSON_ID = 'person_id';
-    public const COLUMN_group_category_ID = 'group_category_id';
+    public const COLUMN_GROUP_CATEGORY_ID = 'group_category_id';
 
     public function Person()
     {
@@ -75,7 +77,7 @@ class Memory extends Eloquent
     }
     public function GroupCategory()
     {
-        return $this->belongsTo(GroupCategory::class, self::COLUMN_group_category_ID);
+        return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);
     }
 
     public function Creator()
@@ -88,6 +90,10 @@ class Memory extends Eloquent
         return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
     }
 
+    public function notifications()
+    {
+        return $this->morphMany(Notif::class, 'notifiable');
+    }
     public static function getAuthorizationColumns()
     {
         return [

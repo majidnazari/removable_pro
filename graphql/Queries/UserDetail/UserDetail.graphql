@@ -1,0 +1,11 @@
+
+getUserDetail(id: ID!): UserDetail @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\UserDetail\\GetUserDetail@resolveUserDetail") 
+    getUserDetails(
+        first: Int, 
+        page: Int, 
+        title: String,
+        status: Status,
+       
+        orderBy:[OrderByClause!] @orderBy
+        # filter: UserDetailFilterInput
+    ): [UserDetail!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\UserDetail\\GetUserDetails@resolveUserDetail")

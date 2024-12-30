@@ -12,6 +12,8 @@ use App\Traits\AuthorizesUser;
 use App\Traits\SearchQueryBuilder;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
+use Exception;
 
 
 final class UpdateGroup
@@ -19,6 +21,7 @@ final class UpdateGroup
     use AuthUserTrait;
     use AuthorizesMutation;
     use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
 
 
     protected $userId;
@@ -34,23 +37,48 @@ final class UpdateGroup
     public function resolveGroup($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->user = $this->getUser();
-        $GroupResult = Group::find($args['id']);
-        $this->userAccessibility(Group::class, AuthAction::Update, $args);
 
-        if (!$GroupResult) {
-            return Error::createLocatedError("Group-UPDATE-RECORD_NOT_FOUND");
+        try {
+
+            $GroupResult = $this->userAccessibility(Group::class, AuthAction::Update, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
         $this->checkDuplicate(
             new Group(),
             $args,
-            ['id','editor_id','created_at', 'updated_at'],
-            $args['id']
+            ['id', 'editor_id', 'created_at', 'updated_at'],
+            excludeId: $args['id']
         );
-        $args['editor_id'] = $this->userId;
-        $GroupResult_filled = $GroupResult->fill($args);
-        $GroupResult->save();
 
-        return $GroupResult;
+        return $this->updateModel($GroupResult, $args, $this->userId);
+
+       // $GroupResult = Group::find($args['id']);
+        // $this->userAccessibility(Group::class, AuthAction::Update, $args);
+
+        // if (!$GroupResult) {
+        //     return Error::createLocatedError("Group-UPDATE-RECORD_NOT_FOUND");
+        // }
+        // try {
+
+        //     $GroupResult = $this->userAccessibility(Group::class, AuthAction::Update, $args);
+
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
+
+        // $this->checkDuplicate(
+        //     new Group(),
+        //     $args,
+        //     ['id','editor_id','created_at', 'updated_at'],
+        //     $args['id']
+        // );
+        // $args['editor_id'] = $this->user->id;
+        // $GroupResult_filled = $GroupResult->fill($args);
+        // $GroupResult->save();
+
+        // return $GroupResult;
 
 
     }

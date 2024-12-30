@@ -8,7 +8,10 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 
 
@@ -16,6 +19,9 @@ final class UpdateCategoryContent
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
+
     protected $userId;
 
     /**
@@ -29,20 +35,35 @@ final class UpdateCategoryContent
     public function resolveCategoryContent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
-       $this->userAccessibility(CategoryContent::class, AuthAction::Delete, $args);
+        try {
 
+            $CategoryContentResult = $this->userAccessibility(CategoryContent::class, AuthAction::Update, $args);
 
-        //args["user_id_creator"]=$user_id;
-        $CategoryContentResult=CategoryContent::find($args['id']);
-        
-        if(!$CategoryContentResult)
-        {
-            return Error::createLocatedError("CategoryContent-UPDATE-RECORD_NOT_FOUND");
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
-        $CategoryContentResult_filled= $CategoryContentResult->fill($args);
-        $CategoryContentResult->save();       
+        $this->checkDuplicate(
+            new CategoryContent(),
+            $args,
+            ['id', 'editor_id', 'created_at', 'updated_at'],
+            excludeId: $args['id']
+        );
+
+        return $this->updateModel($CategoryContentResult, $args, $this->userId);
+    //    $this->userAccessibility(CategoryContent::class, AuthAction::Delete, $args);
+
+
+    //     //args["user_id_creator"]=$user_id;
+    //     $CategoryContentResult=CategoryContent::find($args['id']);
+        
+    //     if(!$CategoryContentResult)
+    //     {
+    //         return Error::createLocatedError("CategoryContent-UPDATE-RECORD_NOT_FOUND");
+    //     }
+    //     $CategoryContentResult_filled= $CategoryContentResult->fill($args);
+    //     $CategoryContentResult->save();       
        
-        return $CategoryContentResult;
+    //     return $CategoryContentResult;
 
         
     }

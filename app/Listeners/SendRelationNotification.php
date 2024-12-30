@@ -45,7 +45,8 @@ class SendRelationNotification
         foreach ($persons as $person) {
             Notif::create([
                 'creator_id' => $user->id,
-                'user_id' => $person->creator_id,
+                'notifiable_id' => $person->id, // The ID of the person who receives the notification
+                'notifiable_type' => get_class($person), // The model name of the notifiable entity (e.g., 'App\Models\User')        
                 'message' => "the mobile number { $user->mobile}  is registered",
                 'notif_status' => NotifStatus::NotRead
             ]);

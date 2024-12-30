@@ -29,28 +29,24 @@ final class CancelSenderRequest
         // TODO implement the resolver
     }
     public function resolveCancelSenderRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
-        
+    {
+
         $this->user = $this->getUser();
 
-       $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
+        $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
 
 
-        $UserMergeRequestResult=UserMergeRequest::where( $this->user->creator_id,$this->user->id)->first();
-        
-        if(!$UserMergeRequestResult)
-        {
+        $UserMergeRequestResult = UserMergeRequest::where($this->user->creator_id, $this->user->id)->first();
+
+        if (!$UserMergeRequestResult) {
             return Error::createLocatedError("UserSendeRequest-UPDATE-RECORD_NOT_FOUND");
         }
-        $UserMergeRequestResult->editor_id=$this->user->id;
-        
-        $UserMergeRequestResult_filled= $UserMergeRequestResult->fill($args);
-        $UserMergeRequestResult->save();       
-       
+        $UserMergeRequestResult->editor_id = $this->user->id;
+
+        $UserMergeRequestResult_filled = $UserMergeRequestResult->fill($args);
+        $UserMergeRequestResult->save();
+
         return $UserMergeRequestResult;
 
-       
-
-        
     }
 }

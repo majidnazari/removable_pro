@@ -9,12 +9,14 @@ use Joselfonseca\LighthouseGraphQLPassport\Events\UserLoggedIn;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use Illuminate\Support\Facades\Hash;
-
+use App\Traits\MergeRequestTrait;
 
 use Log;
 
 class Login extends BaseAuthResolver
 {
+    use MergeRequestTrait;
+
     /**
      * @param $rootValue
      * @param  array  $args
@@ -27,15 +29,20 @@ class Login extends BaseAuthResolver
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        //Log::info("the new pass is:". Hash::make("12345678"));
+        //Log::info("the new pass is:" . Hash::make("12345678"));
         $credentials = $this->buildCredentials($args);
+        //Log::info("the credentials is :" .json_encode( $credentials));
+
         $response = $this->makeRequest($credentials);
+
 
         $user = $this->findUser($args['username']);
 
         $this->validateUser($user);
 
         event(new UserLoggedIn($user));
+
+        // Log::info("the all MR are:" . json_encode($this->getRelatedUserIds()));
 
         return array_merge(
             $response,

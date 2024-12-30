@@ -2,7 +2,9 @@
 
 namespace App\GraphQL\Mutations\Memory;
 
+use App\GraphQL\Enums\ConfirmMemoryStatus;
 use App\Models\Memory;
+use App\Models\Person;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
@@ -33,11 +35,14 @@ final class CreateMemory
     {
         $this->userId = $this->getUserId();
 
+        $person=Person::where('id',$args['person_id'])->first();
+
         $MemoryModel = [
             "creator_id" => $this->userId,
             "person_id" => $args['person_id'],
             "category_content_id" => $args['category_content_id'],
             "group_category_id" => $args['group_category_id'],
+            "confirm_status" =>  $person->is_owner==1 ? ConfirmMemoryStatus::Suspend : ConfirmMemoryStatus::Accept,
             "title" => $args['title'],
             // "content" => $args['content'],
             // "description" => $args['description'],

@@ -32,6 +32,8 @@ class Notif extends Eloquent
     protected $fillable = [
         "creator_id",
         "user_id",
+        "notifiable_id",
+        "notifiable_type",
         "message",
         "notif_status",
     ] ;
@@ -52,6 +54,10 @@ class Notif extends Eloquent
     public function RelatedUser()
     {
         return $this->belongsTo(User::class, self::COLUMN_USER_ID);
+    }
+    public function notifiable()
+    {
+        return $this->morphTo();
     }
 
     public static function getAuthorizationColumns()

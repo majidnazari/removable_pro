@@ -27,9 +27,9 @@ GRAPHQL;
     {
         $fieldValue->wrapResolver(
             fn(callable $resolver) => function ($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo) use ($resolver) {
-                Log::info("Custom directive @hassan executed on field:", [
-                    'fieldName' => $resolveInfo->fieldName,
-                ]);
+                // Log::info("Custom directive @hassan executed on field:", [
+                //     'fieldName' => $resolveInfo->fieldName,
+                // ]);
 
                 return $resolver($root, $args, $context, $resolveInfo);
             }

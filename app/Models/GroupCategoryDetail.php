@@ -67,18 +67,28 @@ class GroupCategoryDetail extends Eloquent
     public const COLUMN_EDITOR_ID = 'editor_id';
 
     public const COLUMN_GROUP_ID = 'group_id';
-    //public const COLUMN_GROUP_ID = 'id';
+    public const COLUMN_GROUP_CATEGORY_ID = 'group_category_id';
 
     public function Group()
     {
         return $this->belongsTo(Group::class, self::COLUMN_GROUP_ID);
     }
 
+    // public function GroupCategory()
+    // {
+    //     return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_ID);
+    // }
+    // In GroupCategoryDetail.php
+
     public function GroupCategory()
     {
-        return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_ID);
+        return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);  // Corrected to use group_category_id
     }
 
+    public function GroupDetails()
+    {
+        return $this->hasMany(GroupDetail::class, self::COLUMN_GROUP_ID);
+    }
     public function Creator()
     {
         return $this->belongsTo(User::class, self::COLUMN_CREATOR_ID);

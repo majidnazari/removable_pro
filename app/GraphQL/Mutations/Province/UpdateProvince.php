@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -17,9 +18,10 @@ use Exception;
 
 final class UpdateProvince
 {
-   use AuthUserTrait;
-   use AuthorizesMutation;
-   use DuplicateCheckTrait;
+    use AuthUserTrait;
+    use AuthorizesMutation;
+    use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
 
     protected $userId;
 
@@ -32,32 +34,48 @@ final class UpdateProvince
         // TODO implement the resolver
     }
     public function resolveProvince($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
-       
+    {
+
         $this->userId = $this->getUserId();
-        $this->userAccessibility(Province::class, AuthAction::Delete, $args);
+        // $this->userAccessibility(Province::class, AuthAction::Delete, $args);
 
-        //args["user_id_creator"]=$this->userId;
-        $ProvinceResult=Province::find($args['id']);
-        
-        if(!$ProvinceResult)
-        {
-            return Error::createLocatedError("Province-UPDATE-RECORD_NOT_FOUND");
+        // //args["user_id_creator"]=$this->userId;
+        // $ProvinceResult=Province::find($args['id']);
+
+        // if(!$ProvinceResult)
+        // {
+        //     return Error::createLocatedError("Province-UPDATE-RECORD_NOT_FOUND");
+        // }
+
+        // $this->checkDuplicate(
+        //     new Province(),
+        //     $args,
+        //     ['id','editor_id','created_at', 'updated_at'],
+        //     $args['id']
+        // );
+        // $args['editor_id']=$this->userId;
+
+        // $ProvinceResult_filled= $ProvinceResult->fill($args);
+        // $ProvinceResult->save();       
+
+        // return $ProvinceResult;
+        try {
+
+            $ProvinceResult = $this->userAccessibility(Province::class, AuthAction::Update, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
-
         $this->checkDuplicate(
             new Province(),
             $args,
-            ['id','editor_id','created_at', 'updated_at'],
-            $args['id']
+            ['id', 'editor_id', 'created_at', 'updated_at'],
+            excludeId: $args['id']
         );
-        $args['editor_id']=$this->userId;
-        
-        $ProvinceResult_filled= $ProvinceResult->fill($args);
-        $ProvinceResult->save();       
-       
-        return $ProvinceResult;
 
-        
+        return $this->updateModel($ProvinceResult, $args, $this->userId);
+
+
+
     }
 }

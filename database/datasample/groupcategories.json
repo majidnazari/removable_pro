@@ -1,0 +1,52 @@
+[
+    {
+        "id": "1",
+        "creator_id": "1",
+        "editor_id": null,
+        "title": "همه",
+        "status": "1",
+        "created_at": "2024-12-29 13:38:07",
+        "updated_at": "2024-12-29 13:38:07",
+        "deleted_at": null
+    },
+    {
+        "id": "2",
+        "creator_id": "1",
+        "editor_id": null,
+        "title": "پدری",
+        "status": "1",
+        "created_at": "2024-12-29 13:39:08",
+        "updated_at": "2024-12-29 13:39:08",
+        "deleted_at": null
+    },
+    {
+        "id": "3",
+        "creator_id": "1",
+        "editor_id": null,
+        "title": "مادری",
+        "status": "1",
+        "created_at": "2024-12-29 13:39:31",
+        "updated_at": "2024-12-29 13:39:31",
+        "deleted_at": null
+    },
+    {
+        "id": "4",
+        "creator_id": "1",
+        "editor_id": null,
+        "title": "محارم",
+        "status": "1",
+        "created_at": "2024-12-29 13:40:10",
+        "updated_at": "2024-12-29 13:40:10",
+        "deleted_at": null
+    },
+    {
+        "id": "5",
+        "creator_id": "1",
+        "editor_id": null,
+        "title": "باحالا",
+        "status": "1",
+        "created_at": "2024-12-29 13:54:40",
+        "updated_at": "2024-12-29 13:54:40",
+        "deleted_at": null
+    }
+]

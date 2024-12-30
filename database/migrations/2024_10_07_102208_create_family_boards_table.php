@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('family_boards', function (Blueprint $table) {
+            
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
-            $table->unsignedBigInteger('category_content_id')->nullable();
-            $table->unsignedBigInteger('group_category_id')->nullable();
+            $table->unsignedBigInteger('category_content_id');
+            $table->unsignedBigInteger('group_category_id');
 
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
@@ -25,8 +26,9 @@ return new class extends Migration
             $table->foreign('group_category_id')->references('id')->on('group_categories')->onDelete('cascade');
 
             $table->string('title');
-            $table->datetime('selected_date')->nullable();
-            $table->string('file_path')->nullable();
+            $table->string('content');
+            //$table->datetime('selected_date')->nullable();
+            // $table->string('file_path')->nullable();
             $table->string('description')->nullable();
             //$table->enum('status',["Active","Inactive","None"])->default("Active");
 

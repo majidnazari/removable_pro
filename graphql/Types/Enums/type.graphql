@@ -90,6 +90,15 @@ enum Star
      
 }
 
+enum ConfirmMemoryStatus
+{
+     Accept @enum(value: 1)
+     Reject @enum(value: 2)
+     Suspend@enum(value: 3)
+
+}
+
+
 enum SortOrder {
     ASC
     DESC

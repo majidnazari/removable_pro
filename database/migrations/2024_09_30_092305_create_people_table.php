@@ -13,7 +13,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('people', function (Blueprint $table) {
-            $table->id();
+            
+            $table->unsignedBigInteger('id')->primary();
+
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
 

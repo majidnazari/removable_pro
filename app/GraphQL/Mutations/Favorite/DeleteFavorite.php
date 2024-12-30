@@ -8,13 +8,16 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 
 final class DeleteFavorite
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -29,21 +32,40 @@ final class DeleteFavorite
     {  
         
         $this->userId = $this->getUserId();
-       $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
 
-        
-        $FavoriteResult=Favorite::find($args['id']);
-        
-        if(!$FavoriteResult)
-        {
-            return Error::createLocatedError("Favorite-DELETE-RECORD_NOT_FOUND");
+        try {
+
+            $FavoriteResult = $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
 
-        $FavoriteResult->editor_id= $this->userId;
-        $FavoriteResult->save();
+        return $this->updateAndDeleteModel($FavoriteResult, $args, $this->userId);
+        // $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
 
-        $FavoriteResult_filled= $FavoriteResult->delete();  
-        return $FavoriteResult;
+        
+        // $FavoriteResult=Favorite::find($args['id']);
+        
+        // if(!$FavoriteResult)
+        // {
+        //     return Error::createLocatedError("Favorite-DELETE-RECORD_NOT_FOUND");
+        // }
+
+        // try {
+
+        //     $FavoriteResult = $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
+
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
+
+        // $FavoriteResult->editor_id= $this->userId;
+        // $FavoriteResult->save();
+
+        // $FavoriteResult_filled= $FavoriteResult->delete();  
+        // return $FavoriteResult;
 
         
     }

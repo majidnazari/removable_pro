@@ -7,6 +7,7 @@
 
       #import Types/Enums/type.graphql
       #import Types/User/type.graphql
+      #import Types/UserDetail/type.graphql
       #import Types/Country/type.graphql
       #import Types/Province/type.graphql
       #import Types/City/type.graphql
@@ -34,6 +35,7 @@
     type Query {
 
         #import Queries/User/User.graphql
+        #import Queries/UserDetail/UserDetail.graphql
         #import Queries/Country/Country.graphql
         #import Queries/Province/Province.graphql
         #import Queries/City/City.graphql
@@ -62,6 +64,7 @@
     extend type Mutation {
 
       #import Mutations/User/User.graphql
+      #import Mutations/UserDetail/UserDetail.graphql
       #import Mutations/Country/Country.graphql
       #import Mutations/Province/Province.graphql
       #import Mutations/City/City.graphql
