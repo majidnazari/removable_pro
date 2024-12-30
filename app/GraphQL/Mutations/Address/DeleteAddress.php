@@ -9,6 +9,8 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
+
 
 
 final class DeleteAddress
@@ -25,22 +27,32 @@ final class DeleteAddress
         // TODO implement the resolver
     }
     public function resolveAddress($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
-       
-        $this->userId = $this->getUserId();     
-        $this->userAccessibility(Address::class, AuthAction::Delete, $args);
+    {
 
-        $AddressResult=Address::find($args['id']);
-        
-        if(!$AddressResult)
-        {
-            return Error::createLocatedError("Address-DELETE-RECORD_NOT_FOUND");
+        $this->userId = $this->getUserId();
+        //  $this->userAccessibility(Address::class, AuthAction::Delete, $args);
+
+        try {
+
+            $AddressResult = $this->userAccessibility(Address::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
-        $AddressResult->editor_id= $this->userId;
+
+
+        //$AddressResult = Address::find($args['id']);
+
+        // if(!$AddressResult)
+        // {
+        //     return Error::createLocatedError("Address-DELETE-RECORD_NOT_FOUND");
+        // }
+        $AddressResult->editor_id = $this->userId;
         $AddressResult->save();
-        $AddressResult_filled= $AddressResult->delete();  
+        $AddressResult_filled = $AddressResult->delete();
         return $AddressResult;
 
-        
+
     }
 }

@@ -33,14 +33,19 @@ final class GetSpecialPersonFamilyBoards
         $query = FamilyBoard::where('deleted_at', null) 
             ->where('status', Status::Active->value);
         // Log::info("the query is:" . json_encode($query->get()));
+        // Condition 2: For another person_id, apply the additional checks
         $query->where(function ($subQuery) {
-            // Step 1: Check if the logged-in user exists in the GroupDetails relationship directly
-            $subQuery->whereHas('GroupCategory.GroupCategoryDetails.Group.GroupDetails.UserCanSee', function ($groupDetailsQuery) {
-                // Step 2: Check if the logged-in user_id exists in the group_details
-                $groupDetailsQuery->where('id', $this->userId);
+            // First check: creator_id matches logged-in user
+            $subQuery->where('creator_id', $this->userId)
+                ->orWhere(function ($innerQuery) {
+                    // Step 1: Check if the logged-in user exists in the GroupDetails relationship directly
+                    $innerQuery->whereHas('GroupCategory.GroupCategoryDetails.Group.GroupDetails.UserCanSee', function ($groupDetailsQuery) {
+                        // Step 2: Check if the logged-in user_id exists in the group_details
+                        $groupDetailsQuery->where('id', $this->userId);
 
 
-            });
+                    });
+                });
         });
 
         // Fetch and log the memories

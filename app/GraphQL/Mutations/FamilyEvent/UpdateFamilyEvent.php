@@ -10,6 +10,8 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
+
 
 
 final class UpdateFamilyEvent
@@ -31,13 +33,21 @@ final class UpdateFamilyEvent
     public function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
-        $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
+        // $this->userAccessibility(FamilyEvent::class, AuthAction::Delete, $args);
 
-        //args["user_id_creator"]=$user_id;
-        $FamilyEventResult = FamilyEvent::find($args['id']);
+        // //args["user_id_creator"]=$user_id;
+        // $FamilyEventResult = FamilyEvent::find($args['id']);
 
-        if (!$FamilyEventResult) {
-            return Error::createLocatedError("FamilyEvent-UPDATE-RECORD_NOT_FOUND");
+        // if (!$FamilyEventResult) {
+        //     return Error::createLocatedError("FamilyEvent-UPDATE-RECORD_NOT_FOUND");
+        // }
+
+        try {
+
+            $FamilyEventResult = $this->userAccessibility(FamilyEvent::class, AuthAction::Update, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
 
         $this->checkDuplicate(

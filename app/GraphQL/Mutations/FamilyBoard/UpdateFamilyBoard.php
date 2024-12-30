@@ -36,7 +36,7 @@ final class UpdateFamilyBoard
         $this->userId = $this->getUserId();
         try {
 
-            $FamilyBoardResult = $this->userAccessibility(FamilyBoard::class, AuthAction::Delete, $args);
+            $FamilyBoardResult = $this->userAccessibility(FamilyBoard::class, AuthAction::Update, $args);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
@@ -48,9 +48,9 @@ final class UpdateFamilyBoard
         //args["user_id_creator"]=$user_id;
         // $FamilyBoardResult = FamilyBoard::find($args['id']);
 
-        if (!$FamilyBoardResult) {
-            return Error::createLocatedError("FamilyBoard-UPDATE-RECORD_NOT_FOUND");
-        }
+        // if (!$FamilyBoardResult) {
+        //     return Error::createLocatedError("FamilyBoard-UPDATE-RECORD_NOT_FOUND");
+        // }
         // Dynamic duplicate check: Pass column(s) and values, exclude current ID
         //$this->checkDuplicate(new FamilyBoard(), ['title' => $args['title'], 'status' => Status::Active], $args['id']);
 

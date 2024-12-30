@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 
 final class DeleteGroup
@@ -26,25 +27,32 @@ final class DeleteGroup
         // TODO implement the resolver
     }
     public function resolveGroup($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
-        
-        $this->userId = $this->getUserId();
-       $this->userAccessibility(Group::class, AuthAction::Delete, $args);
+    {
 
-    
-        $GroupResult=Group::find($args['id']);
-        
-        if(!$GroupResult)
-        {
-            return Error::createLocatedError("Group-DELETE-RECORD_NOT_FOUND");
+        $this->userId = $this->getUserId();
+        // $this->userAccessibility(Group::class, AuthAction::Delete, $args);
+
+
+        // $GroupResult = Group::find($args['id']);
+
+        // if (!$GroupResult) {
+        //     return Error::createLocatedError("Group-DELETE-RECORD_NOT_FOUND");
+        // }
+
+        try {
+
+            $GroupResult = $this->userAccessibility(Group::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
 
-        $GroupResult->editor_id=  $this->userId;
+        $GroupResult->editor_id = $this->userId;
         $GroupResult->save();
 
-        $GroupResult_filled= $GroupResult->delete();  
+        $GroupResult_filled = $GroupResult->delete();
         return $GroupResult;
 
-        
+
     }
 }

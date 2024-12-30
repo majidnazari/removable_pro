@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 
 final class DeleteFavorite
@@ -29,14 +30,22 @@ final class DeleteFavorite
     {  
         
         $this->userId = $this->getUserId();
-       $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
+        // $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
 
         
-        $FavoriteResult=Favorite::find($args['id']);
+        // $FavoriteResult=Favorite::find($args['id']);
         
-        if(!$FavoriteResult)
-        {
-            return Error::createLocatedError("Favorite-DELETE-RECORD_NOT_FOUND");
+        // if(!$FavoriteResult)
+        // {
+        //     return Error::createLocatedError("Favorite-DELETE-RECORD_NOT_FOUND");
+        // }
+
+        try {
+
+            $FavoriteResult = $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
 
         $FavoriteResult->editor_id= $this->userId;

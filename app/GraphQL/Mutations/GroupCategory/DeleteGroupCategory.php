@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 
 final class DeleteGroupCategory
@@ -29,22 +30,31 @@ final class DeleteGroupCategory
     {  
         
         $this->userId = $this->getUserId();
-        $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
+        // $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
 
     
-        $GroupCategoryResult=GroupCategory::find($args['id']);
+        // $GroupCategoryResult=GroupCategory::find($args['id']);
         
-        if(!$GroupCategoryResult)
-        {
-            return Error::createLocatedError("GroupCategory-DELETE-RECORD_NOT_FOUND");
+        // if(!$GroupCategoryResult)
+        // {
+        //     return Error::createLocatedError("GroupCategory-DELETE-RECORD_NOT_FOUND");
+        // }
+
+        try {
+
+            $GroupCategoryResult = $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
 
-        $GroupCategoryResult->editor_id=  $this->userId;
-        $GroupCategoryResult->save();
-
-        $GroupCategoryResult_filled= $GroupCategoryResult->delete();  
+        $GroupCategoryResult->update([
+            'editor_id' => $this->userId,
+        ]);
+        
+        $GroupCategoryResult->delete();
+        
         return $GroupCategoryResult;
-
         
     }
 }

@@ -10,6 +10,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 
 
@@ -32,16 +33,26 @@ final class UpdateGroupCategoryDetail
     public function resolveGroupCategoryDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
-        $this->userAccessibility(GroupCategoryDetail::class, AuthAction::Update, $args);
+        // $this->userAccessibility(GroupCategoryDetail::class, AuthAction::Update, $args);
 
 
-        //args["user_id_creator"]=$user_id;
-        $GroupCategoryDetailResult=GroupCategoryDetail::find($args['id']);
+        // //args["user_id_creator"]=$user_id;
+        // $GroupCategoryDetailResult=GroupCategoryDetail::find($args['id']);
         
-        if(!$GroupCategoryDetailResult)
-        {
-            return Error::createLocatedError("GroupCategoryDetail-UPDATE-RECORD_NOT_FOUND");
+        // if(!$GroupCategoryDetailResult)
+        // {
+        //     return Error::createLocatedError("GroupCategoryDetail-UPDATE-RECORD_NOT_FOUND");
+        // }
+
+        try {
+
+            $GroupCategoryDetailResult = $this->userAccessibility(GroupCategoryDetail::class, AuthAction::Update, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
+
+
         $this->checkDuplicate(
             new GroupCategoryDetail(),
             $args,
