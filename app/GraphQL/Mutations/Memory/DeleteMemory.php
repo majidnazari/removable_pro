@@ -9,11 +9,14 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
+use App\Traits\HandlesModelUpdateAndDelete;
+use Exception;
 
 final class DeleteMemory
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -25,23 +28,34 @@ final class DeleteMemory
         // TODO implement the resolver
     }
     public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
+    {
         $this->userId = $this->getUserId();
-       $this->userAccessibility(Memory::class, AuthAction::Update, $args);
 
-   
-        $MemoryResult=Memory::find($args['id']);
-        
-        if(!$MemoryResult)
-        {
-            return Error::createLocatedError("Memory-DELETE-RECORD_NOT_FOUND");
+        try {
+
+            $GroupDetailResult = $this->userAccessibility(Memory::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
-        $MemoryResult->editor_id= $this->userId;
-        $MemoryResult->save();
 
-        $MemoryResult_filled= $MemoryResult->delete();  
-        return $MemoryResult;
+        return $this->updateAndDeleteModel($GroupDetailResult, $args, $this->userId);
 
-        
+        // $this->userAccessibility(Memory::class, AuthAction::Update, $args);
+
+
+        // $MemoryResult = Memory::find($args['id']);
+
+        // if (!$MemoryResult) {
+        //     return Error::createLocatedError("Memory-DELETE-RECORD_NOT_FOUND");
+        // }
+        // $MemoryResult->editor_id = $this->userId;
+        // $MemoryResult->save();
+
+        // $MemoryResult_filled = $MemoryResult->delete();
+        // return $MemoryResult;
+
+
     }
 }

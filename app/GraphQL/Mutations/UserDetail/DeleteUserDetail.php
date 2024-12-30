@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 
 use Exception;
@@ -16,6 +17,7 @@ final class DeleteUserDetail
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
 
     protected $userId;
 
@@ -30,19 +32,32 @@ final class DeleteUserDetail
     public function resolveUserDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
-        $this->userAccessibility(UserDetail::class, AuthAction::Delete, $args);
+        // $this->userAccessibility(UserDetail::class, AuthAction::Delete, $args);
 
-        $UserDetailResult = UserDetail::find($args['id']);
+        // $UserDetailResult = UserDetail::find($args['id']);
 
-        if (!$UserDetailResult) {
-            return Error::createLocatedError("UserDetail-DELETE-RECORD_NOT_FOUND");
+        // if (!$UserDetailResult) {
+        //     return Error::createLocatedError("UserDetail-DELETE-RECORD_NOT_FOUND");
+        // }
+        // $UserDetailResult->editor_id = $this->userId;
+        // $UserDetailResult->save();
+
+
+        // $UserDetailResult_filled = $UserDetailResult->delete();
+        // return $UserDetailResult;
+
+        try {
+
+            $UserDetailResult = $this->userAccessibility(UserDetail::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
-        $UserDetailResult->editor_id = $this->userId;
-        $UserDetailResult->save();
+
+        return $this->updateAndDeleteModel($UserDetailResult, $args, $this->userId);
 
 
-        $UserDetailResult_filled = $UserDetailResult->delete();
-        return $UserDetailResult;
 
 
     }

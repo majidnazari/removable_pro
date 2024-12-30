@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 use Log;
@@ -17,6 +18,8 @@ final class DeletePersonDetails
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
+
     protected $userId;
 
     /**
@@ -28,37 +31,46 @@ final class DeletePersonDetails
         // TODO implement the resolver
     }
     public function resolvePersonDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
-       
+    {
+
         $this->userId = $this->getUserId();
-       $this->userAccessibility(PersonDetail::class, AuthAction::Delete, $args);
+        //    $this->userAccessibility(PersonDetail::class, AuthAction::Delete, $args);
 
-      
-        $PersonDetailResult=PersonDetail::find($args['id']);
-        
-        if(!$PersonDetailResult)
-        {
-            return Error::createLocatedError("PersonDetail-DELETE-RECORD_NOT_FOUND");
+
+        //     $PersonDetailResult=PersonDetail::find($args['id']);
+
+        //     if(!$PersonDetailResult)
+        //     {
+        //         return Error::createLocatedError("PersonDetail-DELETE-RECORD_NOT_FOUND");
+        //     }
+
+        //     if ($PersonDetailResult && $PersonDetailResult['profile_picture'] !=null ) {
+        //         $oldImagePath = public_path('storage/profile_pictures/' . $PersonDetailResult['profile_picture'] ); // Use `public_path` to get the full path
+
+        //         //Log::info("the old image is:". $oldImagePath );
+        //         if (file_exists($oldImagePath)) {
+        //             //Log::info("it should unlink it");
+
+        //             unlink($oldImagePath); // Delete the old image
+        //             //Log::info("Deleted old image: " . $oldImagePath);
+        //         }
+        //     }
+
+        //     $PersonDetailResult->editor_id= $this->userId;
+        //     $PersonDetailResult->save(); 
+
+        //     $PersonDetailResult_filled= $PersonDetailResult->delete();  
+        //     return $PersonDetailResult;
+
+        try {
+
+            $PersonDetailResult = $this->userAccessibility(PersonDetail::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
 
-        if ($PersonDetailResult && $PersonDetailResult['profile_picture'] !=null ) {
-            $oldImagePath = public_path('storage/profile_pictures/' . $PersonDetailResult['profile_picture'] ); // Use `public_path` to get the full path
-
-            //Log::info("the old image is:". $oldImagePath );
-            if (file_exists($oldImagePath)) {
-                //Log::info("it should unlink it");
-
-                unlink($oldImagePath); // Delete the old image
-                //Log::info("Deleted old image: " . $oldImagePath);
-            }
-        }
-
-        $PersonDetailResult->editor_id= $this->userId;
-        $PersonDetailResult->save(); 
-
-        $PersonDetailResult_filled= $PersonDetailResult->delete();  
-        return $PersonDetailResult;
-
-        
+        return $this->updateAndDeleteModel($PersonDetailResult, $args, $this->userId);
     }
 }

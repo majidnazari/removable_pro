@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 
@@ -19,6 +20,7 @@ final class UpdateGroupDetail
     use AuthUserTrait;
     use AuthorizesMutation;
     use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
 
     protected $userId;
 
@@ -43,27 +45,41 @@ final class UpdateGroupDetail
         // {
         //     return Error::createLocatedError("GroupDetail-UPDATE-RECORD_NOT_FOUND");
         // }
+        // try {
+
+        //     $GroupDetailResult = $this->userAccessibility(GroupDetail::class, AuthAction::Delete, $args);
+
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
+
+
+        // $this->checkDuplicate(
+        //     new GroupDetail(),
+        //     $args,
+        //     ['id', 'editor_id', 'created_at', 'updated_at'],
+        //     $args['id']
+        // );
+        // $args['editor_id'] = $this->userId;
+        // $GroupDetailResult_filled = $GroupDetailResult->fill($args);
+        // $GroupDetailResult->save();
+
+        // return $GroupDetailResult;
         try {
 
-            $GroupDetailResult = $this->userAccessibility(GroupDetail::class, AuthAction::Delete, $args);
+            $GroupDetailResult = $this->userAccessibility(GroupDetail::class, AuthAction::Update, $args);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
-
-
         $this->checkDuplicate(
             new GroupDetail(),
             $args,
             ['id', 'editor_id', 'created_at', 'updated_at'],
-            $args['id']
+            excludeId: $args['id']
         );
-        $args['editor_id'] = $this->userId;
-        $GroupDetailResult_filled = $GroupDetailResult->fill($args);
-        $GroupDetailResult->save();
 
-        return $GroupDetailResult;
-
+        return $this->updateModel($GroupDetailResult, $args, $this->userId);
 
     }
 }

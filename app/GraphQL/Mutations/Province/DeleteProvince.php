@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 
 
@@ -16,6 +17,8 @@ use Exception;
 final class DeleteProvince
 {
     use AuthUserTrait;
+    use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -27,25 +30,37 @@ final class DeleteProvince
         // TODO implement the resolver
     }
     public function resolveProvince($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
+    {
         $this->userId = $this->getUserId();
-       $this->userAccessibility(Score::class, AuthAction::Delete, $args);
+        //    $this->userAccessibility(Score::class, AuthAction::Delete, $args);
 
-       
-        $ProvinceResult=Province::find($args['id']);
-        
-        if(!$ProvinceResult)
-        {
-            return Error::createLocatedError("Province-DELETE-RECORD_NOT_FOUND");
+
+        //     $ProvinceResult=Province::find($args['id']);
+
+        //     if(!$ProvinceResult)
+        //     {
+        //         return Error::createLocatedError("Province-DELETE-RECORD_NOT_FOUND");
+        //     }
+
+        //     $ProvinceResult->editor_id= $this->userId;
+        //     $ProvinceResult->save(); 
+
+
+        //     $ProvinceResult_filled= $ProvinceResult->delete();  
+        //     return $ProvinceResult;
+
+
+        try {
+
+            $ProvinceResult = $this->userAccessibility(Province::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
 
-        $ProvinceResult->editor_id= $this->userId;
-        $ProvinceResult->save(); 
+        return $this->updateAndDeleteModel($ProvinceResult, $args, $this->userId);
 
 
-        $ProvinceResult_filled= $ProvinceResult->delete();  
-        return $ProvinceResult;
-
-        
     }
 }

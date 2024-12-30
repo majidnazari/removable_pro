@@ -8,6 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
 
@@ -16,6 +17,8 @@ final class DeleteGroupDetail
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
+
     protected $userId;
 
     /**
@@ -30,6 +33,16 @@ final class DeleteGroupDetail
     {
 
         $this->userId = $this->getUserId();
+        try {
+
+            $GroupDetailResult = $this->userAccessibility(GroupDetail::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
+        }
+
+        return $this->updateAndDeleteModel($GroupDetailResult, $args, $this->userId);
         // $this->userAccessibility(GroupDetail::class, AuthAction::Delete, $args);
 
 
@@ -39,20 +52,20 @@ final class DeleteGroupDetail
         //     return Error::createLocatedError("GroupDetail-DELETE-RECORD_NOT_FOUND");
         // }
 
-        try {
+        // try {
 
-            $GroupDetailResult = $this->userAccessibility(GroupDetail::class, AuthAction::Delete, $args);
+        //     $GroupDetailResult = $this->userAccessibility(GroupDetail::class, AuthAction::Delete, $args);
 
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
 
 
-        $GroupDetailResult->editor_id = $this->userId;
-        $GroupDetailResult->save();
+        // $GroupDetailResult->editor_id = $this->userId;
+        // $GroupDetailResult->save();
 
-        $GroupDetailResult_filled = $GroupDetailResult->delete();
-        return $GroupDetailResult;
+        // $GroupDetailResult_filled = $GroupDetailResult->delete();
+        // return $GroupDetailResult;
 
 
     }

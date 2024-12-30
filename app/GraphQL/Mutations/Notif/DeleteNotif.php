@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 
 use Exception;
@@ -16,6 +17,7 @@ final class DeleteNotif
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
 
     protected $userId;
 
@@ -30,20 +32,30 @@ final class DeleteNotif
     public function resolveNotif($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
-       $this->userAccessibility(Notif::class, AuthAction::Delete, $args);
-       
-        $NotifResult=Notif::find($args['id']);
-        
-        if(!$NotifResult)
-        {
-            return Error::createLocatedError("Notif-DELETE-RECORD_NOT_FOUND");
+        try {
+
+            $NotifResult = $this->userAccessibility(Notif::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
-        $NotifResult->editor_id= $this->userId;
-        $NotifResult->save(); 
+
+        return $this->updateAndDeleteModel($NotifResult, $args, $this->userId);
+    //    $this->userAccessibility(Notif::class, AuthAction::Delete, $args);
+       
+    //     $NotifResult=Notif::find($args['id']);
+        
+    //     if(!$NotifResult)
+    //     {
+    //         return Error::createLocatedError("Notif-DELETE-RECORD_NOT_FOUND");
+    //     }
+    //     $NotifResult->editor_id= $this->userId;
+    //     $NotifResult->save(); 
 
 
-        $NotifResult_filled= $NotifResult->delete();  
-        return $NotifResult;
+    //     $NotifResult_filled= $NotifResult->delete();  
+    //     return $NotifResult;
 
         
     }
