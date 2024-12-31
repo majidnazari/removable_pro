@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('event_id')->index();
             $table->unsignedBigInteger('category_content_id');
 
-            $table->unsignedBigInteger('group_category_id')->nullable();
+           // $table->unsignedBigInteger('group_category_id')->nullable();
 
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
             $table->foreign('category_content_id')->references('id')->on('category_contents')->onDelete('cascade');
 
-            $table->foreign('group_category_id')->references('id')->on('group_categories')->onDelete('cascade');
+            //$table->foreign('group_category_id')->references('id')->on('group_categories')->onDelete('cascade');
 
            
 
