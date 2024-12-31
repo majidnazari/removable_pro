@@ -4,8 +4,9 @@ namespace App\GraphQL\Validators\Share;
 
 use Nuwave\Lighthouse\Validation\Validator as GraphQLValidator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Log;
 use App\Traits\AuthUserTrait;
+use Log;
 
 class UserOwnsRecordValidator extends GraphQLValidator
 {
@@ -28,8 +29,10 @@ class UserOwnsRecordValidator extends GraphQLValidator
      */
     protected array $excludedFields = [
         'category_content_id', // Example: no creator_id validation for this field
-       // 'event_id', // Example: no creator_id validation for this field
         'user_id'
+    ];
+    protected array $justCheckCurrentUserLoggedIn = [
+        'event_id'
     ];
 
     public function rules(): array
@@ -66,20 +69,52 @@ class UserOwnsRecordValidator extends GraphQLValidator
             // Base validation: required and exists
             $rules[$fieldName] = ['required', 'exists:' . $tableName . ',id'];
 
-            // Skip creator_id check for excluded fields
-            if (!in_array($fieldName, $this->excludedFields)) {
-                $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user,$allowedCreatorIds) {
+            // // Skip creator_id check for excluded fields
+            // if (!in_array($fieldName, $this->excludedFields)) {
+            //     $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user, $allowedCreatorIds) {
+            //         $exists = DB::table($tableName)
+            //             ->where('id', $value)
+            //             ->whereIn('creator_id', $allowedCreatorIds)
+            //             ->exists();
+
+            //         //Log::info("Validation check for {$attribute} in {$tableName}: " . json_encode($exists));
+
+            //         if (!$exists) {
+            //             $fail("The selected {$attribute} does not belong to the authenticated user.");
+            //         }
+            //     };
+            // }
+
+            // Check if the field is in the $newItems list (i.e., should only check creator_id against logged-in user)
+            if (in_array($fieldName, $this->justCheckCurrentUserLoggedIn)) {
+                // Only check creator_id with the logged-in user
+                $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user) {
                     $exists = DB::table($tableName)
                         ->where('id', $value)
-                        ->whereIn('creator_id', $allowedCreatorIds)
+                        ->where('creator_id', $user->id) // Check only with logged-in user's creator_id
+                        ->whereNull('deleted_at') // Exclude soft-deleted records
                         ->exists();
-
-                    //Log::info("Validation check for {$attribute} in {$tableName}: " . json_encode($exists));
 
                     if (!$exists) {
                         $fail("The selected {$attribute} does not belong to the authenticated user.");
                     }
                 };
+            } else {
+                // Skip creator_id check for excluded fields
+                if (!in_array($fieldName, $this->excludedFields)) {
+                    // Check creator_id against allowedCreatorIds (including merged users)
+                    $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user, $allowedCreatorIds) {
+                        $exists = DB::table($tableName)
+                            ->where('id', $value)
+                            ->whereIn('creator_id', $allowedCreatorIds)
+                            ->whereNull('deleted_at') // Exclude soft-deleted records
+                            ->exists();
+
+                        if (!$exists) {
+                            $fail("The selected {$attribute} does not belong to the authenticated user.");
+                        }
+                    };
+                }
             }
         }
 
@@ -103,12 +138,13 @@ class UserOwnsRecordValidator extends GraphQLValidator
         $connectedUserIds = DB::table('user_merge_requests')
             ->where('user_sender_id', $userId)
             ->where('status', 4) // Status = Complete
+            ->whereNull('deleted_at') // Exclude soft-deleted records
             ->pluck('user_receiver_id')
             ->toArray();
 
         // Merge the connected user IDs into the allowed IDs
         $allowedCreatorIds = array_merge($allowedCreatorIds, $connectedUserIds);
-
+       // Log::info("the all alowed user are:" . json_encode($allowedCreatorIds));
         return $allowedCreatorIds;
     }
 }
