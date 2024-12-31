@@ -25,20 +25,19 @@ final class CreateEvent
         // TODO implement the resolver
     }
     public function resolveEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {    
+    {
         $this->userId = $this->getUserId();
 
-        $EventResult=[
-            "creator_id" =>  $this->userId,
-            "title" => $args['title'],
-            "status" => $args['status'] ?? Status::Active,           
+        $EventResult = [
+            "creator_id" => $this->userId,
+            "title" => trim($args['title']),
+            "status" => $args['status'] ?? Status::Active,
         ];
-        $is_exist= Event::where('title',$args['title'])->where('status',$args['status'])->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("Event-CREATE-RECORD_IS_EXIST");
-         }
-        $EventResult_result=Event::create($EventResult);
+        $is_exist = Event::where('title', $args['title'])->where('status', $args['status'])->first();
+        if ($is_exist) {
+            return Error::createLocatedError("Event-CREATE-RECORD_IS_EXIST");
+        }
+        $EventResult_result = Event::create($EventResult);
         return $EventResult_result;
     }
 }

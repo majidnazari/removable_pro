@@ -13,15 +13,19 @@ type Event {
     updated_at: DateTime
 }
 
-input CreateEventInput {
+input CreateEventInput
+@validator(class: "App\\GraphQL\\Validators\\Event\\EventInputValidator")
+ {
 
-    title: String!
+    title: String! 
     status: Status   
 
 }
 
-input UpdateEventInput {
+input UpdateEventInput
+@validator(class: "App\\GraphQL\\Validators\\Event\\EventInputValidator")
+ {
 
-   title: String!
+    title: String! 
    status: Status
 }

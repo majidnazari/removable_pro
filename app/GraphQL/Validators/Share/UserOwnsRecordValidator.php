@@ -17,7 +17,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
     protected array $tableMap = [
         'person_id' => 'people',
         'group_id' => 'groups',
-
+        'event_id' => 'events',
         // 'category_content_id' => 'category_contents',
         'group_category_id' => 'group_categories',
         // Add more mappings as needed
@@ -28,7 +28,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
      */
     protected array $excludedFields = [
         'category_content_id', // Example: no creator_id validation for this field
-        'event_id', // Example: no creator_id validation for this field
+       // 'event_id', // Example: no creator_id validation for this field
         'user_id'
     ];
 
