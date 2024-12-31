@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             GroupCategoryDetailSeeder::class,
             MemorySeeder::class,
             PersonChildSeeder::class,
-            FamilyEventSeeder::class,
+            // FamilyEventSeeder::class,
             ScoreSeeder::class,
             PersonScoreSeeder::class,
 

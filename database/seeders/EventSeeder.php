@@ -17,33 +17,36 @@ class EventSeeder extends Seeder
         //
 
         $data=[
-            [
-                "title" => "دوره",
-                "status" =>1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                "title" => "ازدواج",
-                "status" =>1,
-                'created_at' => now(),
-                'updated_at' => now(),
+            // [
+            //     "title" => "دوره",
+            //     "status" =>1,
+            //     'created_at' => now(),
+            //     'updated_at' => now(),
+            // ],
+            // [
+            //     "title" => "ازدواج",
+            //     "status" =>1,
+            //     'created_at' => now(),
+            //     'updated_at' => now(),
 
-            ],
+            // ],
             [
-                "title" => "فوت",
-                "status" => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-
-            ],
-            [
+                "creator_id" =>1,
                 "title" => "تولد",
                 "status" => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
 
             ],
+            [
+                "creator_id" =>1,
+                "title" => "فوت",
+                "status" => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+
+            ],
+            
         ];
 
         Event::insert($data);

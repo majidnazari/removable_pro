@@ -41,7 +41,7 @@ class FamilyEvent extends Eloquent
         'person_id',
         'event_id',
         'category_content_id',
-        //'group_category_id',
+        'group_category_id',
         'creator_id',
         'editor_id',
         'event_date',
@@ -74,10 +74,10 @@ class FamilyEvent extends Eloquent
     {
         return $this->belongsTo(CategoryContent::class, self::COLUMN_CATEGORY_CONTENT_ID);
     }
-    // public function GroupCategory()
-    // {
-    //     return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);
-    // }
+    public function GroupCategory()
+    {
+        return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);
+    }
 
     public function Creator()
     {

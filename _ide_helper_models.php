@@ -179,8 +179,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event query()
  * @mixin \Eloquent
+ * @property int $creator_id
+ * @property int|null $editor_id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereTitle($value)
@@ -266,6 +270,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent query()
  * @mixin \Eloquent
  * @property-read \App\Models\CategoryContent $CategoryContent
+ * @property-read \App\Models\GroupCategory $GroupCategory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
  * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCategoryContentId($value)

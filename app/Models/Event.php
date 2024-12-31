@@ -29,6 +29,8 @@ use Eloquent;
 class Event extends Eloquent
 {
     protected $fillable = [
+        'creator_id',
+        'editor_id',
         'title',
         'status',
     ];
@@ -52,7 +54,7 @@ class Event extends Eloquent
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

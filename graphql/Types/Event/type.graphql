@@ -3,6 +3,10 @@
 type Event {
     
     id: ID!
+    creator_id: ID
+    Creator: User    
+    editor_id: ID
+    Editor: User
     title: String!
     status: Status 
     created_at: DateTime
