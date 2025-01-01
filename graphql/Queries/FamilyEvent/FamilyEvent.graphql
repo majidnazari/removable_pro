@@ -12,3 +12,10 @@ getFamilyEvent(id: ID!): FamilyEvent @guard(with:["api"]) @field(resolver: "App\
         orderBy:[OrderByClause!] @orderBy
         # filter: FamilyEventFilterInput
     ): [FamilyEvent!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\FamilyEvent\\GetFamilyEvents@resolveFamilyEvent")
+
+
+getSpecialPersonEvents(
+      
+        creator_id: Int,
+        # filter: MemoryFilterInput
+    ): [FamilyEvent!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\FamilyEvent\\GetSpecialPersonFamilyEvents@resolveFamilyEvent")
