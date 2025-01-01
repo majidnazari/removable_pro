@@ -32,7 +32,9 @@ class UserOwnsRecordValidator extends GraphQLValidator
         'user_id'
     ];
     protected array $justCheckCurrentUserLoggedIn = [
-        'event_id'
+        'event_id',
+        'group_category_id' => 'group_categories',
+
     ];
 
     public function rules(): array
