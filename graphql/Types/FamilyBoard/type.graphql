@@ -14,6 +14,9 @@ type FamilyBoard {
     status: Status
     created_at: DateTime
     updated_at: DateTime
+
+    GroupCategory: GroupCategory
+
 }
 
 input CreateFamilyBoardInput

@@ -22,6 +22,7 @@ type FamilyEvent {
 
 input CreateFamilyEventInput 
 @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+@validator(class: "App\\GraphQL\\Validators\\FamilyEvent\\FamilyEventInputValidator")
 {
 
     category_content_id: ID!    
