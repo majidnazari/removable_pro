@@ -17,6 +17,7 @@ type FamilyEvent {
     updated_at: DateTime
 
     Event: Event
+    GroupCategory: GroupCategory
 }
 
 input CreateFamilyEventInput 
