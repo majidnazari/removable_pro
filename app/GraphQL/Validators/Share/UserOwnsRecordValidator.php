@@ -33,7 +33,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
     ];
     protected array $justCheckCurrentUserLoggedIn = [
         'event_id',
-        'group_category_id' => 'group_categories',
+        'group_category_id' ,
 
     ];
 
@@ -89,6 +89,8 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
             // Check if the field is in the $newItems list (i.e., should only check creator_id against logged-in user)
             if (in_array($fieldName, $this->justCheckCurrentUserLoggedIn)) {
+                //Log::info("if is running!".$fieldName);
+
                 // Only check creator_id with the logged-in user
                 $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user) {
                     $exists = DB::table($tableName)
@@ -102,6 +104,8 @@ class UserOwnsRecordValidator extends GraphQLValidator
                     }
                 };
             } else {
+                //Log::info("else is running!".$fieldName);
+
                 // Skip creator_id check for excluded fields
                 if (!in_array($fieldName, $this->excludedFields)) {
                     // Check creator_id against allowedCreatorIds (including merged users)
