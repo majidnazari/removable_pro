@@ -16,12 +16,12 @@ return new class extends Migration
             $table->unsignedBigInteger('creator_id')->index();
             $table->unsignedBigInteger('editor_id')->index()->nullable();
             $table->unsignedBigInteger('talent_header_id')->index();
-            $table->unsignedBigInteger('micro_field_id')->index();
+            $table->unsignedBigInteger('minor_field_id')->index();
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('talent_header_id')->references('id')->on('talent_headers')->onDelete('cascade');
-            $table->foreign('micro_field_id')->references('id')->on('micro_fields')->onDelete('cascade');
+            $table->foreign('minor_field_id')->references('id')->on('minor_fields')->onDelete('cascade');
 
             $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive"); 
 
