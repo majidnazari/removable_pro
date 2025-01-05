@@ -1,0 +1,12 @@
+
+getMiddleField(id: ID!): MiddleField @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\MiddleField\\GetMiddleField@resolveMiddleField") 
+    getMiddleFields(
+        first: Int, 
+        page: Int, 
+        major_field_id: Int,
+        title: String,
+      
+      
+        orderBy:[OrderByClause!] @orderBy
+        # filter: MiddleFieldFilterInput
+    ): [MiddleField!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\MiddleField\\GetMiddleFields@resolveMiddleField")

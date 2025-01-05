@@ -1,0 +1,35 @@
+type TalentHeader {
+    id: ID
+    creator_id: ID
+    creator: User
+    editor_id: ID
+    editor: User
+    group_category_id: ID
+    group_category: GroupCategory
+    person_id: ID
+    person: Person
+    title: String
+    end_date: String
+    status: Int
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+}
+
+input CreateTalentHeaderInput {
+  
+    group_category_id: ID!
+    person_id: ID!
+    title: String!
+    end_date: String
+    status: Int
+}
+
+input UpdateTalentHeaderInput {
+    id: ID!
+    group_category_id: ID
+    person_id: ID
+    title: String
+    end_date: String
+    status: Int
+}

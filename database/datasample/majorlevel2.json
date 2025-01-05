@@ -1,0 +1,506 @@
+{
+    "fields": [
+      {
+        "id": 1,
+        "name": "فوتبال",
+        "major_level1_id": 1
+      },
+      {
+        "id": 2,
+        "name": "بسکتبال",
+        "major_level1_id": 1
+      },
+      {
+        "id": 3,
+        "name": "شنا",
+        "major_level1_id": 1
+      },
+      {
+        "id": 4,
+        "name": "ژیمناستیک",
+        "major_level1_id": 1
+      },
+      {
+        "id": 5,
+        "name": "دو و میدانی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 6,
+        "name": "والیبال",
+        "major_level1_id": 1
+      },
+      {
+        "id": 7,
+        "name": "تنیس",
+        "major_level1_id": 1
+      },
+      {
+        "id": 8,
+        "name": "بدمینتون",
+        "major_level1_id": 1
+      },
+      {
+        "id": 9,
+        "name": "کشتی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 10,
+        "name": "بوکس",
+        "major_level1_id": 1
+      },
+      {
+        "id": 11,
+        "name": "هاکی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 12,
+        "name": "کریکت",
+        "major_level1_id": 1
+      },
+      {
+        "id": 13,
+        "name": "گلف",
+        "major_level1_id": 1
+      },
+      {
+        "id": 14,
+        "name": "دوچرخه‌سواری",
+        "major_level1_id": 1
+      },
+      {
+        "id": 15,
+        "name": "اسکی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 16,
+        "name": "اسنوبرد",
+        "major_level1_id": 1
+      },
+      {
+        "id": 17,
+        "name": "شمشیربازی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 18,
+        "name": "تکواندو",
+        "major_level1_id": 1
+      },
+      {
+        "id": 19,
+        "name": "کاراته",
+        "major_level1_id": 1
+      },
+      {
+        "id": 20,
+        "name": "جودو",
+        "major_level1_id": 1
+      },
+      {
+        "id": 21,
+        "name": "بیسبال",
+        "major_level1_id": 1
+      },
+      {
+        "id": 22,
+        "name": "سافتبال",
+        "major_level1_id": 1
+      },
+      {
+        "id": 23,
+        "name": "اسکواش",
+        "major_level1_id": 1
+      },
+      {
+        "id": 24,
+        "name": "راکبتبال",
+        "major_level1_id": 1
+      },
+      {
+        "id": 25,
+        "name": "ورزش‌های الکترونیکی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 26,
+        "name": "ژیمناستیک ریتمیک",
+        "major_level1_id": 1
+      },
+      {
+        "id": 27,
+        "name": "چتر بازی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 28,
+        "name": "اسکیت",
+        "major_level1_id": 1
+      },
+      {
+        "id": 29,
+        "name": "شنا با پرش از سکوی بلند",
+        "major_level1_id": 1
+      },
+      {
+        "id": 30,
+        "name": "واترپلو",
+        "major_level1_id": 1
+      },
+      {
+        "id": 31,
+        "name": "قایقرانی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 32,
+        "name": "راگبی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 33,
+        "name": "بیس جامپینگ",
+        "major_level1_id": 1
+      },
+      {
+        "id": 34,
+        "name": "کریکت شش‌نفره",
+        "major_level1_id": 1
+      },
+      {
+        "id": 35,
+        "name": "کیک‌بوکسینگ",
+        "major_level1_id": 1
+      },
+      {
+        "id": 36,
+        "name": "ورزش‌های زمستانی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 37,
+        "name": "سرفینگ",
+        "major_level1_id": 1
+      },
+      {
+        "id": 38,
+        "name": "پینت‌بال",
+        "major_level1_id": 1
+      },
+      {
+        "id": 39,
+        "name": "ورزش‌های کوهستانی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 40,
+        "name": "پارکور",
+        "major_level1_id": 1
+      },
+      {
+        "id": 41,
+        "name": "یوگا",
+        "major_level1_id": 1
+      },
+      {
+        "id": 42,
+        "name": "پیلاتس",
+        "major_level1_id": 1
+      },
+      {
+        "id": 43,
+        "name": "زومبا",
+        "major_level1_id": 1
+      },
+      {
+        "id": 44,
+        "name": "اسکیت روی یخ",
+        "major_level1_id": 1
+      },
+      {
+        "id": 45,
+        "name": "ورزش‌های رزمی ترکیبی (MMA)",
+        "major_level1_id": 1
+      },
+      {
+        "id": 46,
+        "name": "شنا سرعتی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 47,
+        "name": "سه‌گانه (ترای‌اتلون)",
+        "major_level1_id": 1
+      },
+      {
+        "id": 48,
+        "name": "دوچرخه‌سواری کوهستانی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 49,
+        "name": "دوچرخه‌سواری جاده‌ای",
+        "major_level1_id": 1
+      },
+      {
+        "id": 50,
+        "name": "چتربازی با لباس بال‌دار",
+        "major_level1_id": 1
+      },
+      {
+        "id": 51,
+        "name": "شنا زیرآبی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 52,
+        "name": "کوهنوردی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 53,
+        "name": "ورزش‌های صحرایی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 54,
+        "name": "کشتی کج",
+        "major_level1_id": 1
+      },
+      {
+        "id": 55,
+        "name": "پاراگلایدر",
+        "major_level1_id": 1
+      },
+      {
+        "id": 56,
+        "name": "فریزبی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 57,
+        "name": "ورزش‌های آبی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 58,
+        "name": "قایقرانی بادبانی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 59,
+        "name": "قایقرانی کایاک",
+        "major_level1_id": 1
+      },
+      {
+        "id": 60,
+        "name": "کانوپولو",
+        "major_level1_id": 1
+      },
+      {
+        "id": 61,
+        "name": "ماجراجویی در طبیعت",
+        "major_level1_id": 1
+      },
+      {
+        "id": 62,
+        "name": "بیس جامپینگ (پرش آزاد)",
+        "major_level1_id": 1
+      },
+      {
+        "id": 63,
+        "name": "پاراشوتینگ",
+        "major_level1_id": 1
+      },
+      {
+        "id": 64,
+        "name": "قایقرانی در آب‌های آرام",
+        "major_level1_id": 1
+      },
+      {
+        "id": 65,
+        "name": "قایقرانی در آب‌های خروشان",
+        "major_level1_id": 1
+      },
+      {
+        "id": 66,
+        "name": "رقص‌های ورزشی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 67,
+        "name": "رولر دربی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 68,
+        "name": "ورزش‌های تیمی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 69,
+        "name": "ورزش‌های فردی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 70,
+        "name": "ورزش‌های خیابانی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 71,
+        "name": "آمادگی جسمانی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 72,
+        "name": "تیراندازی با کمان",
+        "major_level1_id": 1
+      },
+      {
+        "id": 73,
+        "name": "تیراندازی با تفنگ",
+        "major_level1_id": 1
+      },
+      {
+        "id": 74,
+        "name": "ورزش‌های بی‌وزنی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 75,
+        "name": "تنیس روی میز",
+        "major_level1_id": 1
+      },
+      {
+        "id": 76,
+        "name": "بولینگ",
+        "major_level1_id": 1
+      },
+      {
+        "id": 77,
+        "name": "دارت",
+        "major_level1_id": 1
+      },
+      {
+        "id": 78,
+        "name": "شطرنج",
+        "major_level1_id": 1
+      },
+      {
+        "id": 79,
+        "name": "بیلیارد",
+        "major_level1_id": 1
+      },
+      {
+        "id": 80,
+        "name": "گلف کوچک",
+        "major_level1_id": 1
+      },
+      {
+        "id": 81,
+        "name": "ورزش‌های نمایشی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 82,
+        "name": "ورزش‌های المپیکی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 83,
+        "name": "ورزش‌های پارالمپیکی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 84,
+        "name": "دو امدادی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 85,
+        "name": "فوتسال",
+        "major_level1_id": 1
+      },
+      {
+        "id": 86,
+        "name": "والیبال ساحلی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 87,
+        "name": "رقص آکروباتیک",
+        "major_level1_id": 1
+      },
+      {
+        "id": 88,
+        "name": "هندبال",
+        "major_level1_id": 1
+      },
+      {
+        "id": 89,
+        "name": "کریکت حرفه‌ای",
+        "major_level1_id": 1
+      },
+      {
+        "id": 90,
+        "name": "پینگ پنگ",
+        "major_level1_id": 1
+      },
+      {
+        "id": 91,
+        "name": "تیراندازی با تیرکمان",
+        "major_level1_id": 1
+      },
+      {
+        "id": 92,
+        "name": "ورزش‌های قدرتی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 93,
+        "name": "ورزش‌های سرعتی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 94,
+        "name": "ورزش‌های استقامتی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 95,
+        "name": "ورزش‌های فنی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 96,
+        "name": "ورزش‌های تفریحی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 97,
+        "name": "ورزش‌های نمایشی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 98,
+        "name": "بوکس حرفه‌ای",
+        "major_level1_id": 1
+      },
+      {
+        "id": 99,
+        "name": "فوتبال ساحلی",
+        "major_level1_id": 1
+      },
+      {
+        "id": 100,
+        "name": "ورزش‌های همگانی",
+        "major_level1_id": 1
+      }
+    ]
+  }
+  
+  

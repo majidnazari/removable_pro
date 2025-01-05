@@ -513,6 +513,32 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $title
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @method static \Database\Factories\MajorFieldFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField withoutTrashed()
+ */
+	class MajorField extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property int $person_id
  * @property int $category_content_id
  * @property int $group_category_id
@@ -561,6 +587,64 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory withoutTrashed()
  */
 	class Memory extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $middle_field_id
+ * @property string $title
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereMiddleFieldId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read MicroField $MicroField
+ * @method static \Database\Factories\MicroFieldFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField withoutTrashed()
+ */
+	class MicroField extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $major_field_id
+ * @property string $title
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereMajorFieldId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read \App\Models\MajorField $MajorField
+ * @method static \Database\Factories\MiddleFieldFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField withoutTrashed()
+ */
+	class MiddleField extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -909,6 +993,125 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Score withoutTrashed()
  */
 	class Score extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $creator_id
+ * @property int|null $editor_id
+ * @property int $talent_header_id
+ * @property int $micro_field_id
+ * @property int $status 1=Active 2=Inactive
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereMicroFieldId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereTalentHeaderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read \App\Models\User $Creator
+ * @property-read \App\Models\User|null $Editor
+ * @property-read \App\Models\MicroField $MicroField
+ * @property-read \App\Models\TalentHeader $TalentHeader
+ * @method static \Database\Factories\TalentDetailFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail withoutTrashed()
+ */
+	class TalentDetail extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $creator_id
+ * @property int|null $editor_id
+ * @property int $participating_user_id
+ * @property int $talent_detail_id
+ * @property int $score 0=None 1=One 2=Two 3=Three 4-Four 5=Five 6=Six 7=Seven 8=Eight 9=Nine 10=Ten
+ * @property int $status 1=Active 2=Inactive
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereParticipatingUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereTalentDetailId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read \App\Models\User $Creator
+ * @property-read \App\Models\User|null $Editor
+ * @property-read \App\Models\User $ParticipateUser
+ * @property-read \App\Models\TalentDetail $TalentDetail
+ * @method static \Database\Factories\TalentDetailScoreFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore withoutTrashed()
+ */
+	class TalentDetailScore extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $creator_id
+ * @property int|null $editor_id
+ * @property int $group_category_id
+ * @property int $person_id
+ * @property string $title
+ * @property string $end_date
+ * @property int $status 1=Active 2=Inactive
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereGroupCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader wherePersonId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read \App\Models\User $Creator
+ * @property-read \App\Models\User|null $Editor
+ * @property-read \App\Models\GroupCategory $GroupCategory
+ * @method static \Database\Factories\TalentHeaderFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader withoutTrashed()
+ */
+	class TalentHeader extends \Eloquent {}
 }
 
 namespace App\Models{

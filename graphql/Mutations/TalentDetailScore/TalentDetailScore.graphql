@@ -1,0 +1,4 @@
+
+createTalentDetailScore(input: CreateTalentDetailScoreInput! @spread): TalentDetailScore @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\TalentDetailScore\\CreateTalentDetailScore@resolveTalentDetailScore") 
+    updateTalentDetailScore(id: ID!, input: UpdateTalentDetailScoreInput! @spread): TalentDetailScore  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\TalentDetailScore\\UpdateTalentDetailScore@resolveTalentDetailScore") 
+    deleteTalentDetailScore(id: ID!): TalentDetailScore @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\TalentDetailScore\\DeleteTalentDetailScore@resolveTalentDetailScore") 
