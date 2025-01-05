@@ -35,6 +35,7 @@ final class CreateMajorField
         $MajorFieldModel = [
 
             "title" => $args['title'],
+            "creator_id" =>  $this->userId,
             //"status" => $args['status']  ?? status::Active       
         ];
         // $is_exist= MajorField::where($MajorFieldModel)->first();

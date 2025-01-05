@@ -36,7 +36,7 @@ final class CreateMiddleField
            
             "major_field_id" => $args['major_field_id'],
             "title" => $args['title'],
-               
+            "creator_id" =>  $this->userId,   
         ];
        
 
