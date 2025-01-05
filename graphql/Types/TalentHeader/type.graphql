@@ -10,7 +10,7 @@ type TalentHeader {
     person: Person
     title: String
     end_date: String
-    status: Int
+    status: Status
     created_at: DateTime
     updated_at: DateTime
     deleted_at: DateTime
@@ -22,7 +22,7 @@ input CreateTalentHeaderInput {
     person_id: ID!
     title: String!
     end_date: String
-    status: Int
+    status: Status
 }
 
 input UpdateTalentHeaderInput {
@@ -31,5 +31,5 @@ input UpdateTalentHeaderInput {
     person_id: ID
     title: String
     end_date: String
-    status: Int
+    status: Status
 }

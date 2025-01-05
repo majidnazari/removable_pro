@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('major_fields', function (Blueprint $table) {
             $table->id();
+            
+            $table->unsignedBigInteger('creator_id');
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->string('title');
             $table->timestamps();
             $table->softDeletes();

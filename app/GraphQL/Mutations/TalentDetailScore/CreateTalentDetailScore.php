@@ -7,6 +7,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
+use App\GraphQL\Enums\TalentScore;
 use App\GraphQL\Enums\Star;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
@@ -37,7 +38,7 @@ final class CreateTalentDetailScore
             "participating_user_id" => $args['participating_user_id'],
 
             "talent_detail_id" => $args['talent_detail_id'],
-            "score" => $args['score'],
+            "score" => $args['score'] ?? TalentScore::None,
            
             "status" => $args['status']  ?? status::Active       
         ];

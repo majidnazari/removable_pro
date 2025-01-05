@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('middle_fields', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('creator_id');
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('major_field_id');
             $table->foreign('major_field_id')->references('id')->on('major_fields')->onDelete('cascade');
 

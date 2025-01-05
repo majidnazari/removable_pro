@@ -30,6 +30,7 @@ use Eloquent;
 class MicroField extends Eloquent
 {
     protected $fillable = [
+        'creator_id',
         'middle_field_id',
         'title',
     ];
@@ -48,4 +49,10 @@ class MicroField extends Eloquent
     }
 
 
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

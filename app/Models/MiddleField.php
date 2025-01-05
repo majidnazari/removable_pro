@@ -30,6 +30,7 @@ use Eloquent;
 class MiddleField extends Eloquent
 {
     protected $fillable = [
+        'creator_id',
         'major_field_id',
         'title',
     ];
@@ -47,4 +48,10 @@ class MiddleField extends Eloquent
         return $this->belongsTo(MajorField::class, self::COLUMN_MAJOR_FIELD_ID);
     }
 
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

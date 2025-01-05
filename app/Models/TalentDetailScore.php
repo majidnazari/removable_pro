@@ -76,5 +76,11 @@ class TalentDetailScore extends Eloquent
         return $this->belongsTo(TalentDetail::class, self::COLUMN_TALENT_DETAIL_ID);
     }
     
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 
 }

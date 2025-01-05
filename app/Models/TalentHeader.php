@@ -73,4 +73,11 @@ class TalentHeader extends Eloquent
     {
         return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_CATEGORY_ID);
     }
+
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }

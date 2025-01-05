@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('micro_fields', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('creator_id');
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('middle_field_id');
             $table->foreign('middle_field_id')->references('id')->on('middle_fields')->onDelete('cascade');
             $table->string('title');

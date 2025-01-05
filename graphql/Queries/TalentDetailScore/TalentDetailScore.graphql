@@ -7,7 +7,7 @@ getTalentDetailScore(id: ID!): TalentDetailScore @guard(with:["api"]) @field(res
         creator_id: Int,
         editor_id: Int,
         talent_detail_id: Int,
-        score: Int,
+        score: TalentScore,
         status: Status,
         orderBy:[OrderByClause!] @orderBy
         # filter: TalentDetailScoreFilterInput

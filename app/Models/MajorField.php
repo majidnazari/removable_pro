@@ -29,7 +29,7 @@ class MajorField extends Eloquent
 {
 
     protected $fillable = [
-
+        'creator_id',
         'title',
 
     ];
@@ -37,5 +37,12 @@ class MajorField extends Eloquent
     use SoftDeletes;
     public const TABLE_NAME = 'major_fields';
     protected $table = self::TABLE_NAME;
+
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 
 }

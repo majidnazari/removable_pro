@@ -73,4 +73,10 @@ class TalentDetail extends Eloquent
         return $this->belongsTo(MicroField::class, self::COLUMN_MICRO_FIELD_ID);
     }
 
+    public static function getAuthorizationColumns()
+    {
+        return [
+            "creator_id", 
+        ];
+    }
 }
