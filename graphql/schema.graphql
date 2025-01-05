@@ -32,7 +32,7 @@
       #import Types/Notif/type.graphql
       #import Types/MajorField/type.graphql
       #import Types/MiddleField/type.graphql
-      #import Types/MicroField/type.graphql
+      #import Types/MinorField/type.graphql
       #import Types/TalentHeader/type.graphql
       #import Types/TalentDetail/type.graphql
       #import Types/TalentDetailScore/type.graphql
@@ -66,7 +66,7 @@
         #import Queries/Notif/Notif.graphql
         #import Queries/MajorField/MajorField.graphql
         #import Queries/MiddleField/MiddleField.graphql
-        #import Queries/MicroField/MicroField.graphql
+        #import Queries/MinorField/MinorField.graphql
         #import Queries/TalentHeader/TalentHeader.graphql
         #import Queries/TalentDetail/TalentDetail.graphql
         #import Queries/TalentDetailScore/TalentDetailScore.graphql
@@ -101,7 +101,7 @@
       #import Mutations/Notif/Notif.graphql
       #import Mutations/MajorField/MajorField.graphql
       #import Mutations/MiddleField/MiddleField.graphql
-      #import Mutations/MicroField/MicroField.graphql
+      #import Mutations/MinorField/MinorField.graphql
       #import Mutations/TalentHeader/TalentHeader.graphql
       #import Mutations/TalentDetail/TalentDetail.graphql
       #import Mutations/TalentDetailScore/TalentDetailScore.graphql
