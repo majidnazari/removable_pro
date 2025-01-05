@@ -28,14 +28,14 @@ final class CreateMajorField
         // TODO implement the resolver
     }
     public function resolveMajorField($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    { 
+    {
 
         $this->userId = $this->getUserId();
 
-        $MajorFieldModel=[
-           
+        $MajorFieldModel = [
+
             "title" => $args['title'],
-            "status" => $args['status']  ?? status::Active       
+            //"status" => $args['status']  ?? status::Active       
         ];
         // $is_exist= MajorField::where($MajorFieldModel)->first();
         // if($is_exist)
@@ -44,7 +44,7 @@ final class CreateMajorField
         //  }
 
         $this->checkDuplicate(new MajorField(), $MajorFieldModel);
-        $MajorFieldResult=MajorField::create($MajorFieldModel);
+        $MajorFieldResult = MajorField::create($MajorFieldModel);
         return $MajorFieldResult;
     }
 }
