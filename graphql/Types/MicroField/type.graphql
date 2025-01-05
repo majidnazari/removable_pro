@@ -9,12 +9,13 @@ type MicroField {
 }
 
 input CreateMicroFieldInput {
+    
     middle_field_id: ID!
     title: String!
 }
 
 input UpdateMicroFieldInput {
-    id: ID!
+   
     middle_field_id: ID
     title: String
 }

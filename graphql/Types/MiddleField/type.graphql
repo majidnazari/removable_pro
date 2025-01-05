@@ -9,12 +9,13 @@ type MiddleField {
 }
 
 input CreateMiddleFieldInput {
+    
     major_field_id: ID!
     title: String!
 }
 
 input UpdateMiddleFieldInput {
-    id: ID!
+    
     major_field_id: ID
     title: String
 }
