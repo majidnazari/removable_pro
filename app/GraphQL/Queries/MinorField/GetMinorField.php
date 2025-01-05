@@ -1,15 +1,15 @@
 <?php
 
-namespace App\GraphQL\Queries\MicroField;
+namespace App\GraphQL\Queries\MinorField;
 
-use App\Models\MicroField;
+use App\Models\MinorField;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesUser;
 
 
-final class GetMicroField
+final class GetMinorField
 {
     use AuthUserTrait;
     use AuthorizesUser;
@@ -22,14 +22,14 @@ final class GetMicroField
     {
         // TODO implement the resolver
     }
-    function resolveMicroField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    function resolveMinorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // $this->userId = $this->getUserId();
 
-        // $MicroField = MicroField::where('id', $args['id']);       
-        // return $MicroField->first();
+        // $MinorField = MinorField::where('id', $args['id']);       
+        // return $MinorField->first();
 
-        $MicroField = $this->getModelByAuthorization(MicroField::class, $args);
-        return $MicroField->first();
+        $MinorField = $this->getModelByAuthorization(MinorField::class, $args);
+        return $MinorField->first();
     }
 }

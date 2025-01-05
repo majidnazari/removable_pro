@@ -1,8 +1,8 @@
 <?php
 
-namespace App\GraphQL\Mutations\MicroField;
+namespace App\GraphQL\Mutations\MinorField;
 
-use App\Models\MicroField;
+use App\Models\MinorField;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
@@ -13,7 +13,7 @@ use App\GraphQL\Enums\AuthAction;
 use Exception;
 
 
-final class DeleteMicroField
+final class DeleteMinorField
 {
     use AuthUserTrait;
     use AuthorizesMutation;
@@ -28,21 +28,21 @@ final class DeleteMicroField
     {
         // TODO implement the resolver
     }
-    public function resolveMicroField($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveMinorField($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         
         $this->userId = $this->getUserId();
 
         try {
 
-            $MicroFieldResult = $this->userAccessibility(MicroField::class, AuthAction::Delete, $args);
+            $MinorFieldResult = $this->userAccessibility(MinorField::class, AuthAction::Delete, $args);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
 
         }
 
-        return $this->updateAndDeleteModel($MicroFieldResult, $args, $this->userId);
+        return $this->updateAndDeleteModel($MinorFieldResult, $args, $this->userId);
        
     }
 }

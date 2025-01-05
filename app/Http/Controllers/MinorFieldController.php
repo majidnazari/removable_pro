@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreMicroFieldRequest;
-use App\Http\Requests\UpdateMicroFieldRequest;
-use App\Models\MicroField;
+use App\Http\Requests\StoreMinorFieldRequest;
+use App\Http\Requests\UpdateMinorFieldRequest;
+use App\Models\MinorField;
 
-class MicroFieldController extends Controller
+class MinorFieldController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class MicroFieldController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMicroFieldRequest $request)
+    public function store(StoreMinorFieldRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class MicroFieldController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MicroField $microField)
+    public function show(MinorField $MinorField)
     {
         //
     }
@@ -43,7 +43,7 @@ class MicroFieldController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MicroField $microField)
+    public function edit(MinorField $MinorField)
     {
         //
     }
@@ -51,7 +51,7 @@ class MicroFieldController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMicroFieldRequest $request, MicroField $microField)
+    public function update(UpdateMinorFieldRequest $request, MinorField $MinorField)
     {
         //
     }
@@ -59,7 +59,7 @@ class MicroFieldController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MicroField $microField)
+    public function destroy(MinorField $MinorField)
     {
         //
     }

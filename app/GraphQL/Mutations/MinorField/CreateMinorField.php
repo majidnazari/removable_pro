@@ -1,8 +1,8 @@
 <?php
 
-namespace App\GraphQL\Mutations\MicroField;
+namespace App\GraphQL\Mutations\MinorField;
 
-use App\Models\MicroField;
+use App\Models\MinorField;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
@@ -12,7 +12,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
 use Log;
 
-final class CreateMicroField
+final class CreateMinorField
 {
     use AuthUserTrait;
     use DuplicateCheckTrait;
@@ -27,26 +27,26 @@ final class CreateMicroField
     {
         // TODO implement the resolver
     }
-    public function resolveMicroField($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveMinorField($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     { 
 
         $this->userId = $this->getUserId();
 
-        $MicroFieldModel=[
+        $MinorFieldModel=[
           
             "middle_field_id" => $args['middle_field_id'],
             "title" => $args['title'],
             "creator_id" =>  $this->userId,
                  
         ];
-        // $is_exist= MicroField::where($MicroFieldModel)->first();
+        // $is_exist= MinorField::where($MinorFieldModel)->first();
         // if($is_exist)
         //  {
-        //          return Error::createLocatedError("MicroField-CREATE-RECORD_IS_EXIST");
+        //          return Error::createLocatedError("MinorField-CREATE-RECORD_IS_EXIST");
         //  }
 
-        $this->checkDuplicate(new MicroField(), $MicroFieldModel);
-        $MicroFieldResult=MicroField::create($MicroFieldModel);
-        return $MicroFieldResult;
+        $this->checkDuplicate(new MinorField(), $MinorFieldModel);
+        $MinorFieldResult=MinorField::create($MinorFieldModel);
+        return $MinorFieldResult;
     }
 }

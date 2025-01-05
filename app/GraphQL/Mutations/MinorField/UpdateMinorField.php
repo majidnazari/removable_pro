@@ -1,8 +1,8 @@
 <?php
 
-namespace App\GraphQL\Mutations\MicroField;
+namespace App\GraphQL\Mutations\MinorField;
 
-use App\Models\MicroField;
+use App\Models\MinorField;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
@@ -14,7 +14,7 @@ use App\GraphQL\Enums\AuthAction;
 use Exception;
 
 
-final class UpdateMicroField
+final class UpdateMinorField
 {
     use AuthUserTrait;
     use AuthorizesMutation;
@@ -31,25 +31,25 @@ final class UpdateMicroField
     {
         // TODO implement the resolver
     }
-    public function resolveMicroField($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveMinorField($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
         try {
 
-            $MicroFieldResult = $this->userAccessibility(MicroField::class, AuthAction::Update, $args);
+            $MinorFieldResult = $this->userAccessibility(MinorField::class, AuthAction::Update, $args);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
         $this->checkDuplicate(
-            new MicroField(),
+            new MinorField(),
             $args,
             ['id', 'editor_id', 'created_at', 'updated_at'],
             excludeId: $args['id']
         );
 
-        return $this->updateModel($MicroFieldResult, $args, $this->userId);
+        return $this->updateModel($MinorFieldResult, $args, $this->userId);
         
 
     }

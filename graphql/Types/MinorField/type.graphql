@@ -1,5 +1,6 @@
-type MicroField {
+type MinorField {
     id: ID
+    creator_id: ID
     middle_field_id: ID!
     middle_field: MiddleField
     title: String!
@@ -8,13 +9,13 @@ type MicroField {
     deleted_at: DateTime
 }
 
-input CreateMicroFieldInput {
+input CreateMinorFieldInput {
     
     middle_field_id: ID!
     title: String!
 }
 
-input UpdateMicroFieldInput {
+input UpdateMinorFieldInput {
    
     middle_field_id: ID
     title: String

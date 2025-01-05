@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class MicroFieldSeeder extends Seeder
+class MinorFieldSeeder extends Seeder
 {
     /**
      * Run the database seeds.

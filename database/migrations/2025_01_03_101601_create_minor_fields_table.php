@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('micro_fields', function (Blueprint $table) {
+        Schema::create('minor_fields', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('micro_fields');
+        Schema::dropIfExists('minor_fields');
     }
 };

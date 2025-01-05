@@ -1,4 +1,0 @@
-
-createMicroField(input: CreateMicroFieldInput! @spread): MicroField @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MicroField\\CreateMicroField@resolveMicroField") 
-    updateMicroField(id: ID!, input: UpdateMicroFieldInput! @spread): MicroField  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MicroField\\UpdateMicroField@resolveMicroField") 
-    deleteMicroField(id: ID!): MicroField @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MicroField\\DeleteMicroField@resolveMicroField") 
