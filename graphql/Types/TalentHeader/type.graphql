@@ -16,7 +16,9 @@ type TalentHeader {
     deleted_at: DateTime
 }
 
-input CreateTalentHeaderInput {
+input CreateTalentHeaderInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
   
     group_category_id: ID!
     person_id: ID!
@@ -25,7 +27,9 @@ input CreateTalentHeaderInput {
     status: Status
 }
 
-input UpdateTalentHeaderInput {
+input UpdateTalentHeaderInput 
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
     id: ID!
     group_category_id: ID
     person_id: ID
