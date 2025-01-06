@@ -2,10 +2,12 @@
 
 namespace App\GraphQL\Validators\Share;
 
+use App\GraphQL\Enums\Status;
 use Nuwave\Lighthouse\Validation\Validator as GraphQLValidator;
 use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Log;
 use App\Traits\AuthUserTrait;
+use App\GraphQL\Enums\MergeStatus;
 use Log;
 
 class UserOwnsRecordValidator extends GraphQLValidator
@@ -143,7 +145,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
         // Get all user_receiver_id values where the logged-in user is the sender and status is Complete (4)
         $connectedUserIds = DB::table('user_merge_requests')
             ->where('user_sender_id', $userId)
-            ->where('status', 4) // Status = Complete
+            ->where('status', MergeStatus::Complete->value) // Status = Complete
             ->whereNull('deleted_at') // Exclude soft-deleted records
             ->pluck('user_receiver_id')
             ->toArray();

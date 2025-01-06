@@ -1,8 +1,8 @@
 <?php
 
-namespace App\GraphQL\Mutations\talentHeader;
+namespace App\GraphQL\Mutations\TalentHeader;
 
-use App\Models\talentHeader;
+use App\Models\TalentHeader;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
@@ -46,8 +46,8 @@ final class CreateTalentHeader
         //          return Error::createLocatedError("talentHeader-CREATE-RECORD_IS_EXIST");
         //  }
 
-        $this->checkDuplicate(new talentHeader(), $talentHeaderModel);
-        $talentHeaderResult = talentHeader::create($talentHeaderModel);
+        $this->checkDuplicate(new TalentHeader(), $talentHeaderModel);
+        $talentHeaderResult = TalentHeader::create($talentHeaderModel);
         return $talentHeaderResult;
     }
 }

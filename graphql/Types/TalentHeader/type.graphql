@@ -18,6 +18,7 @@ type TalentHeader {
 
 input CreateTalentHeaderInput 
 @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+@validator(class: "App\\GraphQL\\Validators\\Share\\CheckPersonOwnerValidator")
 {
   
     group_category_id: ID!
@@ -29,6 +30,7 @@ input CreateTalentHeaderInput
 
 input UpdateTalentHeaderInput 
 @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+@validator(class: "App\\GraphQL\\Validators\\Share\\CheckPersonOwnerValidator")
 {
     id: ID!
     group_category_id: ID

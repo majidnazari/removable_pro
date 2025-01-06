@@ -5,8 +5,9 @@ type TalentDetail {
     editor_id: ID
     editor: User
     talent_header_id: ID
-    micro_field_id: ID
+    minor_field_id: ID
   
+    status: Status
     created_at: DateTime
     updated_at: DateTime
     
@@ -15,13 +16,13 @@ type TalentDetail {
 input CreateTalentDetailInput {
    
     talent_header_id: ID!
-    micro_field_id: ID!
-    status: Int
+    minor_field_id: ID!
+    status: Status
 }
 
 input UpdateTalentDetailInput {
-    id: ID!
+   
     talent_header_id: ID
-    micro_field_id: ID
-    status: Int
+    minor_field_id: ID
+    status: Status
 }

@@ -24,7 +24,7 @@ input CreateTalentDetailScoreInput {
 }
 
 input UpdateTalentDetailScoreInput {
-    id: ID!
+   
     participating_user_id: ID
     talent_detail_id: ID
     score: TalentScore
