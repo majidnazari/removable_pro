@@ -10,12 +10,14 @@ use App\GraphQL\Enums\Status;
 use App\GraphQL\Enums\Star;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\FindOwnerTrait;
 use Log;
 
 final class CreateFavorite
 {
     use AuthUserTrait;
     use DuplicateCheckTrait;
+    use FindOwnerTrait;
 
     protected $userId;
 
@@ -28,19 +30,19 @@ final class CreateFavorite
         // TODO implement the resolver
     }
     public function resolveFavorite($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    { 
+    {
 
         $this->userId = $this->getUserId();
 
-        $FavoriteModel=[
-            "creator_id" =>  $this->userId,
-            "person_id" => $args['person_id'],
+        $FavoriteModel = [
+            "creator_id" => $this->userId,
+            "person_id" => $args['person_id'] ?? $this->findOwner(),
 
-            "image" => $args['image'],
+            "image" => $args['image'] ?? null,
             "title" => $args['title'],
-            "description" => $args['description'],
-            "star" => $args['star'] ?? Star::None   ,
-            "status" => $args['status']  ?? status::Active       
+            "description" => $args['description'] ?? null,
+            "star" => $args['star'] ?? Star::None,
+            "status" => $args['status'] ?? status::Active
         ];
         // $is_exist= Favorite::where($FavoriteModel)->first();
         // if($is_exist)
@@ -49,7 +51,7 @@ final class CreateFavorite
         //  }
 
         $this->checkDuplicate(new Favorite(), $FavoriteModel);
-        $FavoriteResult=Favorite::create($FavoriteModel);
+        $FavoriteResult = Favorite::create($FavoriteModel);
         return $FavoriteResult;
     }
 }
