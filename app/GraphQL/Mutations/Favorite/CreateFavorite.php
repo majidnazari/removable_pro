@@ -39,7 +39,7 @@ final class CreateFavorite
             "image" => $args['image'],
             "title" => $args['title'],
             "description" => $args['description'],
-            "star" => $args['star'] ?? Star::Five   ,
+            "star" => $args['star'] ?? Star::None   ,
             "status" => $args['status']  ?? status::Active       
         ];
         // $is_exist= Favorite::where($FavoriteModel)->first();

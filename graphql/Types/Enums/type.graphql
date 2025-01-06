@@ -82,11 +82,17 @@ enum Role
 
 enum Star 
 {
+    None @enum(value: 0)
     One @enum(value: 1)
     Two @enum(value: 2)
     Three @enum(value: 3)
     Four @enum(value: 4)
     Five @enum(value: 5)
+    Six @enum(value: 6)
+    Seven @enum(value: 7)
+    Eight @enum(value: 8)
+    Nine @enum(value: 9)
+    Ten @enum(value: 10)
      
 }
 

@@ -43,30 +43,7 @@ final class DeleteFavorite
         }
 
         return $this->updateAndDeleteModel($FavoriteResult, $args, $this->userId);
-        // $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
-
-        
-        // $FavoriteResult=Favorite::find($args['id']);
-        
-        // if(!$FavoriteResult)
-        // {
-        //     return Error::createLocatedError("Favorite-DELETE-RECORD_NOT_FOUND");
-        // }
-
-        // try {
-
-        //     $FavoriteResult = $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
-
-        // } catch (Exception $e) {
-        //     throw new Exception($e->getMessage());
-        // }
-
-        // $FavoriteResult->editor_id= $this->userId;
-        // $FavoriteResult->save();
-
-        // $FavoriteResult_filled= $FavoriteResult->delete();  
-        // return $FavoriteResult;
-
+       
         
     }
 }

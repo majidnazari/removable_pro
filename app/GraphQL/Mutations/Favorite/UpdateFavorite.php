@@ -50,35 +50,7 @@ final class UpdateFavorite
         );
 
         return $this->updateModel($FavoriteResult, $args, $this->userId);
-        // $this->userAccessibility(Favorite::class, AuthAction::Delete, $args);
-
-
-        // //args["user_id_creator"]=$user_id;
-        // $FavoriteResult=Favorite::find($args['id']);
-
-        // if(!$FavoriteResult)
-        // {
-        //     return Error::createLocatedError("Favorite-UPDATE-RECORD_NOT_FOUND");
-        // }
-        // try {
-
-        //     $FavoriteResult = $this->userAccessibility(Favorite::class, AuthAction::Update, $args);
-
-        // } catch (Exception $e) {
-        //     throw new Exception($e->getMessage());
-        // }
-
-        // $this->checkDuplicate(
-        //     new Favorite(),
-        //     $args,
-        //     ['id', 'editor_id', 'created_at', 'updated_at'],
-        //     $args['id']
-        // );
-        // $args['editor_id'] = $this->userId;
-        // $FavoriteResult_filled = $FavoriteResult->fill($args);
-        // $FavoriteResult->save();
-
-        // return $FavoriteResult;
+       
 
 
     }

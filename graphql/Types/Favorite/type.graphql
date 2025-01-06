@@ -6,7 +6,7 @@ type Favorite {
     creator_id: ID
     editor_id: ID
     person_id: ID
-     group_category_id: ID 
+    group_category_id: ID 
     image: String   
     title: String   
     description: String   
@@ -32,7 +32,7 @@ input CreateFavoriteInput @validator(class: "App\\GraphQL\\Validators\\Share\\Us
     person_id: ID
     group_category_id: ID 
     image: String   
-    title: String   
+    title: String!   
     description: String   
     star: Star   
     #status: Status      
@@ -48,7 +48,7 @@ input UpdateFavoriteInput @validator(class: "App\\GraphQL\\Validators\\Share\\Us
     person_id: ID
     group_category_id: ID 
     image: String   
-    title: String   
+    title: String!   
     description: String   
     star: Star   
     status: Status  
