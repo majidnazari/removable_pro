@@ -22,7 +22,7 @@ class CheckPersonOfEachUserValidator extends GraphQLValidator
     {
         // Apply the custom rule 'CheckPersonOwner' to the 'person_id' field
         return [
-            'person_id' => ['required',  new CheckPersonOfEachUser()],
+            'person_id' => ['required',  new CheckPersonOfEachUser($this->arg('person_id'))],
         ];
     }
      /**
