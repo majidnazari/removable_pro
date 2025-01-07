@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 
 use Exception;
@@ -19,6 +20,7 @@ final class UpdateScore
     use AuthUserTrait;
     use AuthorizesMutation;
     use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
 
     protected $userId;
 
@@ -31,30 +33,48 @@ final class UpdateScore
         // TODO implement the resolver
     }
     public function resolveScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
+    {
         $this->userId = $this->getUserId();
-        $this->userAccessibility(Score::class, AuthAction::Update, $args);
-        
-        $ScoreResult=Score::find($args['id']);
-        
-        if(!$ScoreResult)
-        {
-            return Error::createLocatedError("Score-UPDATE-RECORD_NOT_FOUND");
-        }
+        // $this->userAccessibility(Score::class, AuthAction::Update, $args);
 
+        // $ScoreResult=Score::find($args['id']);
+
+        // if(!$ScoreResult)
+        // {
+        //     return Error::createLocatedError("Score-UPDATE-RECORD_NOT_FOUND");
+        // }
+
+        // $this->checkDuplicate(
+        //     new Score(),
+        //     $args,
+        //     ['id','editor_id','created_at', 'updated_at'],
+        //     $args['id']
+        // );
+        // $args['editor_id']=$this->userId;
+
+        // $ScoreResult_filled= $ScoreResult->fill($args);
+        // $ScoreResult->save();       
+
+        // return $ScoreResult;
+
+        try {
+
+            $ScoreResult = $this->userAccessibility(Score::class, AuthAction::Update, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
         $this->checkDuplicate(
             new Score(),
             $args,
-            ['id','editor_id','created_at', 'updated_at'],
-            $args['id']
+            ['id', 'editor_id', 'created_at', 'updated_at'],
+            excludeId: $args['id']
         );
-        $args['editor_id']=$this->userId;
-        
-        $ScoreResult_filled= $ScoreResult->fill($args);
-        $ScoreResult->save();       
-       
-        return $ScoreResult;
 
-        
+        return $this->updateModel($ScoreResult, $args, $this->userId);
+
+
+
+
     }
 }

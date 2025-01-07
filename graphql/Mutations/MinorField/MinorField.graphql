@@ -1,0 +1,4 @@
+
+createMinorField(input: CreateMinorFieldInput! @spread): MinorField @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MinorField\\CreateMinorField@resolveMinorField") 
+    updateMinorField(id: ID!, input: UpdateMinorFieldInput! @spread): MinorField  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MinorField\\UpdateMinorField@resolveMinorField") 
+    deleteMinorField(id: ID!): MinorField @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MinorField\\DeleteMinorField@resolveMinorField") 

@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ final class UpdatePersonScore
     use AuthUserTrait;
     use AuthorizesMutation;
     use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -32,33 +34,48 @@ final class UpdatePersonScore
     public function resolvePersonScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
-        $this->userAccessibility(PersonScore::class, AuthAction::Update, $args);
+        // $this->userAccessibility(PersonScore::class, AuthAction::Update, $args);
 
 
-        //args["user_id_creator"]=$this->userId;
-        $PersonScoreResult=PersonScore::find($args['id']);
-        $PersonScoremodel=$args;
-        $PersonScoremodel['editor_id']=$this->userId;
+        // //args["user_id_creator"]=$this->userId;
+        // $PersonScoreResult=PersonScore::find($args['id']);
+        // $PersonScoremodel=$args;
+        // $PersonScoremodel['editor_id']=$this->userId;
         
-        if(!$PersonScoreResult)
-        {
-            return Error::createLocatedError("PersonScore-UPDATE-RECORD_NOT_FOUND");
-        }
+        // if(!$PersonScoreResult)
+        // {
+        //     return Error::createLocatedError("PersonScore-UPDATE-RECORD_NOT_FOUND");
+        // }
 
+        // $this->checkDuplicate(
+        //     new PersonScore(),
+        //     $args,
+        //     ['id','editor_id','created_at', 'updated_at'],
+        //     $args['id']
+        // );
+
+
+        // $args['editor_id']=$this->userId;
+        // $PersonScoreResult_filled= $PersonScoreResult->fill($PersonScoremodel);
+        // $PersonScoreResult->save();       
+       
+        // return $PersonScoreResult;
+
+        try {
+
+            $PersonScoreResult = $this->userAccessibility(PersonScore::class, AuthAction::Update, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
         $this->checkDuplicate(
             new PersonScore(),
             $args,
-            ['id','editor_id','created_at', 'updated_at'],
-            $args['id']
+            ['id', 'editor_id', 'created_at', 'updated_at'],
+            excludeId: $args['id']
         );
 
+        return $this->updateModel($PersonScoreResult, $args, $this->userId);
 
-        $args['editor_id']=$this->userId;
-        $PersonScoreResult_filled= $PersonScoreResult->fill($PersonScoremodel);
-        $PersonScoreResult->save();       
-       
-        return $PersonScoreResult;
-
-        
     }
 }

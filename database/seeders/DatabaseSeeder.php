@@ -28,10 +28,13 @@ class DatabaseSeeder extends Seeder
             PersonDetailSeeder::class,
             PersonMarriageSeeder::class,
             FavoriteSeeder::class,
+            GroupSeeder::class,
+            GroupDetailSeeder::class,
             GroupCategorySeeder::class,
+            GroupCategoryDetailSeeder::class,
             MemorySeeder::class,
             PersonChildSeeder::class,
-            FamilyEventSeeder::class,
+            // FamilyEventSeeder::class,
             ScoreSeeder::class,
             PersonScoreSeeder::class,
 
@@ -39,7 +42,9 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             CitySeeder::class,
             AddressSeeder::class,
-            FamilyBoardSeeder::class,
+            //FamilyBoardSeeder::class,
+            UserMergeRequestSeeder::class,
+
             // NaslanRelationshipSeeder::class,
 
         ]);

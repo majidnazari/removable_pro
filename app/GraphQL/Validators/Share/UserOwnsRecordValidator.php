@@ -2,10 +2,13 @@
 
 namespace App\GraphQL\Validators\Share;
 
+use App\GraphQL\Enums\Status;
 use Nuwave\Lighthouse\Validation\Validator as GraphQLValidator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Log;
 use App\Traits\AuthUserTrait;
+use App\GraphQL\Enums\MergeStatus;
+use Log;
 
 class UserOwnsRecordValidator extends GraphQLValidator
 {
@@ -17,8 +20,8 @@ class UserOwnsRecordValidator extends GraphQLValidator
     protected array $tableMap = [
         'person_id' => 'people',
         'group_id' => 'groups',
-
-       // 'category_content_id' => 'category_contents',
+        'event_id' => 'events',
+        // 'category_content_id' => 'category_contents',
         'group_category_id' => 'group_categories',
         // Add more mappings as needed
     ];
@@ -28,7 +31,12 @@ class UserOwnsRecordValidator extends GraphQLValidator
      */
     protected array $excludedFields = [
         'category_content_id', // Example: no creator_id validation for this field
-        'event_id', // Example: no creator_id validation for this field
+        'user_id'
+    ];
+    protected array $justCheckCurrentUserLoggedIn = [
+        'event_id',
+        'group_category_id' ,
+
     ];
 
     public function rules(): array
@@ -52,9 +60,11 @@ class UserOwnsRecordValidator extends GraphQLValidator
                 return [$key => $argument->value];
             });
 
-        Log::info("Fields detected for validation: " . json_encode($fields));
+        //Log::info("Fields detected for validation: " . json_encode($fields));
 
-      
+        // Get all allowed `creator_id` values: the logged-in user and users connected via `user_merge_requests`
+        $allowedCreatorIds = $this->getAllowedCreatorIds($user->id);
+
 
         // Apply validation rules dynamically for each '_id' field
         foreach ($fields as $fieldName => $value) {
@@ -63,20 +73,56 @@ class UserOwnsRecordValidator extends GraphQLValidator
             // Base validation: required and exists
             $rules[$fieldName] = ['required', 'exists:' . $tableName . ',id'];
 
-            // Skip creator_id check for excluded fields
-            if (!in_array($fieldName, $this->excludedFields)) {
+            // // Skip creator_id check for excluded fields
+            // if (!in_array($fieldName, $this->excludedFields)) {
+            //     $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user, $allowedCreatorIds) {
+            //         $exists = DB::table($tableName)
+            //             ->where('id', $value)
+            //             ->whereIn('creator_id', $allowedCreatorIds)
+            //             ->exists();
+
+            //         //Log::info("Validation check for {$attribute} in {$tableName}: " . json_encode($exists));
+
+            //         if (!$exists) {
+            //             $fail("The selected {$attribute} does not belong to the authenticated user.");
+            //         }
+            //     };
+            // }
+
+            // Check if the field is in the $newItems list (i.e., should only check creator_id against logged-in user)
+            if (in_array($fieldName, $this->justCheckCurrentUserLoggedIn)) {
+                //Log::info("if is running!".$fieldName);
+
+                // Only check creator_id with the logged-in user
                 $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user) {
                     $exists = DB::table($tableName)
                         ->where('id', $value)
-                        ->where('creator_id', $user->id)
+                        ->where('creator_id', $user->id) // Check only with logged-in user's creator_id
+                        ->whereNull('deleted_at') // Exclude soft-deleted records
                         ->exists();
-
-                    Log::info("Validation check for {$attribute} in {$tableName}: " . json_encode($exists));
 
                     if (!$exists) {
                         $fail("The selected {$attribute} does not belong to the authenticated user.");
                     }
                 };
+            } else {
+                //Log::info("else is running!".$fieldName);
+
+                // Skip creator_id check for excluded fields
+                if (!in_array($fieldName, $this->excludedFields)) {
+                    // Check creator_id against allowedCreatorIds (including merged users)
+                    $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user, $allowedCreatorIds) {
+                        $exists = DB::table($tableName)
+                            ->where('id', $value)
+                            ->whereIn('creator_id', $allowedCreatorIds)
+                            ->whereNull('deleted_at') // Exclude soft-deleted records
+                            ->exists();
+
+                        if (!$exists) {
+                            $fail("The selected {$attribute} does not belong to the authenticated user.");
+                        }
+                    };
+                }
             }
         }
 
@@ -89,5 +135,24 @@ class UserOwnsRecordValidator extends GraphQLValidator
     protected function resolveTableName(string $fieldName): string
     {
         return $this->tableMap[$fieldName] ?? str_replace('_id', '', $fieldName) . 's';
+    }
+
+    protected function getAllowedCreatorIds(int $userId): array
+    {
+        // Start with the logged-in user ID
+        $allowedCreatorIds = [$userId];
+
+        // Get all user_receiver_id values where the logged-in user is the sender and status is Complete (4)
+        $connectedUserIds = DB::table('user_merge_requests')
+            ->where('user_sender_id', $userId)
+            ->where('status', MergeStatus::Complete->value) // Status = Complete
+            ->whereNull('deleted_at') // Exclude soft-deleted records
+            ->pluck('user_receiver_id')
+            ->toArray();
+
+        // Merge the connected user IDs into the allowed IDs
+        $allowedCreatorIds = array_merge($allowedCreatorIds, $connectedUserIds);
+       // Log::info("the all alowed user are:" . json_encode($allowedCreatorIds));
+        return $allowedCreatorIds;
     }
 }

@@ -7,12 +7,14 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesUser;
-
+use App\Traits\MergeRequestTrait;
+use Log;
 
 final class GetMemory
 {
     use AuthUserTrait;
     use AuthorizesUser;
+    use MergeRequestTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -27,7 +29,7 @@ final class GetMemory
 
         // $Memory = Memory::where('id', $args['id']);       
         // return $Memory->first();
-
+       // Log::info("the all MR are:" . json_encode($this->getRelatedUserIds()));
         $Memory = $this->getModelByAuthorization(Memory::class, $args);
         return $Memory->first();
     }

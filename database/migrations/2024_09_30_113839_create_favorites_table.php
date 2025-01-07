@@ -13,6 +13,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('favorites', function (Blueprint $table) {
+            
             $table->id();
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
@@ -34,7 +35,7 @@ return new class extends Migration {
            // $table->enum('star', ["1", "2", "3", "4", "5"])->nullable("5");
             //$table->enum('status', ["Active", "Inactive", "None"])->default("Active");
 
-            $table->tinyInteger('star', )->default(0)->comment("0=None  1=One 2=Two 3=Three 4=Four 5=Five ");   
+            $table->tinyInteger('star', )->default(0)->comment("0=None  1=One 2=Two 3=Three 4=Four 5=Five 6=Six 7=Seven 8=Eight 9=Nine 10=Ten");   
             $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive");   
 
             $table->timestamps();

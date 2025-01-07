@@ -17,7 +17,10 @@ class GenerateRelationshipEnum extends Command
     public function handle()
     {
     // Fetch titles from the `naslan_relationships` table
-    $titles = DB::table('naslan_relationships')->where('status',Status::Active)->pluck('title')->toArray();
+    $titles = DB::table('naslan_relationships')
+    ->where('status',Status::Active)
+    ->whereNull('deleted_at') // Exclude soft-deleted records
+    ->pluck('title')->toArray();
 
     // Convert titles into a formatted string for GraphQL enum
     $enumValues = implode("\n    ", $titles);

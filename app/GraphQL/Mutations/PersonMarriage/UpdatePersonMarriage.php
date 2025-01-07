@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 
 use Exception;
@@ -19,6 +20,7 @@ final class UpdatePersonMarriage
     use AuthUserTrait;
     use AuthorizesMutation;
     use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
 
     protected $userId;
 
@@ -31,33 +33,49 @@ final class UpdatePersonMarriage
         // TODO implement the resolver
     }
     public function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
-    {  
-       
+    {
+
         $this->userId = $this->getUserId();
-       $this->userAccessibility(PersonMarriage::class, AuthAction::Update, $args);
+        //    $this->userAccessibility(PersonMarriage::class, AuthAction::Update, $args);
 
 
-        //args["user_id_creator"]=$this->userId;
-        $PersonMarriageResult=PersonMarriage::find($args['id']);
-        $PersonMarriagemodel=$args;
-        $PersonMarriagemodel['editor_id']=$this->userId;
-        
-        if(!$PersonMarriageResult)
-        {
-            return Error::createLocatedError("PersonMarriage-UPDATE-RECORD_NOT_FOUND");
+        //     //args["user_id_creator"]=$this->userId;
+        //     $PersonMarriageResult=PersonMarriage::find($args['id']);
+        //     $PersonMarriagemodel=$args;
+        //     $PersonMarriagemodel['editor_id']=$this->userId;
+
+        //     if(!$PersonMarriageResult)
+        //     {
+        //         return Error::createLocatedError("PersonMarriage-UPDATE-RECORD_NOT_FOUND");
+        //     }
+        //     $this->checkDuplicate(
+        //         new PersonMarriage(),
+        //         $args,
+        //         ['id','editor_id','created_at', 'updated_at'],
+        //         $args['id']
+        //     );
+        //     $args['editor_id']=$this->userId;
+        //     $PersonMarriageResult_filled= $PersonMarriageResult->fill($PersonMarriagemodel);
+        //     $PersonMarriageResult->save();       
+
+        //     return $PersonMarriageResult;
+
+        try {
+
+            $PersonMarriageResult = $this->userAccessibility(PersonMarriage::class, AuthAction::Update, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
         $this->checkDuplicate(
             new PersonMarriage(),
             $args,
-            ['id','editor_id','created_at', 'updated_at'],
-            $args['id']
+            ['id', 'editor_id', 'created_at', 'updated_at'],
+            excludeId: $args['id']
         );
-        $args['editor_id']=$this->userId;
-        $PersonMarriageResult_filled= $PersonMarriageResult->fill($PersonMarriagemodel);
-        $PersonMarriageResult->save();       
-       
-        return $PersonMarriageResult;
 
-        
+        return $this->updateModel($PersonMarriageResult, $args, $this->userId);
+
+
     }
 }

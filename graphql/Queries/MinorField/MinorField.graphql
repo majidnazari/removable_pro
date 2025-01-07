@@ -1,0 +1,11 @@
+
+getMinorField(id: ID!): MinorField @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\MinorField\\GetMinorField@resolveMinorField") 
+    getMinorFields(
+        first: Int, 
+        page: Int, 
+        title: String,
+        middle_field_id: Int,
+
+        orderBy:[OrderByClause!] @orderBy
+        # filter: MinorFieldFilterInput
+    ): [MinorField!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\MinorField\\GetMinorFields@resolveMinorField")

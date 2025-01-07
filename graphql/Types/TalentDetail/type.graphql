@@ -1,0 +1,28 @@
+type TalentDetail {
+    id: ID
+    creator_id: ID
+    creator: User
+    editor_id: ID
+    editor: User
+    talent_header_id: ID
+    minor_field_id: ID
+  
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+    
+}
+
+input CreateTalentDetailInput {
+   
+    talent_header_id: ID!
+    minor_field_id: ID!
+    status: Status
+}
+
+input UpdateTalentDetailInput {
+   
+    talent_header_id: ID
+    minor_field_id: ID
+    status: Status
+}

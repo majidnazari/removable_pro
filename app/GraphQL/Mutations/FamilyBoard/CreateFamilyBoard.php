@@ -33,17 +33,17 @@ final class CreateFamilyBoard
 
         $FamilyBoardResult=[
             "creator_id" =>  $this->userId,
-            "category_content_id" => $args['category_content_id'] ?? null,
-            "group_category_id" => $args['group_category_id'] ?? null,
+            "category_content_id" => $args['category_content_id'],
+            "group_category_id" => $args['group_category_id'] ,
             "title" => $args['title'] ,
-            "selected_date" => $args['selected_date'] ?? null,
-            "file_path" => $args['file_path'] ?? null,
+            //"selected_date" => $args['selected_date'] ?? null,
+            "content" => $args['content'] ,
             "description" => $args['description'] ?? null,
             "status" => $args['status']  ?? Status::Active         
         ];
        
          // Dynamic duplicate check: Pass column(s) and values
-         $this->checkDuplicate(new FamilyBoard(), ['title' => $args['title'] , 'status' => Status::Active]);
+         $this->checkDuplicate(new FamilyBoard(), $FamilyBoardResult);
 
         $FamilyBoardResult_result=FamilyBoard::create($FamilyBoardResult);
         return $FamilyBoardResult_result;

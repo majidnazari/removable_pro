@@ -17,16 +17,16 @@ return new class extends Migration
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
             $table->unsignedBigInteger('group_id');
-            $table->unsignedBigInteger('person_id');
+            $table->unsignedBigInteger('user_id');
 
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
 
-            $table->string('title');
+            // $table->string('title');
             $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive"); 
             
             $table->timestamps();

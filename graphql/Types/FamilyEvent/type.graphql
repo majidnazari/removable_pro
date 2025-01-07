@@ -17,14 +17,16 @@ type FamilyEvent {
     updated_at: DateTime
 
     Event: Event
+    GroupCategory: GroupCategory
 }
 
 input CreateFamilyEventInput 
 @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+@validator(class: "App\\GraphQL\\Validators\\FamilyEvent\\FamilyEventInputValidator")
 {
 
     category_content_id: ID!    
-    group_category_id: ID   
+    group_category_id: ID!   
     person_id: ID!    
     event_id: ID!    
     # title: String
@@ -40,7 +42,7 @@ input UpdateFamilyEventInput
     person_id: ID!   
     event_id: ID!    
     category_content_id: ID!    
-    group_category_id: ID   
+    group_category_id: ID!   
     # title: String
     event_date: String  
     status: Status 

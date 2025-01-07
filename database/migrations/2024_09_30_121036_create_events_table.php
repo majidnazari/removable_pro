@@ -14,7 +14,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('events', function (Blueprint $table) {
+            
             $table->id();
+
+            $table->unsignedBigInteger('creator_id'); 
+            $table->unsignedBigInteger('editor_id')->nullable();
+
+            $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
+            
             $table->string('title');
             //$table->enum('status',["Active","Inactive","None"])->default("Active");
 

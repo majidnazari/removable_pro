@@ -26,14 +26,14 @@ class RealisticParentChildAgeGap implements Rule
         if ($marriage && $child) {
             if ($marriage->Man) {
                 $fatherAgeAtBirth = Carbon::parse($marriage->Man->birth_date)->diffInYears( $child->birth_date);
-                Log::info("the man birth dtae is:" .$fatherAgeAtBirth );
+               // Log::info("the man birth dtae is:" .$fatherAgeAtBirth );
                 if ($fatherAgeAtBirth < 13) {
                     return false;
                 }
             }
             if ($marriage->Woman) {
                 $motherAgeAtBirth = Carbon::parse($marriage->Woman->birth_date )->diffInYears( $child->birth_date);
-                Log::info("the Woman birth dtae is:" .$fatherAgeAtBirth );
+               // Log::info("the Woman birth dtae is:" .$fatherAgeAtBirth );
 
                 if ($motherAgeAtBirth < 13) {
                     return false;

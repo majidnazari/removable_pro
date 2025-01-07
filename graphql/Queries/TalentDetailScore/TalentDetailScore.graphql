@@ -1,0 +1,14 @@
+
+getTalentDetailScore(id: ID!): TalentDetailScore @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScore@resolveTalentDetailScore") 
+    getTalentDetailScores(
+        first: Int, 
+        page: Int, 
+        participating_user_id: Int,
+        creator_id: Int,
+        editor_id: Int,
+        talent_detail_id: Int,
+        score: TalentScore,
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy
+        # filter: TalentDetailScoreFilterInput
+    ): [TalentDetailScore!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScores@resolveTalentDetailScore")

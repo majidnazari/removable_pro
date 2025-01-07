@@ -7,6 +7,7 @@
 
       #import Types/Enums/type.graphql
       #import Types/User/type.graphql
+      #import Types/UserDetail/type.graphql
       #import Types/Country/type.graphql
       #import Types/Province/type.graphql
       #import Types/City/type.graphql
@@ -29,11 +30,18 @@
       #import Types/Score/type.graphql
       #import Types/UserMergeRequest/type.graphql
       #import Types/Notif/type.graphql
+      #import Types/MajorField/type.graphql
+      #import Types/MiddleField/type.graphql
+      #import Types/MinorField/type.graphql
+      #import Types/TalentHeader/type.graphql
+      #import Types/TalentDetail/type.graphql
+      #import Types/TalentDetailScore/type.graphql
 
 
     type Query {
 
         #import Queries/User/User.graphql
+        #import Queries/UserDetail/UserDetail.graphql
         #import Queries/Country/Country.graphql
         #import Queries/Province/Province.graphql
         #import Queries/City/City.graphql
@@ -56,12 +64,19 @@
         #import Queries/Score/Score.graphql
         #import Queries/UserMergeRequest/UserMergeRequest.graphql
         #import Queries/Notif/Notif.graphql
+        #import Queries/MajorField/MajorField.graphql
+        #import Queries/MiddleField/MiddleField.graphql
+        #import Queries/MinorField/MinorField.graphql
+        #import Queries/TalentHeader/TalentHeader.graphql
+        #import Queries/TalentDetail/TalentDetail.graphql
+        #import Queries/TalentDetailScore/TalentDetailScore.graphql
 
     }
 
     extend type Mutation {
 
       #import Mutations/User/User.graphql
+      #import Mutations/UserDetail/UserDetail.graphql
       #import Mutations/Country/Country.graphql
       #import Mutations/Province/Province.graphql
       #import Mutations/City/City.graphql
@@ -84,5 +99,11 @@
       #import Mutations/Score/Score.graphql
       #import Mutations/UserMergeRequest/UserMergeRequest.graphql
       #import Mutations/Notif/Notif.graphql
+      #import Mutations/MajorField/MajorField.graphql
+      #import Mutations/MiddleField/MiddleField.graphql
+      #import Mutations/MinorField/MinorField.graphql
+      #import Mutations/TalentHeader/TalentHeader.graphql
+      #import Mutations/TalentDetail/TalentDetail.graphql
+      #import Mutations/TalentDetailScore/TalentDetailScore.graphql
 
     }

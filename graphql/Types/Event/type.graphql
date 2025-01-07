@@ -3,21 +3,29 @@
 type Event {
     
     id: ID!
+    creator_id: ID
+    Creator: User    
+    editor_id: ID
+    Editor: User
     title: String!
     status: Status 
     created_at: DateTime
     updated_at: DateTime
 }
 
-input CreateEventInput {
+input CreateEventInput
+@validator(class: "App\\GraphQL\\Validators\\Event\\EventInputValidator")
+ {
 
-    title: String!
+    title: String! 
     status: Status   
 
 }
 
-input UpdateEventInput {
+input UpdateEventInput
+@validator(class: "App\\GraphQL\\Validators\\Event\\EventInputValidator")
+ {
 
-   title: String!
+    title: String! 
    status: Status
 }

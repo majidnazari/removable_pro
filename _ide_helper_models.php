@@ -179,8 +179,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event query()
  * @mixin \Eloquent
+ * @property int $creator_id
+ * @property int|null $editor_id
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereTitle($value)
@@ -202,7 +206,7 @@ namespace App\Models{
  * @property int $group_category_id
  * @property string $title
  * @property string $selected_date
- * @property string|null $file_path
+ * @property string|null $content
  * @property string $description
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -218,17 +222,18 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard query()
  * @mixin \Eloquent
  * @property-read \App\Models\CategoryContent $CategoryContent
- * @property-read \App\Models\GroupCategory|null $GroupCategory
+ * @property-read \App\Models\GroupCategory $GroupCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
+ * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCategoryContentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereFilePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereGroupCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereSelectedDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyBoard whereUpdatedAt($value)
@@ -265,7 +270,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent query()
  * @mixin \Eloquent
  * @property-read \App\Models\CategoryContent $CategoryContent
- * @property-read \App\Models\GroupCategory|null $GroupCategory
+ * @property-read \App\Models\GroupCategory $GroupCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
+ * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCategoryContentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FamilyEvent whereCreatorId($value)
@@ -311,6 +318,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite query()
  * @mixin \Eloquent
  * @property-read \App\Models\GroupCategory|null $GroupCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
+ * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereDeletedAt($value)
@@ -449,6 +458,8 @@ namespace App\Models{
  * @property int $group_category_id
  * @property int $group_id
  * @property-read \App\Models\GroupCategory $GroupCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\GroupDetail> $GroupDetails
+ * @property-read int|null $group_details_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Person> $personsInRelatedGroups
  * @property-read int|null $persons_in_related_groups_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereGroupCategoryId($value)
@@ -477,24 +488,50 @@ namespace App\Models{
  * @property int $creator_id
  * @property int|null $editor_id
  * @property int $group_id
- * @property int $person_id
- * @property string $title
+ * @property int $user_id
  * @property int $status 1=Active 2=Inactive
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\User $User
+ * @property-read \App\Models\User $UserCanSee
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail wherePersonId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupDetail whereUserId($value)
  */
 	class GroupDetail extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $title
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @method static \Database\Factories\MajorFieldFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MajorField withoutTrashed()
+ */
+	class MajorField extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -526,7 +563,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory query()
  * @mixin \Eloquent
+ * @property int $confirm_status 1=Accept 2=Reject 3=Suspend
+ * @property string|null $reject_cause
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $notifications
+ * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCategoryContentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereConfirmStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereCreatorId($value)
@@ -537,6 +579,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereIsShownAfterDeath($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory wherePersonId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereRejectCause($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory whereUpdatedAt($value)
@@ -544,6 +587,64 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Memory withoutTrashed()
  */
 	class Memory extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $middle_field_id
+ * @property string $title
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereMiddleFieldId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read MicroField $MicroField
+ * @method static \Database\Factories\MicroFieldFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MicroField withoutTrashed()
+ */
+	class MicroField extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $major_field_id
+ * @property string $title
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereMajorFieldId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read \App\Models\MajorField $MajorField
+ * @method static \Database\Factories\MiddleFieldFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MiddleField withoutTrashed()
+ */
+	class MiddleField extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -584,9 +685,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif query()
  * @mixin \Eloquent
+ * @property int $notifiable_id
+ * @property string $notifiable_type
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\User $Creator
- * @property-read \App\Models\User $RelatedUser
+ * @property-read \App\Models\User|null $RelatedUser
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $notifiable
  * @method static \Database\Factories\NotifFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif notRead()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif onlyTrashed()
@@ -596,8 +700,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereNotifStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereNotifiableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereNotifiableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Notif withoutTrashed()
  */
@@ -895,6 +1000,125 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $creator_id
+ * @property int|null $editor_id
+ * @property int $talent_header_id
+ * @property int $micro_field_id
+ * @property int $status 1=Active 2=Inactive
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereMicroFieldId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereTalentHeaderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read \App\Models\User $Creator
+ * @property-read \App\Models\User|null $Editor
+ * @property-read \App\Models\MicroField $MicroField
+ * @property-read \App\Models\TalentHeader $TalentHeader
+ * @method static \Database\Factories\TalentDetailFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail withoutTrashed()
+ */
+	class TalentDetail extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $creator_id
+ * @property int|null $editor_id
+ * @property int $participating_user_id
+ * @property int $talent_detail_id
+ * @property int $score 0=None 1=One 2=Two 3=Three 4-Four 5=Five 6=Six 7=Seven 8=Eight 9=Nine 10=Ten
+ * @property int $status 1=Active 2=Inactive
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereParticipatingUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereTalentDetailId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read \App\Models\User $Creator
+ * @property-read \App\Models\User|null $Editor
+ * @property-read \App\Models\User $ParticipateUser
+ * @property-read \App\Models\TalentDetail $TalentDetail
+ * @method static \Database\Factories\TalentDetailScoreFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetailScore withoutTrashed()
+ */
+	class TalentDetailScore extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $creator_id
+ * @property int|null $editor_id
+ * @property int $group_category_id
+ * @property int $person_id
+ * @property string $title
+ * @property string $end_date
+ * @property int $status 1=Active 2=Inactive
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereGroupCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader wherePersonId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader whereUpdatedAt($value)
+ * @mixin \Eloquent
+ * @property-read \App\Models\User $Creator
+ * @property-read \App\Models\User|null $Editor
+ * @property-read \App\Models\GroupCategory $GroupCategory
+ * @method static \Database\Factories\TalentHeaderFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentHeader withoutTrashed()
+ */
+	class TalentHeader extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property string $country_code
  * @property string $mobile
  * @property string|null $email
@@ -949,8 +1173,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $Notifs
- * @property-read int|null $notifs_count
+ * @property int $user_attempt_time
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Notif> $Notifications
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCodeExpiredAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCountryCode($value)
@@ -970,10 +1194,48 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSentCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUserAttemptTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
  */
 	class User extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail query()
+ * @mixin \Eloquent
+ * @property int $id
+ * @property int $creator_id
+ * @property int|null $editor_id
+ * @property int $last_seen_family_board_id
+ * @property string $mobile
+ * @property int $status 1=Active 2=Inactive
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\User $Craetor
+ * @property-read \App\Models\User|null $Editor
+ * @property-read \App\Models\FamilyBoard $FamilyBoard
+ * @method static \Database\Factories\UserDetailFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereEditorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereLastSeenFamilyBoardId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereMobile($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UserDetail withoutTrashed()
+ */
+	class UserDetail extends \Eloquent {}
 }
 
 namespace App\Models{

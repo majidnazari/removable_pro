@@ -8,12 +8,15 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 final class DeleteCategoryContent
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -28,21 +31,31 @@ final class DeleteCategoryContent
     {  
        
         $this->userId = $this->getUserId();
-       $this->userAccessibility(CategoryContent::class, AuthAction::Delete, $args);
+        try {
+
+            $CategoryContentResult = $this->userAccessibility(CategoryContent::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
+        }
+
+        return $this->updateAndDeleteModel($CategoryContentResult, $args, $this->userId);
+    //    $this->userAccessibility(CategoryContent::class, AuthAction::Delete, $args);
 
        
-        $CategoryContentResult=CategoryContent::find($args['id']);
+    //     $CategoryContentResult=CategoryContent::find($args['id']);
         
-        if(!$CategoryContentResult)
-        {
-            return Error::createLocatedError("CategoryContent-DELETE-RECORD_NOT_FOUND");
-        }
+    //     if(!$CategoryContentResult)
+    //     {
+    //         return Error::createLocatedError("CategoryContent-DELETE-RECORD_NOT_FOUND");
+    //     }
         
-        $CategoryContentResult->editor_id=$this->userId ;
-        $CategoryContentResult->save();
+    //     $CategoryContentResult->editor_id=$this->userId ;
+    //     $CategoryContentResult->save();
 
-        $CategoryContentResult_filled= $CategoryContentResult->delete();  
-        return $CategoryContentResult;
+    //     $CategoryContentResult_filled= $CategoryContentResult->delete();  
+    //     return $CategoryContentResult;
 
         
     }

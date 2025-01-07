@@ -1,0 +1,32 @@
+type TalentDetailScore {
+    id: ID
+    creator_id: ID
+    creator: User
+    editor_id: ID
+    editor: User
+    participating_user_id: ID
+    participating_user: User
+    talent_detail_id: ID!
+    talent_detail: TalentDetail
+    score: TalentScore
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+    
+}
+
+input CreateTalentDetailScoreInput {
+   
+    participating_user_id: ID!
+    talent_detail_id: ID!
+    score: TalentScore
+    status: Status
+}
+
+input UpdateTalentDetailScoreInput {
+   
+    participating_user_id: ID
+    talent_detail_id: ID
+    score: TalentScore
+    status: Status
+}

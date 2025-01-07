@@ -14,6 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('family_events', function (Blueprint $table) {
+            
             $table->id();
           
             $table->unsignedBigInteger('creator_id');
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('event_id')->index();
             $table->unsignedBigInteger('category_content_id');
 
-            $table->unsignedBigInteger('group_category_id')->nullable();
+            $table->unsignedBigInteger('group_category_id');
 
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');

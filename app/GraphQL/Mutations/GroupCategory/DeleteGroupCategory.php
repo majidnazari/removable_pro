@@ -8,13 +8,16 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 
 final class DeleteGroupCategory
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -29,22 +32,42 @@ final class DeleteGroupCategory
     {  
         
         $this->userId = $this->getUserId();
-        $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
 
-    
-        $GroupCategoryResult=GroupCategory::find($args['id']);
-        
-        if(!$GroupCategoryResult)
-        {
-            return Error::createLocatedError("GroupCategory-DELETE-RECORD_NOT_FOUND");
+        try {
+
+            $GroupCategoryResult = $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
         }
 
-        $GroupCategoryResult->editor_id=  $this->userId;
-        $GroupCategoryResult->save();
+        return $this->updateAndDeleteModel($GroupCategoryResult, $args, $this->userId);
+        // $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
 
-        $GroupCategoryResult_filled= $GroupCategoryResult->delete();  
-        return $GroupCategoryResult;
+    
+        // $GroupCategoryResult=GroupCategory::find($args['id']);
+        
+        // if(!$GroupCategoryResult)
+        // {
+        //     return Error::createLocatedError("GroupCategory-DELETE-RECORD_NOT_FOUND");
+        // }
 
+        // try {
+
+        //     $GroupCategoryResult = $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
+
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage());
+        // }
+
+        // $GroupCategoryResult->update([
+        //     'editor_id' => $this->userId,
+        // ]);
+        
+        // $GroupCategoryResult->delete();
+        
+        // return $GroupCategoryResult;
         
     }
 }

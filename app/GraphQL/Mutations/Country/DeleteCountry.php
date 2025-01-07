@@ -8,12 +8,17 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
+use App\Traits\DuplicateCheckTrait;
+use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use Exception;
 
 final class DeleteCountry
 {
     use AuthUserTrait;
     use AuthorizesMutation;
+    use DuplicateCheckTrait;
+    use HandlesModelUpdateAndDelete;
     protected $userId;
 
     /**
@@ -28,22 +33,33 @@ final class DeleteCountry
     {  
         
         $this->userId = $this->getUserId();
-       $this->userAccessibility(Country::class, AuthAction::Delete, $args);
+
+        try {
+
+            $CountryResult = $this->userAccessibility(Country::class, AuthAction::Delete, $args);
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+
+        }
+
+        return $this->updateAndDeleteModel($CountryResult, $args, $this->userId);
+    //    $this->userAccessibility(Country::class, AuthAction::Delete, $args);
 
  
-        $CountryResult=Country::find($args['id']);
+    //     $CountryResult=Country::find($args['id']);
         
-        if(!$CountryResult)
-        {
-            return Error::createLocatedError("Country-DELETE-RECORD_NOT_FOUND");
-        }
-        //$args['editor_id']=$user_id;
+    //     if(!$CountryResult)
+    //     {
+    //         return Error::createLocatedError("Country-DELETE-RECORD_NOT_FOUND");
+    //     }
+    //     //$args['editor_id']=$user_id;
 
-        $CountryResult->editor_id=  $this->userId ;
-        $CountryResult->save();
+    //     $CountryResult->editor_id=  $this->userId ;
+    //     $CountryResult->save();
 
-        $CountryResult_filled= $CountryResult->delete();  
-        return $CountryResult;
+    //     $CountryResult_filled= $CountryResult->delete();  
+    //     return $CountryResult;
 
         
     }

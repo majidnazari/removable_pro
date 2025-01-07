@@ -99,7 +99,7 @@ final class GetPerson
         // Fetch the authenticated user's ID
         $user_id = $args['id'] ?? $this->getUserId();
 
-        Log::info("the users is :" . $user_id);
+        //Log::info("the users is :" . $user_id);
         // Determine the depth
         $depth = $args['depth'] ?? 3; // Default depth is 3 if not provided
 
@@ -132,7 +132,7 @@ final class GetPerson
 
             // Get the heads for the user ancestry
            
-            Log::info("the all heades are:" . json_encode( $this->rootAncestors));
+           // Log::info("the all heades are:" . json_encode( $this->rootAncestors));
             // Fetch and return only the user's own ancestry tree
             return [
                 'mine' => $mineAncestry,
@@ -157,8 +157,8 @@ final class GetPerson
         $relatedPerson = $this->findOwner($relatedUserId); // Find the owner of the related user
 
         // Log the fetched owners
-        Log::info("Mine person owner: " . json_encode($minePerson));
-        Log::info("Related person owner: " . json_encode($relatedPerson));
+       // Log::info("Mine person owner: " . json_encode($minePerson));
+        //Log::info("Related person owner: " . json_encode($relatedPerson));
 
         // Ensure both owners are valid
         if (!$minePerson || !$relatedPerson) {

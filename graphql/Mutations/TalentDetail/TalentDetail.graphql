@@ -1,0 +1,4 @@
+
+createTalentDetail(input: CreateTalentDetailInput! @spread): TalentDetail @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\TalentDetail\\CreateTalentDetail@resolveTalentDetail") 
+    updateTalentDetail(id: ID!, input: UpdateTalentDetailInput! @spread): TalentDetail  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\TalentDetail\\UpdateTalentDetail@resolveTalentDetail") 
+    deleteTalentDetail(id: ID!): TalentDetail @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\TalentDetail\\DeleteTalentDetail@resolveTalentDetail") 

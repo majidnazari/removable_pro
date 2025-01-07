@@ -4,22 +4,21 @@ type GroupDetail {
     editor_id: ID
     group_id: ID
     person_id: ID
-    title: String
     status: Status
     created_at: DateTime
     updated_at: DateTime
     Creator: User
     Editor: User
     Group: Group
-    Person: Person
+    # Person: Person
+    UserCanSee: User
 }
 
 # Input Type for Creating a GroupDetail
 input CreateGroupDetailInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator") {
     group_id: ID!  
-    person_id: ID! 
-    
-    title: String!
+    # person_id: ID! 
+    user_id: ID! 
     status: Status!
 }
 
@@ -27,6 +26,5 @@ input CreateGroupDetailInput @validator(class: "App\\GraphQL\\Validators\\Share\
 input UpdateGroupDetailInput @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator"){
     group_id: ID
     person_id: ID
-    title: String
     status: Status
 }

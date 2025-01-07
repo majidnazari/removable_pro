@@ -77,6 +77,10 @@ class Favorite extends Eloquent
     {
         return $this->belongsTo(User::class, self::COLUMN_EDITOR_ID);
     }
+    public function notifications()
+    {
+        return $this->morphMany(Notif::class, 'notifiable');
+    }
 
     public static function getAuthorizationColumns()
     {

@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('naslan_relationships', function (Blueprint $table) {
+            
             $table->id();
             $table->string('title');
             $table->tinyInteger('priority')->default(1);

@@ -13,6 +13,8 @@ type Memory {
     description: String
     is_shown_after_death: Boolean
     status: Status  
+    confirm_status:ConfirmMemoryStatus
+    reject_cause: String
     created_at: DateTime
     updated_at: DateTime
 
@@ -49,4 +51,11 @@ input UpdateMemoryInput
     description: String
     is_shown_after_death: Boolean
     status: Status 
+}
+
+input UpdateSuspendMemoryInput @validator(class: "App\\GraphQL\\Validators\\Memory\\UpdateSuspendMemoryInputValidator"){
+
+   confirm_status:ConfirmMemoryStatus!
+   reject_cause:String
+
 }

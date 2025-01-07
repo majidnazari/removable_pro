@@ -36,7 +36,7 @@ final class CreateFamilyEvent
             "person_id" => $args['person_id'],
             "event_id" => $args['event_id'],
             "category_content_id" => $args['category_content_id'] ,
-            "group_category_id" => $args['group_category_id'] ?? null,
+            "group_category_id" => $args['group_category_id'] ,
             // "title" => $args['title'],
             "event_date" => $args['event_date'],
             "status" => $args['status'] ?? Status::Active           

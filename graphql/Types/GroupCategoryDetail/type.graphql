@@ -11,7 +11,7 @@ type GroupCategoryDetail {
     Editor: User
     GroupCategory: GroupCategory
     Group: Group
-    personsInRelatedGroups:[Person]
+    # personsInRelatedGroups:[Person]
     # people: [Person] @field(resolver: "App\\GraphQL\\Queries\\GroupCategoryDetail\\GroupCategoryDetailResolver@getAllPeopleFromCategories")
 }
 

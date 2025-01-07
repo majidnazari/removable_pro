@@ -38,7 +38,7 @@ trait AuthorizesUser
                 foreach ($columns as $column) {
                     // Check if the column exists on the model's table
                     if (Schema::hasColumn((new $modelClass)->getTable(), $column)) {
-                         Log::info("Column exists on model table: " . $column);
+                         //Log::info("Column exists on model table: " . $column);
                         //$q->where($column, $this->user->id);
                         //$q->where($column, $this->user->{$column});
                         $q->where($column, $this->user->{$column} ?? $this->user->id);

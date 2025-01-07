@@ -1,0 +1,19 @@
+
+
+type MajorField {
+    id: ID
+    title: String!
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+}
+
+
+input CreateMajorFieldInput {
+    title: String!
+}
+
+input UpdateMajorFieldInput {
+   
+    title: String
+}

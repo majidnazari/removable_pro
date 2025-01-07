@@ -1,5 +1,6 @@
 
 getMemory(id: ID!): Memory @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Memory\\GetMemory@resolveMemory") 
+
     getMemories(
         first: Int, 
         page: Int, 
@@ -14,6 +15,15 @@ getMemory(id: ID!): Memory @guard(with:["api"]) @field(resolver: "App\\GraphQL\\
         is_shown_after_death: Boolean,
              
         status: Status,
+        confirm_status: ConfirmMemoryStatus,
+        reject_cause: String,
         orderBy:[OrderByClause!] @orderBy
         # filter: MemoryFilterInput
     ): [Memory!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Memory\\GetMemories@resolveMemory")
+
+     getSpecialPersonMemories(
+      
+        person_id: Int,
+        creator_id: Int,
+        # filter: MemoryFilterInput
+    ): [Memory!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Memory\\GetSpecialPersonMemories@resolveMemory")

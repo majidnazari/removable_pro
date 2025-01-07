@@ -16,7 +16,7 @@ class CountrySeeder extends Seeder
     public function run(): void
     {
         //
-        $json = File::get(database_path('datasample/countries.json')); // Assuming the JSON is stored in the database/data directory
+        $json = File::get(database_path('datasample/countries2.json')); // Assuming the JSON is stored in the database/data directory
         $countries = json_decode($json, true); // Decode JSON into an array
         // Create an array to hold all the countries data
         $countryData = [];
@@ -24,7 +24,8 @@ class CountrySeeder extends Seeder
         // Loop through the countries and add them to the $countryData array
         foreach ($countries as $country) {
             // Check if faName exists, else use enName
-            $title = !empty($country['faName']) ? $country['faName'] : $country['enName'];
+            //$title = !empty($country['faName']) ? $country['faName'] : $country['enName'];
+            $title = !empty($country['title']) ? $country['title'] : $country['code'];
 
             // Add the country data to the array
             $countryData[] = [

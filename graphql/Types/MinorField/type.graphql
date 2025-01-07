@@ -1,0 +1,22 @@
+type MinorField {
+    id: ID
+    creator_id: ID
+    middle_field_id: ID!
+    middle_field: MiddleField
+    title: String!
+    created_at: DateTime
+    updated_at: DateTime
+    deleted_at: DateTime
+}
+
+input CreateMinorFieldInput {
+    
+    middle_field_id: ID!
+    title: String!
+}
+
+input UpdateMinorFieldInput {
+   
+    middle_field_id: ID
+    title: String
+}
