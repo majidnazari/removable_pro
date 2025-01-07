@@ -44,23 +44,28 @@ class CheckPersonOfEachUser implements Rule
                 $personId = $matches[1] ?? null;
             }
         }
-        $this->personId=$personId;
+        $this->personId = $personId;
         //Log::info("Extracted person_id: " . $personId);
 
         // Log::info("The person id is: " . $personId);
         // Log::info("the person id is:" .$this->personId);
         // Check if the person has any active children
         $allowedCreatorIds = $this->getAllowedCreatorIds($this->getUserId());
-        $person = Person::where('id', $this->personId)->whereIn('creator_id', $allowedCreatorIds)->exists();
+        $person = Person::where('id', $this->personId)->whereIn('creator_id', $allowedCreatorIds)->first();
 
+       // log::info("the person is :" . json_encode($person));
+        if (($person) && ($person->is_owner == true) && ($person->creator_id != $this->getUserId())) {
+            return false;
+        }
         //Log::info(message: "the allowedCreatorIds is :" . json_encode($allowedCreatorIds));
         return $person;
 
     }
-   
+
 
     public function message()
     {
+       
         return "this person is not your own!";
     }
 }
