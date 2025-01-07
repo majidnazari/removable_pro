@@ -5,7 +5,7 @@ namespace App\Rules\Share;
 use Illuminate\Contracts\Validation\Rule;
 use App\Traits\AuthUserTrait;
 use App\Traits\FindOwnerTrait;
-use App\Traits\GetAllowedCreatorIdsTrait;
+use App\Traits\GetAllowedAllUsersInClan;
 use App\Models\Person;
 use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\MergeStatus;
@@ -17,7 +17,7 @@ class CheckPersonOfEachUser implements Rule
 {
     use AuthUserTrait;
     use FindOwnerTrait;
-    use GetAllowedCreatorIdsTrait;
+    use GetAllowedAllUsersInClan;
     protected $personId;
 
     public function __construct($personId)
@@ -50,13 +50,13 @@ class CheckPersonOfEachUser implements Rule
         // Log::info("The person id is: " . $personId);
         // Log::info("the person id is:" .$this->personId);
         // Check if the person has any active children
-        $allowedCreatorIds = $this->getAllowedCreatorIds($this->getUserId());
+        $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
         $person = Person::where('id', $this->personId)->whereIn('creator_id', $allowedCreatorIds)->first();
 
        // log::info("the person is :" . json_encode($person));
-        if (($person) && ($person->is_owner == true) && ($person->creator_id != $this->getUserId())) {
-            return false;
-        }
+        // if (($person) && ($person->is_owner == true) && ($person->creator_id != $this->getUserId())) {
+        //     return false;
+        // }
         //Log::info(message: "the allowedCreatorIds is :" . json_encode($allowedCreatorIds));
         return $person;
 
