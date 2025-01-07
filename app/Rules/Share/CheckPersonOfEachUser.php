@@ -7,6 +7,8 @@ use App\Traits\AuthUserTrait;
 use App\Traits\FindOwnerTrait;
 use App\Models\Person;
 
+use Log;
+
 
 class CheckPersonOfEachUser implements Rule
 {
@@ -21,8 +23,34 @@ class CheckPersonOfEachUser implements Rule
 
     public function passes($attribute, $value)
     {
+        // Log the entire request payload for debugging
+        $requestData = request()->all();
+        // Log::info("Request Data: " . json_encode($requestData));
+
+        // Attempt to extract `person_id` directly from the `variables` or fallback to parsing the query
+        $personId = null;
+
+        // Check if `variables` exist and contain `input.person_id`
+        if (!empty($requestData['variables']['input']['person_id'])) {
+            $personId = $requestData['variables']['input']['person_id'];
+        } else {
+            // Parse `query` to extract `person_id` if it's inline
+            if (!empty($requestData['query'])) {
+                preg_match('/person_id\s*:\s*"(\d+)"/', $requestData['query'], $matches);
+                $personId = $matches[1] ?? null;
+            }
+        }
+        $this->personId=$personId;
+        //Log::info("Extracted person_id: " . $personId);
+
+        // Log::info("The person id is: " . $personId);
+        // Log::info("the person id is:" .$this->personId);
         // Check if the person has any active children
-        return Person::where('id', $this->personId)->where('creator_id', $this->getUserId())->exists();
+        $person = Person::where('id', $this->personId)->where('creator_id', $this->getUserId())->exists();
+
+       // Log::info("the person is :" . json_encode($person));
+        return $person;
+
     }
 
     public function message()
