@@ -12,6 +12,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
+use App\Events\UpdateClanIdAfterMerge;
 
 
 use Exception;
@@ -77,6 +78,8 @@ class SendConfirmMergeRequestToOtherFamily
             $userMergeRequest->merge_ids_sender = $args['merge_ids_sender'];
             $userMergeRequest->merge_ids_receiver = $args['merge_ids_receiver'];
             $userMergeRequest->save();
+            // Dispatch the event to update the clan_id after the merge
+            event(new UpdateClanIdAfterMerge($userMergeRequest->user_sender_id, $userMergeRequest->user_receiver_id));
 
             DB::commit();
 

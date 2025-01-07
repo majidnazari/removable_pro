@@ -66,6 +66,7 @@ class RegisterMobile
             $user->sent_code = $code;
             $user->code_expired_at = $expired_at;
             $user->last_attempt_at = Carbon::now();
+            
             $user->save();
     
         } else {
@@ -77,7 +78,11 @@ class RegisterMobile
                 'code_expired_at' => $expired_at,
                 'last_attempt_at' => Carbon::now(),
                 'status' => UserStatus::None,
+                'clan_id'=> 0
             ]);
+
+            $user->clan_id = 'clan_' . $user->id;
+            $user->save();
         }
     
         return [
@@ -108,6 +113,7 @@ class RegisterMobile
         // Mark mobile as verified
         $user->mobile_is_verified = true;
         $user->status = UserStatus::New;
+        $user->clan_id = "clan_". $args['user_id'];
         $user->save();
     
         return [

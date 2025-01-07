@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('notifs', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger('id', true)->primary(); 
             $table->unsignedBigInteger('creator_id')->index();
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');// the user new created 
 

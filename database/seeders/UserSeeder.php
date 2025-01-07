@@ -38,6 +38,7 @@ class UserSeeder extends Seeder
                         'last_password_change_attempt' => $userData['last_password_change_attempt'] ?? null,
                         'last_attempt_at' => $userData['last_attempt_at'] ?? null,
                         'status' => $userData['status'] ?? 1,
+                        'clan_id' => $userData['clan_id'] ,
                         'remember_token' => $userData['remember_token'] ?? null,
                         'created_at' => $userData['created_at'] ?? now(),
                         'updated_at' => $userData['updated_at'] ?? now(),
