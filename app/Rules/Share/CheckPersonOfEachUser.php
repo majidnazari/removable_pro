@@ -22,7 +22,7 @@ class CheckPersonOfEachUser implements Rule
     public function passes($attribute, $value)
     {
         // Check if the person has any active children
-        return !Person::where('id', $this->personId)->where('creator_id',$this->getUserId())->exists();
+        return Person::where('id', $this->personId)->where('creator_id', $this->getUserId())->exists();
     }
 
     public function message()
