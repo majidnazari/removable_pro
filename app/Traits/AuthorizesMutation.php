@@ -59,7 +59,7 @@ trait AuthorizesMutation
                 // Return a custom error response if the model doesn't exist
                 throw new Exception(message: "Model not found");
             }
-            Log::info("after fetch FB and ".json_encode($modelInstance));
+            //Log::info("after fetch FB and ".json_encode($modelInstance));
             if ($this->user->isAdmin() || $this->user->isSupporter()) {
                 // Admins and Supporters can perform any action
                 return $modelInstance;
