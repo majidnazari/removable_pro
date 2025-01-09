@@ -54,13 +54,12 @@ class CheckPersonOfEachUser implements Rule
         $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
         $person = Person::where('id', $this->personId)->whereIn('creator_id', $allowedCreatorIds)->first();
 
-        if($person->is_owner==1 and  $person->creator_id !== $this->getUserId())
-        {
-            $this->errorMessage="this person is owner and you cannot set talent to him/her !";
+        if (isset($person->is_owner) && $person->is_owner == 1 and $person->creator_id !== $this->getUserId()) {
+            $this->errorMessage = "this person is owner and you cannot set talent to him/her !";
             return false;
         }
 
-       // log::info("the person is :" . json_encode($person));
+        // log::info("the person is :" . json_encode($person));
         // if (($person) && ($person->is_owner == true) && ($person->creator_id != $this->getUserId())) {
         //     return false;
         // }
@@ -73,6 +72,6 @@ class CheckPersonOfEachUser implements Rule
     public function message()
     {
         return $this->errorMessage ?: "this person is not your own!";
-        
+
     }
 }
