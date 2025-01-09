@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use Log;
 
 class CheckClanMatchRule implements Rule
 {
@@ -20,6 +21,7 @@ class CheckClanMatchRule implements Rule
         $this->primaryPersonId = $primaryPersonId;
         $this->secondaryPersonId = $secondaryPersonId;
         $this->loggedInClanId = $this->getUser()->clan_id;// Auth::user()->clan_id; // Assumes the logged-in user has a clan_id field
+        Log::info("loged clan id :" . json_encode( $this->loggedInClanId));
     }
 
     public function passes($attribute, $value): bool
@@ -35,6 +37,9 @@ class CheckClanMatchRule implements Rule
         // Get the clan IDs of the creators
         $primaryClanId = User::find($primaryCreatorId)?->clan_id;
         $secondaryClanId = User::find($secondaryCreatorId)?->clan_id;
+
+        Log::info("primaryClanId clan id :" . json_encode( $primaryClanId));
+        Log::info("secondaryClanId clan id :" . json_encode( $secondaryClanId));
 
         // Check if all clan IDs match
         return $this->loggedInClanId === $primaryClanId && $this->loggedInClanId === $secondaryClanId;
