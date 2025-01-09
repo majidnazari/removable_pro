@@ -15,23 +15,26 @@ trait GetAllowedAllUsersInClan
      */
     protected function getAllowedUserIds(int $userId): array
     {
-        // Start with the logged-in user ID
-        $allowedAllUsersId = [$userId];
+        // Get the clan_id of the given user
+        $clanId = DB::table('users')
+            ->where('id', $userId)
+            ->whereNull('deleted_at')
+            ->value('clan_id');
 
-        // Get all user_receiver_id values where the logged-in user is the sender and status is Complete (4)
-        $connectedUserIds = DB::table('users')
-            ->where('clan_id', $userId)
-            ->where('status', Status::Active->value) // Status = Complete
+        if (!$clanId) {
+            // If no clan_id is found, return only the user's ID
+            return [$userId];
+        }
+
+        // Fetch all user IDs that share the same clan_id
+        $userIds = DB::table('users')
+            ->where('clan_id', $clanId)
+            ->where('status', Status::Active->value) // Status must be Active
             ->whereNull('deleted_at') // Exclude soft-deleted records
             ->pluck('id')
             ->toArray();
 
-        // Merge the connected user IDs into the allowed IDs
-        $allowedAllUsersIds = array_merge($allowedAllUsersId, $connectedUserIds);
-        
-        // Optional logging
-        // Log::info("The allowed user IDs are: " . json_encode($allowedAllUsersIds));
-
-        return $allowedAllUsersIds;
+        // Return the list of user IDs
+        return $userIds;
     }
 }
