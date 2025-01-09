@@ -24,11 +24,11 @@ class MergePersonsValidator extends Validator
                 'required',
                 'integer',
                 new ActivePersonRule(),
-            ],
-            'merge' => [
                 new MergePersonsRule($primaryPersonId, $secondaryPersonId),
                 new CheckClanMatchRule($primaryPersonId, $secondaryPersonId),
-            ],
+
+
+            ]
         ];
     }
 
