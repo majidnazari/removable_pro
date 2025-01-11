@@ -29,7 +29,7 @@ input CreateTalentHeaderInput
 }
 
 input UpdateTalentHeaderInput 
-@validator(class: "App\\GraphQL\\Validators\\TalentHeader\\CreateTalentHeaderInputValidator")
+# @validator(class: "App\\GraphQL\\Validators\\TalentHeader\\CreateTalentHeaderInputValidator")
 {
     id: ID!
     group_category_id: ID
