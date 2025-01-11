@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Log;
 use App\Traits\AuthUserTrait;
 use App\Traits\FindOwnerTrait;
 use App\Rules\TalentHeader\CheckPersonOfEachUser;
+use App\Rules\TalentHeader\GroupCategoryOwnership;
+use App\Rules\TalentHeader\CheckStatus;
+use App\Rules\TalentHeader\CheckEndDate;
 use Exception;
 
 class CreateTalentHeaderInputValidator extends GraphQLValidator
@@ -21,18 +24,18 @@ class CreateTalentHeaderInputValidator extends GraphQLValidator
     public function rules(): array
     {
         // Apply the custom rule 'CheckPersonOwner' to the 'person_id' field
+        // return [
+        //     'person_id' => ['required',  new CheckPersonOfEachUser($this->arg('person_id'))],
+        // ];
+        // $clanId = auth()->user()->clan_id; // Replace with your logic to get clan ID
+
         return [
-            'person_id' => ['required',  new CheckPersonOfEachUser($this->arg('person_id'))],
+            'group_category_id' => ['required', 'exists:group_categories,id', new GroupCategoryOwnership],
+            'person_id' => ['required', 'exists:people,id', new CheckPersonOfEachUser()],
+            'end_date' => ['nullable', 'date', new CheckEndDate],
+            'status' => ['nullable'],
+            'title' => ['required', 'string', 'max:255'],
         ];
     }
-     /**
-     * Optionally, you can define custom validation error messages here
-     */
-    public function messages(): array
-    {
-        return [
-            'person_id.required' => 'The person_id field is required.',
-           // 'person_id.integer' => 'The person_id must be an integer.',
-        ];
-    }
+    
 }

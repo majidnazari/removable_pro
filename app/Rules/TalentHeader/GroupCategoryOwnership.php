@@ -1,6 +1,6 @@
 <?php
 
-namespace App\TalentHeader;
+namespace App\Rules\TalentHeader;
 
 use App\Traits\AuthUserTrait;
 use Illuminate\Contracts\Validation\Rule;
@@ -14,7 +14,7 @@ class GroupCategoryOwnership implements Rule
     {
         // Check if the group_category_id belongs to the logged-in user
         return GroupCategory::where('id', $value)
-            ->where('user_id', $this->getUserId()) // Assuming GroupCategory has a user_id field
+            ->where('creator_id', $this->getUserId()) // Assuming GroupCategory has a user_id field
             ->exists();
     }
 
