@@ -9,11 +9,11 @@ class CheckEndDate implements Rule
 {
     public function passes($attribute, $value)
     {
-        return Carbon::parse($value)->lte(Carbon::today());
+        return Carbon::parse($value)->greaterThan(Carbon::today());
     }
 
     public function message()
     {
-        return 'The end date cannot be later than today.';
+        return 'The end date must be later than today.';
     }
 }
