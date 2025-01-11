@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('people', function (Blueprint $table) {
             
-            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger('id', true)->primary(); 
 
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();

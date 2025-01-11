@@ -101,6 +101,7 @@ class User extends Authenticatable
         'last_attempt_at',
         'status',
         'role',
+        'clan_id',
         'remember_token',
         'avatar',
     ];

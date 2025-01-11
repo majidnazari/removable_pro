@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_merge_requests', function (Blueprint $table) {
             
-            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger('id', true)->primary(); 
 
             $table->unsignedBigInteger('creator_id')->index(); 
             $table->unsignedBigInteger('editor_id')->nullable()->index(); 

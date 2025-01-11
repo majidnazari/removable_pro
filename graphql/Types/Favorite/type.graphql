@@ -13,7 +13,6 @@ type Favorite {
     star: Star   
     status: Status   
 
-    
     # title: String
     # event_date: String  
     created_at: DateTime

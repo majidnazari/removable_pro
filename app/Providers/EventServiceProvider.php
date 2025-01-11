@@ -13,6 +13,9 @@ class EventServiceProvider extends ServiceProvider
         UserRegistered::class => [
             SendRelationNotification::class,
         ],
+        UpdateClanIdAfterMerge::class => [
+            UpdateClanIdAfterMergeListener::class
+        ],
     ];
 
     public function boot()

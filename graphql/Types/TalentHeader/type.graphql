@@ -17,24 +17,24 @@ type TalentHeader {
 }
 
 input CreateTalentHeaderInput 
-@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
-@validator(class: "App\\GraphQL\\Validators\\Share\\CheckPersonOwnerValidator")
+@validator(class: "App\\GraphQL\\Validators\\TalentHeader\\CreateTalentHeaderInputValidator")
 {
   
     group_category_id: ID!
-    person_id: ID!
+    person_id: ID! 
+    # @rules(apply: ["CheckPersonOfEachUser:person_id"])
     title: String!
     end_date: String
     status: Status
 }
 
 input UpdateTalentHeaderInput 
-@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
-@validator(class: "App\\GraphQL\\Validators\\Share\\CheckPersonOwnerValidator")
+@validator(class: "App\\GraphQL\\Validators\\TalentHeader\\CreateTalentHeaderInputValidator")
 {
     id: ID!
     group_category_id: ID
-    person_id: ID
+    person_id: ID  
+    # @rules(apply: ["CheckPersonOfEachUser:person_id"])
     title: String
     end_date: String
     status: Status
