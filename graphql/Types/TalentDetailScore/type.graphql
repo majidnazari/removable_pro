@@ -7,7 +7,7 @@ type TalentDetailScore {
     participating_user_id: ID
     participating_user: User
     talent_detail_id: ID!
-    talent_detail: TalentDetail
+    TalentDetail: TalentDetail
     score: TalentScore
     status: Status
     created_at: DateTime

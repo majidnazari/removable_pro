@@ -5,9 +5,10 @@ type TalentHeader {
     editor_id: ID
     editor: User
     group_category_id: ID
-    group_category: GroupCategory
+    GroupCategory: GroupCategory
+    TalentDetails: [TalentDetail]
     person_id: ID
-    person: Person
+    Person: Person
     title: String
     end_date: String
     status: Status

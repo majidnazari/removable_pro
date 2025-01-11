@@ -54,6 +54,7 @@ class TalentDetail extends Eloquent
 
     public const COLUMN_TALENT_HEADER_ID = 'talent_header_id';
     public const COLUMN_MINOR_FIELD_ID = 'minor_field_id';
+    public const COLUMN_TALENT_DETAIL_ID = 'talent_detail_id';
    
 
     public function Creator()
@@ -71,6 +72,10 @@ class TalentDetail extends Eloquent
     public function MinorField()
     {
         return $this->belongsTo(MinorField::class, self::COLUMN_MINOR_FIELD_ID);
+    }
+    public function TalentDetailsScore()
+    {
+        return $this->hasMany(TalentDetailScore::class, self::COLUMN_TALENT_DETAIL_ID);
     }
 
     public static function getAuthorizationColumns()

@@ -35,7 +35,7 @@ final class UpdateTalentDetailScore
     }
     public function resolveTalentDetailScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        Log::info("the args rae:" . json_encode($args));
+       // Log::info("the args rae:" . json_encode($args));
         $this->userId = $this->getUserId();
 
         try {
@@ -56,7 +56,7 @@ final class UpdateTalentDetailScore
             throw new Exception("This Talent Time Finished To Score!");
         }
         
-        Log::info("the talentDetailsScore rae:" . json_encode($talentDetailsScore->TalentDetail->TalentHeader->end_date));
+       //Log::info("the talentDetailsScore rae:" . json_encode($talentDetailsScore->TalentDetail->TalentHeader->end_date));
 
         // $this->checkDuplicate(
         //     new TalentDetailScore(),
