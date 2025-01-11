@@ -11,6 +11,10 @@ use App\GraphQL\Enums\TalentScore;
 use App\GraphQL\Enums\Star;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
+use App\Models\TalentDetail;
+use App\Models\TalentHeader;
+use App\Models\GroupDetail;
+use Exception;
 use Log;
 
 final class CreateTalentDetailScore
@@ -33,9 +37,46 @@ final class CreateTalentDetailScore
 
         $this->userId = $this->getUserId();
 
+         // Fetch the TalentDetail associated with the given talent_detail_id
+         $talentDetail = TalentDetail::find($args['talent_detail_id']);
+
+         if (!$talentDetail) {
+            throw new Error("TalentDetail not found.");
+         }
+ 
+         // Check if the creator_id is the same as the logged-in user
+         if ($talentDetail->creator_id == $this->userId) {
+            throw new Error("You cannot score your own talent.");
+         }
+
+         // Find the related TalentHeader
+        $talentHeader = TalentHeader::find($talentDetail->talent_header_id);
+
+        if (!$talentHeader) {
+            throw new Error('TalentHeader not found.');
+        }
+
+        // Get the group_category_id from TalentHeader
+        $groupCategoryId = $talentHeader->group_category_id;
+
+        // Check if the user is part of any group in the related group category
+        $isUserInGroup = GroupDetail::whereHas('Groups', function ($query) use ($groupCategoryId) {
+            $query->where('group_category_id', $groupCategoryId);
+        })->whereHas('users', function ($query) {
+            $query->where('user_id', $this->userId);
+        })->exists();
+
+        Log::info("the users all are:" . json_encode( $isUserInGroup));
+
+        if (!$isUserInGroup) {
+            throw new Error('You must be a part of the associated group to create a talent detail score.');
+        }
+
+
+
         $TalentDetailScoreModel=[
             "creator_id" =>  $this->userId,
-            "participating_user_id" => $args['participating_user_id'],
+            "participating_user_id" => $this->userId,//$args['participating_user_id'],
 
             "talent_detail_id" => $args['talent_detail_id'],
             "score" => $args['score'] ?? TalentScore::None,

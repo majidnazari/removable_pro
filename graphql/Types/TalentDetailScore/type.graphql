@@ -15,17 +15,21 @@ type TalentDetailScore {
     
 }
 
-input CreateTalentDetailScoreInput {
+input CreateTalentDetailScoreInput 
+@validator(class: "App\\GraphQL\\Validators\\TalentDetailsScore\\CreateTalentDetailsScoreInputValidator")
+{
    
-    participating_user_id: ID!
+    # participating_user_id: ID!
     talent_detail_id: ID!
     score: TalentScore
     status: Status
 }
 
-input UpdateTalentDetailScoreInput {
+input UpdateTalentDetailScoreInput
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator") 
+{
    
-    participating_user_id: ID
+    # participating_user_id: ID
     talent_detail_id: ID
     score: TalentScore
     status: Status

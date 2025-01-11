@@ -1,19 +1,17 @@
 <?php
 
-namespace App\GraphQL\Validators\TalentDetailsScore;
+namespace App\GraphQL\Validators\TalentDetails;
 
 use App\GraphQL\Enums\Status;
 use Nuwave\Lighthouse\Validation\Validator as GraphQLValidator;
 use Illuminate\Support\Facades\Log;
 use App\Traits\AuthUserTrait;
 use App\Traits\FindOwnerTrait;
-use App\Rules\TalentDetailsScore\TalentDetailsCreatorCheck;
-use App\Rules\TalentDetailsScore\ParticipatingUserNotLoggedIn;
-use App\Rules\TalentHeader\CheckStatus;
-use App\Rules\TalentHeader\CheckEndDate;
+use App\Rules\TalentDetails\TalentHeaderCreatorCheck;
+
 use Exception;
 
-class CreateTalentDetailsScoreInputValidator extends GraphQLValidator
+class UpdateTalentDetailsInputValidator extends GraphQLValidator
 {
     use AuthUserTrait;
     use FindOwnerTrait;
@@ -30,9 +28,9 @@ class CreateTalentDetailsScoreInputValidator extends GraphQLValidator
         // $clanId = auth()->user()->clan_id; // Replace with your logic to get clan ID
 
         return [
-            // 'participating_user_id'=> ['required', 'exists:users,id', new ParticipatingUserNotLoggedIn],
-            'talent_detail_id' => ['required', 'exists:talent_details,id', new TalentDetailsCreatorCheck],
-            
+            'minor_field_id' => ['nullable', 'exists:minor_fields,id'],
+            'talent_header_id' => ['nullable', 'exists:talent_headers,id', new TalentHeaderCreatorCheck],
+           
         ];
     }
     
