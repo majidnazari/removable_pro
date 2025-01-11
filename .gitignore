@@ -20,6 +20,7 @@ yarn-error.log
 /.vscode
 /.zed
 
+/docker-files
 composer.lock
 backup.sh
 docker-compose.yml
