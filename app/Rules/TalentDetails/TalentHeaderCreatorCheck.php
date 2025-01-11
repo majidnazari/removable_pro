@@ -23,7 +23,7 @@ class TalentHeaderCreatorCheck implements Rule
     public function passes($attribute, $value)
     {
         // Get the logged-in user ID
-        $loggedInUserId = $this->getUser();
+        $loggedInUserId = $this->getUserId();
 
         // Find the TalentHeader by ID
         $talentHeader = TalentHeader::find($value);
