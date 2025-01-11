@@ -23,7 +23,7 @@ input CreateTalentDetailInput
 }
 
 input UpdateTalentDetailInput 
-@validator(class: "App\\GraphQL\\Validators\\TalentDetails\\CreateTalentDetailsInputValidator")
+# @validator(class: "App\\GraphQL\\Validators\\TalentDetails\\CreateTalentDetailsInputValidator")
 {
    
     talent_header_id: ID
