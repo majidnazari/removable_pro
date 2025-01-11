@@ -26,11 +26,11 @@ input CreateTalentDetailScoreInput
 }
 
 input UpdateTalentDetailScoreInput
-@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator") 
+# @validator(class: "App\\GraphQL\\Validators\\TalentDetailsScore\\UpdateTalentDetailsScoreInputValidator")
 {
    
     # participating_user_id: ID
-    talent_detail_id: ID
+    # talent_detail_id: ID
     score: TalentScore
-    status: Status
+    # status: Status
 }

@@ -13,7 +13,7 @@ use App\Rules\TalentHeader\CheckStatus;
 use App\Rules\TalentHeader\CheckEndDate;
 use Exception;
 
-class CreateTalentDetailsScoreInputValidator extends GraphQLValidator
+class UpdateTalentDetailsScoreInputValidator extends GraphQLValidator
 {
     use AuthUserTrait;
     use FindOwnerTrait;
@@ -29,10 +29,9 @@ class CreateTalentDetailsScoreInputValidator extends GraphQLValidator
         // ];
         // $clanId = auth()->user()->clan_id; // Replace with your logic to get clan ID
 
+       
         return [
-            // 'participating_user_id'=> ['required', 'exists:users,id', new ParticipatingUserNotLoggedIn],
-            'talent_detail_id' => ['required', 'exists:talent_details,id', new TalentDetailsScoreAuthority],
-            
+            false
         ];
     }
     
