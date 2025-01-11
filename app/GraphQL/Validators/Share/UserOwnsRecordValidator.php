@@ -25,6 +25,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
         'event_id' => 'events',
         // 'category_content_id' => 'category_contents',
         'group_category_id' => 'group_categories',
+        'talent_header_id' => 'talent_headers',
         // Add more mappings as needed
     ];
 
@@ -38,6 +39,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
     protected array $justCheckCurrentUserLoggedIn = [
         'event_id',
         'group_category_id',
+        'talent_header_id',
 
     ];
 
