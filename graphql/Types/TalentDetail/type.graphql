@@ -13,14 +13,18 @@ type TalentDetail {
     
 }
 
-input CreateTalentDetailInput {
+input CreateTalentDetailInput
+@validator(class: "App\\GraphQL\\Validators\\TalentDetails\\CreateTalentDetailsInputValidator")
+{
    
     talent_header_id: ID!
     minor_field_id: ID!
     status: Status
 }
 
-input UpdateTalentDetailInput {
+input UpdateTalentDetailInput 
+@validator(class: "App\\GraphQL\\Validators\\TalentDetails\\CreateTalentDetailsInputValidator")
+{
    
     talent_header_id: ID
     minor_field_id: ID
