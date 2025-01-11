@@ -28,7 +28,8 @@ class CreateTalentDetailsInputValidator extends GraphQLValidator
         // $clanId = auth()->user()->clan_id; // Replace with your logic to get clan ID
 
         return [
-            'talent_header_id' => ['required', 'exists:talent_details,id', new TalentHeaderCreatorCheck],
+            'minor_field_id' => ['required', 'exists:minor_fields,id'],
+            'talent_header_id' => ['required', 'exists:talent_headers,id', new TalentHeaderCreatorCheck],
            
         ];
     }
