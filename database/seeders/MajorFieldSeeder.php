@@ -24,6 +24,7 @@ class MajorFieldSeeder extends Seeder
            
             $title = !empty($major['title']) ? $major['title'] : null;
             $majorData[] = [
+                'creator_id' => $major['creator_id'],
                 'title' => $title, 
                
             ];

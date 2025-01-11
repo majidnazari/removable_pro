@@ -44,6 +44,9 @@ class DatabaseSeeder extends Seeder
             AddressSeeder::class,
             //FamilyBoardSeeder::class,
             UserMergeRequestSeeder::class,
+            MajorFieldSeeder::class,
+            MiddleFieldSeeder::class,
+            MinorFieldSeeder::class,
 
             // NaslanRelationshipSeeder::class,
 

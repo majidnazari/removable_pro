@@ -13,7 +13,7 @@ use App\Rules\TalentHeader\CheckStatus;
 use App\Rules\TalentHeader\CheckEndDate;
 use Exception;
 
-class CreateTalentHeaderInputValidator extends GraphQLValidator
+class UpdateTalentHeaderInputValidator extends GraphQLValidator
 {
     use AuthUserTrait;
     use FindOwnerTrait;
@@ -30,11 +30,11 @@ class CreateTalentHeaderInputValidator extends GraphQLValidator
         // $clanId = auth()->user()->clan_id; // Replace with your logic to get clan ID
 
         return [
-            'group_category_id' => ['required', 'exists:group_categories,id', new GroupCategoryOwnership],
-            'person_id' => ['required', 'exists:people,id', new CheckPersonOfEachUser()],
+            'group_category_id' => ['nullable', 'exists:group_categories,id', new GroupCategoryOwnership],
+            'person_id' => ['nullable', 'exists:people,id', new CheckPersonOfEachUser()],
             'end_date' => ['nullable', 'date', new CheckEndDate],
             'status' => ['nullable'],
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['nullable', 'string', 'max:255'],
         ];
     }
     

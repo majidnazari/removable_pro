@@ -23,8 +23,9 @@ class MinorFieldSeeder extends Seeder
            
             $title = !empty($minor['title']) ? $minor['title'] : null;
             $minorData[] = [
+                'creator_id' => $minor['creator_id'],
                 'title' => $title, 
-                'middle_field_id' => $minors['middle_field_id']
+                'middle_field_id' => $minor['middle_field_id']
                
             ];
         }

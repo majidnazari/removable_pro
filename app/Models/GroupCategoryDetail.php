@@ -73,6 +73,11 @@ class GroupCategoryDetail extends Eloquent
     {
         return $this->belongsTo(Group::class, self::COLUMN_GROUP_ID);
     }
+    public function Groups()
+    {
+        return $this->hasMany(Group::class, self::COLUMN_ID);
+    }
+
 
     // public function GroupCategory()
     // {

@@ -5,7 +5,11 @@ type TalentDetail {
     editor_id: ID
     editor: User
     talent_header_id: ID
+    TalentHeader: TalentHeader
+    TalentDetailsScore: [TalentDetailScore]
+
     minor_field_id: ID
+    Minor_Field: MinorField
   
     status: Status
     created_at: DateTime
@@ -13,14 +17,19 @@ type TalentDetail {
     
 }
 
-input CreateTalentDetailInput {
+input CreateTalentDetailInput
+@validator(class: "App\\GraphQL\\Validators\\TalentDetails\\CreateTalentDetailsInputValidator")
+{
    
     talent_header_id: ID!
     minor_field_id: ID!
     status: Status
 }
 
-input UpdateTalentDetailInput {
+input UpdateTalentDetailInput 
+# @validator(class: "App\\GraphQL\\Validators\\TalentDetails\\CreateTalentDetailsInputValidator")
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
+{
    
     talent_header_id: ID
     minor_field_id: ID

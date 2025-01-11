@@ -1,19 +1,17 @@
 <?php
 
-namespace App\GraphQL\Validators\TalentHeader;
+namespace App\GraphQL\Validators\TalentDetails;
 
 use App\GraphQL\Enums\Status;
 use Nuwave\Lighthouse\Validation\Validator as GraphQLValidator;
 use Illuminate\Support\Facades\Log;
 use App\Traits\AuthUserTrait;
 use App\Traits\FindOwnerTrait;
-use App\Rules\TalentHeader\CheckPersonOfEachUser;
-use App\Rules\TalentHeader\GroupCategoryOwnership;
-use App\Rules\TalentHeader\CheckStatus;
-use App\Rules\TalentHeader\CheckEndDate;
+use App\Rules\TalentDetails\TalentHeaderCreatorCheck;
+
 use Exception;
 
-class CreateTalentHeaderInputValidator extends GraphQLValidator
+class CreateTalentDetailsInputValidator extends GraphQLValidator
 {
     use AuthUserTrait;
     use FindOwnerTrait;
@@ -30,11 +28,9 @@ class CreateTalentHeaderInputValidator extends GraphQLValidator
         // $clanId = auth()->user()->clan_id; // Replace with your logic to get clan ID
 
         return [
-            'group_category_id' => ['required', 'exists:group_categories,id', new GroupCategoryOwnership],
-            'person_id' => ['required', 'exists:people,id', new CheckPersonOfEachUser()],
-            'end_date' => ['nullable', 'date', new CheckEndDate],
-            'status' => ['nullable'],
-            'title' => ['required', 'string', 'max:255'],
+            'minor_field_id' => ['required', 'exists:minor_fields,id'],
+            'talent_header_id' => ['required', 'exists:talent_headers,id', new TalentHeaderCreatorCheck],
+           
         ];
     }
     

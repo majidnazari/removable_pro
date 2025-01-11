@@ -23,6 +23,7 @@ class MiddleFieldSeeder extends Seeder
            
             $title = !empty($middle['title']) ? $middle['title'] : null;
             $middleData[] = [
+                'creator_id' => $middle['creator_id'],
                 'title' => $title, 
                 'major_field_id' => $middle['major_field_id']
             ];

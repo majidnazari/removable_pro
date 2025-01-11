@@ -11,7 +11,9 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use Carbon\Carbon;
 use Exception;
+use Log;
 
 
 final class UpdateTalentDetailScore
@@ -33,6 +35,7 @@ final class UpdateTalentDetailScore
     }
     public function resolveTalentDetailScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
+       // Log::info("the args rae:" . json_encode($args));
         $this->userId = $this->getUserId();
 
         try {
@@ -42,12 +45,25 @@ final class UpdateTalentDetailScore
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
-        $this->checkDuplicate(
-            new TalentDetailScore(),
-            $args,
-            ['id', 'editor_id', 'created_at', 'updated_at'],
-            excludeId: $args['id']
-        );
+        $talentDetailsScore=TalentDetailScore::where('id',$args['id'])->with(['TalentDetail','TalentDetail.TalentHeader'])->first();
+
+        if(isset($talentDetailsScore->Creator_id) && ($talentDetailsScore->Creator_id != $this->userId ))
+        {
+            throw new Exception("You Can Just Your Own Score.");
+        }
+        if(isset($talentDetailsScore->TalentDetail->TalentHeader->end_date) && ($talentDetailsScore->TalentDetail->TalentHeader->end_date < Carbon::now()->format("Y-m-d")))
+        {
+            throw new Exception("This Talent Time Finished To Score!");
+        }
+        
+       //Log::info("the talentDetailsScore rae:" . json_encode($talentDetailsScore->TalentDetail->TalentHeader->end_date));
+
+        // $this->checkDuplicate(
+        //     new TalentDetailScore(),
+        //     $args,
+        //     ['id', 'editor_id', 'created_at', 'updated_at','score','status'],
+        //     excludeId: $args['id']
+        // );
 
         return $this->updateModel($TalentDetailScoreResult, $args, $this->userId);
        

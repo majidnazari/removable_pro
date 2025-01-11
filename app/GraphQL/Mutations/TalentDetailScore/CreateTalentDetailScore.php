@@ -11,6 +11,10 @@ use App\GraphQL\Enums\TalentScore;
 use App\GraphQL\Enums\Star;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
+use App\Models\TalentDetail;
+use App\Models\TalentHeader;
+use App\Models\GroupDetail;
+use Exception;
 use Log;
 
 final class CreateTalentDetailScore
@@ -35,7 +39,7 @@ final class CreateTalentDetailScore
 
         $TalentDetailScoreModel=[
             "creator_id" =>  $this->userId,
-            "participating_user_id" => $args['participating_user_id'],
+            "participating_user_id" => $this->userId,//$args['participating_user_id'],
 
             "talent_detail_id" => $args['talent_detail_id'],
             "score" => $args['score'] ?? TalentScore::None,

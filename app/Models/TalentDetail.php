@@ -14,7 +14,7 @@ use Eloquent;
  * @property int $creator_id
  * @property int|null $editor_id
  * @property int $talent_header_id
- * @property int $micro_field_id
+ * @property int $minor_field_id
  * @property int $status 1=Active 2=Inactive
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -27,7 +27,7 @@ use Eloquent;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereEditorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereMicroFieldId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereminorFieldId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereTalentHeaderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TalentDetail whereUpdatedAt($value)
@@ -39,7 +39,7 @@ class TalentDetail extends Eloquent
         'creator_id',
         'editor_id',
         'talent_header_id',
-        'micro_field_id',
+        'minor_field_id',
         'status',
        
     ];
@@ -53,7 +53,8 @@ class TalentDetail extends Eloquent
     public const COLUMN_EDITOR_ID = 'editor_id';
 
     public const COLUMN_TALENT_HEADER_ID = 'talent_header_id';
-    public const COLUMN_MICRO_FIELD_ID = 'micro_field_id';
+    public const COLUMN_MINOR_FIELD_ID = 'minor_field_id';
+    public const COLUMN_TALENT_DETAIL_ID = 'talent_detail_id';
    
 
     public function Creator()
@@ -68,9 +69,13 @@ class TalentDetail extends Eloquent
     {
         return $this->belongsTo(TalentHeader::class, self::COLUMN_TALENT_HEADER_ID);
     }
-    public function MicroField()
+    public function MinorField()
     {
-        return $this->belongsTo(MicroField::class, self::COLUMN_MICRO_FIELD_ID);
+        return $this->belongsTo(MinorField::class, self::COLUMN_MINOR_FIELD_ID);
+    }
+    public function TalentDetailsScore()
+    {
+        return $this->hasMany(TalentDetailScore::class, self::COLUMN_TALENT_DETAIL_ID);
     }
 
     public static function getAuthorizationColumns()

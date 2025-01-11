@@ -36,7 +36,7 @@ final class CreateTalentDetail
             "creator_id" =>  $this->userId,
             "talent_header_id" => $args['talent_header_id'],
             "minor_field_id" => $args['minor_field_id'],
-            "status" => $args['status']  ?? status::Active       
+            "status" => $args['status']  ?? Status::Active       
         ];
         // $is_exist= TalentDetail::where($TalentDetailModel)->first();
         // if($is_exist)
