@@ -45,7 +45,11 @@ final class GetSpecialTalentHeaders
         if (isset($args['hasNoScores']) && $args['hasNoScores']) {
             // Ensure we fetch TalentHeaders where at least one TalentDetail does not have a TalentDetailScore
             $query->whereHas('TalentDetails', function ($query) {
-                $query->whereDoesntHave('TalentDetailScores');  // This ensures we have at least one TalentDetail with no score
+                // $query->whereDoesntHave('TalentDetailScores');  // This ensures we have at least one TalentDetail with no score
+                $query->whereDoesntHave('TalentDetailScores', function ($scoreQuery) {
+                    // Check if the TalentDetail has no score for the given participating_user_id
+                    $scoreQuery->where('participating_user_id', $this->userId);
+                });
             });
         }
         // Log::info("the query is:" . json_encode($query->get()));
@@ -70,8 +74,19 @@ final class GetSpecialTalentHeaders
         // Fetch and log the talentheader
         $talentheader = $query;
 
-        // Log::info("pall talentheader can this user see are : " . json_encode($talentheader->get()));
+        // Now we need to filter the TalentDetailScores based on the logged-in user
+        // $talentheader->with([
+        //     'TalentDetails' => function ($query) {
+        //         $query->with([
+        //             'TalentDetailScores' => function ($scoreQuery) {
+        //                 // Filter scores by the logged-in userId
+        //                 $scoreQuery->where('participating_user_id', $this->userId);
+        //             }
+        //         ]);
+        //     }
+        // ]);
 
         return $talentheader;
     }
+
 }
