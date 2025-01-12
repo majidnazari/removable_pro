@@ -18,8 +18,6 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
-
-
 use Exception;
 
 final class SendRequestToOtherFamily
