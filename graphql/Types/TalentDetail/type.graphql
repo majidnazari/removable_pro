@@ -6,7 +6,7 @@ type TalentDetail {
     editor: User
     talent_header_id: ID
     TalentHeader: TalentHeader
-    TalentDetailsScore: [TalentDetailScore]
+    TalentDetailScores: [TalentDetailScore]
 
     minor_field_id: ID
     MinorField: MinorField

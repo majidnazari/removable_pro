@@ -31,7 +31,7 @@ class CreateTalentHeaderInputValidator extends GraphQLValidator
 
         return [
             'group_category_id' => ['required', 'exists:group_categories,id', new GroupCategoryOwnership],
-            'person_id' => ['required', 'exists:people,id', new CheckPersonOfEachUser()],
+            'person_id' => ['nullable', 'exists:people,id', new CheckPersonOfEachUser()],
             'end_date' => ['nullable', 'date', new CheckEndDate],
             'status' => ['nullable'],
             'title' => ['required', 'string', 'max:255'],

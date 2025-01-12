@@ -28,7 +28,7 @@ class CheckPersonOfEachUser implements Rule
 
     public function passes($attribute, $value)
     {
-        $this->personId = $value ?: $this->findOwner();
+        $this->personId = $value ?: $this->findOwner()->id;
        
         // Log::info("the person id is:" .$this->personId);
        // $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());

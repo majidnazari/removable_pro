@@ -41,6 +41,13 @@ final class GetSpecialTalentHeaders
             ->where('status', Status::Active->value)
             ->where('person_id', $args['person_id'] ?? $this->personOwner->id);
 
+        // Apply the 'hasNoScores' filter if provided
+        if (isset($args['hasNoScores']) && $args['hasNoScores']) {
+            // Ensure we fetch TalentHeaders where at least one TalentDetail does not have a TalentDetailScore
+            $query->whereHas('TalentDetails', function ($query) {
+                $query->whereDoesntHave('TalentDetailScores');  // This ensures we have at least one TalentDetail with no score
+            });
+        }
         // Log::info("the query is:" . json_encode($query->get()));
         if (isset($args['person_id']) && $args['person_id'] != $this->personOwner->id) {
 

@@ -17,6 +17,8 @@ getTalentHeader(id: ID!): TalentHeader @guard(with:["api"]) @field(resolver: "Ap
       
         person_id: Int,
         creator_id: Int,
+        hasNoScores: Boolean, 
+        orderBy:[OrderByClause!] @orderBy
         # filter: MemoryFilterInput
     ): [TalentHeader!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\TalentHeader\\GetSpecialTalentHeaders@resolveTalentHeaders")
 
