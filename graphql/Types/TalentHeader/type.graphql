@@ -22,7 +22,7 @@ input CreateTalentHeaderInput
 {
   
     group_category_id: ID!
-    person_id: ID! 
+    person_id: ID
     # @rules(apply: ["CheckPersonOfEachUser:person_id"])
     title: String!
     end_date: String
