@@ -25,3 +25,4 @@ composer.lock
 backup.sh
 docker-compose.yml
 Dockerfile
+composer.lock
