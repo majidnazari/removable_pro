@@ -2,7 +2,7 @@ type MinorField {
     id: ID
     creator_id: ID
     middle_field_id: ID!
-    middle_field: MiddleField
+    MiddleField: MiddleField
     title: String!
     created_at: DateTime
     updated_at: DateTime

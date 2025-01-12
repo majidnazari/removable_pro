@@ -40,12 +40,12 @@ class MinorField extends Eloquent
     public const TABLE_NAME = 'minor_fields';
     protected $table = self::TABLE_NAME;
     public const COLUMN_ID = 'id';
-    public const COLUMN_Minor_FIELD_ID = 'middle_field_id';
+    public const COLUMN_MIDDLE_FIELD_ID = 'middle_field_id';
     
 
-    public function MinorField()
+    public function MiddleField()
     {
-        return $this->belongsTo(MinorField::class, self::COLUMN_Minor_FIELD_ID);
+        return $this->belongsTo(MiddleField::class, self::COLUMN_MIDDLE_FIELD_ID);
     }
 
 

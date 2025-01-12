@@ -9,7 +9,7 @@ type TalentDetail {
     TalentDetailsScore: [TalentDetailScore]
 
     minor_field_id: ID
-    Minor_Field: MinorField
+    MinorField: MinorField
   
     status: Status
     created_at: DateTime
