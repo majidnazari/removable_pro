@@ -39,7 +39,8 @@ final class GetSpecialTalentHeaders
         // Start with the base query for 'deleted_at' and 'person_id'
         $query = TalentHeader::where('deleted_at', null)
             ->where('status', Status::Active->value)
-            ->where('person_id', $args['person_id'] ?? $this->personOwner->id);
+            ->where('person_id', $args['person_id'] ?? $this->personOwner->id)
+           ->where('end_date', '>', now());
 
         // Apply the 'hasNoScores' filter if provided
         if (isset($args['hasNoScores']) && $args['hasNoScores']) {
@@ -75,16 +76,16 @@ final class GetSpecialTalentHeaders
         $talentheader = $query;
 
         // Now we need to filter the TalentDetailScores based on the logged-in user
-        // $talentheader->with([
-        //     'TalentDetails' => function ($query) {
-        //         $query->with([
-        //             'TalentDetailScores' => function ($scoreQuery) {
-        //                 // Filter scores by the logged-in userId
-        //                 $scoreQuery->where('participating_user_id', $this->userId);
-        //             }
-        //         ]);
-        //     }
-        // ]);
+        $talentheader->with([
+            'TalentDetails' => function ($query) {
+                $query->with([
+                    'TalentDetailScores' => function ($scoreQuery) {
+                        // Filter scores by the logged-in userId
+                        $scoreQuery->where('participating_user_id', $this->userId);
+                    }
+                ]);
+            }
+        ]);
 
         return $talentheader;
     }
