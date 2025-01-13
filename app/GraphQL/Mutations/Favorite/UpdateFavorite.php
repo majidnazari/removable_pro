@@ -43,12 +43,12 @@ final class UpdateFavorite
             throw new Exception($e->getMessage());
         }
         $data = [
-            "title" => $args['title'],
-            "person_id" => $args['person_id']
+            "title" => isset($args['title']) ? $args['title'] : $FavoriteResult['title'] ,
+            "person_id" => isset($args['person_id'])  ? $args['person_id'] : $FavoriteResult['person_id'] 
         ];
         $this->checkDuplicate(
             new Favorite(),
-            $data,
+             $data,
             ['id', 'editor_id', 'created_at', 'updated_at'],
             excludeId: $args['id']
         );

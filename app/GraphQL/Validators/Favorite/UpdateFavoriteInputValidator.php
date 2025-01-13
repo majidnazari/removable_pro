@@ -19,7 +19,7 @@ class UpdateFavoriteInputValidator extends Validator
 
         return [
             'person_id' => [
-                'required',
+                'nullable',
                 'exists:people,id',
                 new MaxRecordsForPerson($this->arg('person_id'), $recordId),
                 new CheckPersonOwner(),
