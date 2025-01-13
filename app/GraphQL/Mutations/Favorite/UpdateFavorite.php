@@ -42,15 +42,19 @@ final class UpdateFavorite
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
+        $data = [
+            "title" => $args['title'],
+            "person_id" => $args['person_id']
+        ];
         $this->checkDuplicate(
             new Favorite(),
-            $args,
+            $data,
             ['id', 'editor_id', 'created_at', 'updated_at'],
             excludeId: $args['id']
         );
 
         return $this->updateModel($FavoriteResult, $args, $this->userId);
-       
+
 
 
     }

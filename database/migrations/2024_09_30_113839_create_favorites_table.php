@@ -18,13 +18,13 @@ return new class extends Migration {
             $table->unsignedBigInteger('creator_id');
             $table->unsignedBigInteger('editor_id')->nullable();
             $table->unsignedBigInteger('person_id')->index(); // foreign key favorite
-            $table->unsignedBigInteger('group_category_id')->nullable();
+           // $table->unsignedBigInteger('group_category_id')->nullable();
 
 
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('editor_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
-            $table->foreign('group_category_id')->references('id')->on('group_categories')->onDelete('cascade');
+           // $table->foreign('group_category_id')->references('id')->on('group_categories')->onDelete('cascade');
 
 
 
@@ -35,7 +35,8 @@ return new class extends Migration {
            // $table->enum('star', ["1", "2", "3", "4", "5"])->nullable("5");
             //$table->enum('status', ["Active", "Inactive", "None"])->default("Active");
 
-            $table->tinyInteger('star', )->default(0)->comment("0=None  1=One 2=Two 3=Three 4=Four 5=Five 6=Six 7=Seven 8=Eight 9=Nine 10=Ten");   
+           // $table->tinyInteger('star', )->default(0)->comment("0=None  1=One 2=Two 3=Three 4=Four 5=Five 6=Six 7=Seven 8=Eight 9=Nine 10=Ten");   
+            $table->tinyInteger('priority', )->default(0);   
             $table->tinyInteger('status', )->default(1)->comment("1=Active 2=Inactive");   
 
             $table->timestamps();

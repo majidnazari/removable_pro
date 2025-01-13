@@ -34,7 +34,7 @@ class FamilyEventInputValidator extends Validator
             'person_id' => [
                 'required',
                 'integer',
-                'exists:persons,id', // Ensure person_id exists in the persons table
+                'exists:people,id', // Ensure person_id exists in the persons table
             ],
             'status' => [
                 'nullable',

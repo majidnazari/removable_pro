@@ -16,6 +16,7 @@ use Eloquent;
  * @property int|null $editor_id
  * @property int $person_id
  * @property int $group_category_id
+ * @property int $priority
  * @property string|null $image
  * @property string|null $title
  * @property string|null $description
@@ -41,11 +42,11 @@ class Favorite extends Eloquent
         'creator_id',
         'editor_id',
         'person_id',
-        'group_category_id',
+       // 'group_category_id',
         'image',
         'title',
         'description',
-        'star',
+        'priority',
         'status',
     ];
     use HasFactory;

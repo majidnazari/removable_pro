@@ -21,7 +21,7 @@ class FavoriteSeeder extends Seeder
                 "image" => "1.jpg",
                 "title" => "ipad",
                 "description" => " i love iphone 18",
-                "star" => "5",
+                "priority" => 1,
                 "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
@@ -31,7 +31,7 @@ class FavoriteSeeder extends Seeder
                 "image" => "2.jpg",
                 "title" => "iphone",
                 "description" => " i love iphone 18+",
-                "star" => "5",
+                "priority" => 2,
                 "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
@@ -41,7 +41,7 @@ class FavoriteSeeder extends Seeder
                 "image" => "3.jpg",
                 "title" => "masla",
                 "description" => " i love traveling to north of iran",
-                "star" => "5",
+                "priority" => 3,
                 "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
@@ -51,7 +51,7 @@ class FavoriteSeeder extends Seeder
                 "image" => "4.jpg",
                 "title" => "exercise",
                 "description" => "running in the morning",
-                "star" => "5",
+                "priority" => 4,
                 "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
@@ -61,7 +61,7 @@ class FavoriteSeeder extends Seeder
                 "image" => "5.jpg",
                 "title" => "coffee",
                 "description" => " i love double spreso(dark sps)",
-                "star" => "5",
+                "priority" => 5,
                 "status" => 1,
                 "created_at" => now()->format("Y-m-d H:i:s")
             ],
