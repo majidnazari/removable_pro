@@ -36,7 +36,7 @@ final class CreateFavorite
 
         $FavoriteModel = [
             "creator_id" => $this->userId,
-            "person_id" => $args['person_id'] ?? $this->findOwner(),
+            "person_id" => $args['person_id'] ?? $this->findOwner()->id,
 
             "image" => $args['image'] ?? null,
             "title" => $args['title'],

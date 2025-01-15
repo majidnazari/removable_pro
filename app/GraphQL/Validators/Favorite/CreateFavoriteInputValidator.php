@@ -17,9 +17,9 @@ class CreateFavoriteInputValidator extends Validator
     {
         return [
             'person_id' => [
-                'required',
+                'nullable',
                 'exists:people,id',
-                new MaxRecordsForPerson($this->arg('person_id')),
+                new MaxRecordsForPerson($this->arg('person_id') ?? null ),
                 new CheckPersonOwner()
             ],
            
@@ -28,7 +28,7 @@ class CreateFavoriteInputValidator extends Validator
     public function messages(): array
     {
         return [
-            'person_id.required' => 'The person_id field is required.',
+            
             'person_id.exists' => 'The specified person does not exist.',
         ];
     }

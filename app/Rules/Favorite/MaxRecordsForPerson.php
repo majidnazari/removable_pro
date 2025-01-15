@@ -4,10 +4,12 @@ namespace App\Rules\Favorite;
 
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\Favorite; // Replace with your actual model name
+use App\Traits\FindOwnerTrait;
 use Log;
 
 class MaxRecordsForPerson implements Rule
 {
+    use FindOwnerTrait;
     protected $personId;
     protected $ignoreRecordId;
 
@@ -17,9 +19,10 @@ class MaxRecordsForPerson implements Rule
      * @param  int  $personId
      * @param  int|null  $ignoreRecordId
      */
-    public function __construct($personId, $ignoreRecordId = null)
+    public function __construct($personId=null, $ignoreRecordId = null)
     {
-        $this->personId = $personId;
+        $this->personId = $personId ?? $this->findOwner()->id;
+       // Log::info("the person id is:" .$this->personId);
         $this->ignoreRecordId = $ignoreRecordId;
     }
 
