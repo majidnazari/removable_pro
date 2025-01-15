@@ -6,8 +6,8 @@
         "group_id": "1",
         "user_id": "2",
         "status": "1",
-        "created_at": "2024-12-29 14:14:35",
-        "updated_at": "2024-12-29 14:14:35",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -17,8 +17,8 @@
         "group_id": "1",
         "user_id": "3",
         "status": "1",
-        "created_at": "2024-12-29 14:14:39",
-        "updated_at": "2024-12-29 14:14:39",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -28,8 +28,8 @@
         "group_id": "1",
         "user_id": "4",
         "status": "1",
-        "created_at": "2024-12-29 14:14:43",
-        "updated_at": "2024-12-29 14:14:43",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -39,8 +39,8 @@
         "group_id": "1",
         "user_id": "5",
         "status": "1",
-        "created_at": "2024-12-29 14:14:47",
-        "updated_at": "2024-12-29 14:14:47",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -50,8 +50,8 @@
         "group_id": "1",
         "user_id": "6",
         "status": "1",
-        "created_at": "2024-12-29 14:14:51",
-        "updated_at": "2024-12-29 14:14:51",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -61,8 +61,8 @@
         "group_id": "1",
         "user_id": "7",
         "status": "1",
-        "created_at": "2024-12-29 14:14:55",
-        "updated_at": "2024-12-29 14:14:55",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -72,8 +72,8 @@
         "group_id": "1",
         "user_id": "8",
         "status": "1",
-        "created_at": "2024-12-29 14:15:03",
-        "updated_at": "2024-12-29 14:15:03",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -83,8 +83,8 @@
         "group_id": "1",
         "user_id": "9",
         "status": "1",
-        "created_at": "2024-12-29 14:15:08",
-        "updated_at": "2024-12-29 14:15:08",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -94,8 +94,8 @@
         "group_id": "4",
         "user_id": "4",
         "status": "1",
-        "created_at": "2024-12-29 14:15:35",
-        "updated_at": "2024-12-29 14:15:35",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -105,8 +105,8 @@
         "group_id": "5",
         "user_id": "2",
         "status": "1",
-        "created_at": "2024-12-29 14:16:39",
-        "updated_at": "2024-12-29 14:16:39",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -116,8 +116,8 @@
         "group_id": "5",
         "user_id": "8",
         "status": "1",
-        "created_at": "2024-12-29 14:16:44",
-        "updated_at": "2024-12-29 14:16:44",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -127,8 +127,8 @@
         "group_id": "6",
         "user_id": "2",
         "status": "1",
-        "created_at": "2024-12-29 14:17:11",
-        "updated_at": "2024-12-29 14:17:11",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -138,8 +138,8 @@
         "group_id": "6",
         "user_id": "9",
         "status": "1",
-        "created_at": "2024-12-29 14:17:16",
-        "updated_at": "2024-12-29 14:17:16",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -149,8 +149,8 @@
         "group_id": "7",
         "user_id": "6",
         "status": "1",
-        "created_at": "2024-12-29 14:17:59",
-        "updated_at": "2024-12-29 14:17:59",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -160,8 +160,8 @@
         "group_id": "7",
         "user_id": "7",
         "status": "1",
-        "created_at": "2024-12-29 14:18:07",
-        "updated_at": "2024-12-29 14:18:07",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -171,8 +171,8 @@
         "group_id": "7",
         "user_id": "8",
         "status": "1",
-        "created_at": "2024-12-29 14:18:14",
-        "updated_at": "2024-12-29 14:18:14",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     },
     {
@@ -182,8 +182,96 @@
         "group_id": "7",
         "user_id": "9",
         "status": "1",
-        "created_at": "2024-12-29 14:18:18",
-        "updated_at": "2024-12-29 14:18:18",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
+        "deleted_at": null
+    },
+    {
+        "id": "18",
+        "creator_id": "4",
+        "editor_id": null,
+        "group_id": "9",
+        "user_id": "1",
+        "status": "1",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
+        "deleted_at": null
+    },
+    {
+        "id": "19",
+        "creator_id": "4",
+        "editor_id": null,
+        "group_id": "9",
+        "user_id": "2",
+        "status": "1",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
+        "deleted_at": null
+    },
+    {
+        "id": "20",
+        "creator_id": "4",
+        "editor_id": null,
+        "group_id": "9",
+        "user_id": "3",
+        "status": "1",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
+        "deleted_at": null
+    },
+    {
+        "id": "21",
+        "creator_id": "4",
+        "editor_id": null,
+        "group_id": "9",
+        "user_id": "5",
+        "status": "1",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
+        "deleted_at": null
+    },
+    {
+        "id": "22",
+        "creator_id": "4",
+        "editor_id": null,
+        "group_id": "10",
+        "user_id": "1",
+        "status": "1",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
+        "deleted_at": null
+    },
+    {
+        "id": "23",
+        "creator_id": "4",
+        "editor_id": null,
+        "group_id": "10",
+        "user_id": "3",
+        "status": "1",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
+        "deleted_at": null
+    },
+    {
+        "id": "24",
+        "creator_id": "4",
+        "editor_id": null,
+        "group_id": "10",
+        "user_id": "5",
+        "status": "1",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
+        "deleted_at": null
+    },
+    {
+        "id": "25",
+        "creator_id": "4",
+        "editor_id": null,
+        "group_id": "11",
+        "user_id": "9",
+        "status": "1",
+        "created_at": "2025-01-09 09:39:13",
+        "updated_at": "2025-01-09 09:39:13",
         "deleted_at": null
     }
 ]

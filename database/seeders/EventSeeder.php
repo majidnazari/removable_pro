@@ -40,7 +40,7 @@ class EventSeeder extends Seeder
             ],
             [
                 "creator_id" =>1,
-                "title" => "فوت",
+                "title" => "وفات",
                 "status" => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
