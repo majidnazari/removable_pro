@@ -16,11 +16,9 @@ class CreateFavoriteInputValidator extends Validator
     public function rules(): array
     {
         return [
-            'person_id' => [
-                'nullable',
-                'exists:people,id',
+            'title' => [
                 new MaxRecordsForPerson($this->arg('person_id') ?? null ),
-                new CheckPersonOwner()
+                //new CheckPersonOwner()
             ],
            
         ];

@@ -42,7 +42,7 @@ class MaxRecordsForPerson implements Rule
             $query->where('id', '!=', $this->ignoreRecordId);
         }
 
-        //Log::info("the user count is:" . $query->count());
+        Log::info("the user count is:" . $query->count());
         return $query->count() < 10; // Allow only if less than 10 records exist
     }
 
