@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TalentHeader;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -47,6 +48,9 @@ class DatabaseSeeder extends Seeder
             MajorFieldSeeder::class,
             MiddleFieldSeeder::class,
             MinorFieldSeeder::class,
+            TalentHeaderSeeder::class,
+            TalentDetailSeeder::class,
+            TalentDetailScoreSeeder::class,
 
             // NaslanRelationshipSeeder::class,
 

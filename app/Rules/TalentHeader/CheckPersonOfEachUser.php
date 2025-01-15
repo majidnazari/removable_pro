@@ -28,13 +28,15 @@ class CheckPersonOfEachUser implements Rule
 
     public function passes($attribute, $value)
     {
-        $this->personId = $value;
+        $this->personId = $value ?: $this->findOwner()->id;
        
         // Log::info("the person id is:" .$this->personId);
-        $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
+       // $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
+
 
         //Log::info("the all user alowed are :" . json_encode($allowedCreatorIds));
-        $person = Person::where('id', $this->personId)->whereIn('creator_id', $allowedCreatorIds)->first();
+        $person = Person::where('id', $this->personId)->first();
+        //->whereIn('creator_id', $allowedCreatorIds)->first();
 
         if (!$person) {
             $this->errorMessage = "The selected person does not exist or is not accessible.";
@@ -42,10 +44,10 @@ class CheckPersonOfEachUser implements Rule
         }
 
 
-        if (isset($person->is_owner) && $person->is_owner == 1 and $person->creator_id !== $this->getUserId()) {
-            $this->errorMessage = "this person is owner and you cannot set talent to him/her !";
-            return false;
-        }
+        // if (isset($person->is_owner) && $person->is_owner == 1 and $person->creator_id !== $this->getUserId()) {
+        //     $this->errorMessage = "this person is owner and you cannot set talent to him/her !";
+        //     return false;
+        // }
         //Log::info(message: "the allowedCreatorIds is :" . json_encode($allowedCreatorIds));
         return $person;
 

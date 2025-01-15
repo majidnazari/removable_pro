@@ -5,16 +5,22 @@ namespace App\Traits;
 use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\Status; // Make sure the MergeStatus Enum is imported
 
+use App\Traits\AuthUserTrait;
+
 trait GetAllowedAllUsersInClan
 {
+    use AuthUserTrait;
     /**
      * Get allowed creator IDs for a user, including their connected users where the merge status is "Complete".
      *
      * @param  int  $userId
      * @return array
      */
-    protected function getAllowedUserIds(int $userId): array
+    protected function getAllowedUserIds(int $userId = null): array
     {
+        if ($userId === null) {
+            $userId = $this->getUserId();
+        }
         // Get the clan_id of the given user
         $clanId = DB::table('users')
             ->where('id', $userId)

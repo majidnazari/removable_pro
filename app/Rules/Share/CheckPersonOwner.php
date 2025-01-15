@@ -5,6 +5,7 @@ namespace App\Rules\Share;
 use Illuminate\Contracts\Validation\Rule;
 use App\Traits\AuthUserTrait;
 use App\Traits\FindOwnerTrait;
+use Log;
 
 class CheckPersonOwner implements Rule
 {
@@ -21,8 +22,9 @@ class CheckPersonOwner implements Rule
             return false;
         }
 
+        //Log::info("the owner is :" . $owner->id . " and the entered person id is :" . $value );
         // If the owner ID does not match the person ID, return false
-        return $owner->id === (int) $value;
+        return $owner->id == (int) $value;
     }
 
     public function message()

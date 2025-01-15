@@ -6,10 +6,10 @@ type TalentDetail {
     editor: User
     talent_header_id: ID
     TalentHeader: TalentHeader
-    TalentDetailsScore: [TalentDetailScore]
+    TalentDetailScores: [TalentDetailScore]
 
     minor_field_id: ID
-    Minor_Field: MinorField
+    MinorField: MinorField
   
     status: Status
     created_at: DateTime

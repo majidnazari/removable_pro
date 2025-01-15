@@ -15,21 +15,18 @@ class MinorFieldSeeder extends Seeder
      */
     public function run(): void
     {
-        $json = File::get(database_path('datasample/minorfield.json')); 
-        $minors = json_decode($json, true); // Decode JSON into an array
-      
-        $minorData = [];
-        foreach ($minors as $minor) {
-           
-            $title = !empty($minor['title']) ? $minor['title'] : null;
-            $minorData[] = [
-                'creator_id' => $minor['creator_id'],
-                'title' => $title, 
-                'middle_field_id' => $minor['middle_field_id']
-               
-            ];
+        $jsonPath = database_path('datasample/minorfield.json');
+
+        if (File::exists($jsonPath)) {
+            $jsonData = json_decode(File::get($jsonPath), true);
+
+            if (!empty( $jsonData )) {
+                DB::table('minor_fields')->insert( $jsonData );
+            } else {
+                $this->command->info("No valid records to insert.");
+            }
+        } else {
+            $this->command->info("JSON file not found at {$jsonPath}");
         }
-       
-        DB::table('minor_fields')->insert($minorData);
     }
 }

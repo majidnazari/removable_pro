@@ -1,7 +1,7 @@
 type MiddleField {
     id: ID
     major_field_id: ID!
-    major_field: MajorField
+    MajorField: MajorField
     title: String!
     created_at: DateTime
     updated_at: DateTime

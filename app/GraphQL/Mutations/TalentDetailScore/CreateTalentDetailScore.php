@@ -52,7 +52,7 @@ final class CreateTalentDetailScore
         //          return Error::createLocatedError("TalentDetailScore-CREATE-RECORD_IS_EXIST");
         //  }
 
-        $this->checkDuplicate(new TalentDetailScore(), $TalentDetailScoreModel);
+        $this->checkDuplicate(new TalentDetailScore(), ["participating_user_id" => $this->userId ,  "talent_detail_id" => $args['talent_detail_id'] ]);
         $TalentDetailScoreResult=TalentDetailScore::create($TalentDetailScoreModel);
         return $TalentDetailScoreResult;
     }

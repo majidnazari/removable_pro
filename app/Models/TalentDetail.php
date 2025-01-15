@@ -73,7 +73,7 @@ class TalentDetail extends Eloquent
     {
         return $this->belongsTo(MinorField::class, self::COLUMN_MINOR_FIELD_ID);
     }
-    public function TalentDetailsScore()
+    public function TalentDetailScores()
     {
         return $this->hasMany(TalentDetailScore::class, self::COLUMN_TALENT_DETAIL_ID);
     }
