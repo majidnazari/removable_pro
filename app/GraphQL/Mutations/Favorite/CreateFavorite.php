@@ -50,7 +50,7 @@ final class CreateFavorite
         //          return Error::createLocatedError("Favorite-CREATE-RECORD_IS_EXIST");
         //  }
 
-        $this->checkDuplicate(new Favorite(), ["title" =>$args['title'] , "person_id" => $args['person_id'] ?? $this->findOwner()]);
+        $this->checkDuplicate(new Favorite(), ["title" =>$args['title'] , "person_id" => $args['person_id'] ?? $this->findOwner()->id]);
         $FavoriteResult = Favorite::create($FavoriteModel);
         return $FavoriteResult;
     }
