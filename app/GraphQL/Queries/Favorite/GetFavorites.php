@@ -8,6 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesUser;
 use App\Traits\SearchQueryBuilder;
+use App\Traits\CheckUserInGroupTrait;
 
 
 final class GetFavorites
@@ -15,6 +16,7 @@ final class GetFavorites
     use AuthUserTrait;
     use AuthorizesUser;
     use SearchQueryBuilder;
+    use CheckUserInGroupTrait;
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -30,7 +32,7 @@ final class GetFavorites
         // $Favorites = Favorite::where('deleted_at', null);
         // return $Favorites;
 
-        $query = $this->getModelByAuthorization(Favorite::class, $args, true);
+        $query = $this->getModelByAuthorization(Favorite::class, $args, true,true);
         $query = $this->applySearchFilters( $query, $args);
         return  $query;
     }
