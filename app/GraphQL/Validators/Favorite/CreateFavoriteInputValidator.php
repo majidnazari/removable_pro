@@ -16,10 +16,15 @@ class CreateFavoriteInputValidator extends Validator
     public function rules(): array
     {
         return [
-            'title' => [
-                new MaxRecordsForPerson($this->arg('person_id') ?? null ),
-                //new CheckPersonOwner()
-            ],
+            // 'person_id' => [
+            //     'nullable',
+            //     'exists:people,id',   
+            // ],
+            'title'=>[
+                "required",
+                new MaxRecordsForPerson( null ),
+                //new CheckPersonOwner(),
+            ]
            
         ];
     }
@@ -28,6 +33,7 @@ class CreateFavoriteInputValidator extends Validator
         return [
             
             'person_id.exists' => 'The specified person does not exist.',
+            'title.required' => 'The title is reuired!',
         ];
     }
 }
