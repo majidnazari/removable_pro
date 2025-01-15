@@ -32,7 +32,7 @@ trait AuthorizesUser
         $allusers = $this->getAllowedUserIds();
         // Define configurable table-column mappings for special handling
         $specialRules = [
-            'favorite' => ['creator_id'],
+            'favorites' => ['creator_id'],
             // Add other tables and columns as needed
             // 'another_table' => ['some_column'],
         ];
@@ -40,7 +40,7 @@ trait AuthorizesUser
         if ($this->user->isAdmin() || $this->user->isSupporter()) {
             $query = $modelClass::query();
         } else {
-            $query = $modelClass::where(function ($q) use ($modelClass , $allusers , $specialRules,$seeAllClan) {
+            $query = $modelClass::where(function ($q) use ($modelClass, $allusers, $specialRules, $seeAllClan) {
 
                 $columns = $modelClass::getAuthorizationColumns();
                 $table = (new $modelClass)->getTable();
@@ -48,7 +48,9 @@ trait AuthorizesUser
                 foreach ($columns as $column) {
                     // Check if the column exists on the model's table
                     if (Schema::hasColumn((new $modelClass)->getTable(), $column)) {
+                        //Log::info("the users are:" . json_encode($seeAllClan). " column is :" .$column . " and  specialRulestable]" . json_encode($specialRules[$table])  );
                         if ($seeAllClan && isset($specialRules[$table]) && in_array($column, $specialRules[$table])) {
+                           //Log::info("the users are:" .json_encode($allusers ));
                             // Apply special rule for this table and column
                             $q->whereIn($column, $allusers);
                         } else {
@@ -58,7 +60,7 @@ trait AuthorizesUser
                         //Log::info("Column exists on model table: " . $column);
                         //$q->where($column, $this->user->id);
                         //$q->where($column, $this->user->{$column});
-                        $q->where($column, $this->user->{$column} ?? $this->user->id);
+                        // $q->where($column, $this->user->{$column} ?? $this->user->id);
                     }
                     //else {
                     // Log a warning if the column doesn't exist
