@@ -1,5 +1,5 @@
 
-getNotif(id: ID!): Notif @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Notif\\GetNotif@resolveNotif") 
+getNotif(id: ID!): Notif @guard(with:["api"]) @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\Notif\\GetNotif@resolveNotif") 
     getNotifs(
         first: Int, 
         page: Int, 
@@ -10,4 +10,4 @@ getNotif(id: ID!): Notif @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Qu
        
         orderBy:[OrderByClause!] @orderBy
         # filter: NotifFilterInput
-    ): [Notif!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Notif\\GetNotifs@resolveNotif")
+    ): [Notif!]! @guard(with:["api"]) @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\Notif\\GetNotifs@resolveNotif")

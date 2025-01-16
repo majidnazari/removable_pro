@@ -1,5 +1,5 @@
 
-getTalentDetail(id: ID!): TalentDetail @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\TalentDetail\\GetTalentDetail@resolveTalentDetail") 
+getTalentDetail(id: ID!): TalentDetail @guard(with:["api"])  @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\TalentDetail\\GetTalentDetail@resolveTalentDetail") 
     getTalentDetails(
         first: Int, 
         page: Int, 
@@ -8,4 +8,4 @@ getTalentDetail(id: ID!): TalentDetail @guard(with:["api"]) @field(resolver: "Ap
         status: Status,
         orderBy:[OrderByClause!] @orderBy
         # filter: TalentDetailFilterInput
-    ): [TalentDetail!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\TalentDetail\\GetTalentDetails@resolveTalentDetail")
+    ): [TalentDetail!]! @guard(with:["api"])  @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\TalentDetail\\GetTalentDetails@resolveTalentDetail")

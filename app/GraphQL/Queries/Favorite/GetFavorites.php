@@ -10,7 +10,6 @@ use App\Traits\AuthorizesUser;
 use App\Traits\SearchQueryBuilder;
 use App\Traits\CheckUserInGroupTrait;
 
-
 final class GetFavorites
 {
     use AuthUserTrait;

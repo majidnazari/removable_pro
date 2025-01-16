@@ -1,5 +1,5 @@
 
-getProvince(id: ID!): Province @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Province\\GetProvince@resolveProvince") 
+getProvince(id: ID!): Province @guard(with:["api"]) @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\Province\\GetProvince@resolveProvince") 
     getProvinces(
         first: Int, 
         page: Int, 
@@ -8,4 +8,4 @@ getProvince(id: ID!): Province @guard(with:["api"]) @field(resolver: "App\\Graph
       
         orderBy:[OrderByClause!] @orderBy
         # filter: ProvinceFilterInput
-    ): [Province!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Province\\GetProvinces@resolveProvince")
+    ): [Province!]! @guard(with:["api"]) @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\Province\\GetProvinces@resolveProvince")

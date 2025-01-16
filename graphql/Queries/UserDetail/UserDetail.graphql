@@ -1,5 +1,5 @@
 
-getUserDetail(id: ID!): UserDetail @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\UserDetail\\GetUserDetail@resolveUserDetail") 
+getUserDetail(id: ID!): UserDetail @guard(with:["api"])  @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\UserDetail\\GetUserDetail@resolveUserDetail") 
     getUserDetails(
         first: Int, 
         page: Int, 
@@ -8,4 +8,4 @@ getUserDetail(id: ID!): UserDetail @guard(with:["api"]) @field(resolver: "App\\G
        
         orderBy:[OrderByClause!] @orderBy
         # filter: UserDetailFilterInput
-    ): [UserDetail!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\UserDetail\\GetUserDetails@resolveUserDetail")
+    ): [UserDetail!]! @guard(with:["api"]) @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\UserDetail\\GetUserDetails@resolveUserDetail")

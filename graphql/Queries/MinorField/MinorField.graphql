@@ -1,5 +1,5 @@
 
-getMinorField(id: ID!): MinorField @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\MinorField\\GetMinorField@resolveMinorField") 
+getMinorField(id: ID!): MinorField @guard(with:["api"]) @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\MinorField\\GetMinorField@resolveMinorField") 
     getMinorFields(
         first: Int, 
         page: Int, 
@@ -8,4 +8,4 @@ getMinorField(id: ID!): MinorField @guard(with:["api"]) @field(resolver: "App\\G
 
         orderBy:[OrderByClause!] @orderBy
         # filter: MinorFieldFilterInput
-    ): [MinorField!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\MinorField\\GetMinorFields@resolveMinorField")
+    ): [MinorField!]! @guard(with:["api"]) @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\MinorField\\GetMinorFields@resolveMinorField")

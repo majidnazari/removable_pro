@@ -15,15 +15,16 @@ use App\Traits\AuthUserTrait;
 use App\Events\UserRegistered;
 
 use App\GraphQL\Enums\UserStatus;
+use Illuminate\Support\Facades\RateLimiter;
 
 use DB;
 use Log;
 
 class Register extends BaseAuthResolver
 {
-    
-    public const NONE=0;
-    public const ACTIVE=1;
+
+    public const NONE = 0;
+    public const ACTIVE = 1;
     /**
      * @param $rootValue
      * @param  array  $args
@@ -35,11 +36,22 @@ class Register extends BaseAuthResolver
      */
     public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
+        //  // Use RateLimiter to check if the IP has exceeded the registration attempts
+        //  if (RateLimiter::tooManyAttempts('register:' . $context->request->ip(), 5)) {  // 5 attempts per IP
+        //     return [
+        //         'status' => 'ERROR',
+        //         'message' => 'Too many registration attempts. Please try again later.',
+        //     ];
+        // }
+
+        // // Increment the registration attempts for the IP
+        // RateLimiter::hit('register:' . $context->request->ip(), 60);  // 1 minute time window
+        
         // Log::info("the inside of resolve is running");
-        $code=rand(0,99999999);
-        $code_expired_at=Carbon::now()->addMinutes(2)->format("Y-m-d H:i:s");
-        $args['sent_code']=$code;
-        $args['code_expired_at']=$code_expired_at;
+        $code = rand(0, 99999999);
+        $code_expired_at = Carbon::now()->addMinutes(2)->format("Y-m-d H:i:s");
+        $args['sent_code'] = $code;
+        $args['code_expired_at'] = $code_expired_at;
         $model = $this->createAuthModel($args);
 
         //Log::info("the user is:" . json_encode($model));
@@ -61,7 +73,7 @@ class Register extends BaseAuthResolver
             'password' => $args['password'],
         ]);
         $user = $model->where(config('lighthouse-graphql-passport.username'), $args[config('lighthouse-graphql-passport.username')])->first();
-        
+
         $response['user'] = $user;
         event(new Registered($user));
 
@@ -96,12 +108,11 @@ class Register extends BaseAuthResolver
     public function CompleteUserRegistrationresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
 
-        $user=User::where('id',$args['user_id'])
-        ->where('status',UserStatus::New)
-        ->whereNull('password')
-        ->first();
-        if(!$user)
-        {
+        $user = User::where('id', $args['user_id'])
+            ->where('status', UserStatus::New )
+            ->whereNull('password')
+            ->first();
+        if (!$user) {
             throw new \RuntimeException('User not found');
         }
 
@@ -109,13 +120,13 @@ class Register extends BaseAuthResolver
         //$countryCodeLength = strlen($user->country_code);
         //$pureMobileNumber = substr($user->mobile, $countryCodeLength); // remove country code prefix
 
-        $user->password=Hash::make($args['password']);
-        $user->status=UserStatus::Active;
+        $user->password = Hash::make($args['password']);
+        $user->status = UserStatus::Active;
         $user->save();
-        
+
         $credentials = $this->buildCredentials([
             //'username' => $args[config('lighthouse-graphql-passport.username')],
-            'username' => $user->mobile ,
+            'username' => $user->mobile,
             'password' => $args['password'],
         ]);
 
@@ -126,13 +137,13 @@ class Register extends BaseAuthResolver
         //Log::info("the event must run here and user ise:" . json_encode($user));
         // Fire the UserRegistered event after user is fully registered
         event(new UserRegistered($user));
-       
+
         return [
-            'tokens' =>$response,
+            'tokens' => $response,
             'user_id' => $user->id,
             'status' => 'SUCCESS',
         ];
-       
+
     }
 
 }

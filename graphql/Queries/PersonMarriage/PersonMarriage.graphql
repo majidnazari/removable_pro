@@ -1,5 +1,5 @@
 
-getPersonMarriage(id: ID!): PersonMarriage @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\PersonMarriage\\GetPersonMarriage@resolvePersonMarriage") 
+getPersonMarriage(id: ID!): PersonMarriage @guard(with:["api"])  @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\PersonMarriage\\GetPersonMarriage@resolvePersonMarriage") 
     getPersonMarriages(
         first: Int, 
         page: Int, 
@@ -18,4 +18,4 @@ getPersonMarriage(id: ID!): PersonMarriage @guard(with:["api"]) @field(resolver:
         orderBy:[OrderByClause!] @orderBy
 
         # filter: PersonMarriageFilterInput
-    ): [PersonMarriage!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\PersonMarriage\\GetPersonMarriages@resolvePersonMarriage")
+    ): [PersonMarriage!]! @guard(with:["api"])  @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\PersonMarriage\\GetPersonMarriages@resolvePersonMarriage")
