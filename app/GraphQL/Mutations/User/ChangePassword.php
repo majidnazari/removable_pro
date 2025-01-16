@@ -76,6 +76,7 @@ class ChangePassword extends BaseAuthResolver
 
     public function changePasswordResolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
+        $this->userId = $this->getUserId();
         //$expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");
         //$cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
 
