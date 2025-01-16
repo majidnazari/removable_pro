@@ -84,6 +84,11 @@ class ChangePassword extends BaseAuthResolver
         ->where('sent_code',operator: $args['code'])        
         ->where('mobile_is_verified',true)->first();
 
+        if( $this->userId!= $user->id)
+        {
+            return  Error::createLocatedError("access denied!");
+        }
+
         if(!$user)
         {
             return Error::createLocatedError('User not found');
