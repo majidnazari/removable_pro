@@ -20,7 +20,7 @@ use App\GraphQL\Enums\UserStatus;
 use DB;
 use Log;
 
-class ForgotPassword extends BaseAuthResolver
+class ChangePassword extends BaseAuthResolver
 {
   
     use AuthUserTrait;
