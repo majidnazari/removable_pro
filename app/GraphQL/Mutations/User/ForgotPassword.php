@@ -22,7 +22,7 @@ use GraphQL\Error\Error;
 
 use Log;
 
-class RegisterMobile extends BaseAuthResolver
+class ForgotPassword extends BaseAuthResolver
 {
     public $today;
 
@@ -54,8 +54,8 @@ class RegisterMobile extends BaseAuthResolver
         // Handle existing user logic
         if ($user) {
             // Check if mobile is already verified
-            if ($user->mobile_is_verified) {
-                return Error::createLocatedError("This mobile number is already verified.");
+            if (!$user->mobile_is_verified) {
+                return Error::createLocatedError("This mobile number is not verified yet please register first!");
             }
 
             // Ensure the user hasn't requested a code within the past 5 minutes
@@ -71,19 +71,7 @@ class RegisterMobile extends BaseAuthResolver
             $user->save();
 
         } else {
-            // Create a new user record if it doesn't exist
-            $user = User::create([
-                'country_code' => $args['country_code'],
-                'mobile' => $args['country_code'] . $args['mobile'],
-                'sent_code' => $code,
-                'code_expired_at' => $expired_at,
-                'last_attempt_at' => Carbon::now(),
-                'status' => UserStatus::None,
-                'clan_id' => 0
-            ]);
-
-            $user->clan_id = 'clan_' . $user->id;
-            $user->save();
+            return Error::createLocatedError("User not found!");
         }
 
         return [
@@ -93,29 +81,48 @@ class RegisterMobile extends BaseAuthResolver
     }
 
 
-    public function VerifyMobileresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function verifyForgotPassword($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-        $user = User::find($args['user_id']);
+
+        $user = User::where('mobile', $args['country_code'] . $args['mobile'])
+            ->where('status', UserStatus::Active)
+            ->where('sent_code', operator: $args['code'])
+            ->where('mobile_is_verified', true)->first();
 
         if (!$user) {
-            return Error::createLocatedError("User not found!");
+            return Error::createLocatedError('User not found');
         }
 
-        // Check if the mobile is already verified
-        if ($user->mobile_is_verified) {
-            return Error::createLocatedError("This mobile number is already verified.");
+        //Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));
+
+
+        // Check if password change attempts exceed the daily limit
+        $today = Carbon::today();
+        if ($user->last_password_change_attempt && Carbon::parse($user->last_password_change_attempt)->isSameDay($today)) {
+            if ($user->password_change_attempts >= 2) {
+                return Error::createLocatedError("You cannot change your password more than 2 times in a day.");
+            }
+        } else {
+            // Reset attempts for a new day
+            $user->password_change_attempts = 0;
         }
 
-        // Verify the code and check if it’s expired
-        if ($user->sent_code != $args['code'] || Carbon::now()->gt($user->code_expired_at)) {
-            return Error::createLocatedError("Invalid or expired code.");
+        // Increment attempt count and update last attempt timestamp
+        $user->password_change_attempts += 1;
+        $user->last_password_change_attempt = Carbon::now();
+        if ($user->code_expired_at && Carbon::parse(Carbon::now())->gt($user->code_expired_at)) {
+            return Error::createLocatedError("the code is expired please send code again.");
         }
 
-        // Mark mobile as verified
-        $user->mobile_is_verified = true;
-        $user->status = UserStatus::Active;
-        $user->clan_id = "clan_" . $args['user_id'];
+        //$code=rand(0,99999999);
+
+        // $user->sent_code=$code;
+        //$user->code_expired_at= $expired_at;
+        // $user->last_attempt_at = Carbon::now();
+        // $user->save();
+
         $user->password = Hash::make($args['password']);
+        //$user->sent_code=0;
         $user->code_expired_at = Carbon::now();
         $user->save();
 
@@ -129,14 +136,9 @@ class RegisterMobile extends BaseAuthResolver
 
         $response = $this->makeRequest($credentials);
 
-        // return [
-        //     "Code" => 200,
-        //     "Message" => "USER MOBILE IS VERIFIED"
-        // ];
-
         return [
             'tokens' => $response,
-            'user' => $user,
+            'mobile' => $args['mobile'],
             'status' => 'SUCCESS',
         ];
     }
