@@ -48,7 +48,7 @@ class Register extends BaseAuthResolver
         // RateLimiter::hit('register:' . $context->request->ip(), 60);  // 1 minute time window
         
         // Log::info("the inside of resolve is running");
-        $code = rand(0, 99999999);
+        $code = rand(100000, 999999);
         $code_expired_at = Carbon::now()->addMinutes(2)->format("Y-m-d H:i:s");
         $args['sent_code'] = $code;
         $args['code_expired_at'] = $code_expired_at;

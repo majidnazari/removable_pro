@@ -1,4 +1,4 @@
 
-    createNotif(input: CreateNotifInput! @spread): Notif @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Notif\\CreateNotif@resolveNotif") 
-    updateNotif(id: ID!, input: UpdateNotifInput! @spread): Notif @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Notif\\UpdateNotif@resolveNotif") 
-    deleteNotif(id: ID!): Notif @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Notif\\DeleteNotif@resolveNotif") 
+    createNotif(input: CreateNotifInput! @spread): Notif @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Notif\\CreateNotif@resolveNotif") 
+    updateNotif(id: ID!, input: UpdateNotifInput! @spread): Notif @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Notif\\UpdateNotif@resolveNotif") 
+    deleteNotif(id: ID!): Notif @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Notif\\DeleteNotif@resolveNotif") 

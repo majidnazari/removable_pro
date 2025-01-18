@@ -1,6 +1,6 @@
 
-createMemory(input: CreateMemoryInput! @spread): Memory @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Memory\\CreateMemory@resolveMemory") 
-    updateMemory(id: ID!, input: UpdateMemoryInput! @spread): Memory  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Memory\\UpdateMemory@resolveMemory") 
-    updateSuspendMemory(id: ID!, input: UpdateSuspendMemoryInput! @spread): Memory  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Memory\\UpdateSuspendMemory@resolveMemory") 
+createMemory(input: CreateMemoryInput! @spread): Memory @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Memory\\CreateMemory@resolveMemory") 
+    updateMemory(id: ID!, input: UpdateMemoryInput! @spread): Memory  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Memory\\UpdateMemory@resolveMemory") 
+    updateSuspendMemory(id: ID!, input: UpdateSuspendMemoryInput! @spread): Memory  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Memory\\UpdateSuspendMemory@resolveMemory") 
 
-    deleteMemory(id: ID!): Memory @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Memory\\DeleteMemory@resolveMemory") 
+    deleteMemory(id: ID!): Memory @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Memory\\DeleteMemory@resolveMemory") 

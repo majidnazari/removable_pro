@@ -1,4 +1,4 @@
 
-createPersonMarriage(input: CreatePersonMarriageInput! @spread): PersonMarriage @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\PersonMarriage\\CreatePersonMarriage@resolvePersonMarriage") 
-    updatePersonMarriage(id: ID!, input: UpdatePersonMarriageInput! @spread): PersonMarriage @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\PersonMarriage\\UpdatePersonMarriage@resolvePersonMarriage") 
-    deletePersonMarriage(input: DeletePersonMarriageInput!): PersonMarriage @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\PersonMarriage\\DeletePersonMarriage@resolvePersonMarriage") 
+createPersonMarriage(input: CreatePersonMarriageInput! @spread): PersonMarriage @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\PersonMarriage\\CreatePersonMarriage@resolvePersonMarriage") 
+    updatePersonMarriage(id: ID!, input: UpdatePersonMarriageInput! @spread): PersonMarriage @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\PersonMarriage\\UpdatePersonMarriage@resolvePersonMarriage") 
+    deletePersonMarriage(input: DeletePersonMarriageInput!): PersonMarriage @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\PersonMarriage\\DeletePersonMarriage@resolvePersonMarriage") 

@@ -6,21 +6,25 @@
 
     UpdateRequestSender (id: ID!, input: UpdateRequestSenderInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
+    @throttle(maxAttempts:10 decayMinutes:1.0)
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateRequestSender@resolveUpdateRequestSender") 
 
     UpdateRequestReceiver (id: ID!, input: UpdateRequestReceiverInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
+    @throttle(maxAttempts:10 decayMinutes:1.0)
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateRequestReceiver@resolveUpdateRequestReceiver") 
 
 
 
     UpdateMergeRequestSender (id: ID!, input: UpdateMergeRequestSenderInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
+    @throttle(maxAttempts:10 decayMinutes:1.0)
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateMergeRequestSender@resolveUpdateMergeRequestSender") 
     
 
     UpdateMergeRequestReceiver (id: ID!, input: UpdateMergeRequestReceiverInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
+    @throttle(maxAttempts:10 decayMinutes:1.0)
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\UpdateMergeRequestReceiver@resolveUpdateMergeRequestReceiver") 
 
     # sendFirstMergeRequest(input: SendRequestToOtherFamilyInput! @spread): UserMergeRequest 
@@ -39,8 +43,10 @@
 
 SendMergeRequestToOtherFamily(input: SendMergeRequestToOtherFamilyInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
+    @throttle(maxAttempts:10 decayMinutes:1.0)
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\SendMergeRequestToOtherFamily@resolveUserMergeRequest") 
 
 SendConfirmMergeRequestToOtherFamily(input: SendConfirmMergeRequestToOtherFamilyInput! @spread): UserMergeRequest 
     @guard(with: ["api"]) 
+    @throttle(maxAttempts:10 decayMinutes:1.0)
     @field(resolver: "App\\GraphQL\\Mutations\\UserMergeRequest\\SendConfirmMergeRequestToOtherFamily@resolveUserConfirmMergeRequest") 

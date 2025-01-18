@@ -1,4 +1,4 @@
 
-createTalentHeader(input: CreateTalentHeaderInput! @spread): TalentHeader @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\TalentHeader\\CreateTalentHeader@resolveTalentHeader") 
-    updateTalentHeader(id: ID!, input: UpdateTalentHeaderInput! @spread): TalentHeader  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\TalentHeader\\UpdateTalentHeader@resolveTalentHeader") 
-    deleteTalentHeader(id: ID!): TalentHeader @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\TalentHeader\\DeleteTalentHeader@resolveTalentHeader") 
+createTalentHeader(input: CreateTalentHeaderInput! @spread): TalentHeader @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\TalentHeader\\CreateTalentHeader@resolveTalentHeader") 
+    updateTalentHeader(id: ID!, input: UpdateTalentHeaderInput! @spread): TalentHeader  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\TalentHeader\\UpdateTalentHeader@resolveTalentHeader") 
+    deleteTalentHeader(id: ID!): TalentHeader @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\TalentHeader\\DeleteTalentHeader@resolveTalentHeader") 

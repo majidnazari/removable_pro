@@ -1,4 +1,4 @@
 
-createGroupCategory(input: CreateGroupCategoryInput! @spread): GroupCategory @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupCategory\\CreateGroupCategory@resolveGroupCategory") 
-    updateGroupCategory(id: ID!, input: UpdateGroupCategoryInput! @spread): GroupCategory @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupCategory\\UpdateGroupCategory@resolveGroupCategory") 
-    deleteGroupCategory(id: ID!): GroupCategory @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\GroupCategory\\DeleteGroupCategory@resolveGroupCategory") 
+createGroupCategory(input: CreateGroupCategoryInput! @spread): GroupCategory @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\GroupCategory\\CreateGroupCategory@resolveGroupCategory") 
+    updateGroupCategory(id: ID!, input: UpdateGroupCategoryInput! @spread): GroupCategory @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\GroupCategory\\UpdateGroupCategory@resolveGroupCategory") 
+    deleteGroupCategory(id: ID!): GroupCategory @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\GroupCategory\\DeleteGroupCategory@resolveGroupCategory") 

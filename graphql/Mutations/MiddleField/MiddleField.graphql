@@ -1,4 +1,4 @@
 
-createMiddleField(input: CreateMiddleFieldInput! @spread): MiddleField @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MiddleField\\CreateMiddleField@resolveMiddleField") 
-    updateMiddleField(id: ID!, input: UpdateMiddleFieldInput! @spread): MiddleField  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MiddleField\\UpdateMiddleField@resolveMiddleField") 
-    deleteMiddleField(id: ID!): MiddleField @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MiddleField\\DeleteMiddleField@resolveMiddleField") 
+createMiddleField(input: CreateMiddleFieldInput! @spread): MiddleField @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\MiddleField\\CreateMiddleField@resolveMiddleField") 
+    updateMiddleField(id: ID!, input: UpdateMiddleFieldInput! @spread): MiddleField  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\MiddleField\\UpdateMiddleField@resolveMiddleField") 
+    deleteMiddleField(id: ID!): MiddleField @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\MiddleField\\DeleteMiddleField@resolveMiddleField") 
