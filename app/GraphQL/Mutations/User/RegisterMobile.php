@@ -93,7 +93,7 @@ class RegisterMobile extends BaseAuthResolver
     }
 
 
-    public function VerifyMobileresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function verifyMobileresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $user = User::find($args['user_id']);
 
