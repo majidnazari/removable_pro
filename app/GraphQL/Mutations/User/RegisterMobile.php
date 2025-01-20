@@ -21,6 +21,7 @@ use App\Traits\AuthUserTrait;
 use GraphQL\Error\Error;
 
 use Log;
+use function Safe\json_encode;
 
 class RegisterMobile extends BaseAuthResolver
 {
@@ -96,6 +97,11 @@ class RegisterMobile extends BaseAuthResolver
     public function verifyMobileresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $user = User::find($args['user_id']);
+
+        //Log::info('VerifyMobile args: '.json_encode($args));
+       // Log::info('Database used:', [
+        //    'connection' => \DB::connection()->getDatabaseName(),
+       // ]);
 
         if (!$user) {
             return Error::createLocatedError("User not found!");
