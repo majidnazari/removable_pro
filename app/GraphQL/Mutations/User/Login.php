@@ -38,7 +38,7 @@ class Login extends BaseAuthResolver
 
         $user = $this->findUser($args['username']);
 
-        Log::info("the user is:" . json_encode($user));
+       // Log::info("the user is:" . json_encode($user));
 
         $this->validateUser($user);
 

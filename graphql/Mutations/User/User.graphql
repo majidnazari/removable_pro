@@ -1,6 +1,6 @@
  # upload(file: Upload!): String
         
-        login(input: LoginInput @spread): AuthPayload!  @throttle(maxAttempts:30 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\Login@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve")
+        login(input: LoginInput @spread): AuthPayload!  @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\Login@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Login@resolve")
         # refreshToken(input: RefreshTokenInput @spread): RefreshTokenPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\RefreshToken@resolve")
         logout: LogoutResponse! @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\User\\Logout@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Logout@resolve")
         # forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve")
