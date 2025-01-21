@@ -1,5 +1,5 @@
 
-getScore(id: ID!): Score @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Score\\GetScore@resolveScore") 
+getScore(id: ID!): Score @guard(with:["api"])  @throttle(max: 10, decay: 1)@field(resolver: "App\\GraphQL\\Queries\\Score\\GetScore@resolveScore") 
     getScores(
         first: Int, 
         page: Int, 
@@ -8,4 +8,4 @@ getScore(id: ID!): Score @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Qu
        
         orderBy:[OrderByClause!] @orderBy
         # filter: ScoreFilterInput
-    ): [Score!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Score\\GetScores@resolveScore")
+    ): [Score!]! @guard(with:["api"]) @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\Score\\GetScores@resolveScore")

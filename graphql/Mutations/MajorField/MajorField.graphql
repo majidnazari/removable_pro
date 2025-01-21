@@ -1,4 +1,4 @@
 
-createMajorField(input: CreateMajorFieldInput! @spread): MajorField @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MajorField\\CreateMajorField@resolveMajorField") 
-    updateMajorField(id: ID!, input: UpdateMajorFieldInput! @spread): MajorField  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MajorField\\UpdateMajorField@resolveMajorField") 
-    deleteMajorField(id: ID!): MajorField @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\MajorField\\DeleteMajorField@resolveMajorField") 
+createMajorField(input: CreateMajorFieldInput! @spread): MajorField @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\MajorField\\CreateMajorField@resolveMajorField") 
+    updateMajorField(id: ID!, input: UpdateMajorFieldInput! @spread): MajorField  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0)  @field(resolver: "App\\GraphQL\\Mutations\\MajorField\\UpdateMajorField@resolveMajorField") 
+    deleteMajorField(id: ID!): MajorField @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\MajorField\\DeleteMajorField@resolveMajorField") 

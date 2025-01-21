@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 use App\GraphQL\Enums\Role;
+use App\GraphQL\Enums\UserStatus;
 
 use Eloquent;
 
@@ -145,7 +146,10 @@ class User extends Authenticatable
         //Log::info("the user name is:". $username);
         // return $this->where('mobile', $username)->where('status','Active')->where('mobile_is_verified',1)->first();
         //return $this->whereRaw("CONCAT(country_code, mobile) = ?", [$username])->first();
-        return $this->where(self::COLUMN_MOBILE, [$username])->first();
+        return $this->where(self::COLUMN_MOBILE, [$username])
+        ->where('status',UserStatus::Active->value)
+        ->where('mobile_is_verified',true)
+        ->first();
     }
 
     public function Persons()

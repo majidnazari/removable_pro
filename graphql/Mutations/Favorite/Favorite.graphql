@@ -1,4 +1,4 @@
 
-createFavorite(input: CreateFavoriteInput! @spread): Favorite @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\CreateFavorite@resolveFavorite") 
-    updateFavorite(id: ID!, input: UpdateFavoriteInput! @spread): Favorite  @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\UpdateFavorite@resolveFavorite") 
-    deleteFavorite(id: ID!): Favorite @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\DeleteFavorite@resolveFavorite") 
+createFavorite(input: CreateFavoriteInput! @spread): Favorite @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\CreateFavorite@resolveFavorite") 
+    updateFavorite(id: ID!, input: UpdateFavoriteInput! @spread): Favorite  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\UpdateFavorite@resolveFavorite") 
+    deleteFavorite(id: ID!): Favorite @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Favorite\\DeleteFavorite@resolveFavorite") 

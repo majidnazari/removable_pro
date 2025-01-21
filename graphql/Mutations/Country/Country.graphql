@@ -1,4 +1,4 @@
 
-    createCountry(input: CreateCountryInput! @spread): Country @guard(with: ["api"])@field(resolver: "App\\GraphQL\\Mutations\\Country\\CreateCountry@resolveCountry") 
-    updateCountry(id: ID!, input: UpdateCountryInput! @spread): Country @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Country\\UpdateCountry@resolveCountry") 
-    deleteCountry(id: ID!): Country @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Country\\DeleteCountry@resolveCountry") 
+    createCountry(input: CreateCountryInput! @spread): Country @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Country\\CreateCountry@resolveCountry") 
+    updateCountry(id: ID!, input: UpdateCountryInput! @spread): Country @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Country\\UpdateCountry@resolveCountry") 
+    deleteCountry(id: ID!): Country @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Country\\DeleteCountry@resolveCountry") 

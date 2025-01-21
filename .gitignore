@@ -26,3 +26,5 @@ backup.sh
 docker-compose.yml
 Dockerfile
 composer.lock
+
+/coverage/

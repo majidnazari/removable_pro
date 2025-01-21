@@ -1,4 +1,4 @@
 
-    createProvince(input: CreateProvinceInput! @spread): Province @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Province\\CreateProvince@resolveProvince") 
-    updateProvince(id: ID!, input: UpdateProvinceInput! @spread): Province @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Province\\UpdateProvince@resolveProvince") 
-    deleteProvince(id: ID!): Province @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Province\\DeleteProvince@resolveProvince") 
+    createProvince(input: CreateProvinceInput! @spread): Province @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Province\\CreateProvince@resolveProvince") 
+    updateProvince(id: ID!, input: UpdateProvinceInput! @spread): Province @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0)  @field(resolver: "App\\GraphQL\\Mutations\\Province\\UpdateProvince@resolveProvince") 
+    deleteProvince(id: ID!): Province @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Province\\DeleteProvince@resolveProvince") 

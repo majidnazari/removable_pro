@@ -41,7 +41,7 @@ type ForgotPasswordResponse {
 type RegisterResponse {
     tokens: AuthPayload
     status: RegisterStatuses!
-    user_id: Int
+    user: User
 }
 type VerifyMobileResponse {
     
@@ -93,12 +93,16 @@ input RegisterMobileInput {
    
 }
 
-input ForgotPasswordSendCodeInput {
+input ChangePasswordInput 
+@validator(class: "App\\GraphQL\\Validators\\User\\SendLoginTokenInputValidator")
+{
     country_code: String! @rules(apply: [ "required", "string","max:6"]),
     mobile: String! @rules(apply: [ "required", "string","max:12"])   
 }
 
-input ForgotPasswordVerifyCodeInput {
+input ChangePasswordVerifyCodeInput 
+@validator(class: "App\\GraphQL\\Validators\\User\\SendLoginTokenInputValidator")
+{
     country_code: String! @rules(apply: [ "required", "string","max:6"]),
     mobile: String! @rules(apply: [ "required", "string","max:12"])   
     code: String! @rules(apply: [ "required", "string"])   
@@ -109,6 +113,8 @@ input ForgotPasswordVerifyCodeInput {
 input VerifyMobileInput {
     user_id:ID!
     code: String!
+    password: String! @rules(apply: ["required", "confirmed", "min:8"])
+    password_confirmation: String!
 }
 
 

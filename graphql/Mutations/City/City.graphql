@@ -1,4 +1,4 @@
 
-createCity(input: CreateCityInput! @spread): City @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\City\\CreateCity@resolveCity") 
-    updateCity(id: ID!, input: UpdateCityInput! @spread): City @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\City\\UpdateCity@resolveCity") 
-    deleteCity(id: ID!): City @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\City\\DeleteCity@resolveCity") 
+createCity(input: CreateCityInput! @spread): City @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\City\\CreateCity@resolveCity") 
+    updateCity(id: ID!, input: UpdateCityInput! @spread): City @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\City\\UpdateCity@resolveCity") 
+    deleteCity(id: ID!): City @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\City\\DeleteCity@resolveCity") 

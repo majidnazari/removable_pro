@@ -1,7 +1,7 @@
 
-getNaslanRelationship(id: ID!): NaslanRelationship @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\NaslanRelationship\\GetNaslanRelationship@resolveNaslanRelationship") 
+getNaslanRelationship(id: ID!): NaslanRelationship @guard(with:["api"]) @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\NaslanRelationship\\GetNaslanRelationship@resolveNaslanRelationship") 
     getNaslanRelationships(
         first: Int, 
         page: Int, 
         # filter: NaslanRelationshipFilterInput
-    ): [NaslanRelationship!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\NaslanRelationship\\GetNaslanRelationships@resolveNaslanRelationship")
+    ): [NaslanRelationship!]! @guard(with:["api"]) @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\NaslanRelationship\\GetNaslanRelationships@resolveNaslanRelationship")

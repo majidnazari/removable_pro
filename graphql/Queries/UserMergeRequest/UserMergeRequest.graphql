@@ -2,6 +2,7 @@
     getUserMergeRequest(id: ID!): UserMergeRequest 
     @guard(with:["api"]) 
     # @can(ability: "viewAny", find: "id" ) 
+    @throttle(max: 10, decay: 1)
     @field(resolver: "App\\GraphQL\\Queries\\UserMergeRequest\\GetUserMergeRequest@resolveUserMergeRequest") 
 
 
@@ -26,4 +27,5 @@
     ): [UserMergeRequest]
     @guard(with:["api"])
     #  @can(ability: "view", model: "App\\Models\\UserMergeRequest")  
+    @throttle(max: 10, decay: 1)
      @paginate(builder: "App\\GraphQL\\Queries\\UserMergeRequest\\GetUserMergeRequests@resolveUserMergeRequest")

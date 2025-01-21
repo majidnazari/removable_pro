@@ -1,5 +1,5 @@
 
-getUser(id: ID!): User @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\User\\GetUser@resolveUser") 
+getUser(id: ID!): User @guard(with:["api"])  @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\User\\GetUser@resolveUser") 
     getUsers(
         first: Int, 
         page: Int, 
@@ -9,4 +9,4 @@ getUser(id: ID!): User @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Quer
         role: Role
         orderBy:[OrderByClause!] @orderBy
         # filter: UserFilterInput
-    ): [User!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\User\\GetUsers@resolveUser")
+    ): [User!]! @guard(with:["api"])  @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\User\\GetUsers@resolveUser")

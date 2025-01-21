@@ -1,4 +1,4 @@
 
-createCategoryContent(input: CreateCategoryContentInput! @spread): CategoryContent @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\CategoryContent\\CreateCategoryContent@resolveCategoryContent") 
-    updateCategoryContent(id: ID!, input: UpdateCategoryContentInput! @spread): CategoryContent @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\CategoryContent\\UpdateCategoryContent@resolveCategoryContent") 
-    deleteCategoryContent(id: ID!): CategoryContent @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\CategoryContent\\DeleteCategoryContent@resolveCategoryContent") 
+createCategoryContent(input: CreateCategoryContentInput! @spread): CategoryContent @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\CategoryContent\\CreateCategoryContent@resolveCategoryContent") 
+    updateCategoryContent(id: ID!, input: UpdateCategoryContentInput! @spread): CategoryContent @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\CategoryContent\\UpdateCategoryContent@resolveCategoryContent") 
+    deleteCategoryContent(id: ID!): CategoryContent @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\CategoryContent\\DeleteCategoryContent@resolveCategoryContent") 

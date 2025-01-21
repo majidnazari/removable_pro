@@ -1,4 +1,4 @@
 
-createGroup(input: CreateGroupInput! @spread): Group @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Group\\CreateGroup@resolveGroup") 
-    updateGroup(id: ID!, input: UpdateGroupInput! @spread): Group @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Group\\UpdateGroup@resolveGroup") 
-    deleteGroup(id: ID!): Group @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\Group\\DeleteGroup@resolveGroup") 
+createGroup(input: CreateGroupInput! @spread): Group @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Group\\CreateGroup@resolveGroup") 
+    updateGroup(id: ID!, input: UpdateGroupInput! @spread): Group @guard(with: ["api"])@throttle(maxAttempts:10 decayMinutes:1.0)  @field(resolver: "App\\GraphQL\\Mutations\\Group\\UpdateGroup@resolveGroup") 
+    deleteGroup(id: ID!): Group @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Group\\DeleteGroup@resolveGroup") 

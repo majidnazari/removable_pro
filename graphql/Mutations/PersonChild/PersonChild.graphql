@@ -1,5 +1,5 @@
 
-createPersonChild(input: CreatePersonChildInput! @spread): PersonChild @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\CreatePersonChild@resolvePersonChild") 
-    updatePersonChild(id: ID!, input: UpdatePersonChildInput! @spread): PersonChild @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\UpdatePersonChild@resolvePersonChild") 
-    deletePersonChild(input: DeletePersonChildInput! @spread ): PersonChild @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\DeletePersonChild@resolvePersonChild") 
-    deletePersonChildByChildId(input: DeletePersonChildByChildIdInput! @spread ): PersonChild @guard(with: ["api"]) @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\DeletePersonChild@resolvePersonChildByChildId") 
+createPersonChild(input: CreatePersonChildInput! @spread): PersonChild @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\CreatePersonChild@resolvePersonChild") 
+    updatePersonChild(id: ID!, input: UpdatePersonChildInput! @spread): PersonChild @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\UpdatePersonChild@resolvePersonChild") 
+    deletePersonChild(input: DeletePersonChildInput! @spread ): PersonChild @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\DeletePersonChild@resolvePersonChild") 
+    deletePersonChildByChildId(input: DeletePersonChildByChildIdInput! @spread ): PersonChild @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\PersonChild\\DeletePersonChild@resolvePersonChildByChildId") 
