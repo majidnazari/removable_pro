@@ -22,7 +22,7 @@ use Log;
 
 class ChangePassword extends BaseAuthResolver
 {
-  
+
     use AuthUserTrait;
     /**
      * @param $rootValue
@@ -33,40 +33,38 @@ class ChangePassword extends BaseAuthResolver
      *
      * @throws \Exception
      */
-    public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo):array|Error
+    public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo): array|Error
     {
         $this->userId = $this->getUserId();
 
         $expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");
         //$cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
 
-        $user=User::where('mobile',$args['country_code'].$args['mobile'])
-        ->where('status',UserStatus::Active )
-        ->where('mobile_is_verified',true)
-        ->first();
+        $user = User::where('mobile', $args['country_code'] . $args['mobile'])
+            ->where('status', UserStatus::Active)
+            ->where('mobile_is_verified', true)
+            ->first();
 
-        if( $this->userId!= $user->id)
-        {
-            return  Error::createLocatedError("access denied!");
+        if (!$user) {
+            return Error::createLocatedError("User not found");
         }
-        if(!$user)
-        {
-            return  Error::createLocatedError("User not found");
+        if ($this->userId != $user->id) {
+            return Error::createLocatedError("access denied!");
         }
-    
-        if ($user->code_expired_at && Carbon::parse($user->code_expired_at)->gt(Carbon::now())) 
-        {
-            return  Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
+
+
+        if ($user->code_expired_at && Carbon::parse($user->code_expired_at)->gt(Carbon::now())) {
+            return Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
         }
-        
+
         // Log::info("the inside of resolve is running");
         $code = rand(100000, 999999);
-       
-        $user->sent_code=$code;
-        $user->code_expired_at= $expired_at;
-       // $user->last_attempt_at = Carbon::now();
+
+        $user->sent_code = $code;
+        $user->code_expired_at = $expired_at;
+        // $user->last_attempt_at = Carbon::now();
         $user->save();
-        
+
         return [
             //'tokens' => $response,
             'mobile' => $args['mobile'],
@@ -80,57 +78,49 @@ class ChangePassword extends BaseAuthResolver
         //$expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");
         //$cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
 
-        $user=User::where('mobile',$args['country_code'].$args['mobile'])
-        ->where('status',UserStatus::Active)
-        ->where('sent_code',operator: $args['code'])        
-        ->where('mobile_is_verified',true)->first();
+        $user = User::where('mobile', $args['country_code'] . $args['mobile'])
+            ->where('status', UserStatus::Active)
+            ->where('sent_code', operator: $args['code'])
+            ->where('mobile_is_verified', true)->first();
 
-        if( $this->userId!= $user->id)
-        {
-            return  Error::createLocatedError("access denied!");
-        }
 
-        if(!$user)
-        {
+        if (!$user) {
             return Error::createLocatedError('User not found');
         }
-    
+        if ($this->userId != $user->id) {
+            return Error::createLocatedError("access denied!");
+        }
+
         //Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));
 
+        $today = Carbon::today(); // Current date without time (midnight of today)
 
-        // Check if password change attempts exceed the daily limit
-         $today = Carbon::today();
-        if ($user->last_password_change_attempt && Carbon::parse($user->last_password_change_attempt)->isSameDay($today)) {
-            if ($user->password_change_attempts >= 2) {
-                return Error::createLocatedError("You cannot change your password more than 2 times in a day.");
-            }
-        } else {
-            // Reset attempts for a new day
+        // Check if the last password change attempt is on a different day
+        if ($user->last_password_change_attempt && !Carbon::parse($user->last_password_change_attempt)->isSameDay($today)) {
+            // Reset attempts for the new day
             $user->password_change_attempts = 0;
+        }
+        
+        // Now check if password change attempts exceed the daily limit
+        if ($user->password_change_attempts >= 2) {
+            return Error::createLocatedError("You cannot change your password more than 2 times in a day.");
+        }
+        
+        // If the verification code is expired, return an error
+        if ($user->code_expired_at && Carbon::parse(Carbon::now())->gt($user->code_expired_at)) {
+            return Error::createLocatedError("The code is expired. Please send the code again.");
         }
 
         // Increment attempt count and update last attempt timestamp
         $user->password_change_attempts += 1;
         $user->last_password_change_attempt = Carbon::now();
-        if ($user->code_expired_at && Carbon::parse(Carbon::now())->gt($user->code_expired_at)) {
-            return  Error::createLocatedError("the code is expired please send code again.");
-        }
-        
-        //$code=rand(0,99999999);
-       
-       // $user->sent_code=$code;
-        //$user->code_expired_at= $expired_at;
-       // $user->last_attempt_at = Carbon::now();
-       // $user->save();
-
-        $user->password=Hash::make($args['password']);
-        //$user->sent_code=0;
-        $user->code_expired_at=  Carbon::now();
+        $user->password = Hash::make($args['password']);
+        $user->code_expired_at = Carbon::now();
         $user->save();
 
         $credentials = $this->buildCredentials([
             //'username' => $args[config('lighthouse-graphql-passport.username')],
-            'username' => $user->mobile ,
+            'username' => $user->mobile,
             'password' => $args['password'],
         ]);
 
