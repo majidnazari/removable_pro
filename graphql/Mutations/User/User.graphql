@@ -9,10 +9,10 @@
         #updateForgottenPassword(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve")
        #  register(input: RegisterInput @spread): RegisterResponse! @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@resolve") #@field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve")
         registerMobile(input: RegisterMobileInput @spread): RegisterResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@resolve") 
-        VerifyMobile(input: VerifyMobileInput @spread): RegisterResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@verifyMobileresolve") 
+        verifyMobile(input: VerifyMobileInput @spread): RegisterResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\RegisterMobile@verifyMobileresolve") 
 
         forgotPassword(input: RegisterMobileInput @spread): RegisterResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\ForgotPassword@resolve") 
-        VerifyForgotPassword(input: ChangePasswordVerifyCodeInput @spread): RegisterResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\ForgotPassword@verifyForgotPassword") 
+        verifyForgotPassword(input: ForgotPasswordVerifyCodeInput @spread): RegisterResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\ForgotPassword@verifyForgotPassword") 
 
        #  CompleteUserRegistration(input: CompleteUserRegistrationInput @spread): RegisterResponse! @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\User\\Register@CompleteUserRegistrationresolve") 
         #socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")

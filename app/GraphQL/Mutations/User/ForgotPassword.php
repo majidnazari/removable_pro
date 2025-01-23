@@ -81,67 +81,139 @@ class ForgotPassword extends BaseAuthResolver
     }
 
 
+    // public function verifyForgotPassword($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    // {
+
+    //     $user = User::where('mobile', $args['country_code'] . $args['mobile'])
+    //         ->where('status', UserStatus::Active)
+    //         ->where('sent_code', operator: $args['code'])
+    //         ->where('mobile_is_verified', true)->first();
+
+    //     if (!$user) {
+    //         return Error::createLocatedError('User not found');
+    //     }
+
+    //     // Check if the code is expired
+    //     if ($user->code_expired_at && Carbon::parse(Carbon::now())->gt($user->code_expired_at)) {
+    //         // Log or return additional details about the expiration
+    //         return Error::createLocatedError("The code is expired. It expired at: " . $user->code_expired_at->toDateTimeString());
+    //     }
+
+    //     //Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));
+
+
+    //     // Check if password change attempts exceed the daily limit
+    //     $today = Carbon::today();
+    //     if ($user->last_password_change_attempt && Carbon::parse($user->last_password_change_attempt)->isSameDay($today)) {
+    //         if ($user->password_change_attempts >= 2) {
+    //             return Error::createLocatedError("You cannot change your password more than 2 times in a day.");
+    //         }
+    //     } else {
+    //         // Reset attempts for a new day
+    //         $user->password_change_attempts = 0;
+    //     }
+
+    //     // Increment attempt count and update last attempt timestamp
+    //     $user->password_change_attempts += 1;
+    //     $user->last_password_change_attempt = Carbon::now();
+    //     if ($user->code_expired_at && Carbon::parse(Carbon::now())->gt($user->code_expired_at)) {
+    //         return Error::createLocatedError("the code is expired please send code again.");
+    //     }
+
+    //     //$code=rand(0,99999999);
+
+    //     // $user->sent_code=$code;
+    //     //$user->code_expired_at= $expired_at;
+    //     // $user->last_attempt_at = Carbon::now();
+    //     // $user->save();
+
+    //     $user->password = Hash::make($args['password']);
+    //     //$user->sent_code=0;
+    //     $user->code_expired_at = Carbon::now();
+    //     $user->save();
+
+    //     $credentials = $this->buildCredentials([
+    //         //'username' => $args[config('lighthouse-graphql-passport.username')],
+    //         'username' => $user->mobile,
+    //         'password' => $args['password'],
+    //     ]);
+
+    //     //Log::info("cred is:".  json_encode($credentials));
+
+    //     $response = $this->makeRequest($credentials);
+
+    //     return [
+    //         'tokens' => $response,
+    //         'mobile' => $args['mobile'],
+    //         'status' => 'SUCCESS',
+    //     ];
+    // }
+
+
+
     public function verifyForgotPassword($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
+        // Fetch the user with required conditions
+        $user = User::where([
+            'mobile' => $args['country_code'] . $args['mobile'],
+            'status' => UserStatus::Active,
+            'sent_code' => $args['code'],
+            'mobile_is_verified' => true,
+        ])->first();
 
-        $user = User::where('mobile', $args['country_code'] . $args['mobile'])
-            ->where('status', UserStatus::Active)
-            ->where('sent_code', operator: $args['code'])
-            ->where('mobile_is_verified', true)->first();
-
+        // Return an error if the user is not found
         if (!$user) {
-            return Error::createLocatedError('User not found');
+            return Error::createLocatedError(config('auth.password_reset.errors.user_not_found', 'User not found'));
         }
 
-        //Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));
+        // Check if the code is expired
+        if ($user->code_expired_at && Carbon::now()->gt($user->code_expired_at)) {
+            return Error::createLocatedError(
+                config('auth.password_reset.errors.code_expired', 'The code is expired') . ". Expired at: " . $user->code_expired_at->toDateTimeString()
+            );
+        }
 
-
-        // Check if password change attempts exceed the daily limit
+        // Check and reset password change attempts if the day has changed
         $today = Carbon::today();
-        if ($user->last_password_change_attempt && Carbon::parse($user->last_password_change_attempt)->isSameDay($today)) {
-            if ($user->password_change_attempts >= 2) {
-                return Error::createLocatedError("You cannot change your password more than 2 times in a day.");
-            }
-        } else {
-            // Reset attempts for a new day
-            $user->password_change_attempts = 0;
+        if (!$user->last_password_change_attempt || !Carbon::parse($user->last_password_change_attempt)->isSameDay($today)) {
+            $user->password_change_attempts = 0; // Reset attempts for a new day
         }
 
-        // Increment attempt count and update last attempt timestamp
-        $user->password_change_attempts += 1;
+        // Check if daily password change attempts have been exceeded
+        $maxAttempts = config('auth.password_reset.max_attempts', 2);
+        if ($user->password_change_attempts >= $maxAttempts) {
+            return Error::createLocatedError(config('auth.password_reset.errors.max_attempts_exceeded', 'You cannot change your password more than ' . $maxAttempts . ' times in a day.'));
+        }
+
+        // Update user details
+        $user->password_change_attempts++;
         $user->last_password_change_attempt = Carbon::now();
-        if ($user->code_expired_at && Carbon::parse(Carbon::now())->gt($user->code_expired_at)) {
-            return Error::createLocatedError("the code is expired please send code again.");
-        }
-
-        //$code=rand(0,99999999);
-
-        // $user->sent_code=$code;
-        //$user->code_expired_at= $expired_at;
-        // $user->last_attempt_at = Carbon::now();
-        // $user->save();
-
         $user->password = Hash::make($args['password']);
-        //$user->sent_code=0;
-        $user->code_expired_at = Carbon::now();
+        $user->code_expired_at = null; // Invalidate the code
         $user->save();
 
+        // Build credentials for authentication
         $credentials = $this->buildCredentials([
-            //'username' => $args[config('lighthouse-graphql-passport.username')],
             'username' => $user->mobile,
             'password' => $args['password'],
         ]);
 
-        //Log::info("cred is:".  json_encode($credentials));
+        // Perform authentication
+        //$response = $this->makeRequest($credentials);
 
-        $response = $this->makeRequest($credentials);
 
+        try {
+            $response = $this->makeRequest($credentials);
+        } catch (\Exception $e) {
+            return Error::createLocatedError('Authentication failed. Please try again.');
+        }
+
+
+        // Return success response
         return [
             'tokens' => $response,
             'mobile' => $args['mobile'],
-            'status' => 'SUCCESS',
+            'status' => config('auth.password_reset.success_status', 'SUCCESS'),
         ];
     }
-
-
 }

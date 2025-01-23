@@ -118,4 +118,33 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+
+    'auth' => [
+        'password_reset' => [
+            'max_attempts' => 2, // Maximum number of password reset attempts allowed per day
+            'code_expiry_minutes' => 15, // Duration in minutes before the verification code expires
+        ],
+    ],
+
+    'notifications' => [
+        'password_reset' => [
+            'success_message' => 'Your password has been successfully reset.',
+            'error_expired_code' => 'The code is expired. Please request a new one.',
+            'error_max_attempts' => 'You cannot change your password more than :max_attempts times in a day.',
+        ],
+    ],
+
+    'throttle' => [
+        'max_attempts' => 10, // Maximum GraphQL route throttle attempts
+        'decay_minutes' => 1, // Decay period for throttle attempts in minutes
+    ],
+
+    'validation' => [
+        'country_code_max_length' => 6,
+        'mobile_max_length' => 12,
+        'password_min_length' => 8,
+    ],
+
+
+
 ];
