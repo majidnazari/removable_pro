@@ -4,11 +4,14 @@ namespace App\Rules\Person;
 
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\Person;
+use App\Traits\AuthUserTrait;
 
 use Log;
 
 class UniquePerson implements Rule
 {
+    use AuthUserTrait;
+    protected $userId;
     protected $firstName;
     protected $lastName;
     protected $birthDate;
@@ -28,6 +31,7 @@ class UniquePerson implements Rule
         $this->lastName = $lastName;
         $this->birthDate = $birthDate;
         $this->id = $id;
+        $this->userId =$this->getUserId();
        // Log::info("the args of rule constructor are  :" . json_encode($this) );
 
     }
@@ -43,7 +47,8 @@ class UniquePerson implements Rule
     {
         $query = Person::where('first_name', $this->firstName)
             ->where('last_name', $this->lastName)
-            ->where('birth_date', $this->birthDate);
+            ->where('birth_date', $this->birthDate)
+            ->where('creator_id', $this->userId );
 
            // Log::info("the args of rule passes are  :" . json_encode($this) );
 
