@@ -47,7 +47,7 @@ final class MergePersons
 
 
             if ($secondaryPerson->is_owner && !$primaryPerson->is_owner) {
-                Log::info("Switching primary and secondary as secondaryPerson is the owner.");
+                //Log::info("Switching primary and secondary as secondaryPerson is the owner.");
                 [$primaryPerson, $secondaryPerson] = [$secondaryPerson, $primaryPerson];
                 [$primaryPersonId, $secondaryPersonId] = [$primaryPerson->id, $secondaryPerson->id];
             }
@@ -58,13 +58,13 @@ final class MergePersons
             // if (!$primaryPerson || !$secondaryPerson) {
             //     throw new Error("One or both persons do not exist.");
             // }
-            // // Check if both persons have the same gender
-            // if ($primaryPerson->gender !== $secondaryPerson->gender) {
-            //     throw new Error("Persons cannot be merged because they have different genders.");
-            // }
-            // if (($secondaryPerson->is_owner == 1) && ($primaryPerson->is_owner == 1)) {
-            //     throw new Error("two people you have selected  both  are owner!");
-            // }
+            // Check if both persons have the same gender
+            if ($primaryPerson->gender !== $secondaryPerson->gender) {
+                throw new Error("Persons cannot be merged because they have different genders.");
+            }
+            if (($secondaryPerson->is_owner == 1) && ($primaryPerson->is_owner == 1)) {
+                throw new Error("two people you have selected  both  are owner!");
+            }
             // if ($primaryPerson->id == $secondaryPerson->id) {
             //     throw new Error("Persons cannot be merged because they are the same.");
             // }
