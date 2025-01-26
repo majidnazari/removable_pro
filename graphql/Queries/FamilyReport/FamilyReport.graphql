@@ -1,0 +1,21 @@
+
+# getFamilyReport(id: ID!): FamilyReport @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\FamilyReport\\GetFamilyReport@resolveFamilyReport") 
+    # getFamilyReports(
+    #     first: Int, 
+    #     page: Int, 
+    #     person_id: Int,
+    #     creator_id: Int,
+    #     editor_id: Int,
+    #     event_id: Int,
+    #     event_date: String,
+    #     status: Status,
+    #     orderBy:[OrderByClause!] @orderBy
+    #     # filter: FamilyReportFilterInput
+    # ): [FamilyReport!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\FamilyReport\\GetFamilyReports@resolveFamilyReport")
+
+
+# getSpecialPersonEvents(
+      
+#         creator_id: Int,
+#         # filter: MemoryFilterInput
+#     ): [FamilyReport!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\FamilyReport\\GetSpecialPersonFamilyReports@resolveFamilyReport")

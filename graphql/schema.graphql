@@ -36,6 +36,7 @@
       #import Types/TalentHeader/type.graphql
       #import Types/TalentDetail/type.graphql
       #import Types/TalentDetailScore/type.graphql
+      #import Types/FamilyReport/type.graphql
 
 
     type Query {
@@ -105,5 +106,6 @@
       #import Mutations/TalentHeader/TalentHeader.graphql
       #import Mutations/TalentDetail/TalentDetail.graphql
       #import Mutations/TalentDetailScore/TalentDetailScore.graphql
+      #import Mutations/FamilyReport/FamilyReports.graphql
 
     }

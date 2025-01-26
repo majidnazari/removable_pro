@@ -1,0 +1,44 @@
+type FamilyStatistics {
+    id: ID
+    clan_id: Int
+    men_count: Int
+    women_count: Int
+    oldest: Int
+    oldest_dead: Int
+    youngest: Int
+    marriage_count: Int
+    divorce_count: Int
+    change_flag: Boolean
+    status: Status
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+
+input CreateFamilyStatisticsInput {
+    clan_id: Int
+    men_count: Int
+    women_count: Int
+    oldest: Int
+    oldest_dead: Int
+    youngest: Int
+    marriage_count: Int
+    divorce_count: Int
+    change_flag: Boolean
+    status: Status
+}
+
+
+input UpdateFamilyStatisticsInput {
+    id: ID!
+    clan_id: Int
+    men_count: Int
+    women_count: Int
+    oldest: Int
+    oldest_dead: Int
+    youngest: Int
+    marriage_count: Int
+    divorce_count: Int
+    change_flag: Boolean
+    status: Status
+}
