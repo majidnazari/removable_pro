@@ -136,11 +136,11 @@ trait PersonMergeTrait_tmp
         // Bulk update references across multiple tables (no chunking needed)
         $models = [
             Memory::class,
-            Favorite::class,
-            FamilyBoard::class,
-            FamilyEvent::class,
-            TalentHeader::class,
-            PersonScore::class
+            // Favorite::class,
+            // FamilyBoard::class,
+            // FamilyEvent::class,
+            // TalentHeader::class,
+            // PersonScore::class
         ];
 
         foreach ($models as $model) {

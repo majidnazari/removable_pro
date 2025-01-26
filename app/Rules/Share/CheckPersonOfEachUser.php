@@ -46,7 +46,7 @@ class CheckPersonOfEachUser implements Rule
             }
         }
         $this->personId = $personId;
-        //Log::info("Extracted person_id: " . $personId);
+       // Log::info("Extracted person_id: " . $personId);
 
         // Log::info("The person id is: " . $personId);
         // Log::info("the person id is:" .$this->personId);
