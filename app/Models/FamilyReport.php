@@ -38,10 +38,11 @@ class FamilyReport extends Eloquent
         'women_count',
         'oldest',
         'oldest_dead',
-        'yongest',
+        'youngest',
         'marriage_count',
         'divorce_count',
         'change_flag',
+        'last_update',
         'status',
     ];
     use HasFactory;

@@ -1,6 +1,6 @@
 type FamilyReportType {
     id: ID
-    clan_id: Int
+    clan_id: String
     men_count: Int
     women_count: Int
     oldest: Int
@@ -16,7 +16,7 @@ type FamilyReportType {
 
 
 input CreateFamilyReportInput {
-    clan_id: Int
+    clan_id: String
     men_count: Int
     women_count: Int
     oldest: Int
@@ -31,7 +31,7 @@ input CreateFamilyReportInput {
 
 input UpdateFamilyReportInput {
     id: ID!
-    clan_id: Int
+    clan_id: String
     men_count: Int
     women_count: Int
     oldest: Int

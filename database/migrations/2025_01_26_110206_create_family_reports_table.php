@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer(column: 'women_count')->nullable();
             $table->integer(column: 'oldest')->nullable();
             $table->integer(column: 'oldest_dead')->nullable();
-            $table->integer(column: 'yongest')->nullable();
+            $table->integer(column: 'youngest')->nullable();
             $table->integer(column: 'marriage_count')->nullable();
             $table->integer(column: 'divorce_count')->nullable();
             $table->string(column: 'last_update')->nullable();
