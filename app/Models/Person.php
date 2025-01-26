@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\GraphQL\Enums\UserStatus;
 
 use Log;
 use Eloquent;
@@ -253,7 +254,7 @@ class Person extends Eloquent
         //     ];
         // }, $this->rootAncestors);
 
-         // Add 'order' field to each ancestor in $this->rootAncestors
+        // Add 'order' field to each ancestor in $this->rootAncestors
         foreach ($this->rootAncestors as $index => &$ancestor) {
             $ancestor['order'] = $index + 1; // Add order starting from 1
         }
@@ -261,7 +262,7 @@ class Person extends Eloquent
         // Log the simplified heads array
         //Log::info("All top-level ancestors: " . json_encode($this->rootAncestors));
 
-        return [$result,$this->rootAncestors];
+        return [$result, $this->rootAncestors];
     }
 
     private function crawlAncestors($person, $depth)
@@ -324,6 +325,12 @@ class Person extends Eloquent
             //'heade' => $this->rootAncestors
         ];
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', UserStatus::Active);
+    }
+
 
 
     public static function getAuthorizationColumns()

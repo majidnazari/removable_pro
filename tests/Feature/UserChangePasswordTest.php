@@ -14,7 +14,7 @@ use Laravel\Passport\Passport;
 use Carbon\Carbon;
 use Log;
 
-class UserChnagePasswordTest extends TestCase
+class UserChangePasswordTest extends TestCase
 {
     // use RefreshDatabase;
     // ./vendor/bin/phpunit --coverage-html coverage
@@ -40,7 +40,7 @@ class UserChnagePasswordTest extends TestCase
         // Generate a token for the user (mock the token or use Passport/Token generation)
         $token = $user->createToken('TestApp')->accessToken;
 
-        Log::info("the user token is :" . json_encode($token));
+        //Log::info("the user token is :" . json_encode($token));
 
         // Send the GraphQL request to request a new verification code using postJson
         $response = $this->postJson('/graphql', [
