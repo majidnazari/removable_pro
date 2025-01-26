@@ -1,4 +1,4 @@
-type FamilyStatistics {
+type FamilyReportType {
     id: ID
     clan_id: Int
     men_count: Int
@@ -15,7 +15,7 @@ type FamilyStatistics {
 }
 
 
-input CreateFamilyStatisticsInput {
+input CreateFamilyReportInput {
     clan_id: Int
     men_count: Int
     women_count: Int
@@ -29,7 +29,7 @@ input CreateFamilyStatisticsInput {
 }
 
 
-input UpdateFamilyStatisticsInput {
+input UpdateFamilyReportInput {
     id: ID!
     clan_id: Int
     men_count: Int

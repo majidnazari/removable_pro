@@ -106,6 +106,6 @@
       #import Mutations/TalentHeader/TalentHeader.graphql
       #import Mutations/TalentDetail/TalentDetail.graphql
       #import Mutations/TalentDetailScore/TalentDetailScore.graphql
-      #import Mutations/FamilyReport/FamilyReports.graphql
+      #import Mutations/FamilyReport/FamilyReport.graphql
 
     }
