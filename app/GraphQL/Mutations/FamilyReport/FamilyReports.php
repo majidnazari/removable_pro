@@ -98,8 +98,7 @@ final class FamilyReports
 
         // Clone the base query
         $max_longevityquery = clone $query;
-        $oldestquery = clone $query;
-
+      
         // Get the person with the longest lifespan (living or dead)
         $max_longevity_person = $max_longevityquery->whereNotNull('birth_date')->orderBy('birth_date', 'asc')->first();
 
@@ -109,16 +108,18 @@ final class FamilyReports
                 $max_longevity = Carbon::parse($max_longevity_person->birth_date)->diffInYears(Carbon::parse($max_longevity_person->death_date));
             } else {
                 // If the person is alive, calculate age using now()
-                $max_longevity = Carbon::parse($max_longevity_person->birth_date)->diffInYears(Carbon::now());
+                $max_longevity = Carbon::parse($max_longevity_person->birth_date)->diffInYears(Carbon::now()->format("Y-m-d H:i:s"));
             }
         } else {
             $max_longevity = null;
         }
 
-        // Get the oldest LIVING person (death_date is NULL)
-        $oldest_person = $oldestquery->whereNull('death_date')->orderBy('birth_date', 'asc')->first();
 
-        $oldestYear = $oldest_person ? Carbon::parse($oldest_person->birth_date)->diffInYears(Carbon::now()) : null;
+        $oldestquery = clone $query;
+        // Get the oldest LIVING person (death_date is NULL)
+        $oldest_person = $oldestquery->whereNotNull('birth_date')->whereNull('death_date')->orderBy('birth_date', 'asc')->first();
+
+        $oldestYear = $oldest_person ? Carbon::parse($oldest_person->birth_date)->diffInYears(Carbon::now()->format("Y-m-d H:i:s")) : null;
 
         // Youngest person
         $youngestquery = clone $query;
@@ -126,7 +127,7 @@ final class FamilyReports
         $youngest = $youngestquery->orderBy('birth_date', 'desc')->first(); // Latest birth_date
         // Log::info("the youngest is : " . Carbon::parse($youngest->birth_date)->year);
 
-        $youngestAge = $youngest ? (int) Carbon::parse($youngest->birth_date)->diffInYears(Carbon::now()) : null;
+        $youngestAge = $youngest ? (int) Carbon::parse($youngest->birth_date)->diffInYears(Carbon::now()->format("Y-m-d H:i:s")) : null;
 
 
         // Marriage count
