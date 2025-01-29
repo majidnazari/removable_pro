@@ -42,3 +42,5 @@ input UpdateFamilyReportInput {
     change_flag: Boolean
     status: Status
 }
+
+
