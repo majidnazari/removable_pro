@@ -4,7 +4,7 @@ type FamilyReportType {
     men_count: Int
     women_count: Int
     oldest: Int
-    oldest_dead: Int
+    max_longevity: Int
     youngest: Int
     marriage_count: Int
     divorce_count: Int
@@ -20,7 +20,7 @@ input CreateFamilyReportInput {
     men_count: Int
     women_count: Int
     oldest: Int
-    oldest_dead: Int
+    max_longevity: Int
     youngest: Int
     marriage_count: Int
     divorce_count: Int
@@ -35,7 +35,7 @@ input UpdateFamilyReportInput {
     men_count: Int
     women_count: Int
     oldest: Int
-    oldest_dead: Int
+    max_longevity: Int
     youngest: Int
     marriage_count: Int
     divorce_count: Int

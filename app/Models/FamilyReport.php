@@ -14,7 +14,7 @@ use Eloquent;
  * @property int|null $men_count
  * @property int|null $women_count
  * @property int|null $oldest
- * @property int|null $oldest_dead
+ * @property int|null $max_longevity
  * @property int|null $yongest
  * @property string|null $marriage_count
  * @property string|null $divorce_count
@@ -37,7 +37,7 @@ class FamilyReport extends Eloquent
         'men_count',
         'women_count',
         'oldest',
-        'oldest_dead',
+        'max_longevity',
         'youngest',
         'marriage_count',
         'divorce_count',

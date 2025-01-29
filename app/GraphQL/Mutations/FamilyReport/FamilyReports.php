@@ -52,7 +52,7 @@ final class FamilyReports
         $familyReport = FamilyReport::where('clan_id', $clanId)->first();
 
         if (!$familyReport) {
-           // Log::info("the create1 is running ");
+            // Log::info("the create1 is running ");
 
             // If no report exists, create one and populate it
             $familyReport = $this->generateFamilyReport($clanId);
@@ -74,7 +74,7 @@ final class FamilyReports
         $menCount = 0;
         $womenCount = 0;
         $oldest = 0;
-        $oldest_dead = 0;
+        $max_longevity = 0;
         $youngest = 0;
         $marriageCount = 0;
         $divorceCount = 0;
@@ -87,36 +87,46 @@ final class FamilyReports
             ->where('status', Status::Active);
 
         // Men count
-    
+
 
         // Women count
-        $womenquery= clone $query ;
+        $womenquery = clone $query;
         $womenCount = $womenquery->where('gender', 0)->count();
-        $menquery= clone $query ;
+        $menquery = clone $query;
         $menCount = $menquery->where('gender', 1)->count();
 
 
-        // Oldest person
-        $oldestquery= clone $query ;
+        // Clone the base query
+        $max_longevityquery = clone $query;
+        $oldestquery = clone $query;
 
-        $oldest = $oldestquery->orderBy('birth_date', 'asc')->first(); // Earliest birth_date
-        $oldestYear =  $oldest ? (int)Carbon::parse($oldest->birth_date)->diffInYears(Carbon::now()) : null;
-       
+        // Get the person with the longest lifespan (living or dead)
+        $max_longevity_person = $max_longevityquery->whereNotNull('birth_date')->orderBy('birth_date', 'asc')->first();
 
-          // oldest_dead person
-          $oldest_deadquery= clone $query ;
+        if ($max_longevity_person) {
+            if ($max_longevity_person->death_date) {
+                // If the person is dead, calculate age at death
+                $max_longevity = Carbon::parse($max_longevity_person->birth_date)->diffInYears(Carbon::parse($max_longevity_person->death_date));
+            } else {
+                // If the person is alive, calculate age using now()
+                $max_longevity = Carbon::parse($max_longevity_person->birth_date)->diffInYears(Carbon::now());
+            }
+        } else {
+            $max_longevity = null;
+        }
 
-          $oldestDead = $oldest_deadquery->whereNotNull('death_date')->orderBy('death_date', 'asc')->first();
-          $oldest_dead =  $oldestDead ? (int)Carbon::parse($oldestDead->birth_date)->diffInYears(Carbon::parse($oldestDead->death_date)) : null;
+        // Get the oldest LIVING person (death_date is NULL)
+        $oldest_person = $oldestquery->whereNull('death_date')->orderBy('birth_date', 'asc')->first();
 
-          
+        $oldestYear = $oldest_person ? Carbon::parse($oldest_person->birth_date)->diffInYears(Carbon::now()) : null;
+
         // Youngest person
-        $youngestquery= clone $query ;
+        $youngestquery = clone $query;
 
         $youngest = $youngestquery->orderBy('birth_date', 'desc')->first(); // Latest birth_date
-       // Log::info("the youngest is : " . Carbon::parse($youngest->birth_date)->year);
+        // Log::info("the youngest is : " . Carbon::parse($youngest->birth_date)->year);
 
-        $youngestAge = $youngest ? (int)Carbon::parse($youngest->birth_date)->diffInYears(Carbon::now()) : null;
+        $youngestAge = $youngest ? (int) Carbon::parse($youngest->birth_date)->diffInYears(Carbon::now()) : null;
 
 
         // Marriage count
@@ -126,7 +136,7 @@ final class FamilyReports
 
         // Divorce count (assuming '2' represents divorce status)
         $divorceCount = PersonMarriage::whereIn('creator_id', $this->users)
-           // ->orWhereIn('woman_id', $query->pluck('id'))
+            // ->orWhereIn('woman_id', $query->pluck('id'))
             ->where('marriage_status', 2) // Divorce status
             ->count();
 
@@ -135,9 +145,9 @@ final class FamilyReports
             $familyReport->update([
                 'men_count' => $menCount,
                 'women_count' => $womenCount,
-                'oldest' => $oldestYear,
-                'oldest_dead' => $oldest_dead,
-                'youngest' => $youngestAge,
+                'oldest' => (int)$oldestYear,
+                'max_longevity' => (int)$max_longevity,
+                'youngest' => (int)$youngestAge,
                 'marriage_count' => $marriageCount,
                 'divorce_count' => $divorceCount,
                 'change_flag' => true,
@@ -152,9 +162,9 @@ final class FamilyReports
                 'clan_id' => $clanId,
                 'men_count' => $menCount,
                 'women_count' => $womenCount,
-                'oldest' => $oldestYear,
-                'oldest_dead' => $oldest_dead,
-                'youngest' => $youngestAge,
+                'oldest' => (int)$oldestYear,
+                'max_longevity' => (int)$max_longevity,
+                'youngest' => (int)$youngestAge,
                 'marriage_count' => $marriageCount,
                 'divorce_count' => $divorceCount,
                 'change_flag' => true,
