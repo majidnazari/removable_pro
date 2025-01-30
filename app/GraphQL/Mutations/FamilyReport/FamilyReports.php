@@ -114,7 +114,7 @@ final class FamilyReports
             {
                 $max_longevity=$maxLongevityPerson->age;
             }
-        Log::info("final max_longevity_person is :" . json_encode($maxLongevityPerson));
+        //Log::info("final max_longevity_person is :" . json_encode($maxLongevityPerson));
 
 
         $oldestquery = clone $query;
@@ -126,7 +126,7 @@ final class FamilyReports
         // Youngest person
         $youngestquery = clone $query;
 
-        $youngest = $youngestquery->orderBy('birth_date', 'desc')->first(); // Latest birth_date
+        $youngest = $youngestquery->orderBy('birth_date', 'desc')->whereNull('death_date')->first(); // Latest birth_date
         // Log::info("the youngest is : " . Carbon::parse($youngest->birth_date)->year);
 
         $youngestAge = $youngest ? (int) Carbon::parse($youngest->birth_date)->diffInYears(Carbon::now()->format("Y-m-d H:i:s")) : null;
