@@ -48,7 +48,7 @@ getTalentDetailScoresReportsAllMiddle(
 
      getTalentDetailScoresReportsAllOfOneMinor(
     minor_field_id: ID!
-): [MinorFieldReport!]! 
+): [AllOfOneMinorFieldReport!]! 
     @guard(with:["api"]) 
     @throttle(max: 10, decay: 1)
     @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllOfOneMinor@resolveTalentDetailScoreReportsAllOfOneMinor")

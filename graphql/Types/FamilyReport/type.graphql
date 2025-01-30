@@ -46,6 +46,16 @@ type MiddleFieldSummary {
     middle_field_title: String!
 }
 
+type AllOfOneMinorFieldReport {
+
+    minor_field_id: ID!
+    minor_field_title: String!
+    average_score: Float!
+    talent_header_id: ID
+    talent_header_title: String
+    
+}
+
 
 type TalentHeaderMinorFieldReport {
     talent_header_id: ID!

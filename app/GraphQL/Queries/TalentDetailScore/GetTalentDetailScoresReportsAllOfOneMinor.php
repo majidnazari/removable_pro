@@ -39,11 +39,14 @@ final class GetTalentDetailScoresReportsAllOfOneMinor
             minor_fields.title as minor_field_title,
             AVG(talent_detail_scores.score) as average_score,
             middle_fields.id as middle_field_id,
-            middle_fields.title as middle_field_title
+            middle_fields.title as middle_field_title,
+            talent_headers.id as talent_header_id,
+            talent_headers.title as talent_header_title
         ')
             ->join('talent_details', 'talent_detail_scores.talent_detail_id', '=', 'talent_details.id')
             ->join('minor_fields', 'talent_details.minor_field_id', '=', 'minor_fields.id')
             ->join('middle_fields', 'minor_fields.middle_field_id', '=', 'middle_fields.id')
+            ->join('talent_headers', 'talent_headers.id', '=', 'talent_details.talent_header_id')
             ->whereNull('talent_detail_scores.deleted_at')
             ->where('talent_details.creator_id', $this->userId)
             // ✅ Filter by the specific minor_field_id
@@ -51,11 +54,13 @@ final class GetTalentDetailScoresReportsAllOfOneMinor
     
         // ✅ Group by talent_header_id and middle fields to get unique records for each minor field
         $query->groupBy(
-            'talent_details.talent_header_id',
+            // 'talent_details.talent_header_id',
             'minor_fields.id',
             'minor_fields.title',
             'middle_fields.id',
-            'middle_fields.title'
+            'middle_fields.title',
+            'talent_headers.id',
+            'talent_headers.title',
         );
     
         // Log::info("the sql is: " . $query->toSql());
