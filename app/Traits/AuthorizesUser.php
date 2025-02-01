@@ -30,9 +30,13 @@ trait AuthorizesUser
     {
         $this->user = $this->getUser();
         $allusers = $this->getAllowedUserIds();
+
+        //Log::info("the seeAllClan is : " . $seeAllClan);
+       // Log::info("the  allusers is : " . json_encode( $allusers));
         // Define configurable table-column mappings for special handling
         $specialRules = [
             'favorites' => ['creator_id'],
+            'addresses' => ['creator_id'],
             // Add other tables and columns as needed
             // 'another_table' => ['some_column'],
         ];

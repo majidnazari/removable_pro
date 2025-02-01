@@ -75,7 +75,7 @@ class GetUserTest extends TestCase
         $result = $resolver->resolveUser(null, ['id' => 1], $mockContext, $resolveInfo);
 
         // Log the result for debugging purposes
-        \Log::info("Fetched user: " . json_encode($result));
+        // \Log::info("Fetched user: " . json_encode($result));
 
         // Assert that the result matches the expected mock data
         $this->assertEquals(1, $result->id);
