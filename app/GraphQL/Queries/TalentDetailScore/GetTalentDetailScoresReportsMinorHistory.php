@@ -37,7 +37,7 @@ final class GetTalentDetailScoresReportsMinorHistory
             talent_details.talent_header_id,
             minor_fields.id as minor_field_id,
             minor_fields.title as minor_field_title,
-            AVG(talent_detail_scores.score) as average_score,
+            ROUND(AVG(talent_detail_scores.score), 2) as average_score,
             middle_fields.id as middle_field_id,
             middle_fields.title as middle_field_title,
             

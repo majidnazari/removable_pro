@@ -31,7 +31,7 @@ final class GetTalentDetailScoresReportsAllMiddles
         $query = TalentDetailScore::selectRaw('
             middle_fields.id as middle_field_id,
             middle_fields.title as middle_field_title,
-            AVG(talent_detail_scores.score) as average_score,
+            ROUND(AVG(talent_detail_scores.score), 2) as average_score,
             major_fields.id as major_field_id,
             major_fields.title as major_field_title
         ')

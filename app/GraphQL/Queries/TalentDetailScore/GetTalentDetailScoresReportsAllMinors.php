@@ -29,10 +29,10 @@ final class GetTalentDetailScoresReportsAllMinors
         $this->userId = $this->getUserId();
 
         $query = TalentDetailScore::selectRaw('
-        talent_details.talent_header_id,
+       
         minor_fields.id as minor_field_id,
         minor_fields.title as minor_field_title,
-        AVG(talent_detail_scores.score) as average_score,
+        ROUND(AVG(talent_detail_scores.score), 2) as average_score,
         middle_fields.id as middle_field_id,
         middle_fields.title as middle_field_title
     ')
@@ -42,14 +42,14 @@ final class GetTalentDetailScoresReportsAllMinors
             ->whereNull('talent_detail_scores.deleted_at')
             ->where('talent_details.creator_id', $this->userId);
 
-        // ✅ Filter by middle field if provided
+        //  Filter by middle field if provided
         if (isset($args['middle_field_id'])) {
             $query->where('middle_fields.id', $args['middle_field_id']);
         }
 
-        // ✅ Group by talent header and minor field
+        // Group by talent header and minor field
         $query->groupBy(
-            'talent_details.talent_header_id',
+            
             'minor_fields.id',
             'minor_fields.title',
             'middle_fields.id',
