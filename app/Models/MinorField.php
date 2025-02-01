@@ -41,13 +41,23 @@ class MinorField extends Eloquent
     protected $table = self::TABLE_NAME;
     public const COLUMN_ID = 'id';
     public const COLUMN_MIDDLE_FIELD_ID = 'middle_field_id';
+    public const COLUMN_MINOR_FIELD_ID = 'minor_field_id';
     
+    // public const COLUMN_Middle_FIELD_ID = 'middle_field_id';
 
+    // public function MiddleFields()
+    // {
+    //     return $this->hasMany(MajorField::class, self::COLUMN_Middle_FIELD_ID);
+    // }
     public function MiddleField()
     {
         return $this->belongsTo(MiddleField::class, self::COLUMN_MIDDLE_FIELD_ID);
     }
 
+    public function TalentDetails()
+    {
+        return $this->hasMany(TalentDetail::class, self::COLUMN_MINOR_FIELD_ID);
+    }
 
     public static function getAuthorizationColumns()
     {

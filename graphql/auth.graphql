@@ -110,6 +110,15 @@ input ChangePasswordVerifyCodeInput
     password_confirmation: String!
 }
 
+input ForgotPasswordVerifyCodeInput 
+{
+    country_code: String! @rules(apply: [ "required", "string","max:6"]),
+    mobile: String! @rules(apply: [ "required", "string","max:12"])   
+    code: String! @rules(apply: [ "required", "string"])   
+    password: String! @rules(apply: ["required", "confirmed", "min:8"])
+    password_confirmation: String!
+}
+
 input VerifyMobileInput {
     user_id:ID!
     code: String!

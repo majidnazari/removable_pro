@@ -6,7 +6,7 @@ use App\Models\UserMergeRequest;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-use App\GraphQL\Enums\Status;
+use App\GraphQL\Enums\MergeStatus;
 use App\GraphQL\Enums\RequestStatusSender;
 use App\models\User;
 use App\models\Person;
@@ -69,6 +69,7 @@ final class UpdateMergeRequestSender
             ->where('request_status_sender',  RequestStatusSender::Active->value)
             ->where('request_status_sender',  RequestStatusSender::Active->value)
             ->where('merge_status_sender',  RequestStatusSender::Active->value)
+            ->where('status', '!=', MergeStatus::Complete->value)
             ->first();
 
         if ($is_exist) {

@@ -7,7 +7,7 @@ use App\Models\UserMergeRequest;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
-use App\GraphQL\Enums\Status;
+use App\GraphQL\Enums\MergeStatus;
 use App\GraphQL\Enums\RequestStatusSender;
 use App\models\User;
 use App\models\Person;
@@ -69,7 +69,22 @@ final class UpdateMergeRequestReceiver
             ->where('request_status_sender', RequestStatusSender::Active->value)
             ->where('request_status_receiver', RequestStatusReceiver::Active->value)
             ->where('merge_status_sender', RequestStatusSender::Active->value)
-            ->first();
+            ->where('status', '!=', MergeStatus::Complete->value)
+
+        ->first();
+
+
+        // Log the SQL query with parameters
+        // $sql = $is_exist->toSql();
+        // $bindings = $is_exist->getBindings();
+
+        // Log::info('SQL Query for Merge Request:', [
+        //     'query' => $sql,
+        //     'bindings' => $bindings,
+        // ]);
+
+        // // Execute the query
+        // $is_exist = $is_exist->first();
 
         if ($is_exist) {
             return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
