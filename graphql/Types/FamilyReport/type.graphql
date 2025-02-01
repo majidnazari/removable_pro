@@ -14,6 +14,68 @@ type FamilyReportType {
     updated_at: DateTime
 }
 
+type ReportsAllMajor{
+    
+    major_field_id: ID
+    major_field_title: String
+    average_score: String
+}
+
+type MiddleFieldReport {
+    middle_field_id: ID!
+    middle_field_title: String!
+    average_score: Float!
+    major_field: MajorFieldSummary!
+}
+
+type MajorFieldSummary {
+    major_field_id: ID!
+    major_field_title: String!
+}
+
+
+type MinorFieldReport {
+    minor_field_id: ID!
+    minor_field_title: String!
+    average_score: Float!
+    middle_field: MiddleFieldSummary!
+}
+
+type MiddleFieldSummary {
+    middle_field_id: ID!
+    middle_field_title: String!
+}
+
+type MinorFieldReportHistory {
+
+    minor_field_id: ID!
+    minor_field_title: String!
+    average_score: Float!
+    talent_header_id: ID
+    talent_header_title: String
+    
+}
+
+
+type TalentHeaderMinorFieldReport {
+    talent_header_id: ID!
+    talent_header_title: String!
+    minor_fields: [MinorFieldSummary!]!
+}
+
+type MinorFieldSummary {
+    minor_field_id: ID!
+    minor_field_title: String!
+    average_score: Float!
+    middle_field: MiddleFieldSummary!
+}
+
+type MiddleFieldSummary {
+    middle_field_id: ID!
+    middle_field_title: String!
+}
+
+
 
 input CreateFamilyReportInput {
     clan_id: String

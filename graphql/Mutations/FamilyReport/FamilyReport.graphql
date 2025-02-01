@@ -1,5 +1,5 @@
 
 FamilyReport: FamilyReportType @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\FamilyReport\\FamilyReports@resolveFamilyReport") 
-FamilyHeaderReport: FamilyHeaderReportType @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\FamilyReport\\FamilyHeaderReports@resolveFamilyHeaderReport") 
+# FamilyHeaderReport: FamilyHeaderReportType @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\FamilyReport\\FamilyHeaderReports@resolveFamilyHeaderReport") 
     # updateFamilyReport(id: ID!, input: UpdateFamilyReportInput! @spread): FamilyReport @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\FamilyReport\\UpdateFamilyReport@resolveFamilyReport") 
     # deleteFamilyReport(id: ID!): FamilyReport @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\FamilyReport\\DeleteFamilyReport@resolveFamilyReport") 

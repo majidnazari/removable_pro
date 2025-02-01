@@ -12,3 +12,49 @@ getTalentDetailScore(id: ID!): TalentDetailScore @guard(with:["api"]) @throttle(
         orderBy:[OrderByClause!] @orderBy
         # filter: TalentDetailScoreFilterInput
     ): [TalentDetailScore!]! @guard(with:["api"]) @throttle(max: 10, decay: 1)  @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScores@resolveTalentDetailScore")
+
+
+     getTalentDetailScoresReportsMajor(
+        first: Int, 
+        page: Int, 
+        talent_header_id: Int,
+        scoreEqual: TalentScore,
+        scoreEqualOrMore: TalentScore,
+        scoreEqualOrLess: TalentScore,
+        minor_field_id: Int
+        middle_field_id: Int
+        major_field_id: Int
+        status: Status,
+        orderBy:[OrderByClause!] @orderBy
+        # filter: TalentDetailScoreFilterInput
+    ): [TalentDetailScore!]! @guard(with:["api"]) @throttle(max: 10, decay: 1)  @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReports@resolveTalentDetailScoreReportsMajor")
+
+
+getTalentDetailScoresReportsAllMajors: 
+[ReportsAllMajor]
+@guard(with:["api"])
+ @throttle(max: 10, decay: 1)  
+ @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllMajors@resolveTalentDetailScoreReportsAllMajors")
+
+getTalentDetailScoresReportsAllMiddle(
+    major_field_id: ID!
+): [MiddleFieldReport]
+    @guard(with:["api"]) 
+    @throttle(max: 10, decay: 1)
+    @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllMiddles@resolveTalentDetailScoreReportsAllMiddles")
+
+    getTalentDetailScoresReportsAllMinor(
+    middle_field_id: ID!
+): [MinorFieldReport]
+    @guard(with:["api"]) 
+    @throttle(max: 10, decay: 1)
+    @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllMinors@resolveTalentDetailScoreReportsAllMinors")
+
+     getTalentDetailScoresReportsMinorHistory(
+    minor_field_id: ID!
+): [MinorFieldReportHistory]
+    @guard(with:["api"]) 
+    @throttle(max: 10, decay: 1)
+    @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsMinorHistory@resolveTalentDetailScoreReportsMinorHistory")
+
+
