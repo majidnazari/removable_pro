@@ -50,11 +50,11 @@ getTalentDetailScoresReportsAllMiddle(
     @throttle(max: 10, decay: 1)
     @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllMinors@resolveTalentDetailScoreReportsAllMinors")
 
-#      getTalentDetailScoresReportsAllOfOneMinor(
-#     minor_field_id: ID!
-# ): [AllOfOneMinorFieldReport]
-#     @guard(with:["api"]) 
-#     @throttle(max: 10, decay: 1)
-#     @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllOfOneMinor@resolveTalentDetailScoreReportsAllOfOneMinor")
+     getTalentDetailScoresReportsMinorHistory(
+    minor_field_id: ID!
+): [MinorFieldReportHistory]
+    @guard(with:["api"]) 
+    @throttle(max: 10, decay: 1)
+    @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsMinorHistory@resolveTalentDetailScoreReportsMinorHistory")
 
 

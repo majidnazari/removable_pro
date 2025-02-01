@@ -46,7 +46,7 @@ type MiddleFieldSummary {
     middle_field_title: String!
 }
 
-type AllOfOneMinorFieldReport {
+type MinorFieldReportHistory {
 
     minor_field_id: ID!
     minor_field_title: String!

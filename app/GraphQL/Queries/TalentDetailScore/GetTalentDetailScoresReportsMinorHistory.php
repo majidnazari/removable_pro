@@ -11,7 +11,7 @@ use App\Traits\SearchQueryBuilder;
 use Log;
 
 
-final class GetTalentDetailScoresReportsAllOfOneMinor
+final class GetTalentDetailScoresReportsMinorHistory
 {
     use AuthUserTrait;
     use AuthorizesUser;
@@ -24,7 +24,7 @@ final class GetTalentDetailScoresReportsAllOfOneMinor
     {
         // TODO implement the resolver
     }
-    function resolveTalentDetailScoreReportsAllOfOneMinor($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    function resolveTalentDetailScoreReportsMinorHistory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
@@ -40,7 +40,7 @@ final class GetTalentDetailScoresReportsAllOfOneMinor
             AVG(talent_detail_scores.score) as average_score,
             middle_fields.id as middle_field_id,
             middle_fields.title as middle_field_title,
-            talent_headers.id as talent_header_id,
+            
             talent_headers.title as talent_header_title
         ')
             ->join('talent_details', 'talent_detail_scores.talent_detail_id', '=', 'talent_details.id')
@@ -54,12 +54,12 @@ final class GetTalentDetailScoresReportsAllOfOneMinor
     
         // ✅ Group by talent_header_id and middle fields to get unique records for each minor field
         $query->groupBy(
-            // 'talent_details.talent_header_id',
+         'talent_details.talent_header_id',
             'minor_fields.id',
             'minor_fields.title',
             'middle_fields.id',
             'middle_fields.title',
-            'talent_headers.id',
+           
             'talent_headers.title',
         );
     
