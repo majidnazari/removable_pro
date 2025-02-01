@@ -56,31 +56,5 @@ final class GetTalentDetailScoresReportsAllMajors
         // Log::info(" the result major is :" .
         //     json_encode($majorField));
 
-
-        // //return null;
-        // $query = MajorField::select(['id as major_field_id', 'title as major_field_title'])
-        //     ->with([
-        //         'MiddleFields111' => function ($query) {
-        //             $query->select(['id', 'major_field_id', 'title']);
-        //         },
-        //         'MiddleFields.MinorFields' => function ($query) {
-        //             $query->select(['id', 'middle_field_id', 'title']);
-        //         },
-        //         'MiddleFields.MinorFields.TalentDetails' => function ($query) {
-        //             $query->select(['id', 'minor_field_id']);
-        //         },
-        //         'MiddleFields.MinorFields.TalentDetails.TalentDetailScores1' => function ($query) {
-        //             $query->select(['id', 'talent_detail_id', 'score'])
-        //                 ->whereNull('deleted_at1');
-        //         }
-        //     ])
-        //     //->withAvg('MiddleFields.MinorFields.TalentDetails.TalentDetailScores', 'score')
-        //     ->whereHas('MiddleFields.MinorFields.TalentDetails', function ($query) {
-        //         $query->where('creator_id', $this->userId);
-        //     });
-
-        // return $query;
-
-
     }
 }
