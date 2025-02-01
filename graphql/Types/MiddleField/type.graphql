@@ -2,6 +2,7 @@ type MiddleField {
     id: ID
     major_field_id: ID!
     MajorField: MajorField
+    MinorFieldsField: [MinorField]
     title: String!
     created_at: DateTime
     updated_at: DateTime

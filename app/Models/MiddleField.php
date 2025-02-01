@@ -41,7 +41,7 @@ class MiddleField extends Eloquent
     protected $table = self::TABLE_NAME;
     public const COLUMN_ID = 'id';
     public const COLUMN_MAJOR_FIELD_ID = 'major_field_id';
-    public const COLUMN_MINOR_FIELD_ID = 'minor_field_id';
+    public const COLUMN_MINOR_FIELD_ID = 'middle_field_id';
     
 
     public function MajorField()
@@ -50,9 +50,12 @@ class MiddleField extends Eloquent
     }
     public function MinorField()
     {
+        return $this->belongsTo(MinorField::class, self::COLUMN_MINOR_FIELD_ID);
+    }
+    public function MinorFields()
+    {
         return $this->hasMany(MinorField::class, self::COLUMN_MINOR_FIELD_ID);
     }
-
 
     public static function getAuthorizationColumns()
     {

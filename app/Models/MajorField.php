@@ -37,6 +37,13 @@ class MajorField extends Eloquent
     use SoftDeletes;
     public const TABLE_NAME = 'major_fields';
     protected $table = self::TABLE_NAME;
+    public const COLUMN_ID = 'id';
+    public const COLUMN_MAJOR_FIELD_ID = 'major_field_id';
+
+    public function MiddleFields()
+    {
+        return $this->hasMany(MiddleField::class, self::COLUMN_MAJOR_FIELD_ID);
+    }
 
     public static function getAuthorizationColumns()
     {

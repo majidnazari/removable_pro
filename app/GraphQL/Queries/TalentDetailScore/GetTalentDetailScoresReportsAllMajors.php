@@ -8,6 +8,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesUser;
 use App\Traits\SearchQueryBuilder;
+use App\Models\MajorField;
 use Log;
 
 
@@ -42,6 +43,44 @@ final class GetTalentDetailScoresReportsAllMajors
             ->where('talent_details.creator_id', $this->userId)
             ->groupBy('major_fields.id', 'major_fields.title');
 
+            //Log::info("the major log is :" . $query->ToSql());
+
         return $query; // Return query builder for pagination
+
+        // $this->userId = $this->getUserId();
+
+        // $majorField = MajorField::with('MiddleFields.MinorFields.TalentDetails.TalentDetailScores')->find(1);
+        // // $minorFields = $majorField->MiddleFields->flatMap->MinorFields;
+
+
+        // Log::info(" the result major is :" .
+        //     json_encode($majorField));
+
+
+        // //return null;
+        // $query = MajorField::select(['id as major_field_id', 'title as major_field_title'])
+        //     ->with([
+        //         'MiddleFields111' => function ($query) {
+        //             $query->select(['id', 'major_field_id', 'title']);
+        //         },
+        //         'MiddleFields.MinorFields' => function ($query) {
+        //             $query->select(['id', 'middle_field_id', 'title']);
+        //         },
+        //         'MiddleFields.MinorFields.TalentDetails' => function ($query) {
+        //             $query->select(['id', 'minor_field_id']);
+        //         },
+        //         'MiddleFields.MinorFields.TalentDetails.TalentDetailScores1' => function ($query) {
+        //             $query->select(['id', 'talent_detail_id', 'score'])
+        //                 ->whereNull('deleted_at1');
+        //         }
+        //     ])
+        //     //->withAvg('MiddleFields.MinorFields.TalentDetails.TalentDetailScores', 'score')
+        //     ->whereHas('MiddleFields.MinorFields.TalentDetails', function ($query) {
+        //         $query->where('creator_id', $this->userId);
+        //     });
+
+        // return $query;
+
+
     }
 }

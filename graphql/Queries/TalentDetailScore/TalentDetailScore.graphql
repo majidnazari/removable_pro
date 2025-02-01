@@ -30,27 +30,31 @@ getTalentDetailScore(id: ID!): TalentDetailScore @guard(with:["api"]) @throttle(
     ): [TalentDetailScore!]! @guard(with:["api"]) @throttle(max: 10, decay: 1)  @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReports@resolveTalentDetailScoreReportsMajor")
 
 
-getTalentDetailScoresReportsAllMajors: [ReportsAllMajor!]! @guard(with:["api"]) @throttle(max: 10, decay: 1)  @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllMajors@resolveTalentDetailScoreReportsAllMajors")
+getTalentDetailScoresReportsAllMajors: 
+[ReportsAllMajor]
+@guard(with:["api"])
+ @throttle(max: 10, decay: 1)  
+ @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllMajors@resolveTalentDetailScoreReportsAllMajors")
 
 getTalentDetailScoresReportsAllMiddle(
     major_field_id: ID!
-): [MiddleFieldReport!]! 
+): [MiddleFieldReport]
     @guard(with:["api"]) 
     @throttle(max: 10, decay: 1)
     @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllMiddles@resolveTalentDetailScoreReportsAllMiddles")
 
     getTalentDetailScoresReportsAllMinor(
     middle_field_id: ID!
-): [MinorFieldReport!]! 
+): [MinorFieldReport]
     @guard(with:["api"]) 
     @throttle(max: 10, decay: 1)
     @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllMinors@resolveTalentDetailScoreReportsAllMinors")
 
-     getTalentDetailScoresReportsAllOfOneMinor(
-    minor_field_id: ID!
-): [AllOfOneMinorFieldReport!]! 
-    @guard(with:["api"]) 
-    @throttle(max: 10, decay: 1)
-    @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllOfOneMinor@resolveTalentDetailScoreReportsAllOfOneMinor")
+#      getTalentDetailScoresReportsAllOfOneMinor(
+#     minor_field_id: ID!
+# ): [AllOfOneMinorFieldReport]
+#     @guard(with:["api"]) 
+#     @throttle(max: 10, decay: 1)
+#     @paginate(builder: "App\\GraphQL\\Queries\\TalentDetailScore\\GetTalentDetailScoresReportsAllOfOneMinor@resolveTalentDetailScoreReportsAllOfOneMinor")
 
 
