@@ -50,7 +50,7 @@ class CreateAddressValidator extends Validator
                 'exists:provinces,id', // Ensure the province exists
             ],
             'city_id' => [
-                'required',
+                'nullable',
                 'exists:cities,id', // Ensure the city exists
             ],
             'location_title' => [

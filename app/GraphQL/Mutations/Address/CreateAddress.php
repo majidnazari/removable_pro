@@ -37,9 +37,9 @@ final class CreateAddress
         $AddressResult=[
             "creator_id"=>  $this->getUserId(),
             "person_id"=> $args['person_id'],
-            "country_id"=> $args['country_id'],
-            "province_id"=> $args['province_id'],
-            "city_id"=> $args['city_id'],
+            "country_id"=> $args['country_id'] ?? null ,
+            "province_id"=> $args['province_id'] ?? null,
+            "city_id"=> $args['city_id'] ?? null,
             "location_title" => $args['location_title'],
             "street_name" => $args['street_name'] ?? null,
             "builder_no" => $args['builder_no'] ?? null,

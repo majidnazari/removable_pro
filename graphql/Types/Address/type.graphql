@@ -29,10 +29,10 @@ input CreateAddressInput
 @validator(class: "App\\GraphQL\\Validators\\Address\\CreateAddressValidator")
 {
     # creator_id: ID
-    person_id: ID!
+    person_id: ID
     country_id: ID
     province_id: ID
-    city_id: ID!
+    city_id: ID
     location_title: String
     street_name: String
     builder_no: String
