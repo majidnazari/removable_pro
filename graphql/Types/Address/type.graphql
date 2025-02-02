@@ -6,6 +6,7 @@ type Address {
     editor_id: ID
     Editor: User
     person_id: ID
+    Person: Person
     country_id: ID
     Country: Country
     province_id: ID

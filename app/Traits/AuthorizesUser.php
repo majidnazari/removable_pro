@@ -65,6 +65,7 @@ trait AuthorizesUser
                         //$q->where($column, $this->user->id);
                         //$q->where($column, $this->user->{$column});
                         // $q->where($column, $this->user->{$column} ?? $this->user->id);
+                        
                     }
                     //else {
                     // Log a warning if the column doesn't exist

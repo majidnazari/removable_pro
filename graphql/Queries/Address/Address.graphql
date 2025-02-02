@@ -20,7 +20,7 @@ getAddress(id: ID!): Address @guard(with:["api"]) @field(resolver: "App\\GraphQL
         status: Status,
         orderBy:[OrderByClause!] @orderBy 
         # filter: AddressFilterInput
-    ): [Address!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Address\\GetAddresses@resolveAddress")
+    ): [Address] @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Address\\GetAddresses@resolveAddress")
 
 
  getFamilyAddresses(
@@ -43,4 +43,4 @@ getAddress(id: ID!): Address @guard(with:["api"]) @field(resolver: "App\\GraphQL
         status: Status,
         orderBy:[OrderByClause!] @orderBy 
         # filter: AddressFilterInput
-    ): [Address!]! @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Address\\GetFamilyAddresses@resolveFamilyAddress")
+    ): [Address] @guard(with:["api"]) @paginate(builder: "App\\GraphQL\\Queries\\Address\\GetFamilyAddresses@resolveFamilyAddress")
