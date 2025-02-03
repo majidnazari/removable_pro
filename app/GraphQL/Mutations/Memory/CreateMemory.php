@@ -123,6 +123,8 @@ final class CreateMemory
         $MemoryModel['description'] = $args['description'] ?? "";
         $MemoryModel['is_shown_after_death'] = $args['is_shown_after_death'] ?? false;
         $MemoryModel['status'] = $args['status'] ?? Status::Active;
+        // $MemoryModel['confirm_status'] = $args['confirm_status'] ?? ConfirmMemoryStatus::Accept;
+        
 
         $MemoryModelResult = Memory::create($MemoryModel);
         return $MemoryModelResult;
