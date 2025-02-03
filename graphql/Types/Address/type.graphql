@@ -1,5 +1,6 @@
 
 type Address {
+    
     id: ID
     creator_id: ID
     Creator: User    

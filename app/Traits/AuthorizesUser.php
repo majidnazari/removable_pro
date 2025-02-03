@@ -32,7 +32,7 @@ trait AuthorizesUser
         $allusers = $this->getAllowedUserIds();
 
         //Log::info("the seeAllClan is : " . $seeAllClan);
-       // Log::info("the  allusers is : " . json_encode( $allusers));
+        // Log::info("the  allusers is : " . json_encode( $allusers));
         // Define configurable table-column mappings for special handling
         $specialRules = [
             'favorites' => ['creator_id'],
@@ -54,7 +54,7 @@ trait AuthorizesUser
                     if (Schema::hasColumn((new $modelClass)->getTable(), $column)) {
                         //Log::info("the users are:" . json_encode($seeAllClan). " column is :" .$column . " and  specialRulestable]" . json_encode($specialRules[$table])  );
                         if ($seeAllClan && isset($specialRules[$table]) && in_array($column, $specialRules[$table])) {
-                           //Log::info("the users are:" .json_encode($allusers ));
+                            //Log::info("the users are:" .json_encode($allusers ));
                             // Apply special rule for this table and column
                             $q->whereIn($column, $allusers);
                         } else {
@@ -65,7 +65,7 @@ trait AuthorizesUser
                         //$q->where($column, $this->user->id);
                         //$q->where($column, $this->user->{$column});
                         // $q->where($column, $this->user->{$column} ?? $this->user->id);
-                        
+
                     }
                     //else {
                     // Log a warning if the column doesn't exist

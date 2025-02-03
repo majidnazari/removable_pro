@@ -1,5 +1,6 @@
 
 getAddress(id: ID!): Address @guard(with:["api"]) @field(resolver: "App\\GraphQL\\Queries\\Address\\GetAddress@resolveAddress") 
+
     getAddresses(
         first: Int, 
         page: Int, 
