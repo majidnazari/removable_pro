@@ -18,17 +18,30 @@ trait SmallClanTrait
     use FindOwnerTrait;
 
     protected $userId;
+    protected $person;
     protected $owner;
     protected $allPersonIds = [];
     protected $allOwnerPersonIds = [];
 
-    public function getAllPeopleIdsSmallClan($userId = null)
+    public function getAllPeopleIdsSmallClan($personId )
     {
+        $this->person=Person::where('id',$personId)->where('status',Status::Active)->first();
+
+        Log::info("the person is :" . json_encode($this->person));
+        if(!$this->person)
+        {
+            return -1;
+        }
+        if( $this->person->is_owner)
+        {
+            return $this->person->id;
+        }
+
         // If a userId is provided, set the userId
-        $this->userId = $userId ?: $this->userId;
+        $this->userId = $this->person->creator_id;
 
         // Find the owner (the person initiating the query)
-        $this->owner = $this->findOwner();
+        $this->owner = $this->findOwner( $this->userId );
 
         // Get spouse ids and add to allPersonIds
         $spouseIds = $this->getSpouseIds($this->owner->id, $this->owner->gender);
@@ -53,18 +66,18 @@ trait SmallClanTrait
         return $this->allPersonIds;
     }
 
-    public function getAllOwnerIdsSmallClan($personId = null)
+    public function getAllOwnerIdsSmallClan($personId )
     {
         //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
-        $this->allOwnerPersonIds = Person::whereIn('id', $this->getAllPeopleIdsSmallClan())->where('is_owner', true)->pluck('id');
+        $this->allOwnerPersonIds = Person::whereIn('id', $this->getAllPeopleIdsSmallClan($personId))->where('is_owner', true)->pluck('id');
         Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
         return $this->allOwnerPersonIds;
     }
 
-    public function getAllUserIdsSmallClan($personId = null)
+    public function getAllUserIdsSmallClan($personId )
     {
         //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
-        $this->allUserIds = Person::whereIn('id', $this->getAllOwnerIdsSmallClan())->where('status', status::Active)->pluck('creator_id');
+        $this->allUserIds = Person::whereIn('id', $this->getAllOwnerIdsSmallClan($personId))->where('status', status::Active)->pluck('creator_id');
         Log::info("the all users ids are " . json_encode($this->allUserIds));
         return $this->allUserIds;
     }
