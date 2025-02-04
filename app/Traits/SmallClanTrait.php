@@ -27,7 +27,7 @@ trait SmallClanTrait
     {
         $this->person=Person::where('id',$personId)->where('status',Status::Active)->first();
 
-        Log::info("the person is :" . json_encode($this->person));
+        //Log::info("the person is :" . json_encode($this->person));
         if(!$this->person)
         {
             return -1;
@@ -66,6 +66,21 @@ trait SmallClanTrait
         return $this->allPersonIds;
     }
 
+    public function getAllChildren($personId)
+    {
+       
+
+       $person=Person::where('id',$personId)->where('status',Status::Active)->first();
+        // Get spouse ids and add to allPersonIds
+        $spouseIds =  PersonMarriage::where(($person->gender==1) ? 'man_id' : 'woman_id', $personId)
+        ->where('status', Status::Active)
+        ->first()->id;
+
+        // Get children ids and add to allPersonIds
+        $childrenIds = $this->getChildrenIds([$spouseIds]);
+        return  $childrenIds;
+    }
+
     public function getAllOwnerIdsSmallClan($personId )
     {
         //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
@@ -73,11 +88,19 @@ trait SmallClanTrait
         Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
         return $this->allOwnerPersonIds;
     }
+    
+    public function getOwnerIdSmallClan($personId )
+    {
+        //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
+        $this->owner= Person::where('id', $personId)->where('is_owner', true)->first();
+        //Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
+        return $this->owner;
+    }
 
     public function getAllUserIdsSmallClan($personId )
     {
         //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
-        $this->allUserIds = Person::whereIn('id', $this->getAllOwnerIdsSmallClan($personId))->where('status', status::Active)->pluck('creator_id');
+        $this->allUserIds = Person::whereIn('id', $this->getAllOwnerIdsSmallClan($personId))->where('status', Status::Active)->pluck('creator_id');
         Log::info("the all users ids are " . json_encode($this->allUserIds));
         return $this->allUserIds;
     }

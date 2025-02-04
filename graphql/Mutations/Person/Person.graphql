@@ -1,7 +1,8 @@
 
 createPerson(input: CreatePersonInput! @spread): Person @guard(with: ["api"])  @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\CreatePerson@resolvePerson") 
     updatePerson(id: ID!, input: UpdatePersonInput! @spread): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\UpdatePerson@resolvePerson") 
-    deletePerson(input: DeletePersonInput! @spread ): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePerson@resolvePerson") 
+    # deletePerson(input: DeletePersonInput! @spread ): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePerson@resolvePerson") 
+    deletePersonByPersonId(personId: ID!  ): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePerson@resolvePerson") 
 
      mergePersons(primaryPersonId: ID!, secondaryPersonId: ID!): Person  
      @guard(with: ["api"]) 

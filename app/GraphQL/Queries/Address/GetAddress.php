@@ -30,9 +30,9 @@ final class GetAddress
         // $this->userId = $this->getUserId();
         // $Address = Address::where('id', $args['id']);       
         // return $Address->first();
-        Log::info("the result of new small clan is :" . json_encode($this->getAllPeopleIdsSmallClan(11)));
+       // Log::info("the result of new small clan is :" . json_encode($this->getAllPeopleIdsSmallClan(5)));
        //$this->getAllOwnerIdsSmallClan();
-        //$this->getAllUserIdsSmallClan();
+        // $this->getAllUserIdsSmallClan(5);
         //Log::info("the args are " . json_encode($args));
         $address = $this->getModelByAuthorization(Address::class, $args);
         return $address->first();
