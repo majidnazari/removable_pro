@@ -10,7 +10,6 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\Traits\SmallClanTrait;
-use App\GraphQL\Enums\AuthAction;
 use Exception;
 use Log;
 
@@ -21,87 +20,62 @@ final class DeletePerson
     use HandlesModelUpdateAndDelete;
     use SmallClanTrait;
 
-    protected $userId;
-    protected $personId;
+    protected  $userId;
+    protected  $personId;
 
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * Delete a person
+     *
+     * @param mixed $rootValue
+     * @param array $args
+     * @param GraphQLContext|null $context
+     * @param ResolveInfo $resolveInfo
+     * @return Person|Error
+     * @throws Exception
      */
-    public function __invoke($_, array $args)
-    {
-        // TODO implement the resolver
-    }
     public function resolvePerson($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
-
-        $this->userId = $this->getUserId();
-        $this->personId = $args['personId'];
-        //    $this->userAccessibility(Person::class, AuthAction::Update, $args);
-
-
-        //     $PersonResult=Person::find($args['id']);
-
-        //     if(!$PersonResult)
-        //     {
-        //         return Error::createLocatedError("Person-DELETE-RECORD_NOT_FOUND");
-        //     }
-
-        //     $PersonResult->editor_id=$this->userId;
-        //     $PersonResult->save(); 
-
-        //     $PersonResult_filled= $PersonResult->delete();  
-        //     return $PersonResult;
-
         try {
+            $this->userId = $this->getUserId();
+            $this->personId = $args['personId'] ?? null;
 
-            Log::info("the user id is:" . $this->userId . "  wants to person id is:" . $this->personId);
-
-            // Log::info("the result of new small clan is :" . json_encode($this->getAllPeopleIdsSmallClan(5)));
-            //$this->getAllOwnerIdsSmallClan();
-            $owner = $this->getOwnerIdSmallClan($this->personId);
-
-            if ($owner) {
-                return Error::createLocatedError("Person-DELETE-THIS_IS_OWNER!");
-            } 
-            // else if(! $owner){
-            //     return Error::createLocatedError("Person-DELETE-PERSON_NOT_FOUND!");
-
-            // }
-
-            $allowedUserIds = $this->getAllUserIdsSmallClan($this->personId);
-
-            Log::info("the allowedUserIds are " . json_encode($allowedUserIds) . " and user id is  ".  $this->userId);
-            Log::info("the user searched in :" . in_array($this->userId,$allowedUserIds->toArray()));
-
-            if(in_array($this->userId,$allowedUserIds->toArray())==false)
-            {
-                return Error::createLocatedError("Person-DELETE-YOU-DON'T-HAVE-PERMISSION!");
-
+            if (!$this->personId) {
+                return Error::createLocatedError("Person-DELETE-MISSING_PERSON_ID");
             }
 
-            $chldrenIds = $this->getAllChildren($this->personId);
-            Log::info("the user searched in :" . json_encode( $chldrenIds));
+            Log::info("User {$this->userId} attempting to delete Person ID {$this->personId}");
 
-            if($chldrenIds)
-            {
-                return Error::createLocatedError("Person-THIS-PERSON-HAS-CHLDREN!");
-
+            $person = Person::find($this->personId);
+            if (!$person) {
+                return Error::createLocatedError("Person-DELETE-PERSON_NOT_FOUND");
             }
 
-            $result=Person::find($this->personId);
-            $result->delete();
+            // Prevent deletion if the person is an owner
+            if ( $person->is_owner) {
+                return Error::createLocatedError("Person-DELETE-THIS_IS_OWNER");
+            }
 
-            return $result;
+            // Retrieve allowed user IDs
+            $allowedUserIds = collect($this->getAllUserIdsSmallClan($this->personId));
 
-            //$PersonResult = $this->userAccessibility(Person::class, AuthAction::Delete, $args);
+            if (!$allowedUserIds->contains($this->userId)) {
+                return Error::createLocatedError("Person-DELETE-YOU_DONT_HAVE_PERMISSION");
+            }
+
+            // Prevent deletion if the person has children
+            if (!empty($this->getAllChildren($this->personId))) {
+                return Error::createLocatedError("Person-DELETE-HAS_CHILDREN");
+            }
+
+            // Delete the person
+            $person->delete();
+
+            Log::info("User {$this->userId} successfully deleted Person ID {$this->personId}");
+            return $person;
 
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-
+            Log::error("DeletePerson Mutation Error", ['error' => $e->getMessage(), 'personId' => $this->personId]);
+            throw new Exception("Person-DELETE-ERROR_OCCURED");
         }
-
-        //return $this->updateAndDeleteModel($PersonResult, $args, $this->userId);
-
     }
 }

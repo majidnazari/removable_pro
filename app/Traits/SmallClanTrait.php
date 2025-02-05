@@ -93,7 +93,7 @@ trait SmallClanTrait
     {
         //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
         $this->owner= Person::where('id', $personId)->where('is_owner', true)->first();
-        //Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
+        Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
         return $this->owner;
     }
 
