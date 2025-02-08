@@ -10,7 +10,12 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\Traits\SmallClanTrait;
+use App\Traits\HandlesPersonDeletion;
 use Exception;
+use App\Models\PersonMarriage;
+use App\Models\PersonChild;
+use Illuminate\Support\Facades\DB;
+use App\GraphQL\Enums\Status;
 use Log;
 
 final class DeletePerson
@@ -18,10 +23,10 @@ final class DeletePerson
     use AuthUserTrait;
     use AuthorizesMutation;
     use HandlesModelUpdateAndDelete;
-    use SmallClanTrait;
+    use HandlesPersonDeletion;
 
-    protected  $userId;
-    protected  $personId;
+    protected $userId;
+    protected $personId;
 
     /**
      * Delete a person
@@ -36,46 +41,25 @@ final class DeletePerson
     public function resolvePerson($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         try {
-            $this->userId = $this->getUserId();
-            $this->personId = $args['personId'] ?? null;
+            $userId = auth()->id();
+            $personId = $args['personId'] ?? null;
 
-            if (!$this->personId) {
-                return Error::createLocatedError("Person-DELETE-MISSING_PERSON_ID");
+            $validationResult = $this->canDeletePerson($userId, $personId);
+            if ($validationResult !== true) {
+                return $validationResult; // Return error response
             }
 
-            Log::info("User {$this->userId} attempting to delete Person ID {$this->personId}");
-
-            $person = Person::find($this->personId);
-            if (!$person) {
-                return Error::createLocatedError("Person-DELETE-PERSON_NOT_FOUND");
-            }
-
-            // Prevent deletion if the person is an owner
-            if ( $person->is_owner) {
-                return Error::createLocatedError("Person-DELETE-THIS_IS_OWNER");
-            }
-
-            // Retrieve allowed user IDs
-            $allowedUserIds = collect($this->getAllUserIdsSmallClan($this->personId));
-
-            if (!$allowedUserIds->contains($this->userId)) {
-                return Error::createLocatedError("Person-DELETE-YOU_DONT_HAVE_PERMISSION");
-            }
-
-            // Prevent deletion if the person has children
-            if (!empty($this->getAllChildren($this->personId))) {
-                return Error::createLocatedError("Person-DELETE-HAS_CHILDREN");
-            }
-
-            // Delete the person
+            $person = Person::find($personId);
             $person->delete();
 
-            Log::info("User {$this->userId} successfully deleted Person ID {$this->personId}");
+            Log::info("User {$userId} successfully deleted Person ID {$personId}");
             return $person;
 
         } catch (Exception $e) {
-            Log::error("DeletePerson Mutation Error", ['error' => $e->getMessage(), 'personId' => $this->personId]);
+            Log::error("DeletePerson Mutation Error", ['error' => $e->getMessage(), 'personId' => $personId]);
             throw new Exception("Person-DELETE-ERROR_OCCURED");
         }
     }
+
+   
 }
