@@ -38,8 +38,12 @@ trait HandlesPersonDeletion
             return $this->errorResponse("Person-DELETE-CANNOT_DELETE_OWNER");
         }
 
-        if (!empty($childrenIds)) {
+        if (!empty($childrenIds) && (count($childrenIds)>1)) {
             return $this->errorResponse("Person-DELETE-HAS_CHILDREN");
+        }
+
+        if (!empty($childrenIds) && (count($childrenIds)==1) && (count( $parentIds)==0)) {
+            return true;
         }
 
         if (count($ownerIds) == 0) {
