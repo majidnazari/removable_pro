@@ -42,6 +42,9 @@ trait HandlesPersonDeletion
             return $this->errorResponse("Person-DELETE-HAS_CHILDREN");
         }
 
+        if (count($ownerIds) == 0) {
+            return true;
+        }
 
 
         if (!empty($spouseIds)) {
