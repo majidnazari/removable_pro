@@ -27,6 +27,7 @@ final class DeletePerson
 
     protected $userId;
     protected $personId;
+    protected $deletePersonIds = [];
 
     /**
      * Delete a person
@@ -41,25 +42,75 @@ final class DeletePerson
     public function resolvePerson($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         try {
-            $userId = auth()->id();
+            $this->userId = auth()->id();
             $personId = $args['personId'] ?? null;
 
-            $validationResult = $this->canDeletePerson($userId, $personId);
-            if ($validationResult !== true) {
-                return $validationResult; // Return error response
+            if (!$personId) {
+                throw new Exception("Person ID is required.");
             }
 
-            $person = Person::find($personId);
-            $person->delete();
+            // Validate deletion permission
+            $validationResult = $this->canDeletePerson($this->userId, $personId);
+            if ($validationResult !== true) {
+                return $validationResult;
+            }
 
-            Log::info("User {$userId} successfully deleted Person ID {$personId}");
-            return $person;
+            // Start transaction
+            DB::beginTransaction();
 
+            $this->deletePersonIds[] = $personId;
+
+            // Get all active spouses of the person
+            $spouseIds = PersonMarriage::where($this->getSpouseColumn($personId), $personId)
+                ->where('status', Status::Active)
+                ->pluck($this->getSpouseOppositeColumn($personId))
+                ->toArray();
+
+            // Validate all spouses before deletion
+            foreach ($spouseIds as $spouseId) {
+                $spouseValidation = $this->canDeletePerson($this->userId, $spouseId);
+                if ($spouseValidation !== true) {
+                    DB::rollBack(); // Rollback if any spouse cannot be deleted
+                    return $spouseValidation;
+                }
+                $this->deletePersonIds[] = $spouseId;
+            }
+
+            // Delete all collected person IDs
+            Person::whereIn('id', $this->deletePersonIds)->delete();
+
+            DB::commit(); // Commit transaction
+
+            Log::info("User {$this->userId} successfully deleted Persons: " . implode(',', $this->deletePersonIds));
+
+            return true;
         } catch (Exception $e) {
-            Log::error("DeletePerson Mutation Error", ['error' => $e->getMessage(), 'personId' => $personId]);
-            throw new Exception("Person-DELETE-ERROR_OCCURED");
+            DB::rollBack();
+            Log::error("DeletePerson Mutation Error", [
+                'error' => $e->getMessage(),
+                'personId' => $args['personId'] ?? 'N/A',
+                'userId' => $this->userId
+            ]);
+            throw new Exception("Person-DELETE-ERROR_OCCURRED");
         }
     }
 
-   
+    /**
+     * Get the column name for finding a person's spouse in PersonMarriage.
+     */
+    private function getSpouseColumn($personId)
+    {
+        $person = Person::find($personId);
+        return $person->gender ? 'man_id' : 'woman_id';
+    }
+
+    /**
+     * Get the opposite spouse column name in PersonMarriage.
+     */
+    private function getSpouseOppositeColumn($personId)
+    {
+        $person = Person::find($personId);
+        return $person->gender ? 'woman_id' : 'man_id';
+    }
 }
+

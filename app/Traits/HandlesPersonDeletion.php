@@ -12,64 +12,90 @@ use App\GraphQL\Enums\Status;
 trait HandlesPersonDeletion
 {
     use FindOwnerTrait;
+    use SmallClanTrait;
 
-    public function canDeletePerson($userId, $personId)
+    /**
+     * Checks if a person can be deleted by ensuring all related entities can be deleted.
+     */
+    public function canDeletePerson($userId, $personId, $checkedIds = [])
     {
-        Log::info("Checking if user {$userId} can delete person {$personId}");
+        Log::info("Checking deletion for person {$personId}, checked IDs: " . json_encode($checkedIds));
 
-        $parentIds = $this->getParentIds($personId);
-        $spouseIds = $this->getSpouseIds($personId);
-        $childrenIds = $this->getChildrenIds([$personId]);
+        if (in_array($personId, $checkedIds)) {
+            Log::warning("Preventing infinite loop for person {$personId}");
+            return true;
+        }
 
-        $peopleIds = array_unique(array_merge([$personId], $parentIds, $spouseIds, $childrenIds));
-        $ownerIds = $this->getOwnerIds($peopleIds);
-        $userIds = $this->getUserIds($ownerIds);
-
-        Log::info("Small clan people IDs: " . json_encode($peopleIds));
-        Log::info("Owner IDs in small clan: " . json_encode($ownerIds));
-        Log::info("User IDs in small clan: " . json_encode($userIds));
-
+        $checkedIds[] = $personId;
         $person = Person::find($personId);
         if (!$person) {
-            return $this->errorResponse("Person-DELETE-PERSON_NOT_FOUND");
+            return $this->errorResponse("Person-DELETE-PERSON_NOT_FOUND", $personId);
         }
 
-        if ($person->is_owner) {
-            return $this->errorResponse("Person-DELETE-CANNOT_DELETE_OWNER");
+        $clanOwnerIds = $this->getAllOwnerIdsSmallClan($personId);
+        $clanUserIds = $this->getAllUserIdsSmallClan($personId);
+
+        Log::info("the all users ids  in clan {$personId} are:" . json_encode( $clanUserIds));
+        
+        if (count($clanUserIds)>0 && (!in_array($userId, $clanUserIds->toArray())) ) {
+
+            // if (count($clanUserIds)>0)
+            // {
+                return $this->errorResponse("Person-DELETE-NOT_AUTHORIZED", $personId);
+
+            //}
         }
 
-        if (!empty($childrenIds) && (count($childrenIds)>1)) {
-            return $this->errorResponse("Person-DELETE-HAS_CHILDREN");
+        if ($person->is_owner && count($clanOwnerIds) > 1) {
+            return $this->errorResponse("Person-DELETE-CANNOT_DELETE_OWNER", $personId);
         }
 
-        if (!empty($childrenIds) && (count($childrenIds)==1) && (count( $parentIds)==0)) {
-            return true;
+        $parentIds = $this->getParentIds($personId);
+        $spouseIds = $this->getSpouseIds($personId, $person->gender);
+        $childrenIds = $this->getChildrenIds($spouseIds);
+
+        if (count($childrenIds) > 1) {
+            return $this->errorResponse("Person-DELETE-HAS_MULTIPLE_CHILDREN", $personId);
+        }
+        
+        if (count($childrenIds) == 1 && count($parentIds)==0) {
+            //$grandParents = $this->getParentIds($parentIds[0]);
+            //if (empty($grandParents)) {
+                //Log::info("Deleting person {$personId} as they have one child and parent with no parents.");
+                Log::info("Deleting person {$personId} as they have one child and no parent but the spouse check it in small clan ");
+
+                // foreach ($spouseIds as $spouseId) {
+                //     if (!$this->canDeletePerson($userId, $spouseId, $checkedIds)) {
+                //         return $this->errorResponse("Person-DELETE-CANNOT_DELETE_SPOUSE", $spouseId);
+                //     }
+                // }
+                //return true;
+            //}
         }
 
-        if (count($ownerIds) == 0) {
-            return true;
-        }
+       
 
+        // if (!empty($parentIds)) {
+        //     $firstParentId = array_shift($parentIds);
+        //     if (!$this->canDeletePerson($userId, $firstParentId, $checkedIds)) {
+        //         return $this->errorResponse("Person-DELETE-CANNOT_DELETE_PARENT", $firstParentId);
+        //     }
+        // }
 
-        if (!empty($spouseIds)) {
-            $spouseOwner = Person::whereIn('id', $spouseIds)->where('is_owner', true)->exists();
-            if ($spouseOwner) {
-                return $this->errorResponse("Person-DELETE-CANNOT_DELETE_SPOUSE_OWNER");
-            }
-        }
-
-        if (!in_array($userId, $userIds)) {
-            return $this->errorResponse("Person-DELETE-YOU_DONT_HAVE_PERMISSION");
-        }
-
+        Log::info("Person {$personId} can be deleted.");
         return true;
     }
 
+
+
+    /**
+     * Get parent IDs of a person from the PersonChild table
+     */
     protected function getParentIds($personId)
     {
         $parentRelation = PersonChild::where('child_id', $personId)->first();
         if (!$parentRelation || !$parentRelation->person_marriage_id) {
-            Log::info("No parent relation found for person {$personId}.");
+            Log::info("No parents found for person {$personId}.");
             return [];
         }
 
@@ -77,91 +103,55 @@ trait HandlesPersonDeletion
             ->where('status', Status::Active)
             ->first();
 
-        if ($parentMarriage) {
-            $parentIds = [$parentMarriage->man_id, $parentMarriage->woman_id];
-            Log::info("Parent IDs for person {$personId}: " . json_encode($parentIds));
-            return $parentIds;
-        } else {
-            Log::info("No active parent marriage found for person {$personId}.");
-            return [];
-        }
+        $parents = $parentMarriage ? array_filter([$parentMarriage->man_id, $parentMarriage->woman_id]) : [];
+
+        Log::info("Found parents for person {$personId}: " . json_encode($parents));
+        return $parents;
     }
 
-    protected function getSpouseIds($personId)
+    /**
+     * Get all spouses of a person from the PersonMarriage table
+     */
+    public function getSpouseIds($personId, $isMale)
     {
-        $getSpouseIds = PersonMarriage::where('man_id', $personId)
-            ->orWhere('woman_id', $personId)
+        // $person = Person::find($personId);
+
+        // if (!$person) {
+        //     Log::error("Person ID {$personId} not found while retrieving spouses.");
+        //     return [];
+        // }
+
+        // $isMale = $person->gender; // Adjust based on your gender column
+
+        $getSpouseIds= PersonMarriage::where($isMale ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
-            //->pluck('id')
-            ->pluck('woman_id', 'man_id')
-            ->values()
+            //->pluck($isMale ? 'woman_id' : 'man_id')
+            ->pluck('id')
             ->toArray();
 
-        Log::info("the getSpouseIds {" . json_encode($getSpouseIds) . "} ");
-
-        return $getSpouseIds;
+            Log::info("the getSpouseIds  is :" . json_encode($getSpouseIds));
+            return $getSpouseIds;
     }
 
-    protected function getChildrenIds(array $parentIds)
+    /**
+     * Get all children of a given set of parent IDs
+     */
+    protected function getChildrenIds( $spouseIds)
     {
-        if (empty($parentIds)) {
-            Log::info("No parent IDs provided for children and spouses retrieval.");
-            return [];
-        }
+        $getChildrenIds= PersonChild::where('person_marriage_id', $spouseIds)
+            ->pluck('child_id')
+            ->toArray();
+            Log::info("the getChildrenIds is :" . json_encode($getChildrenIds));
 
-        $parentMarriages = PersonMarriage::whereIn('man_id', $parentIds)
-            ->orWhereIn('woman_id', $parentIds)
-            ->get(['id', 'man_id', 'woman_id']);
-
-        if ($parentMarriages->isEmpty()) {
-            Log::info("No parent marriages found for parent IDs: " . json_encode($parentIds));
-            return [];
-        }
-
-        $childrenIds = [];
-        $spouseIds = [];
-
-        foreach ($parentMarriages as $marriage) {
-            $children = PersonChild::where('person_marriage_id', $marriage->id)
-                ->join('people', 'person_children.child_id', '=', 'people.id') // Join with Person model
-                ->get(['person_children.child_id', 'people.gender']); // Fetch gender from Person
-
-            if (!$children->isEmpty()) {
-                $childrenIds = array_merge($childrenIds, $children->pluck('child_id')->toArray());
-
-                $maleChildren = $children->where('gender', 1)->pluck('child_id')->toArray();
-                $femaleChildren = $children->where('gender', 0)->pluck('child_id')->toArray();
-
-                $spouses = PersonMarriage::whereIn('man_id', $maleChildren)
-                    ->orWhereIn('woman_id', $femaleChildren)
-                    ->get(['man_id', 'woman_id']);
-
-                $spouseIds = array_merge($spouseIds, $spouses->pluck('man_id')->toArray(), $spouses->pluck('woman_id')->toArray());
-            }
-        }
-
-
-        $allIds = array_unique(array_merge($childrenIds, $spouseIds));
-        Log::info("Children and spouse IDs for parent IDs: " . json_encode($allIds));
-        return $allIds;
+            return $getChildrenIds;
     }
 
-    protected function getOwnerIds($peopleIds)
+    /**
+     * Returns an error response for GraphQL
+     */
+    protected function errorResponse($message, $personId)
     {
-        $getOwnerIds = Person::whereIn('id', $peopleIds)->where('is_owner', true)->pluck('id')->toArray();
-
-        return $getOwnerIds;
-    }
-
-    protected function getUserIds($ownerIds)
-    {
-        $getUserIds = Person::whereIn('id', $ownerIds)->pluck('creator_id')->toArray();
-        return $getUserIds;
-    }
-
-    protected function errorResponse($message)
-    {
-        Log::error("Error response triggered: {$message}");
+        Log::error("Error response triggered for person {$personId}: {$message}");
         return Error::createLocatedError($message);
     }
 }
