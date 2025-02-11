@@ -51,6 +51,28 @@ input CreatePersonInput
     # status: Status
 }
 
+
+input CreateParentInput {
+
+    person_id: ID!
+    father: CreatePersonInput
+    mother: CreatePersonInput
+    marriage_status: MarriageStatus
+    marriage_date: String
+    divorce_date: String
+    child_kind: ChildKind
+    child_status: ChildStatus
+    status: Status
+}
+
+type ParentResponse {
+    father: Person
+    mother: Person
+
+    marriage: PersonMarriage
+    childRelation: PersonChild
+}
+
 input CreateMergePersonInput 
 @validator(class: "App\\GraphQL\\Validators\\Person\\MergePersonsValidator")
 {
