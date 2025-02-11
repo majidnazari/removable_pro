@@ -65,12 +65,26 @@ input CreateParentInput {
     status: Status
 }
 
+input CreateSpouseInput
+{
+    person_id: ID!
+    spouse: CreatePersonInput
+    marriage_status: MarriageStatus
+    marriage_date: String
+    status: Status
+
+}
+
 type ParentResponse {
     father: Person
     mother: Person
 
     marriage: PersonMarriage
     childRelation: PersonChild
+}
+
+type SpouseResponse {
+   Spouse:PersonMarriage
 }
 
 input CreateMergePersonInput 
