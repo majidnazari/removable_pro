@@ -52,7 +52,9 @@ input CreatePersonInput
 }
 
 
-input CreateParentInput {
+input CreateParentInput 
+@validator(class: "App\\GraphQL\\Validators\\Person\\CreateParentInputValidator")
+{
 
     person_id: ID!
     father: CreatePersonInput
