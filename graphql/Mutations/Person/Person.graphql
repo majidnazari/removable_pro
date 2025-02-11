@@ -14,3 +14,7 @@ createPerson(input: CreatePersonInput! @spread): Person @guard(with: ["api"])  @
 createParent(input: CreateParentInput! @spread): ParentResponse  @guard(with: ["api"]) 
 @throttle(maxAttempts:10 decayMinutes:1.0) 
 @field(resolver: "App\\GraphQL\\Mutations\\Person\\CreateParent@resolveParent") 
+
+createSpouse(input: CreateSpouseInput! @spread): PersonMarriage  @guard(with: ["api"]) 
+@throttle(maxAttempts:10 decayMinutes:1.0) 
+@field(resolver: "App\\GraphQL\\Mutations\\Person\\CreateSpouse@resolveSpouse") 
