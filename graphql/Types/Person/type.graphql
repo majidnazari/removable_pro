@@ -75,6 +75,18 @@ input CreateSpouseInput
 
 }
 
+
+input CreateChildInput
+{
+    man_id: ID!
+    woman_id: ID!
+    child: CreatePersonInput
+    child_kind: ChildKind
+    child_status: ChildStatus
+    status: Status
+
+}
+
 type ParentResponse {
     father: Person
     mother: Person
