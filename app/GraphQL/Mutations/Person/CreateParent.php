@@ -94,6 +94,8 @@ final class CreateParent
                 "child_status" => $args['child_status'] ?? ChildStatus::WithFamily,
                 "status" => $args['status'] ?? Status::Active
             ];
+            $this->checkDuplicate(new PersonChild(),  ["child_id" => $personId ]); // check has parent before or not!.
+
             $this->checkDuplicate(new PersonChild(),  $PersonChildModel);
             $childRelation = PersonChild::create($PersonChildModel);
 
