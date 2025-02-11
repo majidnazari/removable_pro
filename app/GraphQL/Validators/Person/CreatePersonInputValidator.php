@@ -77,7 +77,7 @@ class CreatePersonInputValidator extends Validator
             'birth_date.before_or_equal' => 'The birth date cannot be in the future.',
             'death_date.before_or_equal' => 'The death date cannot be in the future.',
             'death_date.after_or_equal' => 'The death date cannot be before the birth date.',
-            'gender.in' => 'The gender must be either 0 (Man) or 1 (Woman).',
+            'gender.in' => 'The gender must be either 0 (Woman) or  1 (Man) .',
             'first_name.regex' => 'The first name may only contain letters, spaces, and hyphens.',
             'last_name.regex' => 'The last name may only contain letters, spaces, and hyphens.',
         ];
