@@ -42,8 +42,8 @@ class ValidMarriageDate implements Rule
         }
 
         // Ensure the father is at least 15 years old at marriage
-        if ($fatherBirthDate->diffInYears($marriageDate) < 15) {
-            $this->errorMessage = "Father must be at least 15 years old at the time of marriage.";
+        if ($fatherBirthDate->diffInYears($marriageDate) < 12) {
+            $this->errorMessage = "Father must be at least 12 years old at the time of marriage.";
             return false;
         }
 

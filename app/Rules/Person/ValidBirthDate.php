@@ -23,9 +23,9 @@ class ValidBirthDate implements Rule
     {
         $birthDate = Carbon::parse($value);
 
-        // If the father, validate that the birth date is at least 15 years ago
+        // If the father, validate that the birth date is at least 12 years ago
         if (strpos($attribute, 'father') !== false) {
-            return $birthDate->lte(Carbon::now()->subYears(15)); // Father's birth date should be at least 15 years ago
+            return $birthDate->lte(Carbon::now()->subYears(12)); // Father's birth date should be at least 12 years ago
         }
 
         // If the mother, validate that the birth date is at least 9 years ago
@@ -44,6 +44,6 @@ class ValidBirthDate implements Rule
      */
     public function message()
     {
-        return "The birth date is not valid. Father must be at least 15 years old, and mother must be at least 9 years old.";
+        return "The birth date is not valid. Father must be at least 12 years old, and mother must be at least 9 years old.";
     }
 }

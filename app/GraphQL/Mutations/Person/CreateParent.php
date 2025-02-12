@@ -73,18 +73,18 @@ final class CreateParent
 
             Log::info("the child birthdtae:{$childBirthDate}");
 
-            // Ensure the child is at least 15 years younger than the father
             $fatherBirthDate = Carbon::parse($father_created->birth_date);
-            if ($childBirthDate->gt($fatherBirthDate->subYears(15))) {
-                throw new \Exception("The person's birth date must be at least 15 years younger than the father's birth date.");
+            // Ensure the child is at least 12 years younger than the father
+            $ageDifference = $fatherBirthDate->diffInYears($childBirthDate);
+            if ($ageDifference < 12) {
+                throw new \Exception("The child's birth date must be at least 12 years after the father's birth date.");
             }
 
-            Log::info("the fatherBirthDate birthdtae:{$fatherBirthDate}");
-
-            // Ensure the child is at least 9 years younger than the mother
             $motherBirthDate = Carbon::parse($mother_created->birth_date);
-            if ($childBirthDate->gt($motherBirthDate->subYears(9))) {
-                throw new \Exception("The person's birth date must be at least 9 years younger than the mother's birth date.");
+            // Ensure the child is at least 9 years younger than the mother
+            $ageDifference = $motherBirthDate->diffInYears($childBirthDate);
+            if ($ageDifference < 9) {
+                throw new \Exception("The child's birth date must be at least 9 years after the mother's birth date.");
             }
             Log::info("the motherBirthDate birthdtae:{$motherBirthDate}");
 
@@ -112,9 +112,9 @@ final class CreateParent
             if ($marriage->marriage_date) {
                 $marriageDate = Carbon::parse($marriage->marriage_date);
 
-                // Ensure child's birth date is at least 9 months after the marriage date
-                if ($childBirthDate->lt($marriageDate->addMonths(9))) {
-                    throw new \Exception("Child's birth date must be at least 9 months after the marriage date.");
+                // Ensure child's birth date is at least 6 months after the marriage date
+                if ($childBirthDate->lt($marriageDate->addMonths(6))) {
+                    throw new \Exception("Child's birth date must be at least 6 months after the marriage date.");
                 }
             }
 

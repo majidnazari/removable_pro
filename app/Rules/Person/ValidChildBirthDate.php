@@ -13,7 +13,7 @@ class ValidChildBirthDate implements Rule
         $marriageDate = request()->input('marriage_date');
         $divorceDate = request()->input('divorce_date');
 
-        $minBirthAfterMarriage = Carbon::parse($marriageDate)->addMonths(9);
+        $minBirthAfterMarriage = Carbon::parse($marriageDate)->addMonths(6);
         
         if ($divorceDate) {
             return $childBirthDate->greaterThanOrEqualTo($minBirthAfterMarriage) &&
@@ -25,6 +25,6 @@ class ValidChildBirthDate implements Rule
 
     public function message()
     {
-        return "Child's birth date must be at least 9 months after marriage and before divorce date.";
+        return "Child's birth date must be at least 6 months after marriage and before divorce date.";
     }
 }
