@@ -23,13 +23,13 @@ class CreateParentInputValidator extends Validator
             'father.first_name' => ['required', 'string', 'max:255'],
             'father.last_name' => ['required', 'string', 'max:255'],
             'father.birth_date' => ['required', 'date', 'before_or_equal:today', new ValidBirthDate],
-            'father.death_date' => ['nullable','date','after:father.birth_date'],
+            'father.death_date' => ['nullable','date','after_or_equal:father.birth_date'],
             //'father.gender' => ['required', 'integer', 'in:1'], // 1 = Male
             
             'mother.first_name' => ['required', 'string', 'max:255'],
             'mother.last_name' => ['required', 'string', 'max:255'],
             'mother.birth_date' => ['required', 'date', 'before_or_equal:today', new ValidBirthDate],
-            'mother.death_date' => ['nullable','date','after:mother.birth_date'],
+            'mother.death_date' => ['nullable','date','after_or_equal:mother.birth_date'],
 
             //'mother.gender' => ['required', 'integer', 'in:0'], // 0 = Female
             
