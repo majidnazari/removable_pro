@@ -62,7 +62,7 @@ class CreatePersonInputValidator extends Validator
                 'date',
                 'before_or_equal:today', // Ensures death_date is not in the future
                 'after_or_equal:birth_date', // Ensures death_date is not before birth_date
-                new ValidDeathDate($birthDate, $marriageDate, $divorceDate),
+               // new ValidDeathDate($birthDate, null,$marriageDate, $divorceDate),
             ],
             'gender' => [
                 'sometimes',

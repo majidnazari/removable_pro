@@ -114,6 +114,7 @@ final class CreateParent
 
                 // Ensure child's birth date is at least 6 months after the marriage date
                 if ($childBirthDate->lt($marriageDate->addMonths(6))) {
+                    Log::info("the marriage date is {$marriageDate} and the child birthdate is {$childBirthDate}");
                     throw new \Exception("Child's birth date must be at least 6 months after the marriage date.");
                 }
             }
