@@ -78,6 +78,7 @@ input CreateSpouseInput
 }
 
 input CreateChildInput
+@validator(class: "App\\GraphQL\\Validators\\Person\\CreateChildInputValidator") 
 {
     man_id: ID!
     woman_id: ID!
