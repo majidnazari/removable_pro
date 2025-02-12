@@ -8,48 +8,48 @@ use Log;
 
 class ValidMarriageDate implements Rule
 {
-    protected $fatherBirthDate;
-    protected $motherBirthDate;
+    protected $manBirthDate;
+    protected $womanBirthDate;
     protected $errorMessage;
 
-    public function __construct($fatherBirthDate, $motherBirthDate)
+    public function __construct($manBirthDate, $womanBirthDate)
     {
-        $this->fatherBirthDate = $fatherBirthDate;
-        $this->motherBirthDate = $motherBirthDate;
+        $this->manBirthDate = $manBirthDate;
+        $this->womanBirthDate = $womanBirthDate;
         $this->errorMessage = "Invalid marriage date.";
     }
 
     public function passes($attribute, $value)
     {
-        if (!$this->fatherBirthDate || !$this->motherBirthDate || !$value) {
-            $this->errorMessage = "Marriage date, father's birth date, and mother's birth date are required.";
+        if (!$this->manBirthDate || !$this->womanBirthDate || !$value) {
+            $this->errorMessage = "Marriage date, man's birth date, and woman's birth date are required.";
             return false;
         }
 
         $marriageDate = Carbon::parse($value);
-        $fatherBirthDate = Carbon::parse($this->fatherBirthDate);
-        $motherBirthDate = Carbon::parse($this->motherBirthDate);
+        $manBirthDate = Carbon::parse($this->manBirthDate);
+        $womanBirthDate = Carbon::parse($this->womanBirthDate);
 
         // Check if marriage date is after both parents' birth dates
-        if (!$marriageDate->greaterThan($fatherBirthDate)) {
-            $this->errorMessage = "Marriage date must be after the father's birth date.";
+        if (!$marriageDate->greaterThan($manBirthDate)) {
+            $this->errorMessage = "Marriage date must be after the man's birth date.";
             return false;
         }
 
-        if (!$marriageDate->greaterThan($motherBirthDate)) {
-            $this->errorMessage = "Marriage date must be after the mother's birth date.";
+        if (!$marriageDate->greaterThan($womanBirthDate)) {
+            $this->errorMessage = "Marriage date must be after the woman's birth date.";
             return false;
         }
 
-        // Ensure the father is at least 15 years old at marriage
-        if ($fatherBirthDate->diffInYears($marriageDate) < 12) {
-            $this->errorMessage = "Father must be at least 12 years old at the time of marriage.";
+        // Ensure the Man is at least 15 years old at marriage
+        if ($manBirthDate->diffInYears($marriageDate) < 12) {
+            $this->errorMessage = "Man must be at least 12 years old at the time of marriage.";
             return false;
         }
 
-        // Ensure the mother is at least 9 years old at marriage
-        if ($motherBirthDate->diffInYears($marriageDate) < 9) {
-            $this->errorMessage = "Mother must be at least 9 years old at the time of marriage.";
+        // Ensure the Woman is at least 9 years old at marriage
+        if ($womanBirthDate->diffInYears($marriageDate) < 9) {
+            $this->errorMessage = "Woman must be at least 9 years old at the time of marriage.";
             return false;
         }
 

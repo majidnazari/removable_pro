@@ -44,6 +44,6 @@ class ValidBirthDate implements Rule
      */
     public function message()
     {
-        return "The birth date is not valid. Father must be at least 12 years old, and mother must be at least 9 years old.";
+        return "The birth date is not valid. Man must be at least 12 years old, and Woman must be at least 9 years old.";
     }
 }

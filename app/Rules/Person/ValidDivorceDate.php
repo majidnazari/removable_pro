@@ -8,27 +8,27 @@ use Carbon\Carbon;
 class ValidDivorceDate implements Rule
 {
     protected $marriageDate;
-    protected $fatherBirthDate;
-    protected $motherBirthDate;
+    protected $manBirthDate;
+    protected $womanBirthDate;
 
-    public function __construct($marriageDate, $fatherBirthDate, $motherBirthDate)
+    public function __construct($marriageDate, $manBirthDate, $womanBirthDate)
     {
         $this->marriageDate = $marriageDate;
-        $this->fatherBirthDate = $fatherBirthDate;
-        $this->motherBirthDate = $motherBirthDate;
+        $this->manBirthDate = $manBirthDate;
+        $this->womanBirthDate = $womanBirthDate;
     }
 
     public function passes($attribute, $value)
     {
         $divorceDate = Carbon::parse($value);
 
-        if (!$this->marriageDate || !$this->fatherBirthDate || !$this->motherBirthDate) {
+        if (!$this->marriageDate || !$this->manBirthDate || !$this->womanBirthDate) {
             return false; // Ensure all required dates are provided
         }
 
         return $divorceDate->greaterThan(Carbon::parse($this->marriageDate)) &&
-               $divorceDate->greaterThan(Carbon::parse($this->fatherBirthDate)) &&
-               $divorceDate->greaterThan(Carbon::parse($this->motherBirthDate));
+               $divorceDate->greaterThan(Carbon::parse($this->manBirthDate)) &&
+               $divorceDate->greaterThan(Carbon::parse($this->womanBirthDate));
     }
 
     public function message()
