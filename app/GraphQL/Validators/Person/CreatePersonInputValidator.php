@@ -8,6 +8,7 @@ use Nuwave\Lighthouse\Validation\Validator;
 use App\Rules\Person\UniquePerson;
 use App\Rules\Person\UniqueOwnerPerUser;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\Person\ValidDeathDate;
 use Exception;
 use Log;
 
@@ -33,6 +34,10 @@ class CreatePersonInputValidator extends Validator
         $birthDate = $this->arg('birth_date');
         $is_owner = $this->arg('is_owner');
 
+        $birthDate = $this->arg('birth_date');
+        $marriageDate = $this->arg('marriage_date') ?? null;
+        $divorceDate = $this->arg('divorce_date') ?? null;
+
         return [
             
             'first_name' => [
@@ -57,6 +62,7 @@ class CreatePersonInputValidator extends Validator
                 'date',
                 'before_or_equal:today', // Ensures death_date is not in the future
                 'after_or_equal:birth_date', // Ensures death_date is not before birth_date
+                new ValidDeathDate($birthDate, $marriageDate, $divorceDate),
             ],
             'gender' => [
                 'sometimes',
