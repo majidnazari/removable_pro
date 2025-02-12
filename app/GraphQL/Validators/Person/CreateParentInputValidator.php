@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Rules\Person\ValidBirthDate;
 use App\Rules\Person\ValidMarriageDate;
 use App\Rules\Person\ValidDivorceDate;
+use App\Rules\Person\ValidDeathDate;
 use Exception;
 use Log;
 
@@ -23,13 +24,13 @@ class CreateParentInputValidator extends Validator
             'father.first_name' => ['required', 'string', 'max:255'],
             'father.last_name' => ['required', 'string', 'max:255'],
             'father.birth_date' => ['required', 'date', 'before_or_equal:today', new ValidBirthDate],
-            'father.death_date' => ['nullable','date','after_or_equal:father.birth_date'],
+            'father.death_date' => ['nullable','date','after_or_equal:father.birth_date',new ValidDeathDate($this->arg("father.birth_date"))],
             //'father.gender' => ['required', 'integer', 'in:1'], // 1 = Male
             
             'mother.first_name' => ['required', 'string', 'max:255'],
             'mother.last_name' => ['required', 'string', 'max:255'],
             'mother.birth_date' => ['required', 'date', 'before_or_equal:today', new ValidBirthDate],
-            'mother.death_date' => ['nullable','date','after_or_equal:mother.birth_date'],
+            'mother.death_date' => ['nullable','date','after_or_equal:mother.birth_date',new ValidDeathDate($this->arg("mother.birth_date"))],
 
             //'mother.gender' => ['required', 'integer', 'in:0'], // 0 = Female
             
@@ -39,6 +40,7 @@ class CreateParentInputValidator extends Validator
                 'date', 
                 'before_or_equal:today',
                 new ValidMarriageDate($this->arg("father.birth_date") ,$this->arg("mother.birth_date")),
+                //new ValidDeathDate($this->arg("mother.birth_date")),
                 'required_with:divorce_date',  // marriage_date required if divorce_date exists
             ],
             
@@ -50,6 +52,7 @@ class CreateParentInputValidator extends Validator
                 'after:father.birth_date',
                 'after:mother.birth_date',
                 new ValidDivorceDate($this->arg("marriage_date"),$this->arg("father.birth_date") ,$this->arg("mother.birth_date")),
+                //new ValidDeathDate($this->arg("divorce_date")),
             ],
         ];
     }
