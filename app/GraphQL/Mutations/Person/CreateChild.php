@@ -5,6 +5,7 @@ namespace App\GraphQL\Mutations\Person;
 use App\Models\Person;
 use App\Models\PersonMarriage;
 use App\Models\PersonChild;
+use App\Traits\SmallClanTrait;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Carbon\Carbon;
@@ -21,10 +22,12 @@ final class CreateChild
 {
     use AuthUserTrait;
     use DuplicateCheckTrait;
+    use SmallClanTrait;
 
     public function resolveChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
+      
 
         DB::beginTransaction(); // Start transaction
 
@@ -32,6 +35,7 @@ final class CreateChild
             $manId = $args['man_id'];
             $womanId = $args['woman_id'];
 
+        
             // Check if the child (person) exists
             $man = Person::find($manId);
             if (!$man) {
@@ -41,6 +45,15 @@ final class CreateChild
             $woman = Person::find($womanId);
             if (!$woman) {
                 throw new \Exception("woman not found");
+            }
+
+            $allUsers=$this->getAllUserIdsSmallClan($manId);
+            Log::info("the all users in small clan are:". json_encode($allUsers) . " and the users logged in {$this->userId}");
+
+            if(!empty($allUsers) && in_array($this->userId,$allUsers->toArray())==false)
+            {
+                throw new \Exception("you don't have permision to add node!.");
+
             }
 
             // Create the child
