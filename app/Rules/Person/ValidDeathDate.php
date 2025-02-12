@@ -7,13 +7,15 @@ use Illuminate\Contracts\Validation\Rule;
 
 class ValidDeathDate implements Rule
 {
-    protected $birthDate;
+    protected $birthDateMan;
+    protected $birthDateWoman;
     protected $marriageDate;
     protected $divorceDate;
 
-    public function __construct($birthDate, $marriageDate = null, $divorceDate = null)
+    public function __construct($birthDateMan=null,$birthDateWoman=null, $marriageDate = null, $divorceDate = null)
     {
-        $this->birthDate = $birthDate ? Carbon::parse($birthDate) : null;
+        $this->birthDateMan = $birthDateMan ? Carbon::parse($birthDateMan) : null;
+        $this->birthDateWoman = $birthDateWoman ? Carbon::parse($birthDateWoman) : null;
         $this->marriageDate = $marriageDate ? Carbon::parse($marriageDate) : null;
         $this->divorceDate = $divorceDate ? Carbon::parse($divorceDate) : null;
     }
@@ -34,16 +36,20 @@ class ValidDeathDate implements Rule
         $deathDate = Carbon::parse($value);
 
         // 1. Death date must be after or equal to birth date
-        if ($this->birthDate && $deathDate->lt($this->birthDate)) {
+        if ($this->birthDateMan && $deathDate->lt($this->birthDateMan)) {
+            return false;
+        }
+        // 2. Death date must be after or equal to birth date
+        if ($this->birthDateWoman && $deathDate->lt($this->birthDateWoman)) {
             return false;
         }
 
-        // 2. If marriage date exists, death date must be after or equal to it
+        // 3. If marriage date exists, death date must be after or equal to it
         if ($this->marriageDate && $deathDate->lt($this->marriageDate)) {
             return false;
         }
 
-        // 3. If divorce date exists, death date must be after or equal to it
+        // 4. If divorce date exists, death date must be after or equal to it
         if ($this->divorceDate && $deathDate->lt($this->divorceDate)) {
             return false;
         }
