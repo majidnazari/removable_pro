@@ -23,8 +23,8 @@ class CreateChildInputValidator extends GraphQLValidator
 
         // Fetch marriage details
         $marriage = PersonMarriage::where('man_id', $manId)
-                                  ->where('woman_id', $womanId)
-                                  ->first();
+            ->where('woman_id', $womanId)
+            ->first();
         $marriageDate = $marriage->marriage_date ?? null;
         $divorceDate = $marriage->divorce_date ?? null;
 
@@ -60,6 +60,7 @@ class CreateChildInputValidator extends GraphQLValidator
                     }
                 }
             ],
+            'child.death_date' => ["nullable", "date", "after:child.birth_date"],
         ];
     }
 }

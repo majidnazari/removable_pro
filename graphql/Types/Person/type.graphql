@@ -97,9 +97,6 @@ type ParentResponse {
     childRelation: PersonChild
 }
 
-type SpouseResponse {
-   Spouse:PersonMarriage
-}
 
 input CreateMergePersonInput 
 @validator(class: "App\\GraphQL\\Validators\\Person\\MergePersonsValidator")

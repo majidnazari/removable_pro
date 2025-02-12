@@ -21,7 +21,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
         Log::info("the spouse is :" . json_encode($spouseData));
         // Fetch existing person from DB
         $person = Person::find($personId);
-       
+
         if (!$person) {
             return ['person_id' => ['Person not found']];
         }
@@ -29,8 +29,8 @@ class CreateSpouseInputValidator extends GraphQLValidator
         // Extract spouse data (not saved in DB yet)
         $spouseBirthDate = $spouseData['birth_date'] ?? null;
 
-        $manBirthdate=$person->gender==1 ? $person->birth_date : $spouseBirthDate;
-        $womanBirthdate=$person->gender==1 ? $spouseBirthDate :$person->birth_date  ;
+        $manBirthdate = $person->gender == 1 ? $person->birth_date : $spouseBirthDate;
+        $womanBirthdate = $person->gender == 1 ? $spouseBirthDate : $person->birth_date;
         //$spouseId = $spouseData['id'] ?? null; // Spouse is not saved, so we check input directly
 
         return [
@@ -43,13 +43,14 @@ class CreateSpouseInputValidator extends GraphQLValidator
             'spouse.first_name' => ['required', 'string'],
             'spouse.last_name' => ['required', 'string'],
             'spouse.birth_date' => ['required', 'date'],
+            'spouse.death_date' => ['nullable', 'date', "after:spouse.birth_date"],
 
             // Marriage date must be after both birthdates
             'marriage_date' => [
                 'nullable',
                 'date',
                 'before_or_equal:today',
-                new ValidMarriageDate( $manBirthdate, $womanBirthdate),
+                new ValidMarriageDate($manBirthdate, $womanBirthdate),
                 'required_with:divorce_date',  // marriage_date required if divorce_date exists
             ],
 
@@ -60,7 +61,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
                 'after:marriage_date',
                 'after:father.birth_date',
                 'after:mother.birth_date',
-                new ValidDivorceDate( $marriageDate, $manBirthdate, $womanBirthdate),
+                new ValidDivorceDate($marriageDate, $manBirthdate, $womanBirthdate),
             ],
 
             // Ensure unique marriage

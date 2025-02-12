@@ -23,11 +23,14 @@ class CreateParentInputValidator extends Validator
             'father.first_name' => ['required', 'string', 'max:255'],
             'father.last_name' => ['required', 'string', 'max:255'],
             'father.birth_date' => ['required', 'date', 'before_or_equal:today', new ValidBirthDate],
+            'father.death_date' => ['nullable','date','after:father.birth_date'],
             //'father.gender' => ['required', 'integer', 'in:1'], // 1 = Male
             
             'mother.first_name' => ['required', 'string', 'max:255'],
             'mother.last_name' => ['required', 'string', 'max:255'],
             'mother.birth_date' => ['required', 'date', 'before_or_equal:today', new ValidBirthDate],
+            'mother.death_date' => ['nullable','date','after:mother.birth_date'],
+
             //'mother.gender' => ['required', 'integer', 'in:0'], // 0 = Female
             
             // marriage_date must be provided if divorce_date is present
@@ -61,11 +64,15 @@ class CreateParentInputValidator extends Validator
             'father.last_name.required' => 'Father\'s last name is required.',
             'father.birth_date.required' => 'Father\'s birth date is required.',
             'father.gender.in' => 'Father must be male (gender = 1).',
+            'father.death_date' => 'father death_date must be after the birth date.',
+
 
             'mother.first_name.required' => 'Mother\'s first name is required.',
             'mother.last_name.required' => 'Mother\'s last name is required.',
             'mother.birth_date.required' => 'Mother\'s birth date is required.',
             'mother.gender.in' => 'Mother must be female (gender = 0).',
+            'mother.death_date' => 'mother death_date must be after the birth date.',
+
 
             'marriage_date.required_with' => 'Marriage date is required if a divorce date is provided.',  // Custom message for marriage_date
             'marriage_date.before_or_equal' => 'Marriage date cannot be in the future.',
