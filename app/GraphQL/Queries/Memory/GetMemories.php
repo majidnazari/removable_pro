@@ -2,6 +2,8 @@
 
 namespace App\GraphQL\Queries\Memory;
 
+use App\GraphQL\Enums\ConfirmMemoryStatus;
+use App\GraphQL\Enums\Status;
 use App\Models\Memory;
 use App\Models\GroupDetail;
 use App\Models\GroupCategoryDetail;
@@ -34,6 +36,11 @@ final class GetMemories
     function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
        
+
+        $extraConditions = [
+            ['column' => 'confirm_status', 'operator' => '=', 'value' => ConfirmMemoryStatus::Accept->value],
+            ['column' => 'status', 'operator' => '=', 'value' => Status::Active->value],
+        ];
         // $result = null;
         // $this->userId = $this->getUserId();
 
@@ -43,7 +50,7 @@ final class GetMemories
         // return $memories;
 
         $query = $this->getModelByAuthorization(Memory::class, $args, true);
-        $query = $this->applySearchFilters($query, $args);
+        $query = $this->applySearchFilters($query, $args,$extraConditions);
 
         return $query;
         //Log::info("Query before filtering: " . json_encode($query->toSql()));

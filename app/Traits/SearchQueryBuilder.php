@@ -14,7 +14,7 @@ trait SearchQueryBuilder
      * @param array $args
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function applySearchFilters($query, array $args)
+    public function applySearchFilters($query, array $args,$extraConditions=null)
     {
         $table = $query->getModel()->getTable();
         $columns = Schema::getColumnListing($table); // Get all columns of the table
@@ -31,6 +31,15 @@ trait SearchQueryBuilder
                     $query->where($key, 'LIKE', '%' . $value . '%'); // Use LIKE for string columns
                 } else {
                     $query->where($key, $value); // Exact match for other types
+                }
+            }
+        }
+
+        // Apply extra conditions if provided
+        if ($extraConditions && is_array($extraConditions)) {
+            foreach ($extraConditions as $condition) {
+                if (isset($condition['column'], $condition['operator'], $condition['value'])) {
+                    $query->where($condition['column'], $condition['operator'], $condition['value']);
                 }
             }
         }

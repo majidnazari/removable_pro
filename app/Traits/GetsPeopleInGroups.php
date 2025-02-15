@@ -69,7 +69,7 @@ trait GetsPeopleInGroups
     public function canAccessMemory(Memory $memory)
     {
         $this->user = $this->getUser();
-        Log::info("the memory is :" . ($memory));
+       // Log::info("the memory is :" . ($memory));
 
         // $groupCategoryId = $memory->group_category_id;
 

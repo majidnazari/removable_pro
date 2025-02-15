@@ -1,11 +1,13 @@
 
 type Address {
+    
     id: ID
     creator_id: ID
     Creator: User    
     editor_id: ID
     Editor: User
     person_id: ID
+    Person: Person
     country_id: ID
     Country: Country
     province_id: ID
@@ -28,10 +30,10 @@ input CreateAddressInput
 @validator(class: "App\\GraphQL\\Validators\\Address\\CreateAddressValidator")
 {
     # creator_id: ID
-    person_id: ID!
+    person_id: ID
     country_id: ID
     province_id: ID
-    city_id: ID!
+    city_id: ID
     location_title: String
     street_name: String
     builder_no: String

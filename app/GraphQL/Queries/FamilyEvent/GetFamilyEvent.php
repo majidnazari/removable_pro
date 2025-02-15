@@ -25,7 +25,7 @@ final class GetFamilyEvent
     function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // $this->userId = $this->getUserId();
-        
+
         // $FamilyEvent = FamilyEvent::where('id', $args['id']);       
         // return $FamilyEvent->first();
 

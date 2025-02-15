@@ -1,15 +1,13 @@
 
-
-
 type Person {
-    id: ID!
+    id: ID
     creator_id: ID
     editor_id: ID
     node_code: String
     # node_level_x: Int
     # node_level_y: Int
-    first_name: String!
-    last_name: String!
+    first_name: String
+    last_name: String
     birth_date: String
     death_date: String
     mobile:String
@@ -50,6 +48,55 @@ input CreatePersonInput
     gender: Int
     # status: Status
 }
+
+
+input CreateParentInput 
+@validator(class: "App\\GraphQL\\Validators\\Person\\CreateParentInputValidator")
+{
+
+    person_id: ID!
+    father: CreatePersonInput
+    mother: CreatePersonInput
+    marriage_status: MarriageStatus
+    marriage_date: String
+    divorce_date: String
+    child_kind: ChildKind
+    child_status: ChildStatus
+    status: Status
+}
+
+input CreateSpouseInput
+@validator(class: "App\\GraphQL\\Validators\\Person\\CreateSpouseInputValidator") 
+{
+    person_id: ID!
+    spouse: CreatePersonInput
+    marriage_status: MarriageStatus
+    marriage_date: String
+    divorce_date: String
+    status: Status
+
+}
+
+input CreateChildInput
+@validator(class: "App\\GraphQL\\Validators\\Person\\CreateChildInputValidator") 
+{
+    man_id: ID!
+    woman_id: ID!
+    child: CreatePersonInput
+    child_kind: ChildKind
+    child_status: ChildStatus
+    status: Status
+
+}
+
+type ParentResponse {
+    father: Person
+    mother: Person
+
+    marriage: PersonMarriage
+    childRelation: PersonChild
+}
+
 
 input CreateMergePersonInput 
 @validator(class: "App\\GraphQL\\Validators\\Person\\MergePersonsValidator")

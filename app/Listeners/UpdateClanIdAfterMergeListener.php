@@ -49,7 +49,7 @@ class UpdateClanIdAfterMergeListener
             $usersToUpdate = DB::table('users')
                 ->where('clan_id', $receiver->clan_id) // Find all users with the receiver's clan_id
                 ->get();
-            Log::info("all of users must change are :" . json_encode($usersToUpdate));
+            //Log::info("all of users must change are :" . json_encode($usersToUpdate));
             // Update the clan_id for all these users to the sender's clan_id
             foreach ($usersToUpdate as $user) {
                 DB::table('users')

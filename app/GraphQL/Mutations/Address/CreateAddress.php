@@ -37,14 +37,14 @@ final class CreateAddress
         $AddressResult=[
             "creator_id"=>  $this->getUserId(),
             "person_id"=> $args['person_id'],
-            "country_id"=> $args['country_id'],
-            "province_id"=> $args['province_id'],
-            "city_id"=> $args['city_id'],
+            "country_id"=> $args['country_id'] ?? null ,
+            "province_id"=> $args['province_id'] ?? null,
+            "city_id"=> $args['city_id'] ?? null,
             "location_title" => $args['location_title'],
-            "street_name" => $args['street_name'],
-            "builder_no" => $args['builder_no'],
-            "floor_no" => $args['floor_no'],
-            "unit_no" => $args['unit_no'],
+            "street_name" => $args['street_name'] ?? null,
+            "builder_no" => $args['builder_no'] ?? null,
+            "floor_no" => $args['floor_no'] ?? null,
+            "unit_no" => $args['unit_no'] ?? null,
             "lat" => $args['lat'] ?? null,
             "lon" => $args['lon'] ?? null,
             "status" =>  $args['status'] ?? status::Active,
@@ -55,7 +55,7 @@ final class CreateAddress
         //  {
         //          return Error::createLocatedError("Address-CREATE-RECORD_IS_EXIST");
         //  }
-        $this->checkDuplicate(new Address(),  $AddressResult);
+        $this->checkDuplicate(new Address(),  [ "creator_id"=>  $this->getUserId(),"person_id"=> $args['person_id']]);
         $AddressResult_result=Address::create($AddressResult);
         return $AddressResult_result;
     }
