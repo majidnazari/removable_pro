@@ -7,6 +7,7 @@ use App\Models\Person;
 use App\Rules\Person\ValidBirthDate;
 use App\Rules\Person\ValidMarriageDate;
 use App\Rules\Person\ValidDivorceDate;
+use App\Rules\Person\ValidDeathDate;
 use Log;
 
 class CreateSpouseInputValidator extends GraphQLValidator
@@ -43,7 +44,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
             'spouse.first_name' => ['required', 'string'],
             'spouse.last_name' => ['required', 'string'],
             'spouse.birth_date' => ['required', 'date'],
-            'spouse.death_date' => ['nullable', 'date', "after:spouse.birth_date"],
+            'spouse.death_date' => ['nullable', 'date', "after:spouse.birth_date",new ValidDeathDate($manBirthdate, $womanBirthdate, $marriageDate, $divorceDate)],
 
             // Marriage date must be after both birthdates
             'marriage_date' => [
@@ -58,14 +59,27 @@ class CreateSpouseInputValidator extends GraphQLValidator
             'divorce_date' => [
                 'nullable',
                 'date',
-                'after:marriage_date',
-                'after:father.birth_date',
-                'after:mother.birth_date',
+                'after_or_equal:marriage_date',
+                'after_or_equal:father.birth_date',
+                'after_or_equal:mother.birth_date',
                 new ValidDivorceDate($marriageDate, $manBirthdate, $womanBirthdate),
             ],
 
             // Ensure unique marriage
             // new UniqueMarriage($personId, null), // Check if person already has an active marriage
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'person_id.required' => 'The child person ID is required.',
+            'person_id.exists' => 'The specified child person does not exist.',
+            
+
+            'marriage_date.required_with' => 'Marriage date is required if a divorce date is provided.',  // Custom message for marriage_date
+            'marriage_date.before_or_equal' => 'Marriage date cannot be in the future.',
+            'divorce_date.after_or_equal' => 'Divorce date must be after the marriage date and both parents\' birth dates.',
         ];
     }
 }
