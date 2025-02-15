@@ -5,6 +5,7 @@ namespace App\GraphQL\Validators\Person;
 use Nuwave\Lighthouse\Validation\Validator as GraphQLValidator;
 use App\Models\PersonMarriage;
 use App\Models\Person;
+use Carbon\Carbon;
 
 class CreateChildInputValidator extends GraphQLValidator
 {
@@ -54,7 +55,8 @@ class CreateChildInputValidator extends GraphQLValidator
                         $fail('Child birth date must be at least 6 months after parents\' marriage date.');
                     }
 
-                    $minChildBirthDate = $divorceDate->copy()->addMonths(10);
+                    $minChildBirthDate = Carbon::parse($divorceDate)->copy()->addMonths(10);
+                   // $minChildBirthDate = $divorceDate->copy()->addMonths(10);
                     // Ensure child is born before divorce date
                     if ($divorceDate &&  $value->lt($minChildBirthDate)) {
                         $fail('Child birth date must be at least 10 months after parents\' divorce date.');
