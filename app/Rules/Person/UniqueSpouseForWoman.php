@@ -33,7 +33,7 @@ class UniqueSpouseForWoman implements Rule
 
         // If person is a woman, ensure she has no active marriage
         if ($this->person->gender == 0) {
-            $hasActiveMarriage = PersonMarriage::where('person_id', $this->person->id)
+            $hasActiveMarriage = PersonMarriage::where('woman_id', $this->person->id)
                 ->whereNull('divorce_date')
                 ->exists();
 
