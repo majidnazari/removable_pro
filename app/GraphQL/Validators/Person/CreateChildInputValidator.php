@@ -55,11 +55,11 @@ class CreateChildInputValidator extends GraphQLValidator
                         $fail('Child birth date must be at least 6 months after parents\' marriage date.');
                     }
 
-                    $minChildBirthDate = Carbon::parse($divorceDate)->copy()->addMonths(10);
-                   // $minChildBirthDate = $divorceDate->copy()->addMonths(10);
-                    // Ensure child is born before divorce date
-                    if ($divorceDate &&   Carbon::parse($value)->lt($minChildBirthDate)) {
-                        $fail('Child birth date must be at least 10 months after parents\' divorce date.');
+                    //$minChildBirthDate = Carbon::parse($divorceDate)->copy()->addMonths(10);
+                    $maxChildBirthDate = Carbon::parse($divorceDate)->copy()->addMonths(10);
+
+                    if (Carbon::parse($value)->gt($maxChildBirthDate)) {
+                        $fail('child.birth_date', 'Child birth date must be within 10 months after parents\' divorce date.');
                     }
                 }
             ],
