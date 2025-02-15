@@ -26,9 +26,9 @@ class ValidDivorceDate implements Rule
             return false; // Ensure all required dates are provided
         }
 
-        return $divorceDate->greaterThan(Carbon::parse($this->marriageDate)) &&
-               $divorceDate->greaterThan(Carbon::parse($this->manBirthDate)) &&
-               $divorceDate->greaterThan(Carbon::parse($this->womanBirthDate));
+        return $divorceDate->greaterThanOrEqualTo(Carbon::parse($this->marriageDate)) &&
+               $divorceDate->greaterThanOrEqualTo(Carbon::parse($this->manBirthDate)) &&
+               $divorceDate->greaterThanOrEqualTo(Carbon::parse($this->womanBirthDate));
     }
 
     public function message()
