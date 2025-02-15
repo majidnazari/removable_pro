@@ -37,7 +37,7 @@ class UniqueSpouseForWoman implements Rule
                 ->whereNull('divorce_date')
                 ->exists();
 
-            if ($hasActiveMarriage) {
+            if ($hasActiveMarriage && empty($existingSpouse->death_date)) {
                 $this->errorMessage = "This woman already has an active marriage.";
                 return false;
             }
