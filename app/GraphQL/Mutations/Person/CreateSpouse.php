@@ -15,12 +15,15 @@ use App\GraphQL\Enums\ChildKind;
 use App\GraphQL\Enums\ChildStatus;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\SmallClanTrait;
 use Log;
 
 final class CreateSpouse
 {
     use AuthUserTrait;
     use DuplicateCheckTrait;
+    use SmallClanTrait;
+
 
     public function resolveSpouse($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
@@ -40,7 +43,8 @@ final class CreateSpouse
             // Create the father
             $spouse = [
                 "creator_id" => $this->userId,
-                "node_code" => Carbon::now()->format('YmdHisv'),
+                "node_code" => Carbon::now()->format('YmdHisv') . str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT),
+
                 "first_name" => $args['spouse']['first_name'],
                 "last_name" => $args['spouse']['last_name'],
                 "birth_date" => $args['spouse']['birth_date'] ?? null,
@@ -66,6 +70,16 @@ final class CreateSpouse
                 "divorce_date" => $args['divorce_date'] ?? null
             ];
             $this->checkDuplicate(new PersonMarriage(), $PersonMarriageModel);
+
+            $getAllusersInSmallClan=$this->getAllUserIdsSmallClan($personId)->toArray();
+           // Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
+            //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
+
+
+            if(!in_array($this->userId,$getAllusersInSmallClan))
+            {
+                throw new \Exception("The user logged do'nt have permision to change on this person.");
+            }
             $marriage = PersonMarriage::create($PersonMarriageModel);
 
           

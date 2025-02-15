@@ -38,7 +38,8 @@ trait SmallClanTrait
         }
 
         // If a userId is provided, set the userId
-        $this->userId = $this->person->creator_id;
+        // $this->userId = $this->person->creator_id;
+         $this->userId = $this->getUserId();
 
         // Find the owner (the person initiating the query)
         $this->owner = $this->findOwner( $this->userId );

@@ -5,6 +5,7 @@ namespace App\GraphQL\Mutations\Person;
 use App\Models\Person;
 use App\Models\PersonMarriage;
 use App\Models\PersonChild;
+use App\Traits\SmallClanTrait;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Carbon\Carbon;
@@ -15,152 +16,154 @@ use App\GraphQL\Enums\ChildKind;
 use App\GraphQL\Enums\ChildStatus;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
-use Log;
+use App\Traits\FindOwnerTrait;
+use App\Traits\PersonAncestryWithCompleteMerge;
+use Exception;
 
 final class CreateParent
 {
-    use AuthUserTrait;
-    use DuplicateCheckTrait;
+    use AuthUserTrait, DuplicateCheckTrait, FindOwnerTrait, PersonAncestryWithCompleteMerge, SmallClanTrait;
 
     public function resolveParent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
+        $personId = $args['person_id'];
 
-        DB::beginTransaction(); // Start transaction
+        // Validate if person exists
+        $person = Person::find($personId);
+        if (!$person) {
+            throw new Exception("Person not found.");
+        }
 
+        DB::beginTransaction();
         try {
-            $personId = $args['person_id'];
+            // Create father and mother
+            $fatherData = $this->preparePersonData($args['father'], 1);
+            $motherData = $this->preparePersonData($args['mother'], 0);
 
-            // Check if the child (person) exists
-            $person = Person::find($personId);
-            if (!$person) {
-                throw new \Exception("Person not found");
-            }
+            $this->checkDuplicate(new Person(), $fatherData);
+            $this->checkDuplicate(new Person(), $motherData);
 
-            // Create the father
-            $father = [
-                "creator_id" => $this->userId,
-                "node_code" => Carbon::now()->format('YmdHisv'),
-                "first_name" => $args['father']['first_name'],
-                "last_name" => $args['father']['last_name'],
-                "gender" => 1, // Male
-                "birth_date" => $args['father']['birth_date'] ?? null,
-                "death_date" => $args['father']['death_date'] ?? null,
-                "is_owner" => 0,
-                "status" => Status::Active,
-            ];
-            $this->checkDuplicate(new Person(), $father);
-            $father_created = Person::create($father);
+            $father = Person::create($fatherData);
+            $mother = Person::create($motherData);
 
-            // Create the mother
-            $mother = [
-                "creator_id" => $this->userId,
-                "node_code" => Carbon::now()->format('YmdHisv'),
-                "first_name" => $args['mother']['first_name'],
-                "last_name" => $args['mother']['last_name'],
-                "gender" => 0, // Female
-                "birth_date" => $args['mother']['birth_date'] ?? null,
-                "death_date" => $args['mother']['death_date'] ?? null,
-                "is_owner" => 0,
-                "status" => Status::Active,
-
-            ];
-            $this->checkDuplicate(new Person(), $mother);
-            $mother_created = Person::create($mother);
-
-            // Check the age of the person
-            $childBirthDate = Carbon::parse($person->birth_date);
-
-            Log::info("the child birthdtae:{$childBirthDate}");
-
-            $fatherBirthDate = Carbon::parse($father_created->birth_date);
-            // Ensure the child is at least 12 years younger than the father
-            $ageDifference = $fatherBirthDate->diffInYears($childBirthDate);
-            if ($ageDifference < 12) {
-                throw new \Exception("The child's birth date must be at least 12 years after the father's birth date.");
-            }
-
-            $motherBirthDate = Carbon::parse($mother_created->birth_date);
-            // Ensure the child is at least 9 years younger than the mother
-            $ageDifference = $motherBirthDate->diffInYears($childBirthDate);
-            if ($ageDifference < 9) {
-                throw new \Exception("The child's birth date must be at least 9 years after the mother's birth date.");
-            }
-            Log::info("the motherBirthDate birthdtae:{$motherBirthDate}");
-
+            // Validate age differences
+            $this->validateAgeDifference($person, $father, $mother);
 
             // Create marriage relation
-            $PersonMarriageModel = [
-                "creator_id" => $this->userId,
-                "man_id" => $father_created->id,
-                "woman_id" => $mother_created->id,
-                //  "editor_id" => $args['editor_id'] ?? null,
-                "marriage_status" => $args['marriage_status'] ?? MarriageStatus::Related,
-                "status" => $args['status'] ?? Status::Active,
-                "marriage_date" => $args['marriage_date'] ?? null,
-                "divorce_date" => $args['divorce_date'] ?? null
-            ];
-            $this->checkDuplicate(new PersonMarriage(), $PersonMarriageModel);
-            $marriage = PersonMarriage::create($PersonMarriageModel);
+            $marriageData = $this->prepareMarriageData($args, $father->id, $mother->id);
+            $this->checkDuplicate(new PersonMarriage(), $marriageData);
+            $marriage = PersonMarriage::create($marriageData);
 
+            // Validate marriage-child birth relation
+            $this->validateMarriageBirthDates($person->birth_date, $marriage);
 
+            // Validate person ancestry and permissions
+            $this->validatePersonAncestry($personId);
 
-            // Extract the birth date for validation
-            $childBirthDate = Carbon::parse($person->birth_date);
+            // Create child relation
+            $childRelationData = $this->prepareChildRelationData($args, $personId, $marriage->id);
+            $this->checkDuplicate(new PersonChild(), ["child_id" => $personId]);
+            $this->checkDuplicate(new PersonChild(), $childRelationData);
+            $childRelation = PersonChild::create($childRelationData);
 
-            // Validate child birth date based on marriage date
-            if ($marriage->marriage_date) {
-                $marriageDate = Carbon::parse($marriage->marriage_date);
+            DB::commit();
 
-                // Ensure child's birth date is at least 6 months after the marriage date
-                if ($childBirthDate->lt($marriageDate->addMonths(6))) {
-                    Log::info("the marriage date is {$marriageDate} and the child birthdate is {$childBirthDate}");
-                    throw new \Exception("Child's birth date must be at least 6 months after the marriage date.");
-                }
-            }
+            return compact('father', 'mother', 'marriage', 'childRelation');
 
-            if ($marriage->divorce_date) {
-                $divorceDate = Carbon::parse($marriage->divorce_date);
-            
-                // Calculate the date that is 8 months after the divorce date
-                $maxChildBirthDate = $divorceDate->copy()->addMonths(8);
-            
-                // Check if the child's birth date is after the maximum allowed date
-                if ($childBirthDate->gt($maxChildBirthDate)) {
-                    throw new \Exception("Child's birth date cannot be more than 8 months after the divorce date.");
-                }
-            }
-
-            // Link the child to this marriage
-            $PersonChildModel = [
-                "creator_id" => $this->userId,
-                //"editor_id" => $args['editor_id'] ?? null,
-                "person_marriage_id" => $marriage->id,
-                "child_id" => $personId,
-                "child_kind" => $args['child_kind'] ?? ChildKind::DirectChild,
-                "child_status" => $args['child_status'] ?? ChildStatus::WithFamily,
-                "status" => $args['status'] ?? Status::Active
-            ];
-            $this->checkDuplicate(new PersonChild(), ["child_id" => $personId]); // check has parent before or not!.
-
-            $this->checkDuplicate(new PersonChild(), $PersonChildModel);
-            $childRelation = PersonChild::create($PersonChildModel);
-
-            DB::commit(); // Commit transaction
-
-            return [
-                "father" => $father,
-                "mother" => $mother,
-                "marriage" => $marriage,
-                "childRelation" => $childRelation
-            ];
-
-        } catch (\Exception $e) {
-            DB::rollBack(); // Rollback on failure
-            Log::error("Failed to create parents: " . $e->getMessage());
+        } catch (Exception $e) {
+            DB::rollBack();
             return \GraphQL\Error\Error::createLocatedError($e->getMessage());
         }
     }
 
+    private function preparePersonData(array $data, int $gender): array
+    {
+        return [
+            "creator_id" => $this->userId,
+            "node_code" => Carbon::now()->format('YmdHisv') . str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT),
 
+            "first_name" => $data['first_name'],
+            "last_name" => $data['last_name'],
+            "gender" => $gender,
+            "birth_date" => $data['birth_date'] ?? null,
+            "death_date" => $data['death_date'] ?? null,
+            "is_owner" => 0,
+            "status" => Status::Active,
+        ];
+    }
+
+    private function validateAgeDifference($person, $father, $mother)
+    {
+        $childBirthDate = Carbon::parse($person->birth_date);
+        $fatherBirthDate = Carbon::parse($father->birth_date);
+        $motherBirthDate = Carbon::parse($mother->birth_date);
+
+        if ($fatherBirthDate->diffInYears($childBirthDate) < 12) {
+            throw new Exception("Child's birth date must be at least 12 years after the father's birth date.");
+        }
+
+        if ($motherBirthDate->diffInYears($childBirthDate) < 9) {
+            throw new Exception("Child's birth date must be at least 9 years after the mother's birth date.");
+        }
+    }
+
+    private function prepareMarriageData(array $args, int $fatherId, int $motherId): array
+    {
+        return [
+            "creator_id" => $this->userId,
+            "man_id" => $fatherId,
+            "woman_id" => $motherId,
+            "marriage_status" => $args['marriage_status'] ?? MarriageStatus::Related,
+            "status" => $args['status'] ?? Status::Active,
+            "marriage_date" => $args['marriage_date'] ?? null,
+            "divorce_date" => $args['divorce_date'] ?? null,
+        ];
+    }
+
+    private function validateMarriageBirthDates($childBirthDate, $marriage)
+    {
+        $childBirthDate = Carbon::parse($childBirthDate);
+
+        if ($marriage->marriage_date) {
+            $marriageDate = Carbon::parse($marriage->marriage_date);
+            if ($childBirthDate->lt($marriageDate->addMonths(6))) {
+                throw new Exception("Child's birth date must be at least 6 months after the marriage date.");
+            }
+        }
+
+        if ($marriage->divorce_date) {
+            $divorceDate = Carbon::parse($marriage->divorce_date);
+            if ($childBirthDate->gt($divorceDate->copy()->addMonths(8))) {
+                throw new Exception("Child's birth date cannot be more than 8 months after the divorce date.");
+            }
+        }
+    }
+
+    private function validatePersonAncestry(int $personId)
+    {
+        $result = $this->getPersonAncestryWithCompleteMerge($this->userId);
+        $headsIds = collect($result['heads'])->pluck("person_id")->toArray();
+
+        if (!in_array($personId, $headsIds)) {
+            throw new Exception("Person with ID {$personId} not found in the list of heads.");
+        }
+
+        $usersInSmallClan = $this->getAllUserIdsSmallClan($personId)->toArray();
+        if (!in_array($this->userId, $usersInSmallClan)) {
+            throw new Exception("User does not have permission to modify this person.");
+        }
+    }
+
+    private function prepareChildRelationData(array $args, int $personId, int $marriageId): array
+    {
+        return [
+            "creator_id" => $this->userId,
+            "person_marriage_id" => $marriageId,
+            "child_id" => $personId,
+            "child_kind" => $args['child_kind'] ?? ChildKind::DirectChild,
+            "child_status" => $args['child_status'] ?? ChildStatus::WithFamily,
+            "status" => $args['status'] ?? Status::Active,
+        ];
+    }
 }

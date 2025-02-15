@@ -57,6 +57,7 @@ input CreateParentInput
     person_id: ID!
     father: CreatePersonInput
     mother: CreatePersonInput
+    
     marriage_status: MarriageStatus
     marriage_date: String
     divorce_date: String
