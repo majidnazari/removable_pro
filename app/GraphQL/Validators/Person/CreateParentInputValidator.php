@@ -53,9 +53,9 @@ class CreateParentInputValidator extends Validator
             'divorce_date' => [
                 'nullable',
                 'date',
-                'after:marriage_date',
-                'after:father.birth_date',
-                'after:mother.birth_date',
+                'after_or_equal:marriage_date',
+                'after_or_equal:father.birth_date',
+                'after_or_equal:mother.birth_date',
                 new ValidDivorceDate($this->arg("marriage_date"), $this->arg("father.birth_date"), $this->arg("mother.birth_date")),
                 //new ValidDeathDate($this->arg("divorce_date")),
             ],
@@ -94,7 +94,7 @@ class CreateParentInputValidator extends Validator
 
             'marriage_date.required_with' => 'Marriage date is required if a divorce date is provided.',  // Custom message for marriage_date
             'marriage_date.before_or_equal' => 'Marriage date cannot be in the future.',
-            'divorce_date.after' => 'Divorce date must be after the marriage date and both parents\' birth dates.',
+            'divorce_date.after_or_equal' => 'Divorce date must be after the marriage date and both parents\' birth dates.',
         ];
     }
 }

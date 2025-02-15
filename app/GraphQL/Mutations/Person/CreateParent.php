@@ -119,11 +119,15 @@ final class CreateParent
                 }
             }
 
-            // Validate the child's birth date should not be after the divorce date if it exists
             if ($marriage->divorce_date) {
                 $divorceDate = Carbon::parse($marriage->divorce_date);
-                if ($childBirthDate->gt($divorceDate)) {
-                    throw new \Exception("Child's birth date cannot be after the divorce date.");
+            
+                // Calculate the date that is 8 months after the divorce date
+                $maxChildBirthDate = $divorceDate->copy()->addMonths(8);
+            
+                // Check if the child's birth date is after the maximum allowed date
+                if ($childBirthDate->gt($maxChildBirthDate)) {
+                    throw new \Exception("Child's birth date cannot be more than 8 months after the divorce date.");
                 }
             }
 
