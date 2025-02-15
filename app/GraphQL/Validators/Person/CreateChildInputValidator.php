@@ -54,9 +54,10 @@ class CreateChildInputValidator extends GraphQLValidator
                         $fail('Child birth date must be at least 6 months after parents\' marriage date.');
                     }
 
+                    $minChildBirthDate = $divorceDate->copy()->addMonths(10);
                     // Ensure child is born before divorce date
-                    if ($divorceDate && $value > $divorceDate) {
-                        $fail('Child birth date must be before parents\' divorce date.');
+                    if ($divorceDate &&  $value->lt($minChildBirthDate)) {
+                        $fail('Child birth date must be at least 10 months after parents\' divorce date.');
                     }
                 }
             ],
