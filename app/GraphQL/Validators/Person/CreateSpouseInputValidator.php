@@ -8,6 +8,7 @@ use App\Rules\Person\ValidBirthDate;
 use App\Rules\Person\ValidMarriageDate;
 use App\Rules\Person\ValidDivorceDate;
 use App\Rules\Person\ValidDeathDate;
+use App\Rules\Person\UniqueSpouseForWoman;
 use Log;
 
 class CreateSpouseInputValidator extends GraphQLValidator
@@ -65,6 +66,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
                 new ValidDivorceDate($marriageDate, $manBirthdate, $womanBirthdate),
             ],
 
+            new UniqueSpouseForWoman( $person, $spouseData)
             // Ensure unique marriage
             // new UniqueMarriage($personId, null), // Check if person already has an active marriage
         ];
