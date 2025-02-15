@@ -5,6 +5,7 @@ namespace App\Rules\Person;
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\Person;
 use App\Models\PersonMarriage;
+use Log;
 
 class UniqueSpouseForWoman implements Rule
 {
@@ -35,11 +36,17 @@ class UniqueSpouseForWoman implements Rule
         if ($this->person->gender == 0) {
             $hasActiveMarriage = PersonMarriage::where('woman_id', $this->person->id)
                 ->whereNull('divorce_date')
-                ->exists();
+                ->get();
 
-            if ($hasActiveMarriage && empty($existingSpouse->death_date)) {
-                $this->errorMessage = "This woman already has an active marriage.";
-                return false;
+            // Check if any of the husbands is still alive
+            foreach ($hasActiveMarriage as $marriage) {
+                $husband = Person::find($marriage->man_id);
+                
+                if ($husband && is_null($husband->death_date)) {
+                    // If at least one husband is alive, deny remarriage
+                    $this->errorMessage = "This woman already has an active marriage with a living husband.";
+                    return false;
+                }
             }
         }
 
@@ -54,6 +61,6 @@ class UniqueSpouseForWoman implements Rule
 
     public function message()
     {
-        return $this->errorMessage;
+        return $this->errorMessage ?? "Invalid spouse assignment.";
     }
 }
