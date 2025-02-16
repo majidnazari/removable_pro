@@ -151,9 +151,17 @@ final class CreateParent
             throw new Exception("Person with ID {$personId} not found in the list of heads.");
         }
 
-        $usersInSmallClan = $this->getAllUserIdsSmallClan($personId);
-        if (!in_array($this->userId, $usersInSmallClan)) {
-            throw new Exception("User does not have permission to modify this person.");
+        // $usersInSmallClan = $this->getAllUserIdsSmallClan($personId);
+        // if (!in_array($this->userId, $usersInSmallClan)) {
+        //     throw new Exception("User does not have permission to modify this person.");
+        // }
+
+        $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($personId);
+       
+        if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
+            if (!in_array($this->userId, $getAllusersInSmallClan)) {
+                throw new Exception("The user logged doesn't have permission to change this person.");
+            }
         }
     }
 

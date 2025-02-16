@@ -47,12 +47,23 @@ final class CreateChild
                 throw new \Exception("woman not found");
             }
 
-            $allUsers = $this->getAllUserIdsSmallClan($manId);
-            Log::info("the all users in small clan are:" . json_encode($allUsers) . " and the users logged in {$this->userId}");
+            // $allUsers = $this->getAllUserIdsSmallClan($manId);
+            // Log::info("the all users in small clan are:" . json_encode($allUsers) . " and the users logged in {$this->userId}");
 
-            if (!empty($allUsers) && in_array($this->userId, $allUsers) == false) {
-                throw new \Exception("you don't have permision to add node!.");
+            // if (!empty($allUsers) && in_array($this->userId, $allUsers) == false) {
+            //     throw new \Exception("you don't have permision to add node!.");
 
+            // }
+
+            $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($manId);
+            // Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
+            //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
+
+
+            if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
+                if (!in_array($this->userId, $getAllusersInSmallClan)) {
+                    throw new \Exception("The user logged doesn't have permission to change this person.");
+                }
             }
 
             // Create the child
@@ -86,16 +97,7 @@ final class CreateChild
             ];
             $this->checkDuplicate(new PersonChild(), $PersonChildModel);
 
-            $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($manId);
-            // Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
-            //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
-
-
-            if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
-                if (!in_array($this->userId, $getAllusersInSmallClan)) {
-                    throw new \Exception("The user logged doesn't have permission to change this person.");
-                }
-            }
+            
             $childRelation = PersonChild::create($PersonChildModel);
 
             DB::commit(); // Commit transaction

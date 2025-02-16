@@ -16,6 +16,7 @@ use App\GraphQL\Enums\ChildStatus;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\SmallClanTrait;
+use App\Traits\PersonAncestryWithCompleteMerge;
 use Log;
 
 final class CreateSpouse
@@ -23,6 +24,7 @@ final class CreateSpouse
     use AuthUserTrait;
     use DuplicateCheckTrait;
     use SmallClanTrait;
+    use PersonAncestryWithCompleteMerge;
 
 
     public function resolveSpouse($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
@@ -40,6 +42,18 @@ final class CreateSpouse
                 throw new \Exception("Person not found");
             }
 
+
+            $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($personId);
+            // Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
+            //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
+
+
+            if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
+                if (!in_array($this->userId, $getAllusersInSmallClan)) {
+                    throw new \Exception("The user logged doesn't have permission to change this person.");
+                }
+            }
+
             // Create the father
             $spouse = [
                 "creator_id" => $this->userId,
@@ -49,21 +63,21 @@ final class CreateSpouse
                 "last_name" => $args['spouse']['last_name'],
                 "birth_date" => $args['spouse']['birth_date'] ?? null,
                 "death_date" => $args['spouse']['death_date'] ?? null,
-                "gender" =>  $person->gender == 1 ? 0 : 1,
-                "is_owner"=> false,
+                "gender" => $person->gender == 1 ? 0 : 1,
+                "is_owner" => false,
                 "status" => Status::Active,
             ];
-            $this->checkDuplicate(new Person(),  $spouse);
-            $spouse_created=Person::create($spouse);
+            $this->checkDuplicate(new Person(), $spouse);
+            $spouse_created = Person::create($spouse);
 
-            $man_id= $person->gender==1 ? $person->id :  $spouse_created->id;
-            $woman_id= $person->gender==0 ? $person->id :  $spouse_created->id;
+            $man_id = $person->gender == 1 ? $person->id : $spouse_created->id;
+            $woman_id = $person->gender == 0 ? $person->id : $spouse_created->id;
             // Create marriage relation
             $PersonMarriageModel = [
                 "creator_id" => $this->userId,
                 "man_id" => $man_id,
                 "woman_id" => $woman_id,
-              //  "editor_id" => $args['editor_id'] ?? null,
+                //  "editor_id" => $args['editor_id'] ?? null,
                 "marriage_status" => $args['marriage_status'] ?? MarriageStatus::Related,
                 "status" => $args['status'] ?? Status::Active,
                 "marriage_date" => $args['marriage_date'] ?? null,
@@ -71,19 +85,10 @@ final class CreateSpouse
             ];
             $this->checkDuplicate(new PersonMarriage(), $PersonMarriageModel);
 
-            $getAllusersInSmallClan=$this->getAllUserIdsSmallClan($personId);
-           // Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
-            //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
 
-
-            if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
-                if (!in_array($this->userId, $getAllusersInSmallClan)) {
-                    throw new \Exception("The user logged doesn't have permission to change this person.");
-                }
-            }
             $marriage = PersonMarriage::create($PersonMarriageModel);
 
-          
+
 
             DB::commit(); // Commit transaction
 
