@@ -94,7 +94,7 @@ final class CreateParent_old
             if ($ageDifference < 9) {
                 throw new \Exception("The child's birth date must be at least 9 years after the mother's birth date.");
             }
-           // Log::info("the motherBirthDate birthdtae:{$motherBirthDate}");
+            // Log::info("the motherBirthDate birthdtae:{$motherBirthDate}");
 
 
             // Create marriage relation
@@ -129,10 +129,10 @@ final class CreateParent_old
 
             if ($marriage->divorce_date) {
                 $divorceDate = Carbon::parse($marriage->divorce_date);
-            
+
                 // Calculate the date that is 8 months after the divorce date
                 $maxChildBirthDate = $divorceDate->copy()->addMonths(8);
-            
+
                 // Check if the child's birth date is after the maximum allowed date
                 if ($childBirthDate->gt($maxChildBirthDate)) {
                     throw new \Exception("Child's birth date cannot be more than 8 months after the divorce date.");
@@ -152,21 +152,20 @@ final class CreateParent_old
             $this->checkDuplicate(new PersonChild(), ["child_id" => $personId]); // check has parent before or not!.
 
             $this->checkDuplicate(new PersonChild(), $PersonChildModel);
-            $result=$this->getPersonAncestryWithCompleteMerge($this->userId);
-            Log::info("the result of with complete ancestry  is:". json_encode( $result['heads']));
+            $result = $this->getPersonAncestryWithCompleteMerge($this->userId);
+            Log::info("the result of with complete ancestry  is:" . json_encode($result['heads']));
 
-            $allheads=$result['heads'];
+            $allheads = $result['heads'];
             //Log::info("the allheads is". json_encode( $allheads));
 
-            $headsids=collect($allheads)->pluck("person_id")->toArray();
+            $headsids = collect($allheads)->pluck("person_id")->toArray();
             //Log::info("the heads are". json_encode($headsids));
 
-            if(!in_array($personId,$headsids))
-            {
+            if (!in_array($personId, $headsids)) {
                 throw new \Exception("The person with ID {$personId} was not found in the list of heads.");
             }
-            $getAllusersInSmallClan=$this->getAllUserIdsSmallClan($personId)->toArray();
-           // Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
+            $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($personId);
+            Log::info("the getAllusersInSmallClan are" . json_encode(value: $getAllusersInSmallClan));
             //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
 
 
@@ -175,7 +174,7 @@ final class CreateParent_old
                     throw new \Exception("The user logged doesn't have permission to change this person.");
                 }
             }
-            
+
             $childRelation = PersonChild::create($PersonChildModel);
 
             DB::commit(); // Commit transaction

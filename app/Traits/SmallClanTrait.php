@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\Status;
 use GraphQL\Error\Error;
 use Exception;
+use Illuminate\Support\Arr;
+
 use Log;
 
 trait SmallClanTrait
@@ -70,7 +72,7 @@ trait SmallClanTrait
         Log::info("getAllPeopleIdsSmallClan  allPersonIds are: " . json_encode($this->allPersonIds));
 
         //return $this->allPersonIds;
-        return $this->ensureArray( $this->allPersonIds);
+        return $this->ensureArray($this->allPersonIds);
 
     }
 
@@ -87,7 +89,7 @@ trait SmallClanTrait
 
         // Get children ids and add to allPersonIds
         $childrenIds = $this->getChildrenIds([$spouseIds]);
-       // return $childrenIds;
+        // return $childrenIds;
         return $this->ensureArray($childrenIds);
 
     }
@@ -121,7 +123,7 @@ trait SmallClanTrait
         //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
         if (is_array($allPeopleIdsSmallClan) && count($allPeopleIdsSmallClan) >= 1) {
             Log::info("inside if ");
-            $this->allOwnerPersonIds = Person::whereIn('id', $allPeopleIdsSmallClan)->where('is_owner', true)->pluck('id');
+            $this->allOwnerPersonIds = Person::whereIn('id', $allPeopleIdsSmallClan)->where('is_owner', true)->pluck('id')->toArray();
 
             Log::info("the all owners are :" . json_encode($this->allOwnerPersonIds));
 
@@ -134,7 +136,8 @@ trait SmallClanTrait
 
         // }
         Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
-        //return $this->allOwnerPersonIds->toArray();
+        //Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
+        //return $this->allOwnerPersonIds;
         return $this->ensureArray($this->allOwnerPersonIds);
 
     }
@@ -164,7 +167,7 @@ trait SmallClanTrait
         } else if (collect($allOwnerIdsSmallClan)->isNotEmpty()) {
             $this->allUserIds = Person::where('id', $allOwnerIdsSmallClan)->where('status', Status::Active->value)->pluck('creator_id');
 
-            Log::info(" allUserIds in count  is 1 or ziro :" . json_encode($this->allUserIds));
+            Log::info(" allUserIds in count  is 1 or zero :" . json_encode($this->allUserIds));
 
 
         }
@@ -245,10 +248,24 @@ trait SmallClanTrait
         return $this->ensureArray($parentIds);
     }
 
-    protected function ensureArray($value)
+    // protected function ensureArray($value)
+    // {
+    //     return is_array($value) ? $value : ($value ? [$value] : []);
+    // }
+
+    private function ensureArray($value)
     {
-        return is_array($value) ? $value : ($value ? [$value] : []);
+        if ($value instanceof \Illuminate\Support\Collection) {
+            return $value->toArray();  // Convert Laravel Collection to array
+        }
+
+        if (is_array($value)) {
+            return array_values(Arr::flatten($value));  // Flatten and re-index the array
+        }
+
+        return [];
     }
+
 
 
 }
