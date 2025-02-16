@@ -37,7 +37,7 @@ trait HandlesPersonDeletion
 
         Log::info("the all users ids  in clan {$personId} are:" . json_encode( $clanUserIds));
         
-        if (count($clanUserIds)>0 && (!in_array($userId, $clanUserIds->toArray())) ) {
+        if (count($clanUserIds)>0 && (!in_array($userId, $clanUserIds)) ) {
 
             // if (count($clanUserIds)>0)
             // {

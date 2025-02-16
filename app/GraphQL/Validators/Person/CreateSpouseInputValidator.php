@@ -25,9 +25,8 @@ class CreateSpouseInputValidator extends GraphQLValidator
         $person = Person::find($personId);
 
         if (!$person) {
-            return ['person_id' => ['Person not found']];
+            throw new \Exception("Person not found");
         }
-
         // Extract spouse data (not saved in DB yet)
         $spouseBirthDate = $spouseData['birth_date'] ?? null;
 
