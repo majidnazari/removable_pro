@@ -40,7 +40,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
             'person_id' => [
                 'required',
                 'exists:people,id',
-                new UniqueSpouseForWoman( $person, $spouseData),
+                new UniqueSpouseForWoman( $person, $spouseData, $marriageDate),
                 // new NotSelfMarriage($personId, $spouseId), // Custom rule to check self-marriage
             ],
             'spouse.first_name' => ['required', 'string'],
