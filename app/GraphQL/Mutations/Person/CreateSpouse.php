@@ -71,14 +71,15 @@ final class CreateSpouse
             ];
             $this->checkDuplicate(new PersonMarriage(), $PersonMarriageModel);
 
-            $getAllusersInSmallClan=$this->getAllUserIdsSmallClan($personId)->toArray();
+            $getAllusersInSmallClan=$this->getAllUserIdsSmallClan($personId);
            // Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
             //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
 
 
-            if(!in_array($this->userId,$getAllusersInSmallClan))
-            {
-                throw new \Exception("The user logged do'nt have permision to change on this person.");
+            if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
+                if (!in_array($this->userId, $getAllusersInSmallClan)) {
+                    throw new \Exception("The user logged doesn't have permission to change this person.");
+                }
             }
             $marriage = PersonMarriage::create($PersonMarriageModel);
 
