@@ -133,7 +133,7 @@ trait SmallClanTrait
 
         // }
         Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
-        return $this->allOwnerPersonIds;
+        return $this->allOwnerPersonIds->toArray();
     }
     
     public function getOwnerIdSmallClan($personId )
@@ -148,16 +148,23 @@ trait SmallClanTrait
     {
         $this->allUserIds=[];
         $allOwnerIdsSmallClan=$this->getAllOwnerIdsSmallClan($personId);
-        Log::info("the allOwnerIdsSmallClanxx are:". json_encode($allOwnerIdsSmallClan));
-        $num=is_array(value: $allOwnerIdsSmallClan) ? count($allOwnerIdsSmallClan): 0;
+        Log::info("the person id is: " . $personId. "  the allOwnerIdsSmallClanxx are:". json_encode($allOwnerIdsSmallClan));
+        //$num=is_array(value: $allOwnerIdsSmallClan) ? count($allOwnerIdsSmallClan): 0;
         //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
+        Log::info(" is array of allUserIds :" . is_array($allOwnerIdsSmallClan) . " and count is :" .count( value: $allOwnerIdsSmallClan)  );
+
         if(is_array($allOwnerIdsSmallClan)  &&  count( value: $allOwnerIdsSmallClan)>1)
         {
-            $this->allUserIds = Person::whereIn('id',  $allOwnerIdsSmallClan)->where('status', Status::Active)->pluck('creator_id');
+            $this->allUserIds = Person::whereIn('id',  $allOwnerIdsSmallClan)->where('status', Status::Active->value)->pluck('creator_id');
+             Log::info(" allUserIds in count bigger than 1 :" . json_encode($this->allUserIds));
+
 
         }
         else if (collect($allOwnerIdsSmallClan)->isNotEmpty()){
-            $this->allUserIds = Person::where('id',  $allOwnerIdsSmallClan)->where('status', Status::Active)->pluck('creator_id');
+            $this->allUserIds = Person::where('id',  $allOwnerIdsSmallClan)->where('status', Status::Active->value)->pluck('creator_id');
+
+            Log::info(" allUserIds in count  is 1 or ziro :" . json_encode($this->allUserIds));
+
 
         }
         Log::info("the all users ids are " . json_encode($this->allUserIds));

@@ -90,7 +90,7 @@ final class CreateParent
             "birth_date" => $data['birth_date'] ?? null,
             "death_date" => $data['death_date'] ?? null,
             "is_owner" => 0,
-            "status" => Status::Active,
+            "status" => Status::Active->value,
         ];
     }
 
@@ -115,8 +115,8 @@ final class CreateParent
             "creator_id" => $this->userId,
             "man_id" => $fatherId,
             "woman_id" => $motherId,
-            "marriage_status" => $args['marriage_status'] ?? MarriageStatus::Related,
-            "status" => $args['status'] ?? Status::Active,
+            "marriage_status" => $args['marriage_status'] ?? MarriageStatus::Related->value,
+            "status" => $args['status'] ?? Status::Active->value,
             "marriage_date" => $args['marriage_date'] ?? null,
             "divorce_date" => $args['divorce_date'] ?? null,
         ];
@@ -163,9 +163,9 @@ final class CreateParent
             "creator_id" => $this->userId,
             "person_marriage_id" => $marriageId,
             "child_id" => $personId,
-            "child_kind" => $args['child_kind'] ?? ChildKind::DirectChild,
-            "child_status" => $args['child_status'] ?? ChildStatus::WithFamily,
-            "status" => $args['status'] ?? Status::Active,
+            "child_kind" => $args['child_kind'] ?? ChildKind::DirectChild->value,
+            "child_status" => $args['child_status'] ?? ChildStatus::WithFamily->value,
+            "status" => $args['status'] ?? Status::Active->value,
         ];
     }
 }
