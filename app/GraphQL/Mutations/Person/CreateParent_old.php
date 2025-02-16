@@ -170,10 +170,12 @@ final class CreateParent_old
             //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
 
 
-            if(!in_array($this->userId,$getAllusersInSmallClan))
-            {
-                throw new \Exception("The user logged do'nt have permision to change on this person.");
+            if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
+                if (!in_array($this->userId, $getAllusersInSmallClan)) {
+                    throw new \Exception("The user logged doesn't have permission to change this person.");
+                }
             }
+            
             $childRelation = PersonChild::create($PersonChildModel);
 
             DB::commit(); // Commit transaction
