@@ -44,15 +44,15 @@ class CreateChildInputValidator extends GraphQLValidator
                 function ($attribute, $value, $fail) use ($childBirthDate,$father, $mother, $marriageDate, $divorceDate) {
 
                     // Ensure child birth date is at most 10 months after parent's birth date
-                    $maxFatherBirthLimit = Carbon::parse($father['birth_date'])->copy()->addMonths(10);
-                    $maxMotherBirthLimit = Carbon::parse($mother['birth_date'])->copy()->addMonths(10);
+                    $maxFatherDeathLimit = Carbon::parse($father['death_date'])->copy()->addMonths(10);
+                    $maxMotherDeathLimit = Carbon::parse($mother['death_date'])->copy()->addMonths(10);
 
-                    if (Carbon::parse($childBirthDate)->gt($maxFatherBirthLimit)) {
-                        $fail("Child birth date must not be more than 10 months after father's birth date.");
+                    if (Carbon::parse($childBirthDate)->gt($maxFatherDeathLimit)) {
+                        $fail("Child birth date must not be more than 10 months after father's death date.");
                     }
 
-                    if (Carbon::parse($childBirthDate)->gt($maxMotherBirthLimit)) {
-                        $fail("Child birth date must not be more than 10 months after mother's birth date.");
+                    if (Carbon::parse($childBirthDate)->gt($maxMotherDeathLimit)) {
+                        $fail("Child birth date must not be more than 10 months after mother's death date.");
                     }
 
 
