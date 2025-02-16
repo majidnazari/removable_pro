@@ -19,6 +19,7 @@ use App\Traits\DuplicateCheckTrait;
 use App\Traits\FindOwnerTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use Exception;
+use Log;
 
 final class CreateParent
 {
@@ -143,6 +144,7 @@ final class CreateParent
     private function validatePersonAncestry(int $personId)
     {
         $result = $this->getPersonAncestryWithCompleteMerge($this->userId);
+        Log::info("theuser logggd in is :" . $this->userId . "the result of active complete is :" . json_encode( $result['heads']));
         $headsIds = collect($result['heads'])->pluck("person_id")->toArray();
 
         if (!in_array($personId, $headsIds)) {

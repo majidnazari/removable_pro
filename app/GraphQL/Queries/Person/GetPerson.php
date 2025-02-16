@@ -36,13 +36,13 @@ final class GetPerson
     {
         // TODO implement the resolver
     }
-    // function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    // {
-    //     $Person = $this->findUser($args['id']);//Person::where('id', $args['id']);
+    function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $Person = $this->findUser($args['id']);//Person::where('id', $args['id']);
 
-    //     // Log::info("the id is:" . $args['id'] ."the peson found is :". json_encode($Person) );
-    //     return $Person;
-    // }
+        // Log::info("the id is:" . $args['id'] ."the peson found is :". json_encode($Person) );
+        return $Person;
+    }
     // function resolvePersonFatherOfFather($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     // {
 
@@ -234,16 +234,16 @@ final class GetPerson
 
         
 
-    // public function findUser($id)
-    // {
-    //     $person = Person::find($id);
-    //     if ($person) {
-    //         return $person;
-    //     } else {
-    //         throw new \RuntimeException("The person not found!");
-    //         //return  Error::createLocatedError("The person not found!");
-    //     }
-    // }
+    public function findUser($id)
+    {
+        $person = Person::find($id);
+        if ($person) {
+            return $person;
+        } else {
+            throw new \RuntimeException("The person not found!");
+            //return  Error::createLocatedError("The person not found!");
+        }
+    }
 
 
 

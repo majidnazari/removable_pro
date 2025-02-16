@@ -23,14 +23,13 @@ getPersons(
         # filter: PersonFilterInput
     ): [Person!]! @guard(with: ["api"])  @throttle(max: 10, decay: 1) @paginate(builder: "App\\GraphQL\\Queries\\Person\\GetPersons@resolvePerson")
 
-getPersonFatherOfFather(id: ID!): Person @throttle(max: 10, decay: 1) @guard(with: ["api"])
-@validator(class: "App\\GraphQL\\Validators\\Person\\PersonInputValidator") 
-@field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfFather") 
+# getPersonFatherOfFather(id: ID!): Person @throttle(max: 10, decay: 1) @guard(with: ["api"])
+# @validator(class: "App\\GraphQL\\Validators\\Person\\PersonInputValidator") 
+# @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfFather") 
 
-getPersonFatherOfMother(id: ID! ): Person  @throttle(max: 10, decay: 1) @guard(with: ["api"])
-@validator(class: "App\\GraphQL\\Validators\\Person\\PersonInputValidator") 
-
- @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfMother") 
+# getPersonFatherOfMother(id: ID! ): Person  @throttle(max: 10, decay: 1) @guard(with: ["api"])
+# @validator(class: "App\\GraphQL\\Validators\\Person\\PersonInputValidator") 
+#  @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonFatherOfMother") 
     
 
 
