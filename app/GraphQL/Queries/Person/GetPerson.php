@@ -249,7 +249,7 @@ final class GetPerson
 
     public function resolvePersonAncestryWithCompleteMerge($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user_id = $args['id'] ?? $this->getUserId();
+        $user_id = $args['user_id'] ?? $this->getUserId();
         $depth = $args['depth'] ?? 3;
 
         return $this->getPersonAncestryWithCompleteMerge($user_id, $depth);
@@ -257,7 +257,7 @@ final class GetPerson
 
     public function resolvePersonAncestryWithActiveMerge($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $user_id = $args['id'] ?? $this->getUserId();
+        $user_id = $args['user_id'] ?? $this->getUserId();
         $depth = $args['depth'] ?? 3;
 
         return $this->getPersonAncestryWithActiveMerge($user_id, $depth);

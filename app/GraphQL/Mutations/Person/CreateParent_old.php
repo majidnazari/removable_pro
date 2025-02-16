@@ -153,7 +153,7 @@ final class CreateParent_old
 
             $this->checkDuplicate(new PersonChild(), $PersonChildModel);
             $result=$this->getPersonAncestryWithCompleteMerge($this->userId);
-            //Log::info("the result is". json_encode( $result));
+            Log::info("the result of with complete ancestry  is:". json_encode( $result));
 
             $allheads=$result['heads'];
             //Log::info("the allheads is". json_encode( $allheads));
