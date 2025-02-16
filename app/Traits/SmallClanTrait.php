@@ -168,7 +168,7 @@ trait SmallClanTrait
 
         }
         Log::info("the all users ids are " . json_encode($this->allUserIds));
-        return $this->allUserIds;
+        return $this->allUserIds->toArray()();
     }
 
     /**
