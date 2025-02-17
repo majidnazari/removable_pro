@@ -252,6 +252,7 @@ final class GetPerson
         $user_id = $args['user_id'] ?? $this->getUserId();
         $depth = $args['depth'] ?? 3;
 
+        //Log::info("the user {$user_id} and depth {$depth}");
         return $this->getPersonAncestryWithCompleteMerge($user_id, $depth);
     }
 
