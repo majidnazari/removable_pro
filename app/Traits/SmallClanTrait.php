@@ -3,121 +3,267 @@
 namespace App\Traits;
 
 use App\Models\Person;
+use App\Models\Memory;
 use App\Models\PersonMarriage;
 use App\Models\PersonChild;
+use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\Status;
-use Illuminate\Support\Facades\Log;
+use GraphQL\Error\Error;
+use Exception;
 use Illuminate\Support\Arr;
+
+use Log;
 
 trait SmallClanTrait
 {
     use AuthUserTrait;
     use FindOwnerTrait;
 
+    protected $userId;
+    protected $person;
+    protected $owner;
     protected $allPersonIds = [];
     protected $allOwnerPersonIds = [];
 
     public function getAllPeopleIdsSmallClan($personId)
     {
-        $person = Person::where('id', $personId)->where('status', Status::Active)->first();
-        if (!$person)
-            throw new \Exception("Person with ID {$personId} not found in the clan.");
-        if ($person->is_owner)
-            return $person->id;
+        $this->person = Person::where('id', $personId)->where('status', Status::Active)->first();
 
-        $userId = $this->getUserId();
-        $owner = $this->findOwner($userId);
+        Log::info("getAllPeopleIdsSmallClan the person is :" . json_encode($this->person));
+        if (! $this->person )
+            throw new Exception("Person with ID {$personId} not found in the clan.");
+        if ( $this->person->is_owner)
+            return  $this->person->id;
 
-        $spouseIds = $this->getSpouseIdsSmallClan($person->id, $person->gender);
+        // If a userId is provided, set the userId
+        // $this->userId = $this->person->creator_id;
+        $this->userId = $this->getUserId();
+
+        // Find the owner (the person initiating the query)
+        $this->owner = $this->findOwner($this->userId);
+
+        // Get spouse ids and add to allPersonIds
+        $spouseIds = $this->getSpouseIdsSmallClan($this->person->id, $this->person->gender);
+        Log::info("getAllPeopleIdsSmallClan the spouseIds are  :" . json_encode($spouseIds));
+
+
+        // Get children ids and add to allPersonIds
         $childrenIds = $this->getChildrenIdsSmallClan($spouseIds);
-        $parentIds = $this->getParentIdsSmallClan($person->id);
 
-        $this->allPersonIds = collect([$person->id, $spouseIds, $childrenIds, $parentIds])
-            ->flatten()->unique()->values()->all();
+        Log::info("getAllPeopleIdsSmallClan the childrenIds are  :" . json_encode($childrenIds));
 
-        Log::info("All person IDs in small clan: " . json_encode($this->allPersonIds));
-        return $this->allPersonIds;
+
+        // Get parent ids and add to allPersonIds
+        $parentIds = $this->getParentIdsSmallClan($this->person->id);
+        Log::info("getAllPeopleIdsSmallClan the parentIds are  :" . json_encode($parentIds));
+
+
+        // Merge all ids (including owner) and remove duplicates
+        $this->allPersonIds = collect([$this->person->id])
+            ->merge($spouseIds)
+            ->merge($childrenIds)
+            ->merge($parentIds)
+            ->unique()
+            ->values()
+            ->all();
+
+        Log::info("getAllPeopleIdsSmallClan  allPersonIds are: " . json_encode($this->allPersonIds));
+
+        //return $this->allPersonIds;
+        return $this->ensureArray($this->allPersonIds);
+
     }
 
-
-    protected function getSpouseIdsSmallClan($ownerId, $isMale)
+    public function getAllChildrenSmallClan($personId)
     {
-        return PersonMarriage::where($isMale ? 'man_id' : 'woman_id', $ownerId)
+
+        Log::info("the getAllChildrenSmallClan personId:" . json_encode($personId));
+
+        $person = Person::where('id', $personId)->where('status', Status::Active)->first();
+        // Get spouse ids and add to allPersonIds
+        $spouseIds = PersonMarriage::where(($person->gender == 1) ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
-            ->pluck($isMale ? 'woman_id' : 'man_id')
-            ->toArray();
+            ->first()->id;
+
+        // Get children ids and add to allPersonIds
+        $childrenIds = $this->getChildrenIds([$spouseIds]);
+        // return $childrenIds;
+        return $this->ensureArray($childrenIds);
+
     }
-
-    protected function getChildrenIdsSmallClan(array $spouseIds)
-    {
-        return PersonChild::whereIn('person_marriage_id', $spouseIds)
-            ->pluck('child_id')
-            ->toArray();
-    }
-
-
-    protected function getParentIdsSmallClan($personId)
-    {
-        $parentIds = [];
-
-        // Find the parent-child relationship
-        $parent = PersonChild::where('child_id', $personId)->first();
-        if (!$parent) {
-            Log::info("No parent found for child ID: $personId");
-            return $parentIds; // Return empty array if no parent record
-        }
-
-        // Find the parent's marriage
-        $parentMarriage = PersonMarriage::where('id', $parent->person_marriage_id)
-            ->where('status', Status::Active)
-            ->first();
-
-        if ($parentMarriage) {
-            $parentIds = [$parentMarriage->man_id, $parentMarriage->woman_id];
-        } else {
-            Log::info("No active marriage found for parent relationship: " . json_encode($parent));
-        }
-
-        Log::info("The getParentIds in small clan is: " . json_encode($parentIds));
-        return $parentIds;
-    }
-
-
-    public function getOwnerIdSmallClan($personId)
-    {
-        return Person::where('id', $personId)->where('is_owner', true)->first();
-    }
-
-
-
-
-
 
     public function getAllOwnerIdsSmallClan($personId)
     {
-        $allPeopleIds = $this->getAllPeopleIdsSmallClan($personId);
-        if (!is_array($allPeopleIds))
-            $allPeopleIds = [$allPeopleIds];
+        Log::info("the getAllOwnerIdsSmallClan personId:" . json_encode($personId));
 
-        $this->allOwnerPersonIds = Person::whereIn('id', $allPeopleIds)
-            ->where('is_owner', true)
-            ->pluck('id')->toArray();
+        $this->allOwnerPersonIds = [];
+        $allPeopleIdsSmallClan = $this->getAllPeopleIdsSmallClan($personId);
+        Log::info("getAllOwnerIdsSmallClan and allPeopleIdsSmallClan are:" . json_encode($allPeopleIdsSmallClan));
+        //$num=is_array(value: $allPeopleIdsSmallClan) ? count($allPeopleIdsSmallClan): 0;
+        if (is_null($allPeopleIdsSmallClan)) {
+            // Handle null case
+            Log::info("getAllOwnerIdsSmallClan No people found in the small clan.");
+            $allPeopleIdsSmallClan = []; // Convert null to an empty array to prevent errors
+        } elseif (!is_array($allPeopleIdsSmallClan)) {
 
-        Log::info(" getAllOwnerIdsSmallClan in small clan: " . json_encode($this->allOwnerPersonIds));
+            Log::info("getAllOwnerIdsSmallClan No people found in the small clan.");
 
-        return $this->allOwnerPersonIds;
+            // If it's a single integer, convert it to an array
+            $allPeopleIdsSmallClan = [$allPeopleIdsSmallClan];
+        }
+
+        // Now, $allPeopleIdsSmallClan is always an array, and you can safely use it
+        Log::info("getAllOwnerIdsSmallClan People IDs in small clan: " . json_encode($allPeopleIdsSmallClan));
+
+
+        Log::info("the allPeopleIdsSmallClan is array:" . (is_array($allPeopleIdsSmallClan)));
+        Log::info("the allPeopleIdsSmallClan count:" . (count($allPeopleIdsSmallClan)));
+        //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
+        if (is_array($allPeopleIdsSmallClan) && count($allPeopleIdsSmallClan) >= 1) {
+            Log::info("inside if ");
+            $this->allOwnerPersonIds = Person::whereIn('id', $allPeopleIdsSmallClan)->where('is_owner', true)->pluck('id')->toArray();
+
+            Log::info("the all owners are :" . json_encode($this->allOwnerPersonIds));
+
+        }
+        // else if (collect($this->allPeopleIdsSmallClan)->isNotEmpty()){
+        //     Log::info("inside else ");
+
+        //     $this->allOwnerPersonIds = Person::where('id',$allPeopleIdsSmallClan)->where('is_owner', true)->pluck('id');
+        //     Log::info("the all owners are :" .json_encode($this->allOwnerPersonIds));
+
+        // }
+        Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
+        //Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
+        //return $this->allOwnerPersonIds;
+        return $this->ensureArray($this->allOwnerPersonIds);
+
+    }
+
+    public function getOwnerIdSmallClan($personId)
+    {
+        //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
+        $this->owner = Person::where('id', $personId)->where('is_owner', true)->first();
+        Log::info("the all owneres ids are " . json_encode($this->allOwnerPersonIds));
+        return $this->owner;
     }
 
     public function getAllUserIdsSmallClan($personId)
     {
-        $allOwnerIds = $this->getAllOwnerIdsSmallClan($personId);
-        $allUsersInSmallClan = Person::whereIn('id', $allOwnerIds)->where('status', Status::Active)
-            ->pluck('creator_id')->toArray();
+        $this->allUserIds = [];
+        $allOwnerIdsSmallClan = $this->getAllOwnerIdsSmallClan($personId);
+        Log::info("the person id is: " . $personId . "  the allOwnerIdsSmallClanxx are:" . json_encode($allOwnerIdsSmallClan));
+        //$num=is_array(value: $allOwnerIdsSmallClan) ? count($allOwnerIdsSmallClan): 0;
+        //$allpeopleIds=$this->getAllPeopleIdsSmallClan();
+        Log::info(" is array of allUserIds :" . is_array($allOwnerIdsSmallClan) . " and count is :" . count(value: $allOwnerIdsSmallClan));
 
-        Log::info(" getAllOwnerIdsSmallClan in small clan: " . json_encode($allUsersInSmallClan));
+        if (is_array($allOwnerIdsSmallClan) && count(value: $allOwnerIdsSmallClan) > 1) {
+            $this->allUserIds = Person::whereIn('id', $allOwnerIdsSmallClan)->where('status', Status::Active->value)->pluck('creator_id');
+            Log::info(" allUserIds in count bigger than 1 :" . json_encode($this->allUserIds));
 
-        return $allUsersInSmallClan;
+
+        } else if (collect($allOwnerIdsSmallClan)->isNotEmpty()) {
+            $this->allUserIds = Person::where('id', $allOwnerIdsSmallClan)->where('status', Status::Active->value)->pluck('creator_id');
+
+            Log::info(" allUserIds in count  is 1 or zero :" . json_encode($this->allUserIds));
+
+
+        }
+        Log::info("the all users ids are " . json_encode($this->allUserIds));
+        //return $this->allUserIds->toArray();
+
+        return $this->ensureArray($this->allUserIds);
 
     }
+
+    /**
+     * Get spouse ids based on the owner's gender.
+     *
+     * @param int $ownerId
+     * @param bool $isMale
+     * @return array
+     */
+    protected function getSpouseIdsSmallClan($ownerId, $isMale)
+    {
+        $getSpouseIds = PersonMarriage::where($isMale ? 'man_id' : 'woman_id', $ownerId)
+            ->where('status', Status::Active)
+            //->pluck($isMale ? 'woman_id' : 'man_id')
+            ->pluck('id')
+            ->toArray();
+
+        Log::info("the getSpouseIds in small clan is :" . json_encode($getSpouseIds));
+        //return $getChildrenIds;
+        return $this->ensureArray($getSpouseIds);
+
+    }
+
+    /**
+     * Get the child ids of the given marriages.
+     *
+     * @param array $spouseIds
+     * @return array
+     */
+    protected function getChildrenIdsSmallClan(array $spouseIds)
+    {
+        $getChildrenIds = PersonChild::where('person_marriage_id', $spouseIds)
+            ->pluck('child_id')
+            ->toArray();
+        Log::info("the getChildrenIds in small clan is :" . json_encode($getChildrenIds));
+
+        //return $getChildrenIds;
+        return $this->ensureArray($getChildrenIds);
+
+    }
+
+    /**
+     * Get the parent ids of the given owner.
+     *
+     * @param int $ownerId
+     * @return array
+     */
+    protected function getParentIdsSmallClan($ownerId)
+    {
+        $parentIds = [];
+
+        // Find the parent's marriage and add their ids
+        $parent = PersonChild::where('child_id', $ownerId)->first();
+
+        if ($parent) {
+            $parentMarriage = PersonMarriage::where('id', $parent->person_marriage_id)
+                ->where('status', Status::Active)
+                ->first();
+
+            if ($parentMarriage) {
+                $parentIds = [
+                    $parentMarriage->man_id,
+                    $parentMarriage->woman_id,
+                ];
+            }
+        }
+        Log::info("the getParentIds in small clan is :" . json_encode($parentIds));
+
+
+        return $this->ensureArray($parentIds);
+    }
+
+    // protected function ensureArray($value)
+    // {
+    //     return is_array($value) ? $value : ($value ? [$value] : []);
+    // }
+
+    private function ensureArray($value)
+    {
+        if ($value instanceof \Illuminate\Support\Collection) {
+            return $value->toArray();  // Convert Laravel Collection to array
+        }
+
+        if (is_array($value)) {
+            return array_values(Arr::flatten($value));  // Flatten and re-index the array
+        }
+
+        return [];
+    }
+
+
 
 }
