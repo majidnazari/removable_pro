@@ -35,7 +35,7 @@ final class UpdateRequestReceiver
     {
         // TODO implement the resolver
     }
-    public function resolveUpdateRequestReceiver($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveUpdateRequestReceiver($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->user_receiver_id = $this->getUserId();
         //$this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);

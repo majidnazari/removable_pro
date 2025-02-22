@@ -16,7 +16,7 @@ trait GetAllowedAllUsersInClan
      * @param  int  $userId
      * @return array
      */
-    protected function getAllowedUserIds(int $userId = null): array
+    protected function getAllowedUserIds(?int $userId = null): array
     {
         if ($userId === null) {
             $userId = $this->getUserId();

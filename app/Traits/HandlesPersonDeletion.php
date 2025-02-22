@@ -35,13 +35,13 @@ trait HandlesPersonDeletion
         $clanOwnerIds = $this->getAllOwnerIdsSmallClan($personId);
         $clanUserIds = $this->getAllUserIdsSmallClan($personId);
 
-        Log::info("the all users ids  in clan {$personId} are:" . json_encode( $clanUserIds));
-        
-        if (count($clanUserIds)>0 && (!in_array($userId, $clanUserIds)) ) {
+        Log::info("the all of clanUserIds in  small clan of person {$personId} are:" . json_encode($clanUserIds));
+
+        if (count($clanUserIds) > 0 && (!in_array($userId, $clanUserIds))) {
 
             // if (count($clanUserIds)>0)
             // {
-                return $this->errorResponse("Person-DELETE-NOT_AUTHORIZED", $personId);
+            return $this->errorResponse("Person-DELETE-NOT_AUTHORIZED", $personId);
 
             //}
         }
@@ -57,23 +57,30 @@ trait HandlesPersonDeletion
         if (count($childrenIds) > 1) {
             return $this->errorResponse("Person-DELETE-HAS_MULTIPLE_CHILDREN", $personId);
         }
-        
-        if (count($childrenIds) == 1 && count($parentIds)==0) {
+
+        if (count($childrenIds) == 1 && count($parentIds) == 0) {
+
+            // Check if all spouses are users
             //$grandParents = $this->getParentIds($parentIds[0]);
             //if (empty($grandParents)) {
-                //Log::info("Deleting person {$personId} as they have one child and parent with no parents.");
-                Log::info("Deleting person {$personId} as they have one child and no parent but the spouse check it in small clan ");
+            //Log::info("Deleting person {$personId} as they have one child and parent with no parents.");
+            Log::info("Deleting person {$personId} as they have one child and no parent but the spouse check it in small clan ");
+            $allSpouses = $this->allSpouses($personId,$person->gender);
 
-                // foreach ($spouseIds as $spouseId) {
-                //     if (!$this->canDeletePerson($userId, $spouseId, $checkedIds)) {
-                //         return $this->errorResponse("Person-DELETE-CANNOT_DELETE_SPOUSE", $spouseId);
-                //     }
-                // }
-                //return true;
+            Log::info("can delete marriage relation of  person {$personId} with these people". json_encode($allSpouses));
+
+
+
+            // foreach ($spouseIds as $spouseId) {
+            //     if (!$this->canDeletePerson($userId, $spouseId, $checkedIds)) {
+            //         return $this->errorResponse("Person-DELETE-CANNOT_DELETE_SPOUSE", $spouseId);
+            //     }
+            // }
+            //return true;
             //}
         }
 
-       
+
 
         // if (!empty($parentIds)) {
         //     $firstParentId = array_shift($parentIds);
@@ -123,27 +130,33 @@ trait HandlesPersonDeletion
 
         // $isMale = $person->gender; // Adjust based on your gender column
 
-        $getSpouseIds= PersonMarriage::where($isMale ? 'man_id' : 'woman_id', $personId)
+        $getSpouseIds = PersonMarriage::where($isMale ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
             //->pluck($isMale ? 'woman_id' : 'man_id')
             ->pluck('id')
             ->toArray();
 
-            Log::info("the getSpouseIds  is :" . json_encode($getSpouseIds));
-            return $getSpouseIds;
+        Log::info("the getSpouseIds  is :" . json_encode($getSpouseIds));
+        return $getSpouseIds;
     }
 
     /**
      * Get all children of a given set of parent IDs
      */
-    protected function getChildrenIds( $spouseIds)
+    protected function getChildrenIds($spouseIds)
     {
-        $getChildrenIds= PersonChild::where('person_marriage_id', $spouseIds)
+        $getChildrenIds = PersonChild::where('person_marriage_id', $spouseIds)
             ->pluck('child_id')
             ->toArray();
-            Log::info("the getChildrenIds is :" . json_encode($getChildrenIds));
+        Log::info("the getChildrenIds is :" . json_encode($getChildrenIds));
 
-            return $getChildrenIds;
+        return $getChildrenIds;
+    }
+
+
+    protected function allSpouses($personId,$gender)
+    {
+        return PersonMarriage::where($gender==1 ? 'man_id' : 'woman_id', $personId)->where('is_user', true)->get();
     }
 
     /**

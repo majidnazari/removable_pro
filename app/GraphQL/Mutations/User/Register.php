@@ -34,7 +34,7 @@ class Register extends BaseAuthResolver
      *
      * @throws \Exception
      */
-    public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         //  // Use RateLimiter to check if the IP has exceeded the registration attempts
         //  if (RateLimiter::tooManyAttempts('register:' . $context->request->ip(), 5)) {  // 5 attempts per IP
@@ -105,7 +105,7 @@ class Register extends BaseAuthResolver
 
 
 
-    public function CompleteUserRegistrationresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function CompleteUserRegistrationresolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
         $user = User::where('id', $args['user_id'])

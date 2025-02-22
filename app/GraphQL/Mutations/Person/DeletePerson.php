@@ -34,12 +34,12 @@ final class DeletePerson
      *
      * @param mixed $rootValue
      * @param array $args
-     * @param GraphQLContext|null $context
+     * @param GraphQLContext $context
      * @param ResolveInfo $resolveInfo
      * @return Person|Error
      * @throws Exception
      */
-    public function resolvePerson($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolvePerson($rootValue, array $args, GraphQLContext $context ,ResolveInfo $resolveInfo)
     {
         try {
             $this->userId = auth()->id();
@@ -47,6 +47,7 @@ final class DeletePerson
 
             if (!$personId) {
                 throw new Exception("Person ID is required.");
+                
             }
 
             // Validate deletion permission
@@ -55,33 +56,36 @@ final class DeletePerson
                 return $validationResult;
             }
 
-            // Start transaction
-            DB::beginTransaction();
+             Log::info("candelete triat  result is :{$validationResult}" );
 
-            $this->deletePersonIds[] = $personId;
 
-            // Get all active spouses of the person
-            $spouseIds = PersonMarriage::where($this->getSpouseColumn($personId), $personId)
-                ->where('status', Status::Active)
-                ->pluck($this->getSpouseOppositeColumn($personId))
-                ->toArray();
+            // // Start transaction
+            // DB::beginTransaction();
 
-            // Validate all spouses before deletion
-            foreach ($spouseIds as $spouseId) {
-                $spouseValidation = $this->canDeletePerson($this->userId, $spouseId);
-                if ($spouseValidation !== true) {
-                    DB::rollBack(); // Rollback if any spouse cannot be deleted
-                    return $spouseValidation;
-                }
-                $this->deletePersonIds[] = $spouseId;
-            }
+            // $this->deletePersonIds[] = $personId;
 
-            // Delete all collected person IDs
-            Person::whereIn('id', $this->deletePersonIds)->delete();
+            // // Get all active spouses of the person
+            // $spouseIds = PersonMarriage::where($this->getSpouseColumn($personId), $personId)
+            //     ->where('status', Status::Active)
+            //     ->pluck($this->getSpouseOppositeColumn($personId))
+            //     ->toArray();
 
-            DB::commit(); // Commit transaction
+            // // Validate all spouses before deletion
+            // foreach ($spouseIds as $spouseId) {
+            //     $spouseValidation = $this->canDeletePerson($this->userId, $spouseId);
+            //     if ($spouseValidation !== true) {
+            //         DB::rollBack(); // Rollback if any spouse cannot be deleted
+            //         return $spouseValidation;
+            //     }
+            //     $this->deletePersonIds[] = $spouseId;
+            // }
 
-            Log::info("User {$this->userId} successfully deleted Persons: " . implode(',', $this->deletePersonIds));
+            // // Delete all collected person IDs
+            // Person::whereIn('id', $this->deletePersonIds)->delete();
+
+            // DB::commit(); // Commit transaction
+
+            // Log::info("User {$this->userId} successfully deleted Persons: " . implode(',', $this->deletePersonIds));
 
             return true;
         } catch (Exception $e) {

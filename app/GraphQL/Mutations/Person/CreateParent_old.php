@@ -28,7 +28,7 @@ final class CreateParent_old
     use PersonAncestryWithCompleteMerge;
     use SmallClanTrait;
 
-    public function resolveParent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveParent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 

@@ -25,7 +25,7 @@ final class CreateParent
 {
     use AuthUserTrait, DuplicateCheckTrait, FindOwnerTrait, PersonAncestryWithCompleteMerge, SmallClanTrait;
 
-    public function resolveParent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveParent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
         $personId = $args['person_id'];

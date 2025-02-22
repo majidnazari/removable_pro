@@ -32,7 +32,7 @@ final class UpdateAddress
     {
         // TODO implement the resolver
     }
-    public function resolveAddress($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveAddress($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();

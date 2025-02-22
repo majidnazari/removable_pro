@@ -28,7 +28,7 @@ final class DeleteTalentHeader
     {
         // TODO implement the resolver
     }
-    public function resolveTalentHeader($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveTalentHeader($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {  
         
         $this->userId = $this->getUserId();

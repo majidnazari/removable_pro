@@ -35,7 +35,7 @@ final class UpdateRequestSender
     {
         // TODO implement the resolver
     }
-    public function resolveUpdateRequestSender($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveUpdateRequestSender($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->user_sender_id = $this->getUserId();
        $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);

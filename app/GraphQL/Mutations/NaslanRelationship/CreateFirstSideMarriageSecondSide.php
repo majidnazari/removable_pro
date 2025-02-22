@@ -23,7 +23,7 @@ final class CreateFirstSideMarriageSecondSide
     {
         // TODO implement the resolver
     }
-    public function resolveCreateFirstSideMarriageSecondSide($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveCreateFirstSideMarriageSecondSide($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 

@@ -26,7 +26,7 @@ final class CreateNotif
     {
         // TODO implement the resolver
     }
-    public function resolveNotif($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveNotif($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {        
         $this->userId = $this->getUserId();
         

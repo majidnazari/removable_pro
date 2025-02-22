@@ -31,7 +31,7 @@ final class UpdateTalentDetail
     {
         // TODO implement the resolver
     }
-    public function resolveTalentDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveTalentDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 

@@ -20,13 +20,13 @@ class Login extends BaseAuthResolver
     /**
      * @param $rootValue
      * @param  array  $args
-     * @param  \Nuwave\Lighthouse\Support\Contracts\GraphQLContext|null  $context
+     * @param  \Nuwave\Lighthouse\Support\Contracts\GraphQLContext  $context
      * @param  \GraphQL\Type\Definition\ResolveInfo  $resolveInfo
      * @return array
      *
      * @throws \Exception
      */
-    public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolve($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {
 
         //Log::info("the new pass is:" . Hash::make("12345678"));

@@ -33,7 +33,7 @@ final class UpdateTalentDetailScore
     {
         // TODO implement the resolver
     }
-    public function resolveTalentDetailScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveTalentDetailScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
        // Log::info("the args rae:" . json_encode($args));
         $this->userId = $this->getUserId();
