@@ -47,16 +47,28 @@ trait HandlesPersonDeletion
         $spouseIds = $this->getSpouseIds($personId, $person->gender);
         $childrenIds = $this->getChildrenIds($spouseIds);
 
+        // 🆕 New Condition: Check if both parents have their own parents
+        if (count($parentIds) === 2) {
+            $fatherParents = $this->getParentIds($parentIds[0]); // Get parents of father
+            $motherParents = $this->getParentIds($parentIds[1]); // Get parents of mother
+
+            if (!empty($fatherParents) && !empty($motherParents)) {
+                return $this->errorResponse("Person-DELETE-PARENT_HAS_PARENTS", $personId);
+            }
+        }
+
         // 🆕 If the person is an owner and has no relations, update their user clan_id
         if ($person->is_owner && empty($parentIds) && empty($childrenIds) && empty($spouseIds)) {
             Log::info("Person {$personId} is an owner with no relations. Updating user's clan_id...");
 
             $this->updateUserClanId($userId);
+            return true;
         }
 
         if ($person->is_owner && empty($parentIds) && empty($childrenIds)) {
             Log::info("Person {$personId} is an owner with no parents and no children. Removing all spouse relations...");
             $this->removeSpouseRelations($personId, $person->gender);
+            return true;
         }
 
         if ($person->is_owner && !empty($parentIds)) {
