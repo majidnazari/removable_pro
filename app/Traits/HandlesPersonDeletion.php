@@ -45,6 +45,10 @@ trait HandlesPersonDeletion
         $spouseIds = $this->getSpouseIds($personId, $person->gender);
         $childrenIds = $this->getChildrenIds($spouseIds);
 
+        if ($person->is_owner && !empty($parentIds)) {
+            return $this->errorResponse("Person-DELETE-OWNER_MUST_DELETE_PARENTS", $personId);
+        }
+
         if (count($childrenIds) > 1) {
             return $this->errorResponse("Person-DELETE-HAS_MULTIPLE_CHILDREN", $personId);
         }
