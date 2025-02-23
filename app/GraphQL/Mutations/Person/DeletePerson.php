@@ -39,10 +39,11 @@ final class DeletePerson
      * @return Person|Error
      * @throws Exception
      */
-    public function resolvePerson($rootValue, array $args, GraphQLContext $context ,ResolveInfo $resolveInfo)
+    public function resolvePerson($rootValue, array $args, GraphQLContext $context ,ResolveInfo $resolveInfo): bool|Error   
     {
         try {
             $this->userId = auth()->id();
+           // Log::info("the user id loggedi n is :" . $this->userId);
             $personId = $args['personId'] ?? null;
 
             if (!$personId) {

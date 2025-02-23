@@ -142,12 +142,10 @@ trait HandlesPersonDeletion
     protected function removeChildRelation(int $personId, int $gender, bool $removeParent = false): void
     {
         Log::info("Removing child relation for person {$personId}, gender: {$gender}, removeParent: {$removeParent}");
-
-        $marriage = PersonMarriage::where($gender === 1 ? 'man_id' : 'woman_id', $personId)
-            ->where('status', Status::Active)
+      
+        $marriage = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
+            ->where('status', Status::Active->value)
             ->first();
-
-        Log::info("marriage {$marriage->id},  removeParent: {$personId}");
 
 
         if ($marriage) {
