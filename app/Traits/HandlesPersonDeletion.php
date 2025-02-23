@@ -45,6 +45,11 @@ trait HandlesPersonDeletion
         $spouseIds = $this->getSpouseIds($personId, $person->gender);
         $childrenIds = $this->getChildrenIds($spouseIds);
 
+        if ($person->is_owner && empty($parentIds) && empty($childrenIds)) {
+            Log::info("Person {$personId} is an owner with no parents and no children. Removing all spouse relations...");
+            $this->removeSpouseRelations($personId, $person->gender);
+        }
+
         if ($person->is_owner && !empty($parentIds)) {
             return $this->errorResponse("Person-DELETE-OWNER_MUST_DELETE_PARENTS", $personId);
         }
@@ -57,8 +62,8 @@ trait HandlesPersonDeletion
             Log::info("Person {$personId} has one child but no parents. Checking small clan for spouse permission...");
             //Log::info("Person {$personId} has one child but no parents. Checking small clan for spouse permission...");
             //if (!$this->allSpouses($personId, $person->gender)) {
-                $this->removeChildRelation($personId, $person->gender, true);
-                return true;
+            $this->removeChildRelation($personId, $person->gender, true);
+            return true;
             //}
         }
 
@@ -123,7 +128,7 @@ trait HandlesPersonDeletion
      */
     protected function allSpouses(int $personId, bool $isMale): bool
     {
-        $spouseIds = PersonMarriage::where($isMale==0 ? 'man_id' : 'woman_id', $personId)
+        $spouseIds = PersonMarriage::where($isMale == 0 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
             ->pluck($isMale ? 'woman_id' : 'man_id')
             ->toArray();
@@ -146,7 +151,7 @@ trait HandlesPersonDeletion
     protected function removeChildRelation(int $personId, int $gender, bool $removeParent = false): void
     {
         Log::info("Removing child relation for person {$personId}, gender: {$gender}, removeParent: {$removeParent}");
-      
+
         $marriage = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active->value)
             ->first();
@@ -178,6 +183,26 @@ trait HandlesPersonDeletion
         }
 
         Log::info("Child relation removal completed for person {$personId}");
+    }
+
+    /**
+     * Remove all spouse relations for a person.
+     */
+    protected function removeSpouseRelations(int $personId, bool $isMale): void
+    {
+        $spouseColumn = $isMale==1 ? 'man_id' : 'woman_id';
+
+        // Find and delete all active marriages
+        $marriages = PersonMarriage::where($spouseColumn, $personId)
+            ->where('status', Status::Active->value)
+            ->get();
+
+        foreach ($marriages as $marriage) {
+            Log::info("Removing spouse relation: Marriage ID {$marriage->id} for person {$personId}");
+            $marriage->delete();
+        }
+
+        Log::info("All spouse relations removed for person {$personId}.");
     }
 
 
