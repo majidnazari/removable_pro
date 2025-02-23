@@ -8,6 +8,8 @@ use App\Models\PersonChild;
 use GraphQL\Error\Error;
 use Illuminate\Support\Facades\Log;
 use App\GraphQL\Enums\Status;
+use App\Events\ClanUpdated;
+use App\Models\User;
 
 trait HandlesPersonDeletion
 {
@@ -44,6 +46,13 @@ trait HandlesPersonDeletion
         $parentIds = $this->getParentIds($personId);
         $spouseIds = $this->getSpouseIds($personId, $person->gender);
         $childrenIds = $this->getChildrenIds($spouseIds);
+
+        // 🆕 If the person is an owner and has no relations, update their user clan_id
+        if ($person->is_owner && empty($parentIds) && empty($childrenIds) && empty($spouseIds)) {
+            Log::info("Person {$personId} is an owner with no relations. Updating user's clan_id...");
+
+            $this->updateUserClanId($userId);
+        }
 
         if ($person->is_owner && empty($parentIds) && empty($childrenIds)) {
             Log::info("Person {$personId} is an owner with no parents and no children. Removing all spouse relations...");
@@ -190,7 +199,7 @@ trait HandlesPersonDeletion
      */
     protected function removeSpouseRelations(int $personId, bool $isMale): void
     {
-        $spouseColumn = $isMale==1 ? 'man_id' : 'woman_id';
+        $spouseColumn = $isMale == 1 ? 'man_id' : 'woman_id';
 
         // Find and delete all active marriages
         $marriages = PersonMarriage::where($spouseColumn, $personId)
@@ -213,5 +222,23 @@ trait HandlesPersonDeletion
     {
         Log::error("Error response triggered for person {$personId}: {$message}");
         return Error::createLocatedError($message);
+    }
+
+    protected function updateUserClanId(int $userId): void
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            Log::warning("User {$userId} not found while trying to update clan_id.");
+            return;
+        }
+
+        $newClanId = "clan_" . $userId;
+        $user->clan_id = $newClanId;
+        $user->save();
+
+        Log::info("Updated user {$userId} clan_id to {$newClanId}.");
+
+        // 🔥 Fire an event to notify about the clan update
+        event(new ClanUpdated($userId, $newClanId));
     }
 }
