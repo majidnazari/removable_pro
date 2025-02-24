@@ -34,11 +34,15 @@ trait HandlesPersonDeletion
                 throw new \Exception("Error: Person ID: {$personId} has more than one child and cannot be removed.");
             } elseif ($childrenCount == 1) {
                 Log::info("Person ID: {$personId} has one child. Removing child relation first.");
+                throw new \Exception("Error: Person ID: {$personId} has more than one child and cannot be removed.");
+
+            } else {
+                Log::info("Person ID: {$personId} has no children. Proceeding with other deletions.");
                 if (!$this->removeChildren($personId)) {
                     throw new \Exception("Failed to remove child for Person ID: {$personId}");
                 }
-            } else {
-                Log::info("Person ID: {$personId} has no children. Proceeding with other deletions.");
+                DB::commit();
+                return true; // Return after successfully removing children
             }
 
             if ($this->hasParents($personId)) {
@@ -46,6 +50,8 @@ trait HandlesPersonDeletion
                 if (!$this->removeParentRelation($personId)) {
                     throw new \Exception("Failed to remove parent relation for Person ID: {$personId}");
                 }
+                DB::commit();
+                return true; // Return after successfully removing children
             }
 
             if ($this->hasSpouses($personId)) {
@@ -53,6 +59,8 @@ trait HandlesPersonDeletion
                 if (!$this->removeSpouseRelation($personId)) {
                     throw new \Exception("Failed to remove spouse relation for Person ID: {$personId}");
                 }
+                DB::commit();
+                return true; // Return after successfully removing children
             }
 
             Log::info("Person ID: {$personId} has no remaining relations. Deleting person.");
