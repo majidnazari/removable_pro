@@ -43,34 +43,32 @@ final class DeletePersonRelation
     {
         try {
             $this->userId = auth()->id();
-           // Log::info("the user id loggedi n is :" . $this->userId);
+            Log::info("User ID logged in: {$this->userId}");
+    
             $personId = $args['personId'] ?? null;
-
             if (!$personId) {
                 throw new Exception("Person ID is required.");
-                
             }
-
-            //Log::info("candelete triat  result is :{$validationResult}" );
-
+    
+            Log::info("Attempting to delete Person ID: {$personId}");
+    
             // Validate deletion permission
-            $validationResult = $this->deletePerson( $personId );
+            $validationResult = $this->deletePerson($personId);
+    
             if ($validationResult !== true) {
-                return $validationResult;
+                Log::warning("Person ID {$personId} deletion failed: {$validationResult}");
+                throw new Error($validationResult); // Properly throw the GraphQL error
             }
-
-             Log::info("candelete triat  result is :{$validationResult}" );
-
-
+    
+            Log::info("Person ID {$personId} successfully deleted.");
             return true;
         } catch (Exception $e) {
-           // DB::rollBack();
             Log::error("DeletePerson Mutation Error", [
                 'error' => $e->getMessage(),
                 'personId' => $args['personId'] ?? 'N/A',
                 'userId' => $this->userId
             ]);
-            throw new Exception("Person-DELETE-ERROR_OCCURRED");
+            throw new Error($e->getMessage()); // Ensure error is thrown, not returned
         }
     }
 

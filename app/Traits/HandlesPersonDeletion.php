@@ -20,7 +20,7 @@ trait HandlesPersonDeletion
             Log::info("Starting deletion process for Person ID: {$personId}");
 
             $person = Person::find($personId);
-            if (!$person || $person->status !== Status::Active) {
+            if (!$person || $person->status !== Status::Active->value) {
                 Log::error("Person ID: {$personId} not found or inactive.");
                 throw new \Exception("Person not found or inactive.");
             }
@@ -29,21 +29,29 @@ trait HandlesPersonDeletion
 
             if ($this->hasChildren($personId)) {
                 Log::info("Person ID: {$personId} has children. Removing children first.");
-                return $this->removeChildren($personId);
+                if (!$this->removeChildren($personId)) {
+                    throw new \Exception("Failed to remove children for Person ID: {$personId}");
+                }
             }
 
             if ($this->hasParents($personId)) {
                 Log::info("Person ID: {$personId} has parents. Removing parent relation.");
-                return $this->removeParentRelation($personId);
+                if (!$this->removeParentRelation($personId)) {
+                    throw new \Exception("Failed to remove parent relation for Person ID: {$personId}");
+                }
             }
 
             if ($this->hasSpouses($personId)) {
                 Log::info("Person ID: {$personId} has spouses. Removing spouse relation.");
-                return $this->removeSpouseRelation($personId);
+                if (!$this->removeSpouseRelation($personId)) {
+                    throw new \Exception("Failed to remove spouse relation for Person ID: {$personId}");
+                }
             }
 
             Log::info("Person ID: {$personId} has no remaining relations. Deleting person.");
-            $this->deletePersonNode($personId);
+            if (!$this->deletePersonNode($personId)) {
+                throw new \Exception("Failed to delete Person ID: {$personId}");
+            }
 
             DB::commit();
             Log::info("Successfully deleted Person ID: {$personId}");
@@ -51,7 +59,7 @@ trait HandlesPersonDeletion
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("Error deleting Person ID: {$personId} - " . $e->getMessage());
-            return false;
+            throw new \Exception($e->getMessage());
         }
     }
 
@@ -84,7 +92,7 @@ trait HandlesPersonDeletion
         $person = Person::find($personId);
         if (!$person) return false;
 
-        $personMarriageIds = PersonMarriage::where($person->gender ? 'man_id' : 'woman_id', $personId)
+        $personMarriageIds = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
             ->pluck('id');
 
@@ -98,7 +106,7 @@ trait HandlesPersonDeletion
         $person = Person::find($personId);
         if (!$person) return false;
 
-        $personMarriageIds = PersonMarriage::where($person->gender ? 'man_id' : 'woman_id', $personId)
+        $personMarriageIds = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
             ->pluck('id');
 
@@ -143,7 +151,10 @@ trait HandlesPersonDeletion
     /** ==================== Spouse Removal ==================== */
     private function hasSpouses($personId)
     {
-        return PersonMarriage::where(Person::find($personId)->gender ? 'man_id' : 'woman_id', $personId)
+        $person = Person::find($personId);
+        if (!$person) return false;
+
+        return PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
             ->exists();
     }
@@ -155,7 +166,7 @@ trait HandlesPersonDeletion
         $person = Person::find($personId);
         if (!$person) return false;
 
-        $spouseRelations = PersonMarriage::where($person->gender ? 'man_id' : 'woman_id', $personId)
+        $spouseRelations = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
             ->get();
 
@@ -184,15 +195,10 @@ trait HandlesPersonDeletion
         $person = Person::find($personId);
         if (!$person) return false;
 
-        if (!$this->hasChildren($personId) && !$this->hasParents($personId) && !$this->hasSpouses($personId)) {
-            $person->delete();
-            $this->updateUserClanId($person->creator_id);
-            Log::info("Deleted Person ID: {$personId} and updated clan.");
-            return true;
-        }
-
-        Log::warning("Cannot delete Person ID: {$personId} - still has relations.");
-        return false;
+        $person->delete();
+        $this->updateUserClanId($person->creator_id);
+        Log::info("Deleted Person ID: {$personId} and updated clan.");
+        return true;
     }
 
     private function updateUserClanId($userId)
