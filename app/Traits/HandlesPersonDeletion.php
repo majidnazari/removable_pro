@@ -90,7 +90,8 @@ trait HandlesPersonDeletion
     private function hasChildren($personId)
     {
         $person = Person::find($personId);
-        if (!$person) return false;
+        if (!$person)
+            return false;
 
         $personMarriageIds = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
@@ -104,13 +105,15 @@ trait HandlesPersonDeletion
         Log::info("Removing children for Person ID: {$personId}");
 
         $person = Person::find($personId);
-        if (!$person) return false;
+        if (!$person)
+            return false;
 
         $personMarriageIds = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
             ->pluck('id');
 
-        if ($personMarriageIds->isEmpty()) return false;
+        if ($personMarriageIds->isEmpty())
+            return false;
 
         PersonChild::whereIn('person_marriage_id', $personMarriageIds)->delete();
         Log::info("Removed children relations for Person ID: {$personId}");
@@ -128,13 +131,15 @@ trait HandlesPersonDeletion
         Log::info("Removing parent relation for Person ID: {$personId}");
 
         $parentRelation = PersonChild::where('child_id', $personId)->first();
-        if (!$parentRelation) return false;
+        if (!$parentRelation)
+            return false;
 
         $personMarriage = PersonMarriage::where('id', $parentRelation->person_marriage_id)
             ->where('status', Status::Active)
             ->first();
 
-        if (!$personMarriage) return false;
+        if (!$personMarriage)
+            return false;
 
         $childCount = PersonChild::where('person_marriage_id', $personMarriage->id)->count();
 
@@ -152,7 +157,8 @@ trait HandlesPersonDeletion
     private function hasSpouses($personId)
     {
         $person = Person::find($personId);
-        if (!$person) return false;
+        if (!$person)
+            return false;
 
         return PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
@@ -164,7 +170,8 @@ trait HandlesPersonDeletion
         Log::info("Removing spouse relation for Person ID: {$personId}");
 
         $person = Person::find($personId);
-        if (!$person) return false;
+        if (!$person)
+            return false;
 
         $spouseRelations = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->where('status', Status::Active)
@@ -193,13 +200,36 @@ trait HandlesPersonDeletion
         Log::info("Deleting Person ID: {$personId}");
 
         $person = Person::find($personId);
-        if (!$person) return false;
+        if (!$person)
+            return false;
 
         $person->delete();
         $this->updateUserClanId($person->creator_id);
         Log::info("Deleted Person ID: {$personId} and updated clan.");
         return true;
     }
+
+    private function isSingleOwner($personId)
+    {
+        $person = Person::find($personId);
+
+        if (!$person || !$person->is_owner) {
+            return false; // Must be an owner
+        }
+
+        // Check if the person has NO parents
+        $hasParents = PersonChild::where('child_id', $personId)->exists();
+
+        // Check if the person has NO children
+        $hasChildren = $this->hasChildren($personId); // Uses existing method
+
+        // Check if the person has NO spouses
+        $hasSpouses = $this->hasSpouses($personId); // Uses existing method
+
+        // The person is a single owner if they have no parents, no children, and no spouses
+        return !$hasParents && !$hasChildren && !$hasSpouses;
+    }
+
 
     private function updateUserClanId($userId)
     {
