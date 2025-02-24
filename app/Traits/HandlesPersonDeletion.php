@@ -27,11 +27,18 @@ trait HandlesPersonDeletion
 
             $this->validateSmallClanConstraints($person);
 
-            if ($this->hasChildren($personId)) {
-                Log::info("Person ID: {$personId} has children. Removing children first.");
+            $childrenCount = $this->hasChildren($personId);
+
+            if ($childrenCount > 1) {
+                Log::error("Person ID: {$personId} has more than one child. Cannot remove children.");
+                throw new \Exception("Error: Person ID: {$personId} has more than one child and cannot be removed.");
+            } elseif ($childrenCount == 1) {
+                Log::info("Person ID: {$personId} has one child. Removing child relation first.");
                 if (!$this->removeChildren($personId)) {
-                    throw new \Exception("Failed to remove children for Person ID: {$personId}");
+                    throw new \Exception("Failed to remove child for Person ID: {$personId}");
                 }
+            } else {
+                Log::info("Person ID: {$personId} has no children. Proceeding with other deletions.");
             }
 
             if ($this->hasParents($personId)) {
@@ -89,6 +96,7 @@ trait HandlesPersonDeletion
     /** ==================== Children Removal ==================== */
     private function hasChildren($personId)
     {
+        $personMarriageIds = [];
         $person = Person::find($personId);
         if (!$person)
             return false;
@@ -97,11 +105,20 @@ trait HandlesPersonDeletion
             ->where('status', Status::Active)
             ->pluck('id');
 
-        return PersonChild::whereIn('person_marriage_id', $personMarriageIds)->exists();
+        Log::info("hasChildren  personMarriageIdsD: " . json_encode($personMarriageIds));
+
+
+        $personChild = PersonChild::whereIn('person_marriage_id', $personMarriageIds)->count();
+
+        Log::info("hasChildren  personChild: " . json_encode($personChild));
+
+        return $personChild;
+
     }
 
     private function removeChildren($personId)
     {
+        $personMarriageIds = [];
         Log::info("Removing children for Person ID: {$personId}");
 
         $person = Person::find($personId);
