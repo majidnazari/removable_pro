@@ -54,7 +54,7 @@ final class DeletePersonRelation
             //Log::info("candelete triat  result is :{$validationResult}" );
 
             // Validate deletion permission
-            $validationResult = $this->DeletePersonRelation($this->userId, $personId);
+            $validationResult = $this->deletePerson( $personId );
             if ($validationResult !== true) {
                 return $validationResult;
             }
