@@ -10,7 +10,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\Traits\SmallClanTrait;
-use App\Traits\HandlesPersonDeletion;
+use App\Traits\DeletePersonRelationTrait;
 use Exception;
 use App\Models\PersonMarriage;
 use App\Models\PersonChild;
@@ -23,7 +23,7 @@ final class DeletePersonRelation
     use AuthUserTrait;
     use AuthorizesMutation;
     use HandlesModelUpdateAndDelete;
-    use HandlesPersonDeletion;
+    use DeletePersonRelationTrait;
 
     protected $userId;
     protected $personId;
