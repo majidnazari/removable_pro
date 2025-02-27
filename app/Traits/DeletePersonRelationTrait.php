@@ -77,10 +77,16 @@ trait DeletePersonRelationTrait
         $spouseIds = [];
         $personId = $person->id;
         $gender = $person->gender;
-        Log::info("CanDeletePerson: Checking deletion conditions for Person ID {$personId}");
+        Log::info("CanDeletePerson: Checking deletion conditions for Person ID {$personId} and gender is : {$gender}");
 
         // Fetch marriage IDs associated with the person
-        $marriageIds = PersonMarriage::where($gender == 0 ? 'man_id' : 'woman_id', $personId)->pluck('id');
+        $marriageIds = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
+        ->pluck('id');
+       // ->pluck($gender == 0 ? 'man_id' : 'woman_id');
+
+        Log::info("CanDeletePerson: marriageIds are : ". json_encode($marriageIds ));
+
+
         $countChildren = PersonChild::whereIn('person_marriage_id', $marriageIds)->count();
         Log::info("CanDeletePerson: Person ID {$personId} has {$countChildren} children.");
 
