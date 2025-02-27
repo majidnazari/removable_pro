@@ -81,10 +81,10 @@ trait DeletePersonRelationTrait
 
         // Fetch marriage IDs associated with the person
         $marriageIds = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
-        ->pluck('id');
-       // ->pluck($gender == 0 ? 'man_id' : 'woman_id');
+            ->pluck('id');
+        // ->pluck($gender == 0 ? 'man_id' : 'woman_id');
 
-        Log::info("CanDeletePerson: marriageIds are : ". json_encode($marriageIds ));
+        Log::info("CanDeletePerson: marriageIds are : " . json_encode($marriageIds));
 
 
         $countChildren = PersonChild::whereIn('person_marriage_id', $marriageIds)->count();
@@ -129,6 +129,10 @@ trait DeletePersonRelationTrait
             Log::info("CanDeletePerson: Removing child relation with parent for Person ID {$personId}");
             return $this->removeChildRelationWithParent($personId);
         }
+        else{
+            throw new Exception("person parents exist and caanot delete it.");
+
+        }
 
         if ($countChildren > 1) {
             Log::warning("CanDeletePerson: Person ID {$personId} has multiple children and cannot be deleted.");
@@ -141,24 +145,30 @@ trait DeletePersonRelationTrait
     protected function hasParentsPersonOrSpouses($person)
     {
         $hasParentsPersonOrSpouses = false;
+        $spouseIds = [];
         $hasParentsPersonOrSpouses = PersonChild::where('child_id', $person->id)->exists();
 
         Log::info("person Parents is : " . $hasParentsPersonOrSpouses);
 
 
         $spouseIds = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $person->id)
-            ->pluck($person->gender == 0 ? 'man_id' : 'woman_id');
+            ->pluck($person->gender == 0 ? 'man_id' : 'woman_id')->toArray();
 
         Log::info("person spouses hasParents is : " . json_encode($spouseIds));
 
-        $spouseIds = collect($spouseIds)->pluck('id')->filter()->toArray();
+        //$spouseIds = collect($spouseIds)->pluck('id')->filter()->toArray();
 
         Log::info("person spouses hasParents array are : " . json_encode($spouseIds));
 
-        if (!empty($spouseIds)) { // Check if it's not empty
+        if (count($spouseIds) >= 1) { // Check if it's not empty
             // Use whereIn to check multiple spouse IDs
+            Log::info("the count of person spouses parents in personchild :" . json_encode(PersonChild::whereIn('child_id', $spouseIds)->pluck('id')));
             $hasParentsPersonOrSpouses = PersonChild::whereIn('child_id', $spouseIds)->exists();
-        } 
+
+
+        }
+
+        Log::info("hasParentsPersonOrSpouses fianl result is : " . $hasParentsPersonOrSpouses);
 
         return $hasParentsPersonOrSpouses;
     }
