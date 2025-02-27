@@ -128,9 +128,8 @@ trait DeletePersonRelationTrait
             // Log::info("CanDeletePerson: chcking parent of person with the user logged in ".$this->hasParents($personId) );
             Log::info("CanDeletePerson: Removing child relation with parent for Person ID {$personId}");
             return $this->removeChildRelationWithParent($personId);
-        }
-        else{
-            throw new Exception("person parents exist and caanot delete it.");
+        } else {
+            throw new Exception("person parents exist and cannot delete it.");
 
         }
 
@@ -149,6 +148,10 @@ trait DeletePersonRelationTrait
         $hasParentsPersonOrSpouses = PersonChild::where('child_id', $person->id)->exists();
 
         Log::info("person Parents is : " . $hasParentsPersonOrSpouses);
+
+        if ($hasParentsPersonOrSpouses) {
+            return $hasParentsPersonOrSpouses;
+        }
 
 
         $spouseIds = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $person->id)
