@@ -45,7 +45,7 @@ trait DeletePersonRelationTrait
                 if ($userOwner->id != $personId) {
                     Log::warning("DeletePerson: User {$userOwner->id} is not the creator of the sole owner.");
                     throw new Exception("Only the creator can delete the sole owner.");
-                } elseif ($this->hasParents($personId)) {
+                } elseif ($this->hasParentsPersonOrSpouses($person)) {
                     Log::warning("DeletePerson: Person ID {$personId} has parents and cannot be deleted.");
                     throw new Exception("The person has parents and cannot be deleted.");
                 }
@@ -118,7 +118,7 @@ trait DeletePersonRelationTrait
             }
         }
 
-        if ($countChildren == 1 && (!$this->hasParents($personId)) && (!$this->hasParents($userOwner->id))) {
+        if ($countChildren == 1 && (!$this->hasParentsPersonOrSpouses($person))) {
             // Log::info("CanDeletePerson: chcking parent of person with the user logged in ".$this->hasParents($personId) );
             Log::info("CanDeletePerson: Removing child relation with parent for Person ID {$personId}");
             return $this->removeChildRelationWithParent($personId);
@@ -132,12 +132,29 @@ trait DeletePersonRelationTrait
         return false;
     }
 
-    protected function hasParents($personId)
+    protected function hasParentsPersonOrSpouses($person)
     {
-       $hasParents= PersonChild::where('child_id', $personId)->exists();
-       Log::info("hasParents is : " . $hasParents);
+        $hasParentsPersonOrSpouses = false;
+        $hasParentsPersonOrSpouses = PersonChild::where('child_id', $person->id)->exists();
 
-       return $hasParents;
+        Log::info("person Parents is : " . $hasParentsPersonOrSpouses);
+
+
+        $spouseIds = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $person->id)
+            ->pluck($person->gender == 0 ? 'man_id' : 'woman_id');
+
+        Log::info("person spouses hasParents is : " . json_encode($spouseIds));
+
+        $spouseIds = collect($spouseIds)->pluck('id')->filter()->toArray();
+
+        Log::info("person spouses hasParents array are : " . json_encode($spouseIds));
+
+        if (!empty($spouseIds)) { // Check if it's not empty
+            // Use whereIn to check multiple spouse IDs
+            $hasParentsPersonOrSpouses = PersonChild::whereIn('child_id', $spouseIds)->exists();
+        } 
+
+        return $hasParentsPersonOrSpouses;
     }
 
     protected function IsthePersonSpouseOfUserLoggedIn($spouseIds, $userOwner)
