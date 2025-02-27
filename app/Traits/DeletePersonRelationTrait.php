@@ -74,6 +74,7 @@ trait DeletePersonRelationTrait
 
     protected function canDeletePerson($person, $userOwner)
     {
+        $spouseIds=[];
         $personId = $person->id;
         $gender = $person->gender;
         Log::info("CanDeletePerson: Checking deletion conditions for Person ID {$personId}");
@@ -120,15 +121,34 @@ trait DeletePersonRelationTrait
         return PersonChild::where('child_id', $personId)->exists();
     }
 
-    protected function IsthePersonSpouseUserLoggedIn($spouseIds, $userId)
+    protected function IsthePersonSpouseUserLoggedIn($spouseIds, $userOwner)
     {
-        Log::info("Checking if User {$userId} is in Spouse List: " . implode(', ', $spouseIds->toArray()));
-        return $spouseIds->contains($userId);
+        // Ensure $spouseIds is a collection or array
+        if (!$spouseIds || empty($spouseIds)) {
+            Log::info("IsthePersonSpouseUserLoggedIn: No spouses found. Returning FALSE.");
+            return false;
+        }
+
+        // If it's a single object, wrap it in an array
+        if (!is_iterable($spouseIds)) {
+            $spouseIds = [$spouseIds];
+        }
+
+        // Extract IDs properly
+        $spouseArray = collect($spouseIds)->pluck('id')->filter()->toArray();
+
+        // Debugging logs
+        Log::info("IsthePersonSpouseUserLoggedIn: Extracted Spouse IDs => " . json_encode($spouseArray));
+        Log::info("IsthePersonSpouseUserLoggedIn: Checking if User ID " . json_encode($userOwner) . " is in Spouse List.");
+
+        return in_array($userOwner->id, $spouseArray);
     }
 
-    protected function IsthePersonChildUserLoggedIn($person, $userId)
+
+
+    protected function IsthePersonChildUserLoggedIn($person, $userOwner)
     {
-        Log::info("Checking if User {$userId} is a parent of Person ID {$person->id}");
+        Log::info("Checking if User {$userOwner->id} is a parent of Person ID {$person->id}");
 
         $parentIds = PersonChild::where('child_id', $person->id)
             ->join('person_marriages', 'person_children.person_marriage_id', '=', 'person_marriages.id')
@@ -136,13 +156,13 @@ trait DeletePersonRelationTrait
             ->get();
 
         foreach ($parentIds as $parent) {
-            if ($parent->man_id == $userId || $parent->woman_id == $userId) {
-                Log::info("User {$userId} is a parent of Person ID {$person->id}");
+            if ($parent->man_id == $userOwner->id || $parent->woman_id == $userOwner->id) {
+                Log::info("User {$userOwner->id} is a parent of Person ID {$person->id}");
                 return true;
             }
         }
 
-        Log::info("User {$userId} is not a parent of Person ID {$person->id}");
+        Log::info("User {$userOwner->id} is not a parent of Person ID {$person->id}");
         return false;
     }
 
