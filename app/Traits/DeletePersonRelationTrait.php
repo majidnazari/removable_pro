@@ -59,11 +59,11 @@ trait DeletePersonRelationTrait
             }
 
             // 4. Perform deletion
-            Log::info("DeletePerson: Deleting Person ID {$personId}");
-            Person::where('id', $personId)->delete();
+            //Log::info("DeletePerson: Deleting Person ID {$personId}");
+            //Person::where('id', $personId)->delete();
             DB::commit();
 
-            Log::info("DeletePerson: Successfully deleted Person ID {$personId}");
+            //Log::info("DeletePerson: Successfully deleted Person ID {$personId}");
             return true;
         } catch (Exception $e) {
             DB::rollBack();
