@@ -39,11 +39,11 @@ trait DeletePersonRelationTrait
 
             // 2. Special deletion rules for owners
             if ($person->is_owner) {
-                $creatorId = $person->creator_id;
+                $personId = $person->id;
                 Log::info("DeletePerson: Checking if User {$userId} is the creator of Owner ID {$personId}");
 
-                if ($userId != $creatorId) {
-                    Log::warning("DeletePerson: User {$userId} is not the creator of the sole owner.");
+                if ($userOwner->id != $personId) {
+                    Log::warning("DeletePerson: User {$userOwner->id} is not the creator of the sole owner.");
                     throw new Exception("Only the creator can delete the sole owner.");
                 } elseif ($this->hasParents($personId)) {
                     Log::warning("DeletePerson: Person ID {$personId} has parents and cannot be deleted.");
@@ -74,7 +74,7 @@ trait DeletePersonRelationTrait
 
     protected function canDeletePerson($person, $userOwner)
     {
-        $spouseIds=[];
+        $spouseIds = [];
         $personId = $person->id;
         $gender = $person->gender;
         Log::info("CanDeletePerson: Checking deletion conditions for Person ID {$personId}");
@@ -89,12 +89,22 @@ trait DeletePersonRelationTrait
             $spouseIds = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
                 ->pluck($gender == 1 ? 'woman_id' : 'man_id');
 
+            if (empty($spouseIds)) {
+                if ($userOwner->id != $personId) {
+                    return $this->removeParentRelation($personId);
+
+                } else {
+                    Log::info("Person Can be delete and has no relations here.");
+
+                }
+            }
+
             Log::info("CanDeletePerson: Spouse IDs found for Person ID {$personId}: " . implode(', ', $spouseIds->toArray()));
 
-            if ($this->IsthePersonSpouseUserLoggedIn($spouseIds, $userOwner)) {
+            if ($this->IsthePersonSpouseOfUserLoggedIn($spouseIds, $userOwner)) {
                 Log::info("CanDeletePerson: User is a spouse. Removing marriage.");
                 return $this->removeMarriage($personId, $gender);
-            } elseif ($this->IsthePersonChildUserLoggedIn($person, $userOwner)) {
+            } elseif ($this->IsthePersonChildOfUserLoggedIn($person, $userOwner)) {
                 Log::info("CanDeletePerson: User is a parent. Removing parent relation.");
                 return $this->removeParentRelation($personId);
             } else {
@@ -121,7 +131,7 @@ trait DeletePersonRelationTrait
         return PersonChild::where('child_id', $personId)->exists();
     }
 
-    protected function IsthePersonSpouseUserLoggedIn($spouseIds, $userOwner)
+    protected function IsthePersonSpouseOfUserLoggedIn($spouseIds, $userOwner)
     {
         // Ensure $spouseIds is a collection or array
         if (!$spouseIds || empty($spouseIds)) {
@@ -140,13 +150,14 @@ trait DeletePersonRelationTrait
         // Debugging logs
         Log::info("IsthePersonSpouseUserLoggedIn: Extracted Spouse IDs => " . json_encode($spouseArray));
         Log::info("IsthePersonSpouseUserLoggedIn: Checking if User ID " . json_encode($userOwner) . " is in Spouse List.");
+        Log::info("IsthePersonSpouseUserLoggedIn: result : " . in_array($userOwner->id, $spouseArray));
 
         return in_array($userOwner->id, $spouseArray);
     }
 
 
 
-    protected function IsthePersonChildUserLoggedIn($person, $userOwner)
+    protected function IsthePersonChildOfUserLoggedIn($person, $userOwner)
     {
         Log::info("Checking if User {$userOwner->id} is a parent of Person ID {$person->id}");
 
@@ -203,5 +214,11 @@ trait DeletePersonRelationTrait
     {
         Log::info("RemoveChildRelationWithParent: Removing parent-child relation for Person ID {$personId}");
         return $this->removeParentRelation($personId);
+    }
+
+    protected function isThePersonOwnerUser($person, $userOwner)
+    {
+
+        return ($person->id == $userOwner->id);
     }
 }
