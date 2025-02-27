@@ -118,7 +118,8 @@ trait DeletePersonRelationTrait
             }
         }
 
-        if ($countChildren == 1 && !$this->hasParents($personId)) {
+        if ($countChildren == 1 && (!$this->hasParents($personId)) && (!$this->hasParents($userOwner->id))) {
+            // Log::info("CanDeletePerson: chcking parent of person with the user logged in ".$this->hasParents($personId) );
             Log::info("CanDeletePerson: Removing child relation with parent for Person ID {$personId}");
             return $this->removeChildRelationWithParent($personId);
         }
@@ -133,7 +134,10 @@ trait DeletePersonRelationTrait
 
     protected function hasParents($personId)
     {
-        return PersonChild::where('child_id', $personId)->exists();
+       $hasParents= PersonChild::where('child_id', $personId)->exists();
+       Log::info("hasParents is : " . $hasParents);
+
+       return $hasParents;
     }
 
     protected function IsthePersonSpouseOfUserLoggedIn($spouseIds, $userOwner)
