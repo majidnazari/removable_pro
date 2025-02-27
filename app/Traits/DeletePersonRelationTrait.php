@@ -80,19 +80,21 @@ trait DeletePersonRelationTrait
         Log::info("CanDeletePerson: Checking deletion conditions for Person ID {$personId}");
 
         // Fetch marriage IDs associated with the person
-        $marriageIds = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)->pluck('id');
+        $marriageIds = PersonMarriage::where($gender == 0 ? 'man_id' : 'woman_id', $personId)->pluck('id');
         $countChildren = PersonChild::whereIn('person_marriage_id', $marriageIds)->count();
         Log::info("CanDeletePerson: Person ID {$personId} has {$countChildren} children.");
 
         if ($countChildren == 0) {
             // Check for spouse relationships
-            $spouseIds = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
-                ->pluck($gender == 1 ? 'woman_id' : 'man_id');
+            $spouseIds = PersonMarriage::where($gender == 0 ? 'man_id' : 'woman_id', $personId)
+                ->pluck($gender == 0 ? 'man_id' : 'woman_id');
 
-                Log::info("canDeletePerson and  spouseIds".json_encode( $spouseIds) . "and count is:" . count( $spouseIds) . "empty check is :". empty($spouseIds) );
+            Log::info("canDeletePerson and  spouseIds" . json_encode($spouseIds) . "and count is:" . count($spouseIds) . "empty check is :" . empty($spouseIds));
 
 
-            if ((count( $spouseIds)==0 )) {
+            if ((count($spouseIds) == 0)) {
+                Log::info("is the person userowner the same :" . $userOwner->id != $personId);
+
                 if ($userOwner->id != $personId) {
                     return $this->removeParentRelation($personId);
 
