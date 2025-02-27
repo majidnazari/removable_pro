@@ -89,7 +89,10 @@ trait DeletePersonRelationTrait
             $spouseIds = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
                 ->pluck($gender == 1 ? 'woman_id' : 'man_id');
 
-            if (empty($spouseIds)) {
+                Log::info("canDeletePerson and  spouseIds".json_encode( $spouseIds) . "and count is:" . count( $spouseIds) . "empty check is :". empty($spouseIds) );
+
+
+            if ((count( $spouseIds)==0 )) {
                 if ($userOwner->id != $personId) {
                     return $this->removeParentRelation($personId);
 
