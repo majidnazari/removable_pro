@@ -1,7 +1,7 @@
 
 
 type PersonMarriage {
-    id: ID!
+    id: ID
     Man: Person
     Woman: Person
     PersonChild: [PersonChild] @hasMany(relation: "PersonChild")

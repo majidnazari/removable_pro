@@ -29,7 +29,7 @@ final class DeleteGroupCategoryDetail
     {
         // TODO implement the resolver
     }
-    public function resolveGroupCategoryDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveGroupCategoryDetail($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();

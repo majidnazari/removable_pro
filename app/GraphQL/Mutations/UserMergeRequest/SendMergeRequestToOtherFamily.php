@@ -39,7 +39,7 @@ final class SendMergeRequestToOtherFamily
     {
         // TODO implement the resolver
     }
-    public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->user = $this->getUser();
     

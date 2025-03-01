@@ -28,7 +28,7 @@ final class DeleteFavorite
     {
         // TODO implement the resolver
     }
-    public function resolveFavorite($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveFavorite($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {  
         
         $this->userId = $this->getUserId();

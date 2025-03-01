@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Queries\FamilyEvent;
+namespace App\GraphQL\Queries\FamilyReport;
 
 use App\Models\FamilyEvent;
 use GraphQL\Type\Definition\ResolveInfo;

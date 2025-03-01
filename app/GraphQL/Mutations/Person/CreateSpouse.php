@@ -17,6 +17,8 @@ use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\SmallClanTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
+use GraphQL\Error\Error;
+use Exception;
 use Log;
 
 final class CreateSpouse
@@ -27,7 +29,7 @@ final class CreateSpouse
     use PersonAncestryWithCompleteMerge;
 
 
-    public function resolveSpouse($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveSpouse($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
@@ -39,7 +41,7 @@ final class CreateSpouse
             // Check if the child (person) exists
             $person = Person::find($personId);
             if (!$person) {
-                throw new \Exception("Person not found");
+                throw new Exception("Person not found");
             }
 
 
@@ -50,7 +52,7 @@ final class CreateSpouse
 
             if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
                 if (!in_array($this->userId, $getAllusersInSmallClan)) {
-                    throw new \Exception("The user logged doesn't have permission to change this person.");
+                    throw new Exception("The user logged doesn't have permission to change this person.");
                 }
             }
 
@@ -94,10 +96,10 @@ final class CreateSpouse
 
             return $marriage;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack(); // Rollback on failure
             Log::error("Failed to create parents: " . $e->getMessage());
-            return \GraphQL\Error\Error::createLocatedError($e->getMessage());
+            return Error::createLocatedError($e->getMessage());
         }
     }
 

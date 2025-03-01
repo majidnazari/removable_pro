@@ -40,7 +40,7 @@ class RegisterMobile extends BaseAuthResolver
         "Code" => "",
         "Message" => ""
     ];
-    public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $code = rand(100000, 999999);  // Generate a 6-digit verification code
         $expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");
@@ -94,7 +94,7 @@ class RegisterMobile extends BaseAuthResolver
     }
 
 
-    public function verifyMobileresolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function verifyMobileresolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user = User::find($args['user_id']);
 

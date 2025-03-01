@@ -32,7 +32,7 @@ final class UpdateGroupDetail
     {
         // TODO implement the resolver
     }
-    public function resolveGroupDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveGroupDetail($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
         // $this->userAccessibility(GroupDetail::class, AuthAction::Update, $args);

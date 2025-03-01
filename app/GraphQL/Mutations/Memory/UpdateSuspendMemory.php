@@ -31,7 +31,7 @@ final class UpdateSuspendMemory
     {
         // TODO implement the resolver
     }
-    public function resolveMemory($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveMemory($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 

@@ -28,7 +28,7 @@ final class DeleteCity
     {
         // TODO implement the resolver
     }
-    public function resolveCity($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveCity($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 

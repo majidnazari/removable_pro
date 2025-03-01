@@ -43,7 +43,7 @@ final class FamilyHeaderReports
     {
         // TODO implement the resolver
     }
-    // public function resolveFamilyHeaderReport($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    // public function resolveFamilyHeaderReport($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     // {
     //     $this->userId = $this->getUserId();
     //     $person = $this->findOwner();

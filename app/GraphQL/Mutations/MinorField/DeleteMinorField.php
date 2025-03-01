@@ -28,7 +28,7 @@ final class DeleteMinorField
     {
         // TODO implement the resolver
     }
-    public function resolveMinorField($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveMinorField($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {  
         
         $this->userId = $this->getUserId();
