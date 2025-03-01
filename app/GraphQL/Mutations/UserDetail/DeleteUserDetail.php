@@ -29,7 +29,7 @@ final class DeleteUserDetail
     {
         // TODO implement the resolver
     }
-    public function resolveUserDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveUserDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
         // $this->userAccessibility(UserDetail::class, AuthAction::Delete, $args);

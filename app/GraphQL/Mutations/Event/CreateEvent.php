@@ -24,7 +24,7 @@ final class CreateEvent
     {
         // TODO implement the resolver
     }
-    public function resolveEvent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveEvent($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 

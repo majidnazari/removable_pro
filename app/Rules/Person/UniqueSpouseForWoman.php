@@ -5,18 +5,21 @@ namespace App\Rules\Person;
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\Person;
 use App\Models\PersonMarriage;
+use Carbon\Carbon;
 use Log;
 
 class UniqueSpouseForWoman implements Rule
 {
     protected $person;
     protected $spouseData;
+    protected $marriageDate;
     protected $errorMessage;
 
-    public function __construct($person, $spouseData)
+    public function __construct($person, $spouseData, $marriageDate)
     {
         $this->person = $person;
         $this->spouseData = $spouseData;
+        $this->marriageDate =Carbon::parse( $marriageDate);
     }
 
     public function passes($attribute, $value)
@@ -42,7 +45,7 @@ class UniqueSpouseForWoman implements Rule
             foreach ($hasActiveMarriage as $marriage) {
                 $husband = Person::find($marriage->man_id);
                 
-                if ($husband && is_null($husband->death_date)) {
+                if (($husband && is_null($husband->death_date)) || (Carbon::parse($husband->death_date)->gt($this->marriageDate))) {
                     // If at least one husband is alive, deny remarriage
                     $this->errorMessage = "This woman already has an active marriage with a living husband.";
                     return false;
@@ -51,8 +54,8 @@ class UniqueSpouseForWoman implements Rule
         }
 
         // If the person is deceased, they cannot remarry
-        if (!empty($this->person->death_date)) {
-            $this->errorMessage = "A deceased person cannot remarry.";
+        if (!empty($this->person->death_date) && ($this->marriageDate->gt(Carbon::parse($this->person->death_date)))) {
+            $this->errorMessage = "A dead person cannot marry.";
             return false;
         }
 

@@ -33,7 +33,7 @@ class ChangePassword extends BaseAuthResolver
      *
      * @throws \Exception
      */
-    public function resolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo): array|Error
+    public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo): array|Error
     {
         $this->userId = $this->getUserId();
 
@@ -72,7 +72,7 @@ class ChangePassword extends BaseAuthResolver
         ];
     }
 
-    public function changePasswordResolve($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function changePasswordResolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
         //$expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");

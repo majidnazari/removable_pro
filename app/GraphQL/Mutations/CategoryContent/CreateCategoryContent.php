@@ -22,7 +22,7 @@ final class CreateCategoryContent
     {
         // TODO implement the resolver
     }
-    public function resolveCategoryContent($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveCategoryContent($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();

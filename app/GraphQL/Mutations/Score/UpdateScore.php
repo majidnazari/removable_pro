@@ -32,7 +32,7 @@ final class UpdateScore
     {
         // TODO implement the resolver
     }
-    public function resolveScore($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
         // $this->userAccessibility(Score::class, AuthAction::Update, $args);

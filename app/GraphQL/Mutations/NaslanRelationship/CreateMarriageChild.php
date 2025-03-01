@@ -26,7 +26,7 @@ final class CreateMarriageChild
     {
         // TODO implement the resolver
     }
-    public function resolveCreateMarriageChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveCreateMarriageChild($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 

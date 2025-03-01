@@ -27,7 +27,7 @@ final class CreatePerson
     {
         // TODO implement the resolver
     }
-    public function resolvePerson($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();
@@ -37,7 +37,8 @@ final class CreatePerson
         $PersonModel = [
             "creator_id" => $this->userId,
             //"editor_id" => $args['editor_id'] ?? null,
-            "node_code" => Carbon::now()->format('YmdHisv'),
+            "node_code" => Carbon::now()->format('YmdHisv') . str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT),
+
             "first_name" => $args['first_name'],
             "last_name" => $args['last_name'],
             "gender" => $args['gender'] ?? 0,

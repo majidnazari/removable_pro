@@ -30,7 +30,7 @@ class CreateChildInputValidator extends GraphQLValidator
         $divorceDate = $marriage->divorce_date ?? null;
 
         // Extract child birth date
-        $childBirthDate = $childData['birth_date'] ?? null;
+        $childBirthDate = $childData['birth_date'] ;
 
         return [
             // Validate father and mother exist
@@ -41,7 +41,21 @@ class CreateChildInputValidator extends GraphQLValidator
             'child.birth_date' => [
                 'required',
                 'date',
-                function ($attribute, $value, $fail) use ($father, $mother, $marriageDate, $divorceDate) {
+                function ($attribute, $value, $fail) use ($childBirthDate,$father, $mother, $marriageDate, $divorceDate) {
+
+                    // Ensure child birth date is at most 10 months after parent's birth date
+                    $maxFatherDeathLimit = Carbon::parse($father['death_date'])->copy()->addMonths(10);
+                    $maxMotherDeathLimit = Carbon::parse($mother['death_date'])->copy()->addMonths(10);
+
+                    if (Carbon::parse($childBirthDate)->gt($maxFatherDeathLimit)) {
+                        $fail("Child birth date must not be more than 10 months after father's death date.");
+                    }
+
+                    if (Carbon::parse($childBirthDate)->gt($maxMotherDeathLimit)) {
+                        $fail("Child birth date must not be more than 10 months after mother's death date.");
+                    }
+
+
                     // Ensure child birth date is after parents' minimum age
                     if ($value < date('Y-m-d', strtotime($father->birth_date . ' +12 years'))) {
                         $fail('Child birth date must be at least 12 years after father\'s birth date.');
@@ -63,7 +77,7 @@ class CreateChildInputValidator extends GraphQLValidator
                     }
                 }
             ],
-            'child.death_date' => ["nullable", "date", "after:child.birth_date"],
+            'child.death_date' => ["nullable", "date", "after_or_equal:child.birth_date"],
         ];
     }
 }

@@ -28,7 +28,7 @@ final class CreateAddress
     {
         // TODO implement the resolver
     }
-    public function resolveAddress($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveAddress($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {        
         
        // Log::info("the status is:". $statusValue );

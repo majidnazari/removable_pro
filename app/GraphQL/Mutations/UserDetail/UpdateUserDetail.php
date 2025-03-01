@@ -32,7 +32,7 @@ final class UpdateUserDetail
     {
         // TODO implement the resolver
     }
-    public function resolveUserDetail($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveUserDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->user = $this->getUser();
         // $this->userAccessibility(UserDetail::class, AuthAction::Update, $args);

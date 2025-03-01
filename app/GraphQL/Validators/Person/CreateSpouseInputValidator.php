@@ -25,9 +25,8 @@ class CreateSpouseInputValidator extends GraphQLValidator
         $person = Person::find($personId);
 
         if (!$person) {
-            return ['person_id' => ['Person not found']];
+            throw new \Exception("Person not found");
         }
-
         // Extract spouse data (not saved in DB yet)
         $spouseBirthDate = $spouseData['birth_date'] ?? null;
 
@@ -40,7 +39,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
             'person_id' => [
                 'required',
                 'exists:people,id',
-                new UniqueSpouseForWoman( $person, $spouseData),
+                new UniqueSpouseForWoman( $person, $spouseData, $marriageDate),
                 // new NotSelfMarriage($personId, $spouseId), // Custom rule to check self-marriage
             ],
             'spouse.first_name' => ['required', 'string'],

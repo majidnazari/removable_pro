@@ -29,7 +29,7 @@ final class DeletePersonChild
     {
         // TODO implement the resolver
     }
-    public function resolvePersonChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolvePersonChild($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();
@@ -63,7 +63,7 @@ final class DeletePersonChild
     }
 
 
-    public function resolvePersonChildByChildId($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolvePersonChildByChildId($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         // $user = Auth::guard('api')->user();
 

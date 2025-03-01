@@ -24,10 +24,10 @@ final class CreateChild
     use DuplicateCheckTrait;
     use SmallClanTrait;
 
-    public function resolveChild($rootValue, array $args, GraphQLContext $context = null, ResolveInfo $resolveInfo)
+    public function resolveChild($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
-      
+
 
         DB::beginTransaction(); // Start transaction
 
@@ -35,7 +35,7 @@ final class CreateChild
             $manId = $args['man_id'];
             $womanId = $args['woman_id'];
 
-        
+
             // Check if the child (person) exists
             $man = Person::find($manId);
             if (!$man) {
@@ -47,19 +47,29 @@ final class CreateChild
                 throw new \Exception("woman not found");
             }
 
-            $allUsers=$this->getAllUserIdsSmallClan($manId);
-            Log::info("the all users in small clan are:". json_encode($allUsers) . " and the users logged in {$this->userId}");
+            // $allUsers = $this->getAllUserIdsSmallClan($manId);
+            // Log::info("the all users in small clan are:" . json_encode($allUsers) . " and the users logged in {$this->userId}");
 
-            if(!empty($allUsers) && in_array($this->userId,$allUsers->toArray())==false)
-            {
-                throw new \Exception("you don't have permision to add node!.");
+            // if (!empty($allUsers) && in_array($this->userId, $allUsers) == false) {
+            //     throw new \Exception("you don't have permision to add node!.");
 
+            // }
+
+            $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($manId);
+            // Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
+            //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
+
+
+            if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
+                if (!in_array($this->userId, $getAllusersInSmallClan)) {
+                    throw new \Exception("The user logged doesn't have permission to change this person.");
+                }
             }
 
             // Create the child
             $child = [
                 "creator_id" => $this->userId,
-                "node_code" => Carbon::now()->format('YmdHisv'),
+                "node_code" => Carbon::now()->format('YmdHisv') . str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT),
                 "first_name" => $args['child']['first_name'],
                 "last_name" => $args['child']['last_name'],
                 "gender" => $args['child']['gender'],
@@ -68,10 +78,10 @@ final class CreateChild
                 "is_owner" => 0,
                 "status" => Status::Active,
             ];
-            $this->checkDuplicate(new Person(),  $child);
-            $child_created=Person::create($child);
+            $this->checkDuplicate(new Person(), $child);
+            $child_created = Person::create($child);
 
-            $marriage = PersonMarriage::where(['man_id' => $manId, 'woman_id' => $womanId])->where('status',Status::Active)->first();
+            $marriage = PersonMarriage::where(['man_id' => $manId, 'woman_id' => $womanId])->where('status', Status::Active)->first();
             if (!$marriage) {
                 throw new \Exception("marriage not found");
             }
@@ -85,7 +95,9 @@ final class CreateChild
                 "child_status" => $args['child_status'] ?? ChildStatus::WithFamily,
                 "status" => $args['status'] ?? Status::Active
             ];
-            $this->checkDuplicate(new PersonChild(),  $PersonChildModel);
+            $this->checkDuplicate(new PersonChild(), $PersonChildModel);
+
+            
             $childRelation = PersonChild::create($PersonChildModel);
 
             DB::commit(); // Commit transaction
