@@ -124,6 +124,11 @@ trait DeletePersonRelationTrait
             }
         }
 
+        if ($countChildren > 1) {
+            Log::warning("CanDeletePerson: Person ID {$personId} has multiple children and cannot be deleted.");
+            throw new Exception("Person has more than one child and cannot be deleted.");
+        }
+
         if ($countChildren == 1 && (!$this->hasParentsPersonOrSpouses($person))) {
             // Log::info("CanDeletePerson: chcking parent of person with the user logged in ".$this->hasParents($personId) );
             Log::info("CanDeletePerson: Removing child relation with parent for Person ID {$personId}");
@@ -133,10 +138,6 @@ trait DeletePersonRelationTrait
 
         }
 
-        if ($countChildren > 1) {
-            Log::warning("CanDeletePerson: Person ID {$personId} has multiple children and cannot be deleted.");
-            throw new Exception("Person has more than one child and cannot be deleted.");
-        }
 
         return false;
     }
@@ -268,10 +269,10 @@ trait DeletePersonRelationTrait
         return false;
     }
 
-    protected function removeChildRelationWithParent($personId,$gender)
+    protected function removeChildRelationWithParent($personId, $gender)
     {
         Log::info("RemoveChildRelationWithParent: Removing parent-child relation for Person ID {$personId}");
-        return $this->removeParentRelation($personId,$gender);
+        return $this->removeParentRelation($personId, $gender);
     }
 
     protected function isThePersonOwnerUser($person, $userOwner)
