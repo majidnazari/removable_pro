@@ -106,6 +106,7 @@ trait DeletePersonRelationTrait
 
                 } else {
                     Log::info("Person Can be delete and has no relations here.");
+                    return true;
 
                 }
             }
