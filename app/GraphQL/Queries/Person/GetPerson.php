@@ -15,6 +15,7 @@ use App\Traits\AuthorizesUser;
 use App\Traits\FindOwnerTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\PersonAncestryWithActiveMerge;
+use App\Traits\PersonDescendantsWithCompleteMerge;
 use Log;
 
 final class GetPerson
@@ -25,6 +26,7 @@ final class GetPerson
     use FindOwnerTrait;
     use PersonAncestryWithCompleteMerge;
     use PersonAncestryWithActiveMerge;
+    use PersonDescendantsWithCompleteMerge;
 
     private $rootAncestors = [];
 
@@ -132,12 +134,12 @@ final class GetPerson
     //             //Log::warning("No valid owner found for user_id: $user_id.");
     //             return null;
     //         }
-        
+
 
     //         [$mineAncestry,$this->rootAncestors] = $minePerson->getFullBinaryAncestry($depth);
 
     //         // Get the heads for the user ancestry
-           
+
     //        // Log::info("the all heades are:" . json_encode( $this->rootAncestors));
     //         // Fetch and return only the user's own ancestry tree
     //         return [
@@ -232,7 +234,7 @@ final class GetPerson
     //     ];
     // }
 
-        
+
 
     public function findUser($id)
     {
@@ -263,5 +265,17 @@ final class GetPerson
 
         return $this->getPersonAncestryWithActiveMerge($user_id, $depth);
     }
+
+
+    public function resolvePersonByDepth($root, array $args)
+    {
+
+        $heads=$this->getAllHead();
+     
+
+        
+    }
+
+
 
 }

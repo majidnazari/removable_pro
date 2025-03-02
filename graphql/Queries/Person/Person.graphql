@@ -1,5 +1,6 @@
 
 getPerson(id: ID!): Person @guard(with: ["api"]) @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePerson") 
+getPersonDynamicDepth(id: ID!,depth: Int!): Person @guard(with: ["api"]) @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonByDepth") 
 getPersons(
         first: Int, 
         page: Int, 
