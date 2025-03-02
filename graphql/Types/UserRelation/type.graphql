@@ -1,13 +1,13 @@
 type UserRelation {
-  id: ID!
-  creator_id: ID!
-  Creator: User!
+  id: ID
+  creator_id: ID
+  Creator: User
   editor_id: ID
   Editor: User
-  related_with_user_id: ID!
+  related_with_user_id: ID
   RelatedUser: User!
-  created_at: DateTime!
-  updated_at: DateTime!
+  created_at: DateTime
+  updated_at: DateTime
 }
 
 input CreateUserRelationInput {

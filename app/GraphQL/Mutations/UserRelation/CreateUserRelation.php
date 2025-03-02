@@ -72,12 +72,19 @@ final class CreateUserRelation
                 // Commit the transaction if everything was successful
                 DB::commit();
                 Log::info("Transaction committed successfully.");
+              
+
+                Log::info("Transaction committed successfully." .json_encode($userRelations));
+
+               
             } catch (Exception $e) {
                 // Rollback the transaction if any exception occurs
                 DB::rollBack();
                 Log::error("Transaction failed: " . $e->getMessage());
             }
         }
+        $userRelations=$this->getBloodUserRelation($user_id);
+        return $userRelations; 
 
     }
 
@@ -98,5 +105,12 @@ final class CreateUserRelation
             ->where('id', $user_id)
             ->update(['blood_user_relation_calculated' => true]);
     }
+
+    public function getBloodUserRelation($user_id)
+    {
+        // Update blood_relation to true for the user
+       return UserRelation::where('creator_id',$user_id);
+    }
+
 
 }
