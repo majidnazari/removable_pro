@@ -31,7 +31,7 @@ return new class extends Migration {
             $table->timestamp('last_attempt_at')->nullable();
             $table->tinyInteger('status', )->default(0)->comment("-1=Blocked 0=None 1=Active 2=Inactive 3=Suspend 4=New");  
             $table->tinyInteger('role', )->default(3)->comment(" 1=Admin 2=Supporter 3=User");  
-            $table->boolean('user_relation_calculated')->default(false); 
+            $table->boolean('blood_user_relation_calculated')->default(false); 
             $table->string('clan_id')->nullable()->index();
 
           

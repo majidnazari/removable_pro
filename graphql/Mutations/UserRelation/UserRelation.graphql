@@ -1,0 +1,7 @@
+
+    # createUserRelation(input: CreateUserRelationInput! @spread): UserRelation @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\UserRelation\\CreateUserRelation@resolveUserRelation") 
+
+     CalculateBloodUserRelation(id: ID!,depth: Int!): UserRelation @guard(with: ["api"]) @throttle(max: 1, decay: 1) @field(resolver: "App\\GraphQL\\Mutations\\UserRelation\\CreateUserRelation@resolveBloodUserRelation") 
+
+    # updateUserRelation(id: ID!, input: UpdateUserRelationInput! @spread): UserRelation @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\UserRelation\\UpdateUserRelation@resolveUserRelation") 
+    # deleteUserRelation(id: ID!): UserRelation @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\UserRelation\\DeleteUserRelation@resolveUserRelation") 

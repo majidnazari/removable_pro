@@ -82,10 +82,10 @@ trait PersonDescendantsWithCompleteMerge
         return array_unique($userIds);  // Return unique user IDs
     }
 
-    public function getAllHead($user_id,$depth=15)
+    public function getAllHeads($user_id, $depth = 10)
     {
         $user = $this->getUser();
-        $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id,$depth);
+        $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
         $heads = collect($PersonAncestry["heads"])->pluck("person_id")->toArray();
 
         Log::info("The heads are: " . json_encode($heads));
@@ -109,8 +109,16 @@ trait PersonDescendantsWithCompleteMerge
 
         // Remove duplicates and return the final list of user IDs
         $allUserIds = array_unique($allUserIds);
+        Log::info("Final list of user IDs before remove itself: " . json_encode($allUserIds));
 
-        Log::info("Final list of user IDs: " . json_encode($allUserIds));
+        // Remove logged-in user ID from the list
+        $allUserIds = array_filter($allUserIds, function ($userId) use ($user) {
+            return $userId != $user->id;
+        });
+        // Reindex array to fix the keys
+        $allUserIds = array_values($allUserIds);
+
+        Log::info("Final list of user IDs after remove itself: " . json_encode($allUserIds));
 
         return $allUserIds;
     }

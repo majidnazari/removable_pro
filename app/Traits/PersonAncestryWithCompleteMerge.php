@@ -4,9 +4,12 @@ namespace App\Traits;
 
 use App\Models\UserMergeRequest;
 use App\GraphQL\Enums\MergeStatus;
+use App\Traits\FindOwnerTrait;
+
 
 trait PersonAncestryWithCompleteMerge
 {
+    use FindOwnerTrait;
     public function getPersonAncestryWithCompleteMerge($user_id, $depth = 3)
     {
         // Fetch all UserMergeRequests with Complete status
