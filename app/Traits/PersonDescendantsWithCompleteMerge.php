@@ -82,10 +82,10 @@ trait PersonDescendantsWithCompleteMerge
         return array_unique($userIds);  // Return unique user IDs
     }
 
-    public function getAllHead()
+    public function getAllHead($user_id,$depth=15)
     {
         $user = $this->getUser();
-        $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id);
+        $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id,$depth);
         $heads = collect($PersonAncestry["heads"])->pluck("person_id")->toArray();
 
         Log::info("The heads are: " . json_encode($heads));

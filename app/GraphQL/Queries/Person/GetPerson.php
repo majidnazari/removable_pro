@@ -269,11 +269,11 @@ final class GetPerson
 
     public function resolvePersonByDepth($root, array $args)
     {
+        $user_id = $args['user_id'] ?? $this->getUserId();
+        $depth = $args['depth'] ?? 3;
 
-        $heads=$this->getAllHead();
+        $heads=$this->getAllHead( $user_id ,$depth);
      
-
-        
     }
 
 
