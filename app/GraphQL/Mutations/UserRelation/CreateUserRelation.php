@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations\UserRelation;
 
 use App\Models\UserDetail;
+use App\Models\UserRelation;
 use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
@@ -12,6 +13,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\PersonDescendantsWithCompleteMerge;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 
 use Exception;
@@ -38,22 +40,35 @@ final class CreateUserRelation
         $user_id = $args['user_id'] ?? $this->getUserId();
         $depth = $args['depth'] ?? 3;
 
-        $heads = $this->getAllHeads($user_id, $depth);
+        $heads =  $this->getAllHeads($user_id, $depth);
+
+        $userBloodRelation=User::where("id",$user_id)->first()->blood_user_relation_calculated;
 
         // If the count of heads is greater than 1, insert into user_relations and update users
-        if (count($heads) > 1) {
+        if (count($heads) >= 1 && (!$userBloodRelation)) {
+           
             // Begin transaction
             DB::beginTransaction();
 
             try {
                 foreach ($heads as $head) {
+
+                    $relationExists = UserRelation::where('creator_id', $user_id)
+                        ->where('related_with_user_id', $head)
+                        ->exists();
+                       
+
+                    // If the relation doesn't exist, insert it
+                    if (!$relationExists) {
+                        $this->createUserRelation($user_id, $head);
+                    }
                     // Insert into user_relations
-                    $this->createUserRelation($user_id, $head);
+                   // $this->createUserRelation($user_id, $head);
 
-                    // Update blood_relation column in users table
-                    $this->updateBloodRelation($head);
+
                 }
-
+                // Update blood_relation column in users table
+                $this->updateBloodRelation($user_id);
                 // Commit the transaction if everything was successful
                 DB::commit();
                 Log::info("Transaction committed successfully.");
