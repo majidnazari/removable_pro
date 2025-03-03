@@ -11,7 +11,7 @@ use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
-use App\Traits\PersonDescendantsWithCompleteMerge;
+use App\Traits\GetAllBloodUsersRelationInClanFromHeads;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 
@@ -23,7 +23,7 @@ final class CreateUserRelation
 {
     use AuthUserTrait;
     use DuplicateCheckTrait;
-    use PersonDescendantsWithCompleteMerge;
+    use GetAllBloodUsersRelationInClanFromHeads;
 
     protected $userId;
 
@@ -40,30 +40,30 @@ final class CreateUserRelation
         $user_id = $args['user_id'] ?? $this->getUserId();
         $depth = $args['depth'] ?? 3;
 
-        $heads =  $this->getAllHeads($user_id, $depth);
+        $userIds = $this->getAllBloodUsersInClan($user_id, $depth);
 
-        $userBloodRelation=User::where("id",$user_id)->first()->blood_user_relation_calculated;
+        $userBloodRelation = User::where("id", $user_id)->first()->blood_user_relation_calculated;
 
         // If the count of heads is greater than 1, insert into user_relations and update users
-        if (count($heads) >= 1 && (!$userBloodRelation)) {
-           
+        if (count($userIds) >= 1 && (!$userBloodRelation)) {
+
             // Begin transaction
             DB::beginTransaction();
 
             try {
-                foreach ($heads as $head) {
+                foreach ($userIds as $userId) {
 
                     $relationExists = UserRelation::where('creator_id', $user_id)
-                        ->where('related_with_user_id', $head)
+                        ->where('related_with_user_id', $userId)
                         ->exists();
-                       
+
 
                     // If the relation doesn't exist, insert it
                     if (!$relationExists) {
-                        $this->createUserRelation($user_id, $head);
+                        $this->createUserRelation($user_id, $userId);
                     }
                     // Insert into user_relations
-                   // $this->createUserRelation($user_id, $head);
+                    // $this->createUserRelation($user_id, $head);
 
 
                 }
@@ -72,19 +72,20 @@ final class CreateUserRelation
                 // Commit the transaction if everything was successful
                 DB::commit();
                 Log::info("Transaction committed successfully.");
-              
 
-                Log::info("Transaction committed successfully." .json_encode($userRelations));
 
-               
+
+
             } catch (Exception $e) {
                 // Rollback the transaction if any exception occurs
                 DB::rollBack();
                 Log::error("Transaction failed: " . $e->getMessage());
             }
         }
-        $userRelations=$this->getBloodUserRelation($user_id);
-        return $userRelations; 
+        $userRelations = $this->getBloodUserRelation($user_id);
+        Log::info("Transaction committed successfully." . json_encode($userRelations));
+
+        return $userRelations;
 
     }
 
@@ -109,7 +110,7 @@ final class CreateUserRelation
     public function getBloodUserRelation($user_id)
     {
         // Update blood_relation to true for the user
-       return UserRelation::where('creator_id',$user_id);
+        return UserRelation::where('creator_id', $user_id);
     }
 
 

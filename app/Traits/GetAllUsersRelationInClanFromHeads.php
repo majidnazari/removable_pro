@@ -10,7 +10,7 @@ use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\AuthUserTrait;
 
 
-trait PersonDescendantsWithCompleteMerge
+trait GetAllUsersRelationInClanFromHeads
 {
 
     use PersonAncestryWithCompleteMerge;
@@ -82,7 +82,7 @@ trait PersonDescendantsWithCompleteMerge
         return array_unique($userIds);  // Return unique user IDs
     }
 
-    public function getAllHeads($user_id, $depth = 10)
+    public function getAllUsersInClan($user_id, $depth = 10)
     {
         $user = $this->getUser();
         $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
