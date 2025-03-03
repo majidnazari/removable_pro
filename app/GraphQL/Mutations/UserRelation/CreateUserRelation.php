@@ -25,7 +25,7 @@ final class CreateUserRelation
     use AuthUserTrait;
     use DuplicateCheckTrait;
     use GetAllBloodUsersRelationInClanFromHeads;
-    use GetAllUsersRelationInClanFromHeads;
+   // use GetAllUsersRelationInClanFromHeads;
 
     protected $userId;
 
@@ -43,9 +43,9 @@ final class CreateUserRelation
         $depth = $args['depth'] ?? 3;
 
         $userIds = $this->getAllBloodUsersInClanFromHeads($user_id, $depth);
-        $unblooduserIds = $this->getAllUsersInClanFromHeads($user_id, $depth);
+        //$unblooduserIds = $this->getAllUsersInClanFromHeads($user_id, $depth);
 
-        Log::info(" unblooduserIds are:" . json_encode( $unblooduserIds));
+        //Log::info(" unblooduserIds are:" . json_encode( $unblooduserIds));
 
 
         $userBloodRelation = User::where("id", $user_id)->first()->blood_user_relation_calculated;
