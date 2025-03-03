@@ -128,11 +128,11 @@ trait GetAllUsersRelationInClanFromHeads
         Log::info("Final list of user IDs before remove itself: " . json_encode($allUserIds));
 
         // Remove logged-in user ID from the list
-        $allUserIds = array_filter($allUserIds, function ($userId) use ($user) {
-            return $userId != $user->id;
-        });
-        // Reindex array to fix the keys
-        $allUserIds = array_values($allUserIds);
+        // $allUserIds = array_filter($allUserIds, function ($userId) use ($user) {
+        //     return $userId != $user->id;
+        // });
+        // // Reindex array to fix the keys
+        // $allUserIds = array_values($allUserIds);
 
         Log::info("Final list of user IDs after remove itself: " . json_encode($allUserIds));
 
