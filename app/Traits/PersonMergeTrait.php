@@ -37,6 +37,9 @@ trait PersonMergeTrait
             $secondaryPerson = Person::where('id', $secondaryPersonId)->where('status', Status::Active)->first();
 
 
+            Log::info("the primary person is :" . json_encode($primaryPerson));
+            Log::info("the secondaryPerson person is :" . json_encode($secondaryPerson));
+
             if ($secondaryPerson->is_owner && !$primaryPerson->is_owner) {
                 //Log::info("Switching primary and secondary as secondaryPerson is the owner.");
                 [$primaryPerson, $secondaryPerson] = [$secondaryPerson, $primaryPerson];
