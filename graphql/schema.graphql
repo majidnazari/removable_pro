@@ -8,6 +8,7 @@
       #import Types/Enums/type.graphql
       #import Types/User/type.graphql
       #import Types/UserDetail/type.graphql
+      #import Types/UserRelation/type.graphql
       #import Types/Country/type.graphql
       #import Types/Province/type.graphql
       #import Types/City/type.graphql
@@ -78,6 +79,7 @@
 
       #import Mutations/User/User.graphql
       #import Mutations/UserDetail/UserDetail.graphql
+      #import Mutations/UserRelation/UserRelation.graphql
       #import Mutations/Country/Country.graphql
       #import Mutations/Province/Province.graphql
       #import Mutations/City/City.graphql

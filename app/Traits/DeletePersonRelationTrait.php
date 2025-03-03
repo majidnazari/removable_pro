@@ -102,12 +102,12 @@ trait DeletePersonRelationTrait
                 Log::info("is the person userowner the same :" . $userOwner->id != $personId);
 
                 if ($userOwner->id != $personId) {
-                    return $this->removeParentRelation($personId, $gender,true);
+                    return $this->removeParentRelation($personId, $gender, true);
 
                 } else {
                     Log::info("Person Can be delete and has no relations here.");
-                    return true;
-
+                    throw new Exception("This person doesn't have any relation yet and you can delete it.");
+                    //return true;
                 }
             }
 
