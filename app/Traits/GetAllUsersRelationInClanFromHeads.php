@@ -12,11 +12,11 @@ use App\Traits\AuthUserTrait;
 
 trait GetAllUsersRelationInClanFromHeads
 {
-
     use PersonAncestryWithCompleteMerge;
     use AuthUserTrait;
+
     /**
-     * Get all descendants (children, grandchildren, etc.) of a person recursively.
+     * Get all descendants (children, grandchildren, etc.) of a person recursively, including their spouses.
      */
     public function getAllUserIdsFromDescendants(int $personId, array &$visited = []): array
     {
@@ -48,20 +48,36 @@ trait GetAllUsersRelationInClanFromHeads
 
         // Determine the correct column to use based on gender
         $marriageColumn = $person->gender == 1 ? 'man_id' : 'woman_id';
+        $spouseColumn = $person->gender == 1 ? 'woman_id' : 'man_id'; // Opposite gender to fetch spouse
 
         // Get all marriage IDs where the person is involved
-        $personMarriageIds = PersonMarriage::where($marriageColumn, $personId)
-            ->pluck('id')
-            ->toArray();
+        $personMarriageRecords = PersonMarriage::where($marriageColumn, $personId)->get();
 
-        if (empty($personMarriageIds)) {
+        if ($personMarriageRecords->isEmpty()) {
             Log::info("No marriages found for person: $personId");
-            return $userIds;
+        } else {
+            Log::info("Marriages found for person $personId: " . json_encode($personMarriageRecords->pluck('id')->toArray()));
+
+            // Fetch all spouse IDs
+            $spouseIds = $personMarriageRecords->pluck($spouseColumn)->unique()->toArray();
+
+            if (!empty($spouseIds)) {
+                Log::info("Spouses found for person $personId: " . json_encode($spouseIds));
+
+                // Get all spouse records
+                $spouses = Person::whereIn('id', $spouseIds)->get();
+
+                foreach ($spouses as $spouse) {
+                    if ($spouse->is_owner == 1) {
+                        $userIds[] = $spouse->creator_id;
+                        Log::info("Spouse $spouse->id is an owner, creator_id: " . $spouse->creator_id);
+                    }
+                }
+            }
         }
 
-        Log::info("Marriages found for person $personId: " . implode(', ', $personMarriageIds));
-
         // Get all children associated with these marriages
+        $personMarriageIds = $personMarriageRecords->pluck('id')->toArray();
         $childrenIds = PersonChild::whereIn('person_marriage_id', $personMarriageIds)
             ->pluck('child_id')
             ->unique()
@@ -69,10 +85,10 @@ trait GetAllUsersRelationInClanFromHeads
 
         if (empty($childrenIds)) {
             Log::info("No children found for person: $personId");
-            return $userIds;
+            return array_unique($userIds);
         }
 
-        Log::info("Children found for person $personId: " . implode(', ', $childrenIds));
+        Log::info("Children found for person $personId: " . json_encode($childrenIds));
 
         // Merge descendants by recursively calling the function for each child
         foreach ($childrenIds as $childId) {
@@ -82,7 +98,7 @@ trait GetAllUsersRelationInClanFromHeads
         return array_unique($userIds);  // Return unique user IDs
     }
 
-    public function getAllUsersInClan($user_id, $depth = 10)
+    public function getAllUsersInClanFromHeads($user_id, $depth = 10)
     {
         $user = $this->getUser();
         $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
@@ -122,5 +138,4 @@ trait GetAllUsersRelationInClanFromHeads
 
         return $allUserIds;
     }
-
 }

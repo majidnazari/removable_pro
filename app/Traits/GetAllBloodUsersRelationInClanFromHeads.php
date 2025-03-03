@@ -18,7 +18,7 @@ trait GetAllBloodUsersRelationInClanFromHeads
     /**
      * Get all descendants (children, grandchildren, etc.) of a person recursively.
      */
-    public function getAllUserIdsFromDescendants(int $personId, array &$visited = []): array
+    public function getAllBloodUserIdsFromDescendants(int $personId, array &$visited = []): array
     {
         // Initialize an empty array to store user IDs
         $userIds = [];
@@ -76,13 +76,13 @@ trait GetAllBloodUsersRelationInClanFromHeads
 
         // Merge descendants by recursively calling the function for each child
         foreach ($childrenIds as $childId) {
-            $userIds = array_merge($userIds, $this->getAllUserIdsFromDescendants($childId, $visited));
+            $userIds = array_merge($userIds, $this->getAllBloodUserIdsFromDescendants($childId, $visited));
         }
 
         return array_unique($userIds);  // Return unique user IDs
     }
 
-    public function getAllBloodUsersInClan($user_id, $depth = 10)
+    public function getAllBloodUsersInClanFromHeads($user_id, $depth = 10)
     {
         $user = $this->getUser();
         $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
@@ -99,7 +99,7 @@ trait GetAllBloodUsersRelationInClanFromHeads
         // For each head (starting person), fetch their descendants
         foreach ($heads as $head) {
             // Call the method with an initialized $visited array
-            $descendants = $this->getAllUserIdsFromDescendants($head, $visited);
+            $descendants = $this->getAllBloodUserIdsFromDescendants($head, $visited);
 
             // Merge the returned user IDs into the final array
             $allUserIds = array_merge($allUserIds, $descendants);
