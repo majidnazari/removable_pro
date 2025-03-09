@@ -15,7 +15,7 @@ trait DeletePersonRelationTrait
     use SmallClanTrait;
     use FindOwnerTrait;
 
-    public function deletePerson($personId)
+    public function deletePersonRelation($personId)
     {
         DB::beginTransaction();
         try {

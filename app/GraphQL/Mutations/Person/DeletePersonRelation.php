@@ -53,7 +53,7 @@ final class DeletePersonRelation
             Log::info("Attempting to delete Person ID: {$personId}");
     
             // Validate deletion permission
-            $validationResult = $this->deletePerson($personId);
+            $validationResult = $this->deletePersonRelation($personId);
     
             if ($validationResult !== true) {
                 Log::warning("Person ID {$personId} deletion failed: {$validationResult}");
