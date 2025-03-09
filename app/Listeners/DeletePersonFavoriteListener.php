@@ -27,7 +27,7 @@ class DeletePersonFavoriteListener
         $personId = $event->personId;
 
         // If no relationships exist, proceed with deleting related events
-       // Favorite::where('person_id', $personId)->delete();
+        Favorite::where('person_id', $personId)->delete();
         Log::info("Deleted Favorite related to person ID: $personId");
     }
 }

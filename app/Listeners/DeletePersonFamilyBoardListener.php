@@ -27,7 +27,7 @@ class DeletePersonFamilyBoardListener
         $personId = $event->personId;
 
         // If no relationships exist, proceed with deleting related events
-       // FamilyBoard::where('person_id', $personId)->delete();
+        FamilyBoard::where('person_id', $personId)->delete();
         Log::info("Deleted family board related to person ID: $personId");
     }
 }

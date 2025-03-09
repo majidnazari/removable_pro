@@ -27,7 +27,7 @@ class DeletePersonTalentDetailListener
         $personId = $event->personId;
 
         // If no relationships exist, proceed with deleting related events
-        //TalentDetail::where('person_id', $personId)->delete();
+        TalentDetail::where('person_id', $personId)->delete();
         Log::info("Deleted TalentDetail related to person ID: $personId");
     }
 }

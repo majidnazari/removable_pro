@@ -27,7 +27,7 @@ class DeletePersonMemoryListener
         $personId = $event->personId;
 
         // If no relationships exist, proceed with deleting related events
-       //Memory::where('person_id', $personId)->delete();
+        Memory::where('person_id', $personId)->delete();
         Log::info("Deleted Memory related to person ID: $personId");
     }
 }

@@ -27,7 +27,7 @@ class DeletePersonFamilyEventsListener
         $personId = $event->personId;
 
         // If no relationships exist, proceed with deleting related events
-        //FamilyEvent::where('person_id', $personId)->delete();
+        FamilyEvent::where('person_id', $personId)->delete();
         Log::info("Deleted family events related to person ID: $personId");
     }
 }
