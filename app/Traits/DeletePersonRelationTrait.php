@@ -246,8 +246,8 @@ trait DeletePersonRelationTrait
     {
         Log::info("RemoveParentRelation: Attempting to remove parent relation for Person ID {$personId}");
 
-        if ($downside) {
-            Log::info("RemoveParentRelation: the person {$personId} is child  and remove from downside ");
+        if (!$downside) {
+            Log::info("RemoveParentRelation: the person {$personId} is a child  and must remove from downside ");
 
             $parentRecord = PersonChild::where('child_id', $personId)->first();
 
@@ -260,7 +260,7 @@ trait DeletePersonRelationTrait
             $parentRecord->delete();
             return true;
 
-        } else if ($downside) {
+        } else  {
             Log::info("RemoveParentRelation: the person {$personId} is one of parent and remove from upside ");
             $marriages = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)->get();
 
