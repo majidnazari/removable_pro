@@ -33,13 +33,13 @@ class DeletePersonListener
         $hasMarriage = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->exists();
 
-        if (!$hasMarriage) {
+        if ($hasMarriage) {
             throw new Exception('Person has existing relationships and cannot be deleted.');
         }
 
         $hasChildren = PersonChild::where('child_id', $personId)->exists();
 
-        if (!$hasMarriage) {
+        if ($hasChildren) {
             throw new Exception('Person has existing relationships and cannot be deleted.');
         }
 
