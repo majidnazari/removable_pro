@@ -39,7 +39,7 @@ final class DeletePersonNode
     {
         $this->userId = $this->getUserId();
 
-        $personId = $args['person_id'];
+        $personId = $args['id'];
 
 
         try {
