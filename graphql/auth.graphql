@@ -1,7 +1,6 @@
 input LoginInput {
     username: String!
     password: String!
-    password2: String!
 }
 
 input RefreshTokenInput {
