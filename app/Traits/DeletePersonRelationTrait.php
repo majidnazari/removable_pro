@@ -92,7 +92,7 @@ trait DeletePersonRelationTrait
 
         if ($countChildren == 0) {
             // Check for spouse relationships
-            $spouseIds = PersonMarriage::where($gender == 0 ? 'man_id' : 'woman_id', $personId)
+            $spouseIds = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
                 ->pluck($gender == 0 ? 'man_id' : 'woman_id');
 
             Log::info("canDeletePerson and  spouseIds" . json_encode($spouseIds) . "and count is:" . count($spouseIds) . "empty check is :" . empty($spouseIds));
