@@ -25,9 +25,13 @@ class DeletePersonFavoriteListener
     public function handle(PersonDeletedEvent $event)
     {
         $personId = $event->personId;
+        
+        $deletedCount = Favorite::where('person_id', $personId)->update(['deleted_at' => now()]);
 
-        // If no relationships exist, proceed with deleting related events
-        Favorite::where('person_id', $personId)->delete();
-        Log::info("Deleted Favorite related to person ID: $personId");
+        if ($deletedCount === 0) {
+            Log::warning("No Favorite records found for person ID: $personId");
+        } else {
+            Log::info("Soft deleted {$deletedCount} Favorite records for person ID: $personId");
+        }
     }
 }

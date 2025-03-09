@@ -26,8 +26,13 @@ class DeletePersonTalentHeaderListener
     {
         $personId = $event->personId;
 
-        // If no relationships exist, proceed with deleting related events
-        TalentHeader::where('person_id', $personId)->delete();
-        Log::info("Deleted TalentHeader related to person ID: $personId");
+        // Soft delete all records in a single query
+        $deletedCount = TalentHeader::where('person_id', $personId)->update(['deleted_at' => now()]);
+
+        if ($deletedCount === 0) {
+            Log::warning("No TalentHeader records found for person ID: $personId");
+        } else {
+            Log::info("Soft deleted {$deletedCount} TalentHeader records for person ID: $personId");
+        }
     }
 }

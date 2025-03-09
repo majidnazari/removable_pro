@@ -26,8 +26,13 @@ class DeletePersonScoreListener
     {
         $personId = $event->personId;
 
-        // If no relationships exist, proceed with deleting related events
-        PersonScore::where('person_id', $personId)->delete();
-        Log::info("Deleted PersonScore related to person ID: $personId");
+        // Soft delete all records in a single query
+        $deletedCount = PersonScore::where('person_id', $personId)->update(['deleted_at' => now()]);
+
+        if ($deletedCount === 0) {
+            Log::warning("No PersonScore records found for person ID: $personId");
+        } else {
+            Log::info("Soft deleted {$deletedCount} PersonScore records for person ID: $personId");
+        }
     }
 }

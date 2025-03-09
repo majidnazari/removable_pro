@@ -26,8 +26,12 @@ class DeletePersonMemoryListener
     {
         $personId = $event->personId;
 
-        // If no relationships exist, proceed with deleting related events
-        Memory::where('person_id', $personId)->delete();
-        Log::info("Deleted Memory related to person ID: $personId");
+        $deletedCount = Memory::where('person_id', $personId)->update(['deleted_at' => now()]);
+
+        if ($deletedCount === 0) {
+            Log::warning("No Memory records found for person ID: $personId");
+        } else {
+            Log::info("Soft deleted {$deletedCount} Memory records for person ID: $personId");
+        }
     }
 }

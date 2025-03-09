@@ -14,10 +14,10 @@ class DeletePersonUserListener
         
         Log::info("Checking if person ID $personId has a linked user account.");
 
-        $user = User::where('person_id', $personId)->first();
-        if ($user) {
-            $user->delete();
-            Log::info("Deleted user account for person ID: $personId");
-        }
+        // $user = User::where('person_id', $personId)->first();
+        // if ($user) {
+        //     $user->delete();
+        //     Log::info("Deleted user account for person ID: $personId");
+        // }
     }
 }
