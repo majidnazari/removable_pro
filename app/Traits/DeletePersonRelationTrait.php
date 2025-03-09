@@ -102,10 +102,10 @@ trait DeletePersonRelationTrait
                 Log::info("is the person userowner the same :" . $userOwner->id != $personId);
 
                 if ($userOwner->id != $personId) {
-                    Log::info("the person {$personId} is no the same with user logged in with id {$userOwner->id}. so must check the person again has parent or not !");
+                    Log::info("the person {$personId} is not the same with user logged in with id {$userOwner->id}. so must check the person again has parent or not !");
 
                     if ($this->hasParentsPersonOrPersonSpouses($person)) {
-                        return $this->removeParentRelation($personId, $gender, true);
+                        return $this->removeParentRelation($personId, $gender);
                     }
                     throw new Exception("This person doesn't have any relation yet and you can delete it.");
 
@@ -250,7 +250,7 @@ trait DeletePersonRelationTrait
 
     protected function removeParentRelation($personId, $gender, $downside = false)
     {
-        Log::info("RemoveParentRelation: Attempting to remove parent relation for Person ID {$personId}");
+        Log::info("RemoveParentRelation: Attempting to remove parent relation for Person ID {$personId} and the flas is {$downside}");
 
         if (!$downside) {
             Log::info("RemoveParentRelation: the person {$personId} is a child  and must remove from downside ");

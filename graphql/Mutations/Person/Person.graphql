@@ -4,9 +4,9 @@ createPerson(input: CreatePersonInput! @spread): Person @guard(with: ["api"])  @
     deletePerson(input: DeletePersonInput! @spread ): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePersonNode@resolveDeletePersonNode") 
     deletePersonRelation(personId: Int! ): Boolean  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePersonRelation@resolvePersonRelation") 
 
-     mergePersons(primaryPersonId: ID!, secondaryPersonId: ID!): Person  
-     @guard(with: ["api"]) 
-     @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\MergePersons@resolvemerge")
+    mergePersons(primaryPersonId: ID!, secondaryPersonId: ID!): Person  
+    @guard(with: ["api"]) 
+    @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\MergePersons@resolvemerge")
     @validator(class: "App\\GraphQL\\Validators\\Person\\MergePersonsValidator")
 
 
