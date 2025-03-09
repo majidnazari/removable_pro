@@ -45,7 +45,7 @@ trait DeletePersonRelationTrait
                 if ($userOwner->id != $personId) {
                     Log::warning("DeletePerson: User {$userOwner->id} is not the creator of the sole owner.");
                     throw new Exception("Only the creator can delete the sole owner.");
-                } elseif ($this->hasParentsPersonOrSpouses($person)) {
+                } elseif ($this->hasParentsPersonOrPersonSpouses($person)) {
                     Log::warning("DeletePerson: Person ID {$personId} has parents and cannot be deleted.");
                     throw new Exception("The person has parents and cannot be deleted.");
                 }
@@ -102,7 +102,13 @@ trait DeletePersonRelationTrait
                 Log::info("is the person userowner the same :" . $userOwner->id != $personId);
 
                 if ($userOwner->id != $personId) {
-                    return $this->removeParentRelation($personId, $gender, true);
+                    Log::info("the person {$personId} is no the same with user logged in with id {$userOwner->id}. so must check the person again has parent or not !");
+
+                    if ($this->hasParentsPersonOrPersonSpouses($person)) {
+                        return $this->removeParentRelation($personId, $gender, true);
+                    }
+                    throw new Exception("This person doesn't have any relation yet and you can delete it.");
+
 
                 } else {
                     Log::info("Person Can be delete and has no relations here.");
@@ -130,7 +136,7 @@ trait DeletePersonRelationTrait
             throw new Exception("Person has more than one child and cannot be deleted.");
         }
 
-        if ($countChildren == 1 && (!$this->hasParentsPersonOrSpouses($person))) {
+        if ($countChildren == 1 && (!$this->hasParentsPersonOrPersonSpouses($person))) {
             // Log::info("CanDeletePerson: chcking parent of person with the user logged in ".$this->hasParents($personId) );
             Log::info("CanDeletePerson: Removing child relation with parent for Person ID {$personId}");
             return $this->removeChildRelationWithParent($personId, $gender);
@@ -143,7 +149,7 @@ trait DeletePersonRelationTrait
         return false;
     }
 
-    protected function hasParentsPersonOrSpouses($person)
+    protected function hasParentsPersonOrPersonSpouses($person)
     {
         $hasParentsPersonOrSpouses = false;
         $spouseIds = [];
@@ -260,7 +266,7 @@ trait DeletePersonRelationTrait
             $parentRecord->delete();
             return true;
 
-        } else  {
+        } else {
             Log::info("RemoveParentRelation: the person {$personId} is one of parent and remove from upside ");
             $marriages = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)->get();
 
