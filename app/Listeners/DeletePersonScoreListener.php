@@ -5,11 +5,11 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\PersonDeletedEvent;
-use App\Models\TalentDetail;
+use App\Models\PersonScore;
 
 use Illuminate\Support\Facades\Log;
 
-class DeletePersonTalentDetailListener
+class DeletePersonScoreListener
 {
     /**
      * Create the event listener.
@@ -27,7 +27,7 @@ class DeletePersonTalentDetailListener
         $personId = $event->personId;
 
         // If no relationships exist, proceed with deleting related events
-        //TalentDetail::where('person_id', $personId)->delete();
-        Log::info("Deleted TalentDetail related to person ID: $personId");
+        PersonScore::where('person_id', $personId)->delete();
+        Log::info("Deleted PersonScore related to person ID: $personId");
     }
 }
