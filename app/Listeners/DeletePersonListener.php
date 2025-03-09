@@ -43,7 +43,7 @@ class DeletePersonListener
             throw new Exception('Person has existing relationships and cannot be deleted.');
         }
 
-        $deletedCount = Person::where('person_id', $personId)->update(['deleted_at' => now()]);
+        $deletedCount = Person::where('id', $personId)->update(['deleted_at' => now()]);
 
         if ($deletedCount === 0) {
             Log::warning("No Person records found for person ID: $personId");
