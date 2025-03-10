@@ -53,7 +53,7 @@ class DeletePersonUserListener
                 ->where('creator_id', $userId)
                 ->update(['deleted_at' => $timestamp]);
 
-            Log::info("Soft deleted $count records from $table for creator_id = $userId.");
+            Log::info("Soft deleted $count records from $table for creator_id = $userId. for table {$table}");
         }
 
         // Soft delete group_details separately for user_id
