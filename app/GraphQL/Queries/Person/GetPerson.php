@@ -17,6 +17,7 @@ use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\PersonAncestryWithActiveMerge;
 use App\Traits\PersonDescendantsWithCompleteMerge;
 use App\Traits\GetAllBloodPersonsInClanFromHeads;
+use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
 use Log;
 
 final class GetPerson
@@ -28,6 +29,7 @@ final class GetPerson
     use PersonAncestryWithCompleteMerge;
     use PersonAncestryWithActiveMerge;
     use GetAllBloodPersonsInClanFromHeads;
+    use GetAllBloodPersonsWithSpousesInClanFromHeads;
    
 
     private $rootAncestors = [];
@@ -45,6 +47,7 @@ final class GetPerson
         $user = $this->getUser();
 
         $this->getAllBloodPersonsInClanFromHeads($user->id);
+        $this->getAllBloodPersonsWithSpousesInClanFromHeads($user->id);
         $Person = $this->findUser($args['id']);//Person::where('id', $args['id']);
 
         // Log::info("the id is:" . $args['id'] ."the peson found is :". json_encode($Person) );
