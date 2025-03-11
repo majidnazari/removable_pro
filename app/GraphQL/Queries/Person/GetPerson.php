@@ -252,8 +252,6 @@ final class GetPerson
         }
     }
 
-
-
     public function resolvePersonAncestryWithCompleteMerge($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user_id = $args['user_id'] ?? $this->getUserId();

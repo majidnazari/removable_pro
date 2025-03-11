@@ -21,16 +21,16 @@ trait GetAllBloodPersonsInClanFromHeads
         if (in_array($personId, $visited)) {
             return [];
         }
-        
+
         $visited[] = $personId;
         $allPersonIds = [$personId];
-        
+
         // Determine gender-based marriage column
         $marriageColumn = Person::where('id', $personId)->value('gender') == 1 ? 'man_id' : 'woman_id';
-        
+
         // Get marriages where the person is involved
         $marriageIds = PersonMarriage::where($marriageColumn, $personId)->pluck('id')->toArray();
-        
+
         // Get all children linked to these marriages
         $childrenIds = PersonChild::whereIn('person_marriage_id', $marriageIds)
             ->pluck('child_id')
@@ -41,8 +41,6 @@ trait GetAllBloodPersonsInClanFromHeads
         foreach ($childrenIds as $childId) {
             $allPersonIds = array_merge($allPersonIds, $this->getAllBloodPersonIdsFromDescendants($childId, $visited));
         }
-
-        Log::info("all people are : " . json_encode($allPersonIds));
 
         return array_unique($allPersonIds);
     }
@@ -56,7 +54,7 @@ trait GetAllBloodPersonsInClanFromHeads
         $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
 
         Log::info("Heads found: " . json_encode($heads));
-        
+
         $visited = [];
         $allPersonIds = [];
 
@@ -65,6 +63,8 @@ trait GetAllBloodPersonsInClanFromHeads
             $descendants = $this->getAllBloodPersonIdsFromDescendants($head, $visited);
             $allPersonIds = array_merge($allPersonIds, $descendants);
         }
+
+        Log::info("all people are : " . json_encode($allPersonIds));
 
         return array_unique($allPersonIds);
     }
