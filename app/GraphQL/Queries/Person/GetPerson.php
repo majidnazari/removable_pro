@@ -16,6 +16,7 @@ use App\Traits\FindOwnerTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\PersonAncestryWithActiveMerge;
 use App\Traits\PersonDescendantsWithCompleteMerge;
+use App\Traits\GetAllBloodPersonsInClanFromHeads;
 use Log;
 
 final class GetPerson
@@ -26,6 +27,7 @@ final class GetPerson
     use FindOwnerTrait;
     use PersonAncestryWithCompleteMerge;
     use PersonAncestryWithActiveMerge;
+    use GetAllBloodPersonsInClanFromHeads;
    
 
     private $rootAncestors = [];
@@ -40,6 +42,9 @@ final class GetPerson
     }
     function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $user = $this->getUser();
+
+        $this->getAllBloodPersonsInClanFromHeads($user->id);
         $Person = $this->findUser($args['id']);//Person::where('id', $args['id']);
 
         // Log::info("the id is:" . $args['id'] ."the peson found is :". json_encode($Person) );
