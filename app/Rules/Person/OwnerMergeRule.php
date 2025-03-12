@@ -6,11 +6,12 @@ use Illuminate\Contracts\Validation\Rule;
 use App\Models\Person;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\FindOwnerTrait;
-
+use Log;
 
 class OwnerMergeRule implements Rule
 {
     use FindOwnerTrait;
+
     protected $primaryPersonId;
     protected $secondaryPersonId;
 
@@ -22,23 +23,21 @@ class OwnerMergeRule implements Rule
 
     public function passes($attribute, $value)
     {
-        //$user = Auth::user();
+        // Get the actual owner user
         $userOwner = $this->findOwner();
-        // Fetch primary and secondary persons
-        $primaryPerson = Person::find($this->primaryPersonId);
-        $secondaryPerson = Person::find($this->secondaryPersonId);
+        Log::info("The owner is: " . json_encode($userOwner));
 
-        if (!$primaryPerson || !$secondaryPerson) {
-            return false;
+        // If there is no user owner, skip the check
+        if (!$userOwner) {
+            return true;
         }
 
-        // Check if either person is an owner
-        $isPrimaryOwner = $primaryPerson->is_owner;
-        $isSecondaryOwner = $secondaryPerson->is_owner;
-
-        // If either is an owner, the user must be the owner
-        if (($isPrimaryOwner || $isSecondaryOwner) && !$userOwner->is_owner) {
-            return false;
+        // If the user is an owner, they must match both primary and secondary person IDs
+        if ($userOwner->is_owner) {
+            if ($userOwner->person_id != $this->primaryPersonId || $userOwner->person_id != $this->secondaryPersonId) {
+                Log::error("Merge failed: User is an owner but does not match both persons.");
+                return false;
+            }
         }
 
         return true;
@@ -46,6 +45,6 @@ class OwnerMergeRule implements Rule
 
     public function message()
     {
-        return "You must be an owner to merge if either person is an owner.";
+        return "If you are an owner, you must be the same person as both the primary and secondary person.";
     }
 }
