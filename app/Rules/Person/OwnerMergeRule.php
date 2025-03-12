@@ -37,7 +37,7 @@ class OwnerMergeRule implements Rule
         $isSecondaryOwner = $secondaryPerson->is_owner;
 
         // If either is an owner, the user must be the owner
-        if (($isPrimaryOwner || $isSecondaryOwner) && !$ $userOwner->is_owner) {
+        if (($isPrimaryOwner || $isSecondaryOwner) && !$userOwner->is_owner) {
             return false;
         }
 
