@@ -7,10 +7,12 @@ use App\Models\PersonChild;
 use App\Models\PersonMarriage;
 use Illuminate\Support\Facades\Log;
 use App\Traits\PersonAncestryWithCompleteMerge;
+use App\Traits\PersonAncestryHeads;
 
 trait GetAllBloodPersonsWithSpousesInClanFromHeads
 {
     use PersonAncestryWithCompleteMerge;
+    use PersonAncestryHeads;
 
     /**
      * Recursively fetch all person IDs from descendants.
@@ -63,10 +65,14 @@ trait GetAllBloodPersonsWithSpousesInClanFromHeads
      */
     public function getAllBloodPersonsWithSpousesInClanFromHeads($user_id, $depth = 10): array
     {
-        $ancestryData = $this->getPersonAncestryWithCompleteMerge($user_id, $depth);
-        $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
+        // $ancestryData = $this->getPersonAncestryWithCompleteMerge($user_id, $depth);
+        // $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
 
-        Log::info("Heads found: " . json_encode($heads));
+        // Log::info("Heads found: " . json_encode($heads));
+
+        $ancestryData= $this->getPersonAncestryHeads($user_id,10);
+        $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
+        Log::info("headstmp found: " . json_encode($heads));
 
         $visited = [];
         $allPersonIds = [];

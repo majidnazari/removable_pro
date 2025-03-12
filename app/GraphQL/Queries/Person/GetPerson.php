@@ -273,8 +273,4 @@ final class GetPerson
     }
 
 
-   
-
-
-
 }

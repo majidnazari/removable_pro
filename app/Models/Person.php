@@ -265,6 +265,32 @@ class Person extends Eloquent
         return [$result, $this->rootAncestors];
     }
 
+    public function getFullBinaryAncestryheads($depth = 3)
+    {
+        //Log::info("Starting ancestry crawl for Person ID: " . $this->id . " with depth: " . $depth);
+        // return $this->crawlAncestors($this, $depth);
+
+        $result = $this->crawlAncestors($this, $depth);
+
+        // Map $this->rootAncestors to extract only id, first_name, and last_name
+        // $heads = array_map(function ($ancestor) {
+        //     return [
+        //         'id' => $ancestor['person_id'],
+        //         'first_name' => $ancestor['first_name'],
+        //         'last_name' => $ancestor['last_name']
+        //     ];
+        // }, $this->rootAncestors);
+
+        // Add 'order' field to each ancestor in $this->rootAncestors
+        foreach ($this->rootAncestors as $index => &$ancestor) {
+            $ancestor['order'] = $index + 1; // Add order starting from 1
+        }
+
+        // Log the simplified heads array
+        //Log::info("All top-level ancestors: " . json_encode($this->rootAncestors));
+
+        return  $this->rootAncestors;
+    }
     private function crawlAncestors($person, $depth)
     {
         // Base case: stop recursion if depth is zero or person is null

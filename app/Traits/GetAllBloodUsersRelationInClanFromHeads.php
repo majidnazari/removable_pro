@@ -8,6 +8,7 @@ use App\Models\PersonMarriage;
 use Illuminate\Support\Facades\Log;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\AuthUserTrait;
+use App\Traits\PersonAncestryHeads;
 
 
 trait GetAllBloodUsersRelationInClanFromHeads
@@ -15,6 +16,7 @@ trait GetAllBloodUsersRelationInClanFromHeads
 
     use PersonAncestryWithCompleteMerge;
     use AuthUserTrait;
+    use PersonAncestryHeads;
     /**
      * Get all descendants (children, grandchildren, etc.) of a person recursively.
      */
@@ -85,10 +87,14 @@ trait GetAllBloodUsersRelationInClanFromHeads
     public function getAllBloodUsersInClanFromHeads($user_id, $depth = 10)
     {
         $user = $this->getUser();
-        $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
-        $heads = collect($PersonAncestry["heads"])->pluck("person_id")->toArray();
+        // $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
+        // $heads = collect($PersonAncestry["heads"])->pluck("person_id")->toArray();
 
-        Log::info("The heads are: " . json_encode($heads));
+        // Log::info("The heads are: " . json_encode($heads));
+
+        $result= $this->getPersonAncestryHeads($user->id,10);
+        $heads = collect($result['heads'])->pluck('person_id')->toArray();
+        Log::info("heads found: " . json_encode($heads));
 
         // Initialize visited array to track processed IDs
         $visited = [];
