@@ -36,7 +36,7 @@ class OwnerMergeRule implements Rule
 
         // If the user is an owner, they must match both primary and secondary person IDs
         if ($userOwner->is_owner) {
-            if ($userOwner->person_id != $this->primaryPersonId && $userOwner->person_id != $this->secondaryPersonId) {
+            if (($userOwner->person_id != $this->primaryPersonId) && ($userOwner->person_id != $this->secondaryPersonId)) {
                 Log::error("Merge failed: User is an owner but does not match both persons.");
                 return false;
             }
