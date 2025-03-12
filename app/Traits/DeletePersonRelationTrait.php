@@ -8,12 +8,14 @@ use App\Models\PersonChild;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
 use Exception;
 
 trait DeletePersonRelationTrait
 {
     use SmallClanTrait;
     use FindOwnerTrait;
+    use GetAllBloodPersonsWithSpousesInClanFromHeads;
 
     public function deletePersonRelation($personId)
     {
@@ -27,6 +29,12 @@ trait DeletePersonRelationTrait
             if (!$person) {
                 Log::warning("DeletePerson: Person ID {$personId} not found or inactive.");
                 throw new Exception("Person not found.");
+            }
+
+            $heads = $this->getAllBloodPersonsWithSpousesInClanFromHeads($userId);
+            if (!in_array($personId, $heads)) {
+                Log::warning("getAllBloodPersonsWithSpousesInClanFromHeads:  {$personId} is not in the big clan.");
+                throw new Exception("This person is not in your clan!.");
             }
 
             // 1. Check if user is part of the small clan
@@ -207,8 +215,6 @@ trait DeletePersonRelationTrait
 
         return in_array($userOwner->id, $spouseArray);
     }
-
-
 
     protected function IsthePersonChildOfUserLoggedIn($person, $userOwner)
     {

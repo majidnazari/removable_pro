@@ -45,9 +45,6 @@ final class GetPerson
     function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user = $this->getUser();
-
-        $this->getAllBloodPersonsInClanFromHeads($user->id);
-        $this->getAllBloodPersonsWithSpousesInClanFromHeads($user->id);
         $Person = $this->findUser($args['id']);//Person::where('id', $args['id']);
 
         // Log::info("the id is:" . $args['id'] ."the peson found is :". json_encode($Person) );
