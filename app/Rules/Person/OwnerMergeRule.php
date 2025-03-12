@@ -4,7 +4,6 @@ namespace App\Rules\Person;
 
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\Person;
-use Illuminate\Support\Facades\Auth;
 use App\Traits\FindOwnerTrait;
 use Log;
 
@@ -25,19 +24,35 @@ class OwnerMergeRule implements Rule
     {
         // Get the actual owner user
         $userOwner = $this->findOwner();
-        Log::info("The owner is: " . json_encode($userOwner) . " and the owner person id is :" . $userOwner->id);
-        Log::info("The primary  is: " . $this->primaryPersonId);
-        Log::info("The secondary  is: " . $this->secondaryPersonId);
+        Log::info("User Owner: " . json_encode($userOwner));
 
-        // If there is no user owner, skip the check
-        if (!$userOwner) {
+        // Fetch primary and secondary persons
+        $primaryPerson = Person::find($this->primaryPersonId);
+        $secondaryPerson = Person::find($this->secondaryPersonId);
+
+        if (!$primaryPerson || !$secondaryPerson) {
+            return false;
+        }
+
+        Log::info("Primary Person: " . json_encode($primaryPerson));
+        Log::info("Secondary Person: " . json_encode($secondaryPerson));
+
+        // Check if either person is an owner
+        $isPrimaryOwner = $primaryPerson->is_owner;
+        $isSecondaryOwner = $secondaryPerson->is_owner;
+
+        Log::info("Is Primary Owner: " . ($isPrimaryOwner ? 'Yes' : 'No'));
+        Log::info("Is Secondary Owner: " . ($isSecondaryOwner ? 'Yes' : 'No'));
+
+        // If neither person is an owner, allow the merge
+        if (!$isPrimaryOwner && !$isSecondaryOwner) {
             return true;
         }
 
-        // If the user is an owner, they must match both primary and secondary person IDs
-        if ($userOwner->is_owner) {
-            if (($userOwner->id != $this->primaryPersonId) && ($userOwner->id != $this->secondaryPersonId)) {
-                Log::error("Merge failed: User is an owner but does not match both persons.");
+        // If either person is an owner, check userOwner
+        if ($userOwner && $userOwner->is_owner) {
+            if ($userOwner->id != $this->primaryPersonId && $userOwner->id != $this->secondaryPersonId) {
+                Log::error("Merge failed: User is an owner but does not match primary or secondary person.");
                 return false;
             }
         }
@@ -47,6 +62,6 @@ class OwnerMergeRule implements Rule
 
     public function message()
     {
-        return "If you are an owner, you must be the same person as both the primary and secondary person.";
+        return "If either the primary or secondary person is an owner, you must be the same person as one of them to merge.";
     }
 }
