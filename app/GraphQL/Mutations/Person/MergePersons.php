@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations\Person;
 
+use App\GraphQL\Enums\ConfirmMemoryStatus;
 use App\Models\Person;
 use App\Models\Memory;
 use App\Models\PersonMarriage;
@@ -215,11 +216,28 @@ final class MergePersons
     // Update Memory references
     private function updateMemoryReferences($oldPersonId, $newPersonId)
     {
-        Memory::where('person_id', $oldPersonId)->chunk(100, function ($events) use ($newPersonId) {
-            foreach ($events as $event) {
-                // You update the record, but you still need to call `save()` to persist the change
-                $event->person_id = $newPersonId;
-                $event->save(); // Save after updating the record
+        // Memory::where('person_id', $oldPersonId)->chunk(100, function ($memories) use ($newPersonId) {
+        //     foreach ($memories as $memory) {
+        //         // You update the record, but you still need to call `save()` to persist the change
+        //         $memory->person_id = $newPersonId;
+        //         $memory->save(); // Save after updating the record
+        //     }
+        // });
+
+        // Check if the new person is an owner
+        $isOwner = Person::where('id', $newPersonId)->value('is_owner');
+
+        Memory::where('person_id', $oldPersonId)->chunk(100, function ($memories) use ($newPersonId, $isOwner) {
+            foreach ($memories as $memory) {
+                // Update the person_id reference
+                $memory->person_id = $newPersonId;
+
+                // If the new person is an owner, set confirm_status = 3
+                if ($isOwner) {
+                    $memory->confirm_status = ConfirmMemoryStatus::Suspend;
+                }
+
+                $memory->save(); // Persist changes
             }
         });
     }
