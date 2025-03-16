@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutations\Person;
 
 use App\Models\Person;
+use App\Models\User;
 use App\Models\PersonMarriage;
 use App\Models\PersonChild;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -74,7 +75,10 @@ final class DeleteJustOwnPerson
                 }
 
                 $person->update(['is_owner' => 0]);
-                //$person->save();
+
+                $user=User::where('id',$this->userId)->first();
+                $user->delete();
+               
 
                 Log::info("Updated person {$personId} -> isowner = 0");
             });
