@@ -65,17 +65,26 @@ trait GetAllBloodPersonsWithSpousesInClanFromHeads
      */
     public function getAllBloodPersonsWithSpousesInClanFromHeads($user_id, $depth = 10): array
     {
+
+        $visited = [];
+        $allPersonIds = [];
         // $ancestryData = $this->getPersonAncestryWithCompleteMerge($user_id, $depth);
         // $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
 
         // Log::info("Heads found: " . json_encode($heads));
 
         $ancestryData= $this->getPersonAncestryHeads($user_id,10);
+
+        if (!$ancestryData || !isset($ancestryData['heads']) || empty($ancestryData['heads'])) {
+            Log::warning("Ancestry data is null or empty for user ID: {$user_id}");
+            return $allPersonIds ; // Return null instead of throwing an error
+        }
+        Log::info("ancestryData are : " . json_encode($ancestryData));
+
         $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
         Log::info("headstmp found: " . json_encode($heads));
 
-        $visited = [];
-        $allPersonIds = [];
+       
 
         // Fetch descendants for each head
         foreach ($heads as $head) {
