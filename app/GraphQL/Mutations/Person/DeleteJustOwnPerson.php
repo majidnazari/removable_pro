@@ -47,7 +47,7 @@ final class DeleteJustOwnPerson
 
         $personId = $args['id'];
 
-        $owner=$this->findOwner();
+        $owner = $this->findOwner();
 
         if ($owner->id != $personId) {
             throw new Exception("You are not allowed to use this method for others!");
@@ -57,6 +57,11 @@ final class DeleteJustOwnPerson
 
             $result = $this->getAllBloodUsersInClanFromHeads($this->userId);
             Log::info("The result is: " . json_encode($result));
+
+            // Remove the user themselves from the result array
+            $result = array_filter($result, fn($id) => $id != $this->userId);
+            Log::info("The result without itself  is : " . json_encode($result));
+
 
             if (empty($result) || !is_array($result) || count($result) === 0) {
                 Log::info("The result is empty or null.");
@@ -76,9 +81,9 @@ final class DeleteJustOwnPerson
 
                 $person->update(['is_owner' => 0]);
 
-                $user=User::where('id',$this->userId)->first();
+                $user = User::where('id', $this->userId)->first();
                 $user->delete();
-               
+
 
                 Log::info("Updated person {$personId} -> isowner = 0");
             });
