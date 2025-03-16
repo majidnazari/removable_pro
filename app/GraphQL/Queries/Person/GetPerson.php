@@ -18,6 +18,7 @@ use App\Traits\PersonAncestryWithActiveMerge;
 use App\Traits\PersonDescendantsWithCompleteMerge;
 use App\Traits\GetAllBloodPersonsInClanFromHeads;
 use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
+use App\Traits\BloodyPersonAncestry;
 use Log;
 
 final class GetPerson
@@ -30,6 +31,7 @@ final class GetPerson
     use PersonAncestryWithActiveMerge;
     use GetAllBloodPersonsInClanFromHeads;
     use GetAllBloodPersonsWithSpousesInClanFromHeads;
+    use BloodyPersonAncestry;
    
 
     private $rootAncestors = [];
@@ -267,6 +269,15 @@ final class GetPerson
         $depth = $args['depth'] ?? 3;
 
         return $this->getPersonAncestryWithActiveMerge($user_id, $depth);
+    }
+
+    public function resolveBloodyPersonAncestry($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $user_id = $args['user_id'] ?? $this->getUserId();
+        $depth = $args['depth'] ?? 3;
+
+        //Log::info("the user {$user_id} and depth {$depth}");
+        return $this->getBloodyPersonAncestry($user_id, $depth);
     }
 
 
