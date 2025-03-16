@@ -71,7 +71,7 @@ class SendRequestToOtherFamilyInputValidator extends Validator
                 new UserSenderReceiverStatusCompleteOnce($this->user_sender_id),
                 function ($attribute, $value, $fail) {
                     Log::info("the person must to check the in clan is :".$value);
-                    $allowedPersons = $this->getAllBloodPersonsWithSpousesInClanFromHeads($value);
+                    $allowedPersons = $this->getAllBloodPersonsWithSpousesInClanFromHeads( $this->user_sender_id);
 
                     Log::info("Allowed persons for sender {$this->user_sender_id}: " . json_encode($allowedPersons));
 
