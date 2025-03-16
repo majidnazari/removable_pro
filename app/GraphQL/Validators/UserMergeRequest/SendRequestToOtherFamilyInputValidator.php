@@ -18,6 +18,7 @@ use App\Rules\UserMergeRequest\SenderCannotSendToItself;
 use App\Rules\UserMergeRequest\ReceiverHasOwner;
 use App\Rules\UserMergeRequest\SenderNodeAndReceiverNodeSameGender;
 use App\Rules\UserMergeRequest\UserSenderReceiverStatusCompleteOnce;
+use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
 
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
@@ -28,11 +29,13 @@ use GraphQL\Error\Error;
 
 class SendRequestToOtherFamilyInputValidator extends Validator
 {
+    use GetAllBloodPersonsWithSpousesInClanFromHeads;
     protected $user_sender_id;
+    protected $node_id;
 
     public function __construct()
     {
-        
+
         $user = Auth::guard('api')->user();
 
         if (!$user) {
@@ -40,6 +43,10 @@ class SendRequestToOtherFamilyInputValidator extends Validator
         }
 
         $this->user_sender_id = $user->id;
+        // $this->node_id = $this->arg('node_sender_id');
+        //$this->args = request()->input();
+
+        //Log::info("the args are " . json_encode($this->args));
     }
 
     /**
@@ -52,8 +59,8 @@ class SendRequestToOtherFamilyInputValidator extends Validator
                 'required',
                 'exists:people,id',
                 new PersonHasValidMobile(),
-                new PersonIsAccessibleBySender($this->user_sender_id),
-                new NoActiveRequestExists($this->user_sender_id), 
+                //new PersonIsAccessibleBySender($this->user_sender_id),
+                new NoActiveRequestExists($this->user_sender_id),
 
                 new NodeSenderExists(),
                 new NodeSenderNotOwner(),
@@ -62,58 +69,19 @@ class SendRequestToOtherFamilyInputValidator extends Validator
                 new ReceiverHasOwner(),
                 new SenderNodeAndReceiverNodeSameGender($this->user_sender_id),
                 new UserSenderReceiverStatusCompleteOnce($this->user_sender_id),
+                function ($attribute, $value, $fail) {
+                    Log::info("the person must to check the in clan is :".$value);
+                    $allowedPersons = $this->getAllBloodPersonsWithSpousesInClanFromHeads($value);
+
+                    Log::info("Allowed persons for sender {$this->user_sender_id}: " . json_encode($allowedPersons));
+
+                    if (!in_array($value, $allowedPersons)) {
+                        return $fail("The selected sender node is not part of the sender's bloodline in the clan.");
+                    }
+                }
             ],
         ];
     }
 
-    /**
-     * Custom validation logic after field-level validation.
-     */
-//     public function after($validator)
-//     {
-//         // Fetch the sender person
-//         $node_sender_id = $this->data['node_sender_id'];
-//         $person = Person::find($node_sender_id);
 
-//         Log::info("the person foundis:". json_encode($person));
-
-//         if (!$person) {
-//             $validator->errors()->add('node_sender_id', 'The selected node sender does not exist.');
-//             return;
-//         }
-
-//         // Check if the sender is an owner
-//         if ($person->is_owner) {
-//             $validator->errors()->add('node_sender_id', 'The owner cannot send requests to others.');
-//             return;
-//         }
-
-//         // Ensure the receiver exists
-//         $user_receiver = User::where('mobile', $person->country_code . $person->mobile)
-//             ->where('status', Status::Active)
-//             ->first();
-
-//         if (!$user_receiver) {
-//             $validator->errors()->add('user_receiver_id', 'The node you have selected is not found.');
-//             return;
-//         }
-
-//         // Ensure sender and receiver are different
-//         if ($this->user_sender_id === $user_receiver->id) {
-//             $validator->errors()->add('user_receiver_id', 'The sender and receiver cannot be the same.');
-//             return false;
-//         }
-
-//         // Ensure the receiver's owner exists
-//         $person_receiver_owner = Person::where('creator_id', $user_receiver->id)
-//             ->where('is_owner', true)
-//             ->where('status', Status::Active)
-//             ->first();
-
-//         if (!$person_receiver_owner) {
-//             $validator->errors()->add('node_receiver_id', 'The receiver\'s owner is not found.');
-//         }
-
-        
-//     }
- }
+}

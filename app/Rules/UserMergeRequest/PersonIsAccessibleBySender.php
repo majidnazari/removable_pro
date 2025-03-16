@@ -7,7 +7,8 @@ use App\Models\Person;
 
 
 class PersonIsAccessibleBySender implements Rule
-{protected $senderId;
+{
+    protected $senderId;
 
     public function __construct($senderId)
     {
