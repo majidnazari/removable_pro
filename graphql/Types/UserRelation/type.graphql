@@ -1,0 +1,22 @@
+type UserRelation {
+  id: ID
+  creator_id: ID
+  Creator: User
+  editor_id: ID
+  Editor: User
+  related_with_user_id: ID
+  RelatedUser: User!
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+input CreateUserRelationInput {
+  creator_id: ID!
+  related_with_user_id: ID!
+}
+
+input UpdateUserRelationInput {
+  creator_id: ID
+  editor_id: ID
+  related_with_user_id: ID
+}

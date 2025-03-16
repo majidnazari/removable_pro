@@ -18,6 +18,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\FindOwnerTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
+use App\Traits\PersonAncestryHeads;
 use Log;
 
 final class CreateParent_old
@@ -27,6 +28,7 @@ final class CreateParent_old
     use FindOwnerTrait;
     use PersonAncestryWithCompleteMerge;
     use SmallClanTrait;
+    use PersonAncestryHeads;
 
     public function resolveParent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
@@ -152,10 +154,17 @@ final class CreateParent_old
             $this->checkDuplicate(new PersonChild(), ["child_id" => $personId]); // check has parent before or not!.
 
             $this->checkDuplicate(new PersonChild(), $PersonChildModel);
-            $result = $this->getPersonAncestryWithCompleteMerge($this->userId);
-            Log::info("the result of with complete ancestry  is:" . json_encode($result['heads']));
 
-            $allheads = $result['heads'];
+            // $result = $this->getPersonAncestryWithCompleteMerge($this->userId);
+            // Log::info("the result of with complete ancestry  is:" . json_encode($result['heads']));
+
+            // $allheads = $result['heads'];
+
+            $result= $this->getPersonAncestryHeads($this->userId);
+            $heads = collect($result['heads'])->pluck('person_id')->toArray();
+            Log::info("heads found: " . json_encode($heads));
+
+            $allheads =$heads;
             //Log::info("the allheads is". json_encode( $allheads));
 
             $headsids = collect($allheads)->pluck("person_id")->toArray();

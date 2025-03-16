@@ -13,6 +13,8 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 use App\Events\UpdateClanIdAfterMerge;
+use App\Events\BloodUserRelationResetEvent;
+use App\Events\UnbloodUserRelationResetEvent;
 
 
 use Exception;
@@ -80,6 +82,12 @@ class SendConfirmMergeRequestToOtherFamily
             $userMergeRequest->save();
             // Dispatch the event to update the clan_id after the merge
             event(new UpdateClanIdAfterMerge($userMergeRequest->user_sender_id, $userMergeRequest->user_receiver_id));
+
+            // Dispatch blood user event for sender
+            event(new BloodUserRelationResetEvent($userMergeRequest->user_sender_id));
+
+            // Dispatch unblood user event for receiver
+            event(new UnbloodUserRelationResetEvent($userMergeRequest->user_receiver_id));
 
             DB::commit();
 

@@ -33,5 +33,6 @@ getPersons(
     
 
 
- getPersonAncestryWithActiveMerge( user_id:ID ,depth: Int!): AncestryTree @guard(with: ["api"])  @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestryWithActiveMerge")
- getPersonAncestryWithCompleteMerge( user_id:ID ,depth: Int!): AncestryTrees @guard(with: ["api"]) @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestryWithCompleteMerge")
+#  getPersonAncestryWithActiveMerge( user_id:ID ,depth: Int!): AncestryTree @guard(with: ["api"])  @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestryWithActiveMerge")
+#  getPersonAncestryWithCompleteMerge( user_id:ID ,depth: Int!): AncestryTrees @guard(with: ["api"]) @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolvePersonAncestryWithCompleteMerge")
+ getBloodyPersonAncestry( user_id:ID ,depth: Int!): AncestryTrees @guard(with: ["api"]) @throttle(max: 10, decay: 1) @field(resolver: "App\\GraphQL\\Queries\\Person\\GetPerson@resolveBloodyPersonAncestry")

@@ -9,16 +9,21 @@ use App\Rules\Person\ValidMarriageDate;
 use App\Rules\Person\ValidDivorceDate;
 use App\Rules\Person\ValidDeathDate;
 use App\Rules\Person\UniqueSpouseForWoman;
+use App\Rules\Person\PersonInBloodline;
+use App\Traits\AuthUserTrait;
+
 use Log;
 
 class CreateSpouseInputValidator extends GraphQLValidator
 {
+    use AuthUserTrait;
     public function rules(): array
     {
         $personId = $this->arg('person_id');
         $spouseData = $this->arg('spouse');
         $marriageDate = $this->arg('marriage_date');
         $divorceDate = $this->arg('divorce_date');
+        $userId=$this->getUserId();
 
         Log::info("the spouse is :" . json_encode($spouseData));
         // Fetch existing person from DB
@@ -40,6 +45,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
                 'required',
                 'exists:people,id',
                 new UniqueSpouseForWoman( $person, $spouseData, $marriageDate),
+                new PersonInBloodline($personId, $userId),
                 // new NotSelfMarriage($personId, $spouseId), // Custom rule to check self-marriage
             ],
             'spouse.first_name' => ['required', 'string'],

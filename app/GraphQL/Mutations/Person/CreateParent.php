@@ -18,12 +18,13 @@ use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\FindOwnerTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
+use App\Traits\PersonAncestryHeads;
 use Exception;
 use Log;
 
 final class CreateParent
 {
-    use AuthUserTrait, DuplicateCheckTrait, FindOwnerTrait, PersonAncestryWithCompleteMerge, SmallClanTrait;
+    use AuthUserTrait, DuplicateCheckTrait, FindOwnerTrait, PersonAncestryWithCompleteMerge, SmallClanTrait,PersonAncestryHeads;
 
     public function resolveParent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
@@ -143,11 +144,15 @@ final class CreateParent
 
     private function validatePersonAncestry(int $personId)
     {
-        $result = $this->getPersonAncestryWithCompleteMerge($this->userId,10);
-        Log::info("theuser logggd in is :" . $this->userId . "the result of active complete is :" . json_encode( $result['heads']));
-        $headsIds = collect($result['heads'])->pluck("person_id")->toArray();
+        // $result = $this->getPersonAncestryWithCompleteMerge($this->userId,10);
+        // Log::info("theuser logggd in is :" . $this->userId . "the result of active complete is :" . json_encode( $result['heads']));
+        // $headsIds = collect($result['heads'])->pluck("person_id")->toArray();
 
-        if (!in_array($personId, $headsIds)) {
+        $result= $this->getPersonAncestryHeads($this->userId,10);
+        $heads = collect($result['heads'])->pluck('person_id')->toArray();
+        Log::info("heads found: " . json_encode($heads));
+
+        if (!in_array($personId, $heads)) {
             throw new Exception("Person with ID {$personId} not found in the list of heads."); 
         }
 

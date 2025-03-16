@@ -15,6 +15,10 @@ use App\Traits\AuthorizesUser;
 use App\Traits\FindOwnerTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\PersonAncestryWithActiveMerge;
+use App\Traits\PersonDescendantsWithCompleteMerge;
+use App\Traits\GetAllBloodPersonsInClanFromHeads;
+use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
+use App\Traits\BloodyPersonAncestry;
 use Log;
 
 final class GetPerson
@@ -25,6 +29,10 @@ final class GetPerson
     use FindOwnerTrait;
     use PersonAncestryWithCompleteMerge;
     use PersonAncestryWithActiveMerge;
+    use GetAllBloodPersonsInClanFromHeads;
+    use GetAllBloodPersonsWithSpousesInClanFromHeads;
+    use BloodyPersonAncestry;
+   
 
     private $rootAncestors = [];
 
@@ -38,6 +46,7 @@ final class GetPerson
     }
     function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
+        $user = $this->getUser();
         $Person = $this->findUser($args['id']);//Person::where('id', $args['id']);
 
         // Log::info("the id is:" . $args['id'] ."the peson found is :". json_encode($Person) );
@@ -132,12 +141,12 @@ final class GetPerson
     //             //Log::warning("No valid owner found for user_id: $user_id.");
     //             return null;
     //         }
-        
+
 
     //         [$mineAncestry,$this->rootAncestors] = $minePerson->getFullBinaryAncestry($depth);
 
     //         // Get the heads for the user ancestry
-           
+
     //        // Log::info("the all heades are:" . json_encode( $this->rootAncestors));
     //         // Fetch and return only the user's own ancestry tree
     //         return [
@@ -232,7 +241,7 @@ final class GetPerson
     //     ];
     // }
 
-        
+
 
     public function findUser($id)
     {
@@ -244,8 +253,6 @@ final class GetPerson
             //return  Error::createLocatedError("The person not found!");
         }
     }
-
-
 
     public function resolvePersonAncestryWithCompleteMerge($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
@@ -263,5 +270,15 @@ final class GetPerson
 
         return $this->getPersonAncestryWithActiveMerge($user_id, $depth);
     }
+
+    public function resolveBloodyPersonAncestry($_, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+        $user_id = $args['user_id'] ?? $this->getUserId();
+        $depth = $args['depth'] ?? 3;
+
+        //Log::info("the user {$user_id} and depth {$depth}");
+        return $this->getBloodyPersonAncestry($user_id, $depth);
+    }
+
 
 }

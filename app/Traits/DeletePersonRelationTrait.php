@@ -8,14 +8,16 @@ use App\Models\PersonChild;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
 use Exception;
 
 trait DeletePersonRelationTrait
 {
     use SmallClanTrait;
     use FindOwnerTrait;
+    use GetAllBloodPersonsWithSpousesInClanFromHeads;
 
-    public function deletePerson($personId)
+    public function deletePersonRelation($personId)
     {
         DB::beginTransaction();
         try {
@@ -27,6 +29,12 @@ trait DeletePersonRelationTrait
             if (!$person) {
                 Log::warning("DeletePerson: Person ID {$personId} not found or inactive.");
                 throw new Exception("Person not found.");
+            }
+
+            $heads = $this->getAllBloodPersonsWithSpousesInClanFromHeads($userId);
+            if (!in_array($personId, $heads)) {
+                Log::warning("getAllBloodPersonsWithSpousesInClanFromHeads:  {$personId} is not in the big clan.");
+                throw new Exception("This person is not in your clan!.");
             }
 
             // 1. Check if user is part of the small clan
@@ -45,7 +53,7 @@ trait DeletePersonRelationTrait
                 if ($userOwner->id != $personId) {
                     Log::warning("DeletePerson: User {$userOwner->id} is not the creator of the sole owner.");
                     throw new Exception("Only the creator can delete the sole owner.");
-                } elseif ($this->hasParentsPersonOrSpouses($person)) {
+                } elseif ($this->hasParentsPersonOrPersonSpouses($person)) {
                     Log::warning("DeletePerson: Person ID {$personId} has parents and cannot be deleted.");
                     throw new Exception("The person has parents and cannot be deleted.");
                 }
@@ -92,7 +100,7 @@ trait DeletePersonRelationTrait
 
         if ($countChildren == 0) {
             // Check for spouse relationships
-            $spouseIds = PersonMarriage::where($gender == 0 ? 'man_id' : 'woman_id', $personId)
+            $spouseIds = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
                 ->pluck($gender == 0 ? 'man_id' : 'woman_id');
 
             Log::info("canDeletePerson and  spouseIds" . json_encode($spouseIds) . "and count is:" . count($spouseIds) . "empty check is :" . empty($spouseIds));
@@ -102,11 +110,18 @@ trait DeletePersonRelationTrait
                 Log::info("is the person userowner the same :" . $userOwner->id != $personId);
 
                 if ($userOwner->id != $personId) {
-                    return $this->removeParentRelation($personId, $gender);
+                    Log::info("the person {$personId} is not the same with user logged in with id {$userOwner->id}. so must check the person again has parent or not !");
+
+                    if ($this->hasParentsPersonOrPersonSpouses($person)) {
+                        return $this->removeParentRelation($personId, $gender);
+                    }
+                    throw new Exception("This person doesn't have any relation yet and you can delete it.");
+
 
                 } else {
                     Log::info("Person Can be delete and has no relations here.");
-
+                    throw new Exception("This person doesn't have any relation yet and you can delete it.");
+                    //return true;
                 }
             }
 
@@ -124,7 +139,12 @@ trait DeletePersonRelationTrait
             }
         }
 
-        if ($countChildren == 1 && (!$this->hasParentsPersonOrSpouses($person))) {
+        if ($countChildren > 1) {
+            Log::warning("CanDeletePerson: Person ID {$personId} has multiple children and cannot be deleted.");
+            throw new Exception("Person has more than one child and cannot be deleted.");
+        }
+
+        if ($countChildren == 1 && (!$this->hasParentsPersonOrPersonSpouses($person))) {
             // Log::info("CanDeletePerson: chcking parent of person with the user logged in ".$this->hasParents($personId) );
             Log::info("CanDeletePerson: Removing child relation with parent for Person ID {$personId}");
             return $this->removeChildRelationWithParent($personId, $gender);
@@ -133,15 +153,11 @@ trait DeletePersonRelationTrait
 
         }
 
-        if ($countChildren > 1) {
-            Log::warning("CanDeletePerson: Person ID {$personId} has multiple children and cannot be deleted.");
-            throw new Exception("Person has more than one child and cannot be deleted.");
-        }
 
         return false;
     }
 
-    protected function hasParentsPersonOrSpouses($person)
+    protected function hasParentsPersonOrPersonSpouses($person)
     {
         $hasParentsPersonOrSpouses = false;
         $spouseIds = [];
@@ -200,8 +216,6 @@ trait DeletePersonRelationTrait
         return in_array($userOwner->id, $spouseArray);
     }
 
-
-
     protected function IsthePersonChildOfUserLoggedIn($person, $userOwner)
     {
         Log::info("Checking if User {$userOwner->id} is a parent of Person ID {$person->id}");
@@ -240,38 +254,47 @@ trait DeletePersonRelationTrait
         return false;
     }
 
-    protected function removeParentRelation($personId, $gender)
+    protected function removeParentRelation($personId, $gender, $downside = false)
     {
-        Log::info("RemoveParentRelation: Attempting to remove parent relation for Person ID {$personId}");
-        $marriages = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)->get();
-        foreach ($marriages as $marriage) {
-            $hasChildren = PersonChild::where('person_marriage_id', $marriage->id)->first();
-            if ($hasChildren) {
-                Log::info("RemoveParentRelation: Removing parent marriage relation with child for Person ID {$personId}");
-                $hasChildren->delete();
-                return true;
-            } else {
-                Log::warning("RemoveParentRelation: no children found  for Person ID {$personId} .");
+        Log::info("RemoveParentRelation: Attempting to remove parent relation for Person ID {$personId} and the flas is {$downside}");
+
+        if (!$downside) {
+            Log::info("RemoveParentRelation: the person {$personId} is a child  and must remove from downside ");
+
+            $parentRecord = PersonChild::where('child_id', $personId)->first();
+
+            if (!$parentRecord) {
+                Log::info("RemoveParentRelation: No parent record found for Person ID {$personId}");
+                return false;
+            }
+
+            Log::info("RemoveParentRelation: Successfully removed parent-child relation for Person ID {$personId}");
+            $parentRecord->delete();
+            return true;
+
+        } else {
+            Log::info("RemoveParentRelation: the person {$personId} is one of parent and remove from upside ");
+            $marriages = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)->get();
+
+
+            foreach ($marriages as $marriage) {
+                $hasChildren = PersonChild::where('person_marriage_id', $marriage->id)->first();
+                if ($hasChildren) {
+                    Log::info("RemoveParentRelation: Removing parent marriage relation with child for Person ID {$personId}");
+                    $hasChildren->delete();
+                    return true;
+                } else {
+                    Log::warning("RemoveParentRelation: no children found  for Person ID {$personId} .");
+                }
             }
         }
-        // $parentRecord = PersonChild::where('child_id', $personId)->first();
-
-        // if (!$parentRecord) {
-        //     Log::info("RemoveParentRelation: No parent record found for Person ID {$personId}");
-        //     return false;
-        // }
-
-        // Log::info("RemoveParentRelation: Successfully removed parent-child relation for Person ID {$personId}");
-        // $parentRecord->delete();
-        // return true;
-
         return false;
     }
 
-    protected function removeChildRelationWithParent($personId,$gender)
+    protected function removeChildRelationWithParent($personId, $gender)
     {
         Log::info("RemoveChildRelationWithParent: Removing parent-child relation for Person ID {$personId}");
-        return $this->removeParentRelation($personId,$gender);
+        return $this->removeParentRelation($personId, $gender, true);
     }
 
     protected function isThePersonOwnerUser($person, $userOwner)

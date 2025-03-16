@@ -5,6 +5,7 @@ namespace App\GraphQL\Validators\Person;
 use App\Rules\Person\ActivePersonRule;
 use App\Rules\Person\MergePersonsRule;
 use App\Rules\Person\CheckClanMatchRule;
+use App\Rules\Person\OwnerMergeRule;
 use Nuwave\Lighthouse\Validation\Validator;
 
 class MergePersonsValidator extends Validator
@@ -26,8 +27,8 @@ class MergePersonsValidator extends Validator
                 new ActivePersonRule(),
                 new MergePersonsRule($primaryPersonId, $secondaryPersonId),
                 new CheckClanMatchRule($primaryPersonId, $secondaryPersonId),
-
-
+                new OwnerMergeRule($primaryPersonId, $secondaryPersonId),
+                
             ]
         ];
     }

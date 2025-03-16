@@ -103,6 +103,7 @@ class User extends Authenticatable
         'status',
         'role',
         'clan_id',
+        'blood_user_relation_calculated',
         'remember_token',
         'avatar',
     ];
