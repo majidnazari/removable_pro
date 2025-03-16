@@ -129,6 +129,11 @@ input DeletePersonInput
     id: ID!
 }
 
+input DeleteJustOwnPersonInput
+{
+    id: ID!
+}
+
 
 type AncestryTreeNode {
     person_id: ID
