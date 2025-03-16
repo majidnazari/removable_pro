@@ -19,7 +19,10 @@ use App\Traits\SmallClanTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\AuthorizesMutation;
 use App\Traits\GetAllBloodUsersRelationInClanFromHeads;
+use App\Traits\FindOwnerTrait;
 use App\GraphQL\Enums\AuthAction;
+use App\Events\DeleteUserFromAllRelations;
+
 
 use GraphQL\Error\Error;
 use Exception;
@@ -34,6 +37,7 @@ final class DeleteJustOwnPerson
     use PersonAncestryWithCompleteMerge;
     use AuthorizesMutation;
     use GetAllBloodUsersRelationInClanFromHeads;
+    use FindOwnerTrait;
 
 
     public function resolveDeleteJustOwnPerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
@@ -42,21 +46,38 @@ final class DeleteJustOwnPerson
 
         $personId = $args['id'];
 
+        $owner=$this->findOwner();
+
+        if ($owner->id != $personId) {
+            throw new Exception("You are not allowed to use this method for others!");
+        }
 
         try {
+
             $result = $this->getAllBloodUsersInClanFromHeads($this->userId);
-            Log::info("the result are:" . json_encode($result));
+            Log::info("The result is: " . json_encode($result));
 
-
-            if (!empty($result) && is_array($result) && count($result) > 0) {
-                // Do something when the array is not empty
-                Log::info("Processing the result as it's not empty.");
-                $PersonResult = $this->userAccessibility(Person::class, AuthAction::Delete, $args);
-            } else {
+            if (empty($result) || !is_array($result) || count($result) === 0) {
                 Log::info("The result is empty or null.");
-                throw new Exception("You must use delete relation person method instead.");
+                throw new Exception("You must use the delete relation person method instead.");
             }
 
+            DB::transaction(function () use ($personId) {
+                // Soft delete all related records
+                event(new DeleteUserFromAllRelations($personId));
+
+                // Update person->isowner = 0 after deletion
+                $person = Person::find($personId);
+
+                if (!$person) {
+                    throw new Exception("Person not found");
+                }
+
+                $person->update(['is_owner' => 0]);
+                //$person->save();
+
+                Log::info("Updated person {$personId} -> isowner = 0");
+            });
 
 
             // DB::transaction(function () use ($PersonResult) {
