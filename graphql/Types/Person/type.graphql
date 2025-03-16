@@ -130,6 +130,7 @@ input DeletePersonInput
 }
 
 input DeleteJustOwnPersonInput
+@validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
 {
     id: ID!
 }

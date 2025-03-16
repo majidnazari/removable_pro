@@ -18,7 +18,7 @@ use App\Traits\DuplicateCheckTrait;
 use App\Traits\SmallClanTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\AuthorizesMutation;
-use App\Traits\GetAllUsersRelationInClanFromHeads;
+use App\Traits\GetAllBloodUsersRelationInClanFromHeads;
 use App\GraphQL\Enums\AuthAction;
 
 use GraphQL\Error\Error;
@@ -33,7 +33,7 @@ final class DeleteJustOwnPerson
     use SmallClanTrait;
     use PersonAncestryWithCompleteMerge;
     use AuthorizesMutation;
-    use GetAllUsersRelationInClanFromHeads;
+    use GetAllBloodUsersRelationInClanFromHeads;
 
 
     public function resolveDeleteJustOwnPerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
@@ -44,23 +44,33 @@ final class DeleteJustOwnPerson
 
 
         try {
-            $result=$this->getAllUsersInClanFromHeads($this->userId);
-            Log::info("the result are:". json_encode($result));
+            $result = $this->getAllBloodUsersInClanFromHeads($this->userId);
+            Log::info("the result are:" . json_encode($result));
 
-            //$PersonResult = $this->userAccessibility(Person::class, AuthAction::Delete, $args);
+
+            if (!empty($result) && is_array($result) && count($result) > 0) {
+                // Do something when the array is not empty
+                Log::info("Processing the result as it's not empty.");
+                $PersonResult = $this->userAccessibility(Person::class, AuthAction::Delete, $args);
+            } else {
+                Log::info("The result is empty or null.");
+                throw new Exception("You must use delete relation person method instead.");
+            }
+
+
 
             // DB::transaction(function () use ($PersonResult) {
-            //     // $person = Person::find($personId);
+            //     $person = Person::find( $personId);
 
-            //     // if (!$person) {
-            //     //     throw new Exception("Person not found");
-            //     // }
+            //     if (!$person) {
+            //         throw new Exception("Person not found");
+            //     }
 
-            //     // $person->delete();
+            //     $person->delete();
 
             //     // Fire the event to handle other related deletions
             //     event(new PersonDeletedEvent($PersonResult->id));
-            //});
+            // });
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
