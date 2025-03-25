@@ -5,11 +5,11 @@ namespace App\Listeners;
 use App\Events\BloodUserRelationResetEvent;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
-use App\Traits\GetAllUsersRelationInClanFromHeads; // Import the trait
+use App\Traits\UserRelationInClanTrait; // Import the trait
 
 class ResetUnbloodUserRelationListener
 {
-    use GetAllUsersRelationInClanFromHeads; // Use the trait inside the listener
+    use UserRelationInClanTrait; // Use the trait inside the listener
 
     public function handle(BloodUserRelationResetEvent $event)
     {
@@ -19,7 +19,10 @@ class ResetUnbloodUserRelationListener
         Log::info("Resetting blood_user_relation_calculated for user: $userId");
 
         // Get all clan users (including non-blood-related users)
-        $unbloodUserIds = $this->getAllUsersInClanFromHeads($userId, $depth);
+       // $unbloodUserIds = $this->getAllUsersInClanFromHeads($userId, $depth);
+
+        $unbloodUserIds= $this->calculateUserRelationInClan();
+
 
         // Update `blood_user_relation_calculated` to false for all users
         User::whereIn('id', $unbloodUserIds)->update(['blood_user_relation_calculated' => false]);

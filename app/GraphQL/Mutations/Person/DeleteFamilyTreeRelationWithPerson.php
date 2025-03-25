@@ -10,7 +10,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\Traits\SmallClanTrait;
-use App\Traits\DeletePersonRelationTrait;
+use App\Traits\DeletFamilyTreeRelationWithPersonTrait;
 use Exception;
 use App\Models\PersonMarriage;
 use App\Models\PersonChild;
@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\Status;
 use Log;
 
-final class DeletePersonRelation
+final class DeleteFamilyTreeRelationWithPerson
 {
     use AuthUserTrait;
     use AuthorizesMutation;
     use HandlesModelUpdateAndDelete;
-    use DeletePersonRelationTrait;
+    use DeletFamilyTreeRelationWithPersonTrait;
 
     protected $userId;
     protected $personId;
@@ -39,7 +39,7 @@ final class DeletePersonRelation
      * @return Person|Error
      * @throws Exception
      */
-    public function resolvePersonRelation($rootValue, array $args, GraphQLContext $context ,ResolveInfo $resolveInfo): bool|Error   
+    public function resolveFamilyTreeRelationWithPerson($rootValue, array $args, GraphQLContext $context ,ResolveInfo $resolveInfo): bool|Error   
     {
         try {
             $this->userId = auth()->id();
@@ -53,7 +53,7 @@ final class DeletePersonRelation
             Log::info("Attempting to delete Person ID: {$personId}");
     
             // Validate deletion permission
-            $validationResult = $this->deletePersonRelation($personId);
+            $validationResult = $this->deleteFamilyTreeRelationWithPerson($personId);
     
             if ($validationResult !== true) {
                 Log::warning("Person ID {$personId} deletion failed: {$validationResult}");

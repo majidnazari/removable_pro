@@ -118,6 +118,10 @@ final class CreateUserRelation
         // Update blood_relation to true for the user
         return UserRelation::where('creator_id', $user_id);
     }
-
+    public function getBloodUserOtherHandRelation($user_id)
+    {
+        // Update blood_relation to true for the user
+        return UserRelation::where('related_with_user_id', $user_id);
+    }
 
 }

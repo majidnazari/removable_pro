@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
 use Exception;
 
-trait DeletePersonRelationTrait
+trait DeletFamilyTreeRelationWithPersonTrait
 {
     use SmallClanTrait;
     use FindOwnerTrait;
     use GetAllBloodPersonsWithSpousesInClanFromHeads;
 
-    public function deletePersonRelation($personId)
+    public function deleteFamilyTreeRelationWithPerson($personId)
     {
         DB::beginTransaction();
         try {

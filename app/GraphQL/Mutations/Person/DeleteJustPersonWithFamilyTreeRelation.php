@@ -30,7 +30,7 @@ use Exception;
 use App\Events\PersonDeletedEvent;
 use Log;
 
-final class DeleteJustOwnPerson
+final class DeleteJustPersonWithFamilyTreeRelation
 {
     use AuthUserTrait;
     use DuplicateCheckTrait;
@@ -41,11 +41,11 @@ final class DeleteJustOwnPerson
     use FindOwnerTrait;
 
 
-    public function resolveDeleteJustOwnPerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function resolveDeletePersonWithFamilyTreeRelation($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
-        $personId = $args['id'];
+        $personId = $args['person_id'];
 
         $owner = $this->findOwner();
 
@@ -55,16 +55,16 @@ final class DeleteJustOwnPerson
 
         try {
 
-            $result = $this->getAllBloodUsersInClanFromHeads($this->userId);
-            Log::info("The result is: " . json_encode($result));
+            $allBloodUserIds = $this->getAllBloodUsersInClanFromHeads($this->userId);
+            Log::info("The allBloodUserIds is: " . json_encode($allBloodUserIds));
 
             // Remove the user themselves from the result array
-            $result = array_filter($result, fn($id) => $id != $this->userId);
-            Log::info("The result without itself  is : " . json_encode($result));
+            $allBloodUserIdsWithoutItself = array_filter($allBloodUserIds, fn($id) => $id != $this->userId);
+            Log::info("The allBloodUserIds without itself  is : " . json_encode($allBloodUserIdsWithoutItself));
 
 
-            if (empty($result) || !is_array($result) || count($result) === 0) {
-                Log::info("The result is empty or null.");
+            if (empty($allBloodUserIdsWithoutItself) || !is_array($allBloodUserIdsWithoutItself) || count($allBloodUserIdsWithoutItself) === 0) {
+                Log::info("The allBloodUserIdsWithoutItself is empty or null.");
                 throw new Exception("You must use the delete relation person method instead.");
             }
 

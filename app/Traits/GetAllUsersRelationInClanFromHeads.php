@@ -111,7 +111,7 @@ trait GetAllUsersRelationInClanFromHeads
 
         $result= $this->getPersonAncestryHeads($user->id,10);
         $heads = collect($result['heads'])->pluck('person_id')->toArray();
-        Log::info("heads found: " . json_encode($heads)); 
+        Log::info("heads found: " . json_encode($heads));  
 
 
         // Initialize visited array to track processed IDs

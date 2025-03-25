@@ -6,6 +6,8 @@ use Illuminate\Contracts\Validation\Rule;
 use App\Traits\AuthUserTrait;
 use App\Traits\FindOwnerTrait;
 use App\Traits\GetAllowedAllUsersInClan;
+// use App\Traits\GetAllUsersRelationInClanFromHeads;
+use App\Traits\UserRelationInClanTrait;
 use App\Models\Person;
 use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\MergeStatus;
@@ -18,6 +20,9 @@ class AllUsersCanAccessPerson implements Rule
     use AuthUserTrait;
     use FindOwnerTrait;
     use GetAllowedAllUsersInClan;
+    // use GetAllUsersRelationInClanFromHeads;
+    use UserRelationInClanTrait;
+
     protected $personId;
     protected $errorMessage = '';
 
@@ -32,7 +37,12 @@ class AllUsersCanAccessPerson implements Rule
         $this->personId ;
         //Log::info(" person_id: " . $this->personId);
 
-        $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
+       // $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
+
+        //$allowedCreatorIds=$this->getAllUsersInClanFromHeads($this->getUserId());
+
+        $allowedCreatorIds= $this->calculateUserRelationInClan();
+
 
         //Log::info("  allowedCreatorIds: " . json_encode( $allowedCreatorIds));
 

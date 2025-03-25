@@ -87,14 +87,22 @@ trait GetAllBloodUsersRelationInClanFromHeads
     public function getAllBloodUsersInClanFromHeads($user_id, $depth = 10)
     {
         $user = $this->getUser();
-        // $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
-        // $heads = collect($PersonAncestry["heads"])->pluck("person_id")->toArray();
 
-        // Log::info("The heads are: " . json_encode($heads));
+        // Fetch result from getPersonAncestryHeads
+        $result = $this->getPersonAncestryHeads($user->id, $depth);
 
-        $result= $this->getPersonAncestryHeads($user->id,10);
-        $heads = collect($result['heads'])->pluck('person_id')->toArray();
-        Log::info("heads found: " . json_encode($heads));
+        // Log the result to debug
+        Log::info("Result found: " . json_encode($result));
+
+        // Check if 'heads' exists in the result and is not null
+        if (isset($result['heads']) && !empty($result['heads'])) {
+            $heads = collect($result['heads'])->pluck('person_id')->toArray();
+            Log::info("Heads found: " . json_encode($heads));
+        } else {
+            // If 'heads' is null or empty, handle gracefully
+            $heads = [];
+            Log::info("Heads is null or empty.");
+        }
 
         // Initialize visited array to track processed IDs
         $visited = [];
@@ -115,16 +123,16 @@ trait GetAllBloodUsersRelationInClanFromHeads
 
         // Remove duplicates and return the final list of user IDs
         $allUserIds = array_unique($allUserIds);
-        Log::info("Final list of user IDs before remove itself: " . json_encode($allUserIds));
+        Log::info("Final list of user IDs before removing the logged-in user: " . json_encode($allUserIds));
 
-        // Remove logged-in user ID from the list
+        // Remove logged-in user ID from the list if necessary (uncommented out if needed)
         // $allUserIds = array_filter($allUserIds, function ($userId) use ($user) {
         //     return $userId != $user->id;
         // });
         // Reindex array to fix the keys
-        //$allUserIds = array_values($allUserIds);
+        // $allUserIds = array_values($allUserIds);
 
-        Log::info("Final list of user IDs after remove itself: " . json_encode($allUserIds));
+        Log::info("Final list of user IDs after removing the logged-in user: " . json_encode($allUserIds));
 
         return $allUserIds;
     }
