@@ -9,6 +9,8 @@ use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
+use App\Traits\GetAllUsersRelationInClanFromHeads;
+use App\Traits\AuthUserTrait;
 use Exception;
 
 trait DeletFamilyTreeRelationWithPersonTrait
@@ -16,12 +18,14 @@ trait DeletFamilyTreeRelationWithPersonTrait
     use SmallClanTrait;
     use FindOwnerTrait;
     use GetAllBloodPersonsWithSpousesInClanFromHeads;
+    use GetAllUsersRelationInClanFromHeads;
+    use AuthUserTrait;
 
     public function deleteFamilyTreeRelationWithPerson($personId)
     {
         DB::beginTransaction();
         try {
-            $userId = auth()->id();
+            $userId = $this->getUserId();//auth()->id();
             $userOwner = $this->findOwner();
             Log::info("DeletePerson: User {$userId} attempting to delete Person ID {$personId}");
 
@@ -64,6 +68,16 @@ trait DeletFamilyTreeRelationWithPersonTrait
             if (!$this->canDeletePerson($person, $userOwner)) {
                 Log::warning("DeletePerson: Person ID {$personId} cannot be deleted due to existing relationships.");
                 throw new Exception("Person cannot be deleted due to existing relationships.");
+            }
+
+
+
+            // Ensure the method from another trait is called
+            if (method_exists($this, 'getAllUsersInClanFromHeads')) {
+                $allUsers = $this->getAllUsersInClanFromHeads( $userId);
+                Log::info("The result of getAllUsersInClanFromHeads in getUser: " . json_encode($allUsers));
+            } else {
+                Log::warning("The method getAllUsersInClanFromHeads does not exist in this class.");
             }
 
             // 4. Perform deletion

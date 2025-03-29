@@ -4,13 +4,14 @@ namespace App\Traits;
 
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use Log;
 
 trait AuthUserTrait
 {
     protected $userId;
     protected $user;
 
-/**
+    /**
      * Get the authenticated user's ID.
      *
      * @return int|null
@@ -25,7 +26,7 @@ trait AuthUserTrait
         }
 
         $this->userId = $user->id;
-        return  $this->userId;//auth()->guard('api')->user()?->id; // Use null safe operator to handle unauthenticated cases
+        return $this->userId;//auth()->guard('api')->user()?->id; // Use null safe operator to handle unauthenticated cases
     }
 
     protected function getUser()
@@ -38,7 +39,7 @@ trait AuthUserTrait
         }
 
         $this->user = $user;
-        return  $this->user;//auth()->guard('api')->user()?->id; // Use null safe operator to handle unauthenticated cases
+        return $this->user;//auth()->guard('api')->user()?->id; // Use null safe operator to handle unauthenticated cases
     }
 }
 

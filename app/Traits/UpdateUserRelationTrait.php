@@ -24,7 +24,7 @@ trait UpdateUserRelationTrait
             $this->syncUserRelationsWithDatabase($user->id, $allUserIds);
 
             // Fetch updated blood user relations
-            $updatedRelations = $this->getUserRelation($user->id);
+            $updatedRelations = $this->getAllUsersRelatedToCreator($user->id);
 
             DB::commit();
             Log::info("User {$user->id} blood relations updated successfully.");
@@ -107,11 +107,19 @@ trait UpdateUserRelationTrait
         }
     }
 
-    private function getUserRelation($creatorId)
+    private function getAllUsersRelatedToCreator($creatorId)
     {
         $userRelated=UserRelation::where('creator_id', $creatorId)->pluck('related_with_user_id')->toArray();
 
-        Log::info("all user  related for user {$creatorId}.".json_encode($userRelated));
+        Log::info("getAllUsersRelatedToCreator for user {$creatorId}.".json_encode($userRelated));
+
+        return  $userRelated;
+    }
+    private function getAllCreatorExistIn($creatorId)
+    {
+        $userRelated=UserRelation::where('related_with_user_id', $creatorId)->pluck('creator_id')->toArray();
+
+        Log::info("getAllCreatorExistIn for user {$creatorId}.".json_encode($userRelated));
 
         return  $userRelated;
     }
