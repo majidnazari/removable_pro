@@ -38,10 +38,10 @@ return new class extends Migration {
     public function down(): void
     {
 
-        Schema::table('user_relations', function (Blueprint $table) {
-            // Drop the unique constraint first
-            $table->dropUnique('user_relations_creator_related_unique');
-        });
+        // Schema::table('user_relations', function (Blueprint $table) {
+        //     // Drop the unique constraint first
+        //     $table->dropUnique('user_relations_creator_related_unique');
+        // });
         Schema::dropIfExists('user_relations');
     }
 };
