@@ -41,6 +41,7 @@ type ForgotPasswordResponse {
 type RegisterResponse {
     tokens: AuthPayload
     status: RegisterStatuses!
+    user_id:ID
     user: User
 }
 type VerifyMobileResponse {
