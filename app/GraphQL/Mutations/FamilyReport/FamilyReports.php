@@ -11,7 +11,9 @@ use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\GetAllowedAllUsersInClan;
-use App\Traits\UserRelationInClanTrait;
+use App\Traits\UpdateUserRelationTrait;
+use App\Traits\GetAllUsersRelationInClanFromHeads;
+
 use App\Models\Person;
 use App\Models\PersonMarriage;
 use App\Models\PersonChild;
@@ -26,7 +28,8 @@ final class FamilyReports
     use AuthUserTrait;
     use DuplicateCheckTrait;
     use GetAllowedAllUsersInClan;
-    use UserRelationInClanTrait;
+    use UpdateUserRelationTrait;
+    use GetAllUsersRelationInClanFromHeads;
 
 
     protected $userId;
@@ -48,9 +51,14 @@ final class FamilyReports
         $clanId = User::where('id', $this->userId)->first()->clan_id;
         //$this->users = $this->getAllowedUserIds();
 
-        //$this->users=$this->getAllUsersInClanFromHeads( $this->userId);
+        Log::info("the method resolveFamilyReport are running");
 
-        $this->users= $this->calculateUserRelationInClan();
+        $this->users=$this->getAllUsersInClanFromHeads( $this->userId);
+
+        Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $this->users));
+
+
+        //$this->users= $this->calculateUserRelationInClan();
 
 
 

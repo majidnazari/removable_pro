@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Queries\User;
+namespace App\GraphQL\Queries\UserRelation;
 
 use App\Models\User;
 use GraphQL\Type\Definition\ResolveInfo;

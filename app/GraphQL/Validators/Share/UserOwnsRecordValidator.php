@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Log;
 use App\Traits\AuthUserTrait;
 use App\Traits\GetAllowedAllUsersInClan;
-// use App\Traits\GetAllUsersRelationInClanFromHeads;
-use App\Traits\UserRelationInClanTrait;
+ use App\Traits\GetAllUsersRelationInClanFromHeads;
+use App\Traits\UpdateUserRelationTrait;
 use App\GraphQL\Enums\MergeStatus;
 use Log;
 
@@ -17,8 +17,8 @@ class UserOwnsRecordValidator extends GraphQLValidator
 {
     use AuthUserTrait;
     use GetAllowedAllUsersInClan;
-   // use GetAllUsersRelationInClanFromHeads;
-    use UserRelationInClanTrait;
+    use GetAllUsersRelationInClanFromHeads;
+    use UpdateUserRelationTrait;
 
     /**
      * Explicit table name mapping for fields.
@@ -77,7 +77,13 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
         //$allowedCreatorIds=$this->getAllUsersInClanFromHeads($user->id);
 
-        $allowedCreatorIds= $this->calculateUserRelationInClan();
+        Log::info("the method UserOwnsRecordValidator are running");
+
+
+        $allowedCreatorIds=$this->getAllUsersInClanFromHeads($user->id);
+        Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $allowedCreatorIds));
+
+        //$allowedCreatorIds= $this->calculateUserRelationInClan();
 
 
         // Apply validation rules dynamically for each '_id' field

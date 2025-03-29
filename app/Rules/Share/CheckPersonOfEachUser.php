@@ -7,7 +7,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\FindOwnerTrait;
 use App\Traits\GetAllowedAllUsersInClan;
 use App\Traits\GetAllUsersRelationInClanFromHeads;
-use App\Traits\UserRelationInClanTrait;
+use App\Traits\UpdateUserRelationTrait;
 
 use App\Models\Person;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +22,7 @@ class CheckPersonOfEachUser implements Rule
     use FindOwnerTrait;
     use GetAllowedAllUsersInClan;
     use GetAllUsersRelationInClanFromHeads;
-    use UserRelationInClanTrait;
+    use UpdateUserRelationTrait;
  
 
     protected $personId;
@@ -59,9 +59,14 @@ class CheckPersonOfEachUser implements Rule
         // Log::info("the person id is:" .$this->personId);
         // Check if the person has any active children
         //$allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
-       // $allowedCreatorIds=$this->getAllUsersInClanFromHeads($this->getUserId());
+        Log::info("the method CheckPersonOfEachUser rule are running");
 
-        $allowedCreatorIds= $this->calculateUserRelationInClan();
+        $allowedCreatorIds=$this->getAllUsersInClanFromHeads($this->getUserId());
+
+        Log::info("the result of getAllUsersInClanFromHeads are ".json_encode($allowedCreatorIds));
+
+
+        //$allowedCreatorIds= $this->calculateUserRelationInClan();
 
         $person = Person::where('id', $this->personId)->whereIn('creator_id', $allowedCreatorIds)->first();
 
