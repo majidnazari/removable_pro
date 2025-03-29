@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class UserRelation extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     // Define the table name (if it differs from default 'user_relations')
     protected $table = 'user_relations';

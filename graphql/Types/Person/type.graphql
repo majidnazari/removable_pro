@@ -122,17 +122,17 @@ input UpdatePersonInput
     # status: Status
 }
 
-input DeletePersonInput 
+input DeletePersonWithAllTracesInput 
 @validator(class: "App\\GraphQL\\Validators\\Person\\DeletePersonValidator") 
 @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
 {
-    id: ID!
+    person_id: ID!
 }
 
-input DeleteJustOwnPersonInput
+input DeleteJustPersonWithFamilyTreeRelationInput
 @validator(class: "App\\GraphQL\\Validators\\Share\\UserOwnsRecordValidator")
 {
-    id: ID!
+    person_id: ID!
 }
 
 

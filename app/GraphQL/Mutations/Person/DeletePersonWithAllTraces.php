@@ -25,7 +25,7 @@ use Exception;
 use App\Events\PersonDeletedEvent;
 use Log;
 
-final class DeletePersonNode
+final class DeletePersonWithAllTraces
 {
     use AuthUserTrait;
     use DuplicateCheckTrait;
@@ -35,11 +35,11 @@ final class DeletePersonNode
 
 
 
-    public function resolveDeletePersonNode($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function resolveDeletePersonWithAllTraces($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
-        $personId = $args['id'];
+        $personId = $args['person_id'];
 
 
         try {

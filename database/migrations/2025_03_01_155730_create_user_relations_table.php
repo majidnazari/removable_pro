@@ -27,6 +27,8 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
+            $table->unique(['creator_id', 'related_with_user_id'], 'user_relations_creator_related_unique');
+
         });
     }
 
@@ -35,6 +37,11 @@ return new class extends Migration {
      */
     public function down(): void
     {
+
+        // Schema::table('user_relations', function (Blueprint $table) {
+        //     // Drop the unique constraint first
+        //     $table->dropUnique('user_relations_creator_related_unique');
+        // });
         Schema::dropIfExists('user_relations');
     }
 };

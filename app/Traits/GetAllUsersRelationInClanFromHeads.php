@@ -5,10 +5,12 @@ namespace App\Traits;
 use App\Models\Person;
 use App\Models\PersonChild;
 use App\Models\PersonMarriage;
+use App\Models\UserRelation;
 use Illuminate\Support\Facades\Log;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\AuthUserTrait;
 use App\Traits\PersonAncestryHeads;
+use App\Traits\UpdateUserRelationTrait;
 
 
 trait GetAllUsersRelationInClanFromHeads
@@ -16,6 +18,7 @@ trait GetAllUsersRelationInClanFromHeads
     use PersonAncestryWithCompleteMerge;
     use AuthUserTrait;
     use PersonAncestryHeads;
+    use UpdateUserRelationTrait;
 
     /**
      * Get all descendants (children, grandchildren, etc.) of a person recursively, including their spouses.
@@ -80,11 +83,13 @@ trait GetAllUsersRelationInClanFromHeads
 
         // Get all children associated with these marriages
         $personMarriageIds = $personMarriageRecords->pluck('id')->toArray();
-        $childrenIds = PersonChild::whereIn('person_marriage_id', $personMarriageIds)
-            ->pluck('child_id')
-            ->unique()
-            ->toArray();
-
+        if (!empty($personMarriageIds)) {
+            Log::info("personMarriageIds found : " . json_encode($personMarriageIds));
+            $childrenIds = PersonChild::whereIn('person_marriage_id', $personMarriageIds)
+                ->pluck('child_id')
+                ->unique()
+                ->toArray();
+        }
         if (empty($childrenIds)) {
             Log::info("No children found for person: $personId");
             return array_unique($userIds);
@@ -103,15 +108,19 @@ trait GetAllUsersRelationInClanFromHeads
     public function getAllUsersInClanFromHeads($user_id, $depth = 10)
     {
         $user = $this->getUser();
+        // If blood_user_relation_calculated is true, fetch from user_relations directly
+        if ($user->blood_user_relation_calculated) {
+            return $this->getAllUserRelation($user->id);
+        }
         // $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
         // $heads = collect($PersonAncestry["heads"])->pluck("person_id")->toArray();
 
         // Log::info("The heads are: " . json_encode($heads));
 
 
-        $result= $this->getPersonAncestryHeads($user->id,10);
+        $result = $this->getPersonAncestryHeads($user->id, $depth);
         $heads = collect($result['heads'])->pluck('person_id')->toArray();
-        Log::info("heads found: " . json_encode($heads)); 
+        Log::info("heads found: " . json_encode($heads));
 
 
         // Initialize visited array to track processed IDs
@@ -135,6 +144,8 @@ trait GetAllUsersRelationInClanFromHeads
         $allUserIds = array_unique($allUserIds);
         Log::info("Final list of user IDs before remove itself: " . json_encode($allUserIds));
 
+
+
         // Remove logged-in user ID from the list
         // $allUserIds = array_filter($allUserIds, function ($userId) use ($user) {
         //     return $userId != $user->id;
@@ -142,8 +153,15 @@ trait GetAllUsersRelationInClanFromHeads
         // // Reindex array to fix the keys
         // $allUserIds = array_values($allUserIds);
 
-        Log::info("Final list of user IDs after remove itself: " . json_encode($allUserIds));
+        //Log::info("Final list of user IDs after remove itself: " . json_encode($allUserIds));
 
-        return $allUserIds;
+        return $this->calculateUserRelationInClan($allUserIds);
+
+        //return $allUserIds;
+    }
+
+    public function getAllUserRelation($user_id)
+    {
+        return UserRelation::where('creator_id', $user_id)->pluck('related_with_user_id')->toArray();
     }
 }

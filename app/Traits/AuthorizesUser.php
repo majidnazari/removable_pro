@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use App\Traits\GetAllowedAllUsersInClan;
+use App\Traits\GetAllUsersRelationInClanFromHeads;
+use App\Traits\UpdateUserRelationTrait;
 use Log;
 
 trait AuthorizesUser
 {
     use GetAllowedAllUsersInClan;
+    use GetAllUsersRelationInClanFromHeads;
+    use UpdateUserRelationTrait;
     protected $user;
 
     public function __construct()
@@ -29,7 +33,15 @@ trait AuthorizesUser
     protected function getModelByAuthorization(string $modelClass, array $args, bool $fetchAll = false, $seeAllClan = false)
     {
         $this->user = $this->getUser();
-        $allusers = $this->getAllowedUserIds();
+        //$allusers = $this->getAllowedUserIds();
+
+        Log::info("the method getModelByAuthorization ar running");
+
+        $allusers=$this->getAllUsersInClanFromHeads($this->user->id);
+
+        Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $allusers));
+
+        //$allusers= $this->calculateUserRelationInClan();
 
         //Log::info("the seeAllClan is : " . $seeAllClan);
         // Log::info("the  allusers is : " . json_encode( $allusers));

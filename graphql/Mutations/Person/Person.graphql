@@ -1,9 +1,9 @@
 
 createPerson(input: CreatePersonInput! @spread): Person @guard(with: ["api"])  @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\CreatePerson@resolvePerson") 
     updatePerson(id: ID!, input: UpdatePersonInput! @spread): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\UpdatePerson@resolvePerson") 
-    deletePerson(input: DeletePersonInput! @spread ): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePersonNode@resolveDeletePersonNode") 
-    deleteJustOwnPerson(input: DeleteJustOwnPersonInput! @spread ): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeleteJustOwnPerson@resolveDeleteJustOwnPerson") 
-    deletePersonRelation(personId: Int! ): Boolean  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePersonRelation@resolvePersonRelation") 
+    deletePersonWithAllTraces(input: DeletePersonWithAllTracesInput! @spread ): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeletePersonWithAllTraces@resolveDeletePersonWithAllTraces") 
+    deletePersonWithFamilyTreeRelationImmediately(input: DeleteJustPersonWithFamilyTreeRelationInput! @spread ): Person  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeleteJustPersonWithFamilyTreeRelation@resolveDeletePersonWithFamilyTreeRelation") 
+    deleteFamilyTreeRelationWithPerson(personId: Int! ): Boolean  @guard(with: ["api"]) @throttle(maxAttempts:10 decayMinutes:1.0) @field(resolver: "App\\GraphQL\\Mutations\\Person\\DeleteFamilyTreeRelationWithPerson@resolveFamilyTreeRelationWithPerson") 
 
     mergePersons(primaryPersonId: ID!, secondaryPersonId: ID!): Person  
     @guard(with: ["api"]) 

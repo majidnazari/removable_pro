@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Log;
 use App\Traits\AuthUserTrait;
 use App\Traits\GetAllowedAllUsersInClan;
+ use App\Traits\GetAllUsersRelationInClanFromHeads;
+use App\Traits\UpdateUserRelationTrait;
 use App\GraphQL\Enums\MergeStatus;
 use Log;
 
@@ -15,6 +17,8 @@ class UserOwnsRecordValidator extends GraphQLValidator
 {
     use AuthUserTrait;
     use GetAllowedAllUsersInClan;
+    use GetAllUsersRelationInClanFromHeads;
+    use UpdateUserRelationTrait;
 
     /**
      * Explicit table name mapping for fields.
@@ -69,7 +73,17 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
         // Get all allowed `creator_id` values: the logged-in user and users connected via `user_merge_requests`
         // $allowedCreatorIds = $this->getAllowedCreatorIds($user->id);
-        $allowedCreatorIds = $this->getAllowedUserIds($user->id);
+        //$allowedCreatorIds = $this->getAllowedUserIds($user->id);
+
+        //$allowedCreatorIds=$this->getAllUsersInClanFromHeads($user->id);
+
+        Log::info("the method UserOwnsRecordValidator are running");
+
+
+        $allowedCreatorIds=$this->getAllUsersInClanFromHeads($user->id);
+        Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $allowedCreatorIds));
+
+        //$allowedCreatorIds= $this->calculateUserRelationInClan();
 
 
         // Apply validation rules dynamically for each '_id' field
@@ -143,22 +157,22 @@ class UserOwnsRecordValidator extends GraphQLValidator
         return $this->tableMap[$fieldName] ?? str_replace('_id', '', $fieldName) . 's';
     }
 
-    protected function getAllowedCreatorIds(int $userId): array
-    {
-        // Start with the logged-in user ID
-        $allowedCreatorIds = [$userId];
+    // protected function getAllowedCreatorIds(int $userId): array
+    // {
+    //     // Start with the logged-in user ID
+    //     $allowedCreatorIds = [$userId];
 
-        // Get all user_receiver_id values where the logged-in user is the sender and status is Complete (4)
-        $connectedUserIds = DB::table('user_merge_requests')
-            ->where('user_sender_id', $userId)
-            ->where('status', MergeStatus::Complete->value) // Status = Complete
-            ->whereNull('deleted_at') // Exclude soft-deleted records
-            ->pluck('user_receiver_id')
-            ->toArray();
+    //     // Get all user_receiver_id values where the logged-in user is the sender and status is Complete (4)
+    //     $connectedUserIds = DB::table('user_merge_requests')
+    //         ->where('user_sender_id', $userId)
+    //         ->where('status', MergeStatus::Complete->value) // Status = Complete
+    //         ->whereNull('deleted_at') // Exclude soft-deleted records
+    //         ->pluck('user_receiver_id')
+    //         ->toArray();
 
-        // Merge the connected user IDs into the allowed IDs
-        $allowedCreatorIds = array_merge($allowedCreatorIds, $connectedUserIds);
-        // Log::info("the all alowed user are:" . json_encode($allowedCreatorIds));
-        return $allowedCreatorIds;
-    }
+    //     // Merge the connected user IDs into the allowed IDs
+    //     $allowedCreatorIds = array_merge($allowedCreatorIds, $connectedUserIds);
+    //     // Log::info("the all alowed user are:" . json_encode($allowedCreatorIds));
+    //     return $allowedCreatorIds;
+    // }
 }

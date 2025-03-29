@@ -6,6 +6,9 @@ use Illuminate\Contracts\Validation\Rule;
 use App\Traits\AuthUserTrait;
 use App\Traits\FindOwnerTrait;
 use App\Traits\GetAllowedAllUsersInClan;
+use App\Traits\GetAllUsersRelationInClanFromHeads;
+use App\Traits\UpdateUserRelationTrait;
+
 use App\Models\Person;
 use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\MergeStatus;
@@ -18,6 +21,10 @@ class CheckPersonOfEachUser implements Rule
     use AuthUserTrait;
     use FindOwnerTrait;
     use GetAllowedAllUsersInClan;
+    use GetAllUsersRelationInClanFromHeads;
+    use UpdateUserRelationTrait;
+ 
+
     protected $personId;
     protected $errorMessage = '';
 
@@ -51,7 +58,16 @@ class CheckPersonOfEachUser implements Rule
         // Log::info("The person id is: " . $personId);
         // Log::info("the person id is:" .$this->personId);
         // Check if the person has any active children
-        $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
+        //$allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
+        Log::info("the method CheckPersonOfEachUser rule are running");
+
+        $allowedCreatorIds=$this->getAllUsersInClanFromHeads($this->getUserId());
+
+        Log::info("the result of getAllUsersInClanFromHeads are ".json_encode($allowedCreatorIds));
+
+
+        //$allowedCreatorIds= $this->calculateUserRelationInClan();
+
         $person = Person::where('id', $this->personId)->whereIn('creator_id', $allowedCreatorIds)->first();
 
         if (isset($person->is_owner) && $person->is_owner == 1 and $person->creator_id !== $this->getUserId()) {
