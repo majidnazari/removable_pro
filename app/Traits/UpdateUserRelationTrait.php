@@ -74,17 +74,36 @@ trait UpdateUserRelationTrait
     }
     private function createUserRelationsBulk($user_id, array $related_user_ids)
     {
-        $relations = array_map(fn($id) => [
-            'creator_id' => $user_id,
-            'related_with_user_id' => $id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ], $related_user_ids);
-
-        Log::info("the all user relation that must be created are ". json_encode($relations));
-
+        if (empty($related_user_ids)) {
+            return;
+        }
+    
+        // Get existing relations to avoid duplicates
+        $existingRelations = DB::table('user_relations')
+            ->where('creator_id', $user_id)
+            ->whereIn('related_with_user_id', $related_user_ids)
+            ->pluck('related_with_user_id')
+            ->toArray();
+    
+        // Filter out duplicates
+        $newRelations = array_filter($related_user_ids, function($id) use ($existingRelations) {
+            return !in_array($id, $existingRelations);
+        });
+    
+        // Prepare new relations for insertion
+        $relations = array_map(function($id) use ($user_id) {
+            return [
+                'creator_id' => $user_id,
+                'related_with_user_id' => $id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }, $newRelations);
+    
+        Log::info("The user relations to be created: " . json_encode($relations));
+    
         if (!empty($relations)) {
-            DB::table('user_relations')->insert($relations);
+            DB::table('user_relations')->insertOrIgnore($relations);
         }
     }
 
