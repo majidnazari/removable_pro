@@ -19,6 +19,7 @@ trait UpdateUserFlagTrait
      */
     public function updateUserCalculationFlag($userId, $flag)
     {
+        
         // Start transaction for atomic operation
         DB::beginTransaction();
         
@@ -29,9 +30,11 @@ trait UpdateUserFlagTrait
             // 2. Get all related user IDs from user_relations table
             $relatedUserIds = DB::table('user_relations')
                 ->where('creator_id', $userId)
-                ->pluck('related_with_user_id')
-                ->toArray();
+                ->whereNull('deleted_at')
+                ->pluck('related_with_user_id');
             
+            Log::error("UpdateUserFlagTrait : relatedUserIds" . json_encode($relatedUserIds));
+
             // 3. Update all related users (if any exist)
             if (!empty($relatedUserIds)) {
                 User::whereIn('id', $relatedUserIds)
@@ -41,6 +44,7 @@ trait UpdateUserFlagTrait
             // Log the updated users
             $updatedUsers = User::where('id', $userId)
                 ->orWhereIn('id', $relatedUserIds)
+                ->whereNull('deleted_at')
                 ->get();
                 
             Log::info("Updated blood_user_relation_calculated flag to " . ($flag ? 'true' : 'false') . 

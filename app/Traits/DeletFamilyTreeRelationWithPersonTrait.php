@@ -22,6 +22,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
     use GetAllUsersRelationInClanFromHeads;
     use AuthUserTrait;
     use UpdateUserFlagTrait;
+    private $thereIsOwner=false;
 
     public function deleteFamilyTreeRelationWithPerson($personId)
     {
@@ -74,7 +75,8 @@ trait DeletFamilyTreeRelationWithPersonTrait
 
 
 
-
+            $this->thereIsOwner=$this->personSpousesOwner($person);
+            Log::warning("hereIsOwner is:". $this->thereIsOwner);
 
             // 4. Perform deletion
             //Log::info("DeletePerson: Deleting Person ID {$personId}");
@@ -82,17 +84,21 @@ trait DeletFamilyTreeRelationWithPersonTrait
             DB::commit();
 
 
-            Log::warning("DeletFamilyTreeRelationWithPersonTrait updateUserCalculationFlag into false.");
+            if( $person->is_owner || $this->thereIsOwner)
+            {
+                Log::warning("DeletFamilyTreeRelationWithPersonTrait updateUserCalculationFlag into false.");
 
-            $this->updateUserCalculationFlag($userId, false);
-
-            // Ensure the method from another trait is called
-            if (method_exists($this, 'getAllUsersInClanFromHeads')) {
-                $allUsers = $this->getAllUsersInClanFromHeads($userId);
-                Log::info("The result of getAllUsersInClanFromHeads in getUser: " . json_encode($allUsers));
-            } else {
-                Log::warning("The method getAllUsersInClanFromHeads does not exist in this class.");
+                $this->updateUserCalculationFlag($userId, false);
+    
+                // Ensure the method from another trait is called
+                if (method_exists($this, 'getAllUsersInClanFromHeads')) {
+                    $allUsers = $this->getAllUsersInClanFromHeads($userId);
+                    Log::info("The result of getAllUsersInClanFromHeads in getUser: " . json_encode($allUsers));
+                } else {
+                    Log::warning("The method getAllUsersInClanFromHeads does not exist in this class.");
+                }
             }
+           
 
             //Log::info("DeletePerson: Successfully deleted Person ID {$personId}");
             return true;
