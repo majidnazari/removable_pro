@@ -91,8 +91,8 @@ class SendConfirmMergeRequestToOtherFamily
             // Dispatch unblood user event for receiver
             event(new UnbloodUserRelationResetEvent($userMergeRequest->user_receiver_id));
 
-            $this->updateUserCalculationFlag($userMergeRequest->user_sender_id, false);
-            $this->updateUserCalculationFlag($userMergeRequest->user_receiver_id, false);
+           // $this->updateUserCalculationFlag($userMergeRequest->user_sender_id, false);
+           // $this->updateUserCalculationFlag($userMergeRequest->user_receiver_id, false);
 
             DB::commit();
 
