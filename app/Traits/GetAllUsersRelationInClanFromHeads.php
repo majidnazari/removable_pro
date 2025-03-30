@@ -108,7 +108,6 @@ trait GetAllUsersRelationInClanFromHeads
     public function getAllUsersInClanFromHeads($user_id, $depth = 10)
     {
 
-
         $user = $this->getUser()->fresh();
 
         // $user = $this->getUser();
@@ -123,16 +122,10 @@ trait GetAllUsersRelationInClanFromHeads
 
             return $this->getAllUserRelation($user->id);
         }
-        // $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
-        // $heads = collect($PersonAncestry["heads"])->pluck("person_id")->toArray();
-
-        // Log::info("The heads are: " . json_encode($heads));
-
-
+       
         $result = $this->getPersonAncestryHeads($user->id, $depth);
         $heads = collect($result['heads'])->pluck('person_id')->toArray();
         Log::info("heads found: " . json_encode($heads));
-
 
         // Initialize visited array to track processed IDs
         $visited = [];
@@ -155,20 +148,10 @@ trait GetAllUsersRelationInClanFromHeads
         $allUserIds = array_unique($allUserIds);
         Log::info("Final list of user IDs before remove itself: " . json_encode($allUserIds));
 
-
-
-        // Remove logged-in user ID from the list
-        // $allUserIds = array_filter($allUserIds, function ($userId) use ($user) {
-        //     return $userId != $user->id;
-        // });
-        // // Reindex array to fix the keys
-        // $allUserIds = array_values($allUserIds);
-
         //Log::info("Final list of user IDs after remove itself: " . json_encode($allUserIds));
 
         return $this->calculateUserRelationInClan($allUserIds);
 
-        //return $allUserIds;
     }
 
     public function getAllUserRelation($user_id)

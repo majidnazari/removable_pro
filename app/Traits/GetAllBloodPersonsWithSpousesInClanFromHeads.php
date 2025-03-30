@@ -84,8 +84,6 @@ trait GetAllBloodPersonsWithSpousesInClanFromHeads
         $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
         Log::info("headstmp found: " . json_encode($heads));
 
-       
-
         // Fetch descendants for each head
         foreach ($heads as $head) {
             $descendants = $this->getAllBloodPersonIdsWithSpousesFromDescendants($head, $visited);

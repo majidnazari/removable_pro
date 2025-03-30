@@ -11,6 +11,7 @@ use App\GraphQL\Enums\MergeStatus;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
+use App\Traits\UpdateUserFlagTrait;
 use App\GraphQL\Enums\AuthAction;
 use App\Events\UpdateClanIdAfterMerge;
 use App\Events\BloodUserRelationResetEvent;
@@ -24,6 +25,7 @@ class SendConfirmMergeRequestToOtherFamily
 {
     use PersonMergeTrait;
     use AuthUserTrait;
+    use UpdateUserFlagTrait;
     use AuthorizesMutation;
     use DuplicateCheckTrait;
 
@@ -88,6 +90,9 @@ class SendConfirmMergeRequestToOtherFamily
 
             // Dispatch unblood user event for receiver
             event(new UnbloodUserRelationResetEvent($userMergeRequest->user_receiver_id));
+
+            $this->updateUserCalculationFlag($userMergeRequest->user_sender_id, false);
+            $this->updateUserCalculationFlag($userMergeRequest->user_receiver_id, false);
 
             DB::commit();
 
