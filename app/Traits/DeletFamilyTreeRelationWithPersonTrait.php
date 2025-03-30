@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
 use App\Traits\GetAllUsersRelationInClanFromHeads;
 use App\Traits\AuthUserTrait;
+use App\Traits\UpdateUserFlagTrait;
 use Exception;
 
 trait DeletFamilyTreeRelationWithPersonTrait
@@ -20,6 +21,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
     use GetAllBloodPersonsWithSpousesInClanFromHeads;
     use GetAllUsersRelationInClanFromHeads;
     use AuthUserTrait;
+    use UpdateUserFlagTrait;
 
     public function deleteFamilyTreeRelationWithPerson($personId)
     {
@@ -72,18 +74,25 @@ trait DeletFamilyTreeRelationWithPersonTrait
 
 
 
-            // Ensure the method from another trait is called
-            if (method_exists($this, 'getAllUsersInClanFromHeads')) {
-                $allUsers = $this->getAllUsersInClanFromHeads( $userId);
-                Log::info("The result of getAllUsersInClanFromHeads in getUser: " . json_encode($allUsers));
-            } else {
-                Log::warning("The method getAllUsersInClanFromHeads does not exist in this class.");
-            }
+
 
             // 4. Perform deletion
             //Log::info("DeletePerson: Deleting Person ID {$personId}");
             //Person::where('id', $personId)->delete();
             DB::commit();
+
+
+            Log::warning("DeletFamilyTreeRelationWithPersonTrait updateUserCalculationFlag into false.");
+
+            $this->updateUserCalculationFlag($userId, false);
+
+            // Ensure the method from another trait is called
+            if (method_exists($this, 'getAllUsersInClanFromHeads')) {
+                $allUsers = $this->getAllUsersInClanFromHeads($userId);
+                Log::info("The result of getAllUsersInClanFromHeads in getUser: " . json_encode($allUsers));
+            } else {
+                Log::warning("The method getAllUsersInClanFromHeads does not exist in this class.");
+            }
 
             //Log::info("DeletePerson: Successfully deleted Person ID {$personId}");
             return true;

@@ -107,9 +107,20 @@ trait GetAllUsersRelationInClanFromHeads
 
     public function getAllUsersInClanFromHeads($user_id, $depth = 10)
     {
-        $user = $this->getUser();
+
+
+        $user = $this->getUser()->fresh();
+
+        // $user = $this->getUser();
+        // $user->refresh(); // Reload attributes from database
+
+        Log::info("user is " . json_encode($user));
+        Log::info("getAllUsersInClanFromHeads running and the user id is {$user_id} and flag is {$user->blood_user_relation_calculated}");
+
         // If blood_user_relation_calculated is true, fetch from user_relations directly
         if ($user->blood_user_relation_calculated) {
+            Log::info("read from table user relations");
+
             return $this->getAllUserRelation($user->id);
         }
         // $PersonAncestry = $this->getPersonAncestryWithCompleteMerge($user->id, $depth);
