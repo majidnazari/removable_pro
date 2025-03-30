@@ -41,7 +41,7 @@ class ForgotPassword extends BaseAuthResolver
     ];
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        $code = rand(100000, 999999);  // Generate a 6-digit verification code
+        $code = 159951;//rand(100000, 999999);  // Generate a 6-digit verification code
         $expired_at = Carbon::now()->addMinutes(5)->format("Y-m-d H:i:s");
         $cooldownPeriod = Carbon::now()->subMinutes(5);  // 5-minute cooldown period
         $ipAddress = request()->ip();

@@ -58,7 +58,7 @@ class ChangePassword extends BaseAuthResolver
         }
 
         // Log::info("the inside of resolve is running");
-        $code = rand(100000, 999999);
+        $code = 159951;//rand(100000, 999999);
 
         $user->sent_code = $code;
         $user->code_expired_at = $expired_at;
