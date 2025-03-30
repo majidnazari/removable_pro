@@ -3,21 +3,56 @@
 namespace App\Traits;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 trait UpdateUserFlagTrait
 {
     /**
-     * Update the user's blood_user_relation_calculated flag.
+     * Update the blood_user_relation_calculated flag for:
+     * 1. The specified user
+     * 2. All users related through user_relations where creator_id = user_id
      *
      * @param int $userId
+     * @param bool $flag
      * @return void
      */
     public function updateUserCalculationFlag($userId, $flag)
     {
-        User::where('id', $userId)->update(['blood_user_relation_calculated' => $flag]);
-        $user = User::where('id', $userId)->first();
-
-        Log::info("Updated blood_user_relation_calculated flag for user ID: {$userId} and user is :" . json_encode($user));
+        // Start transaction for atomic operation
+        DB::beginTransaction();
+        
+        try {
+            // 1. Update the specified user
+            User::where('id', $userId)->update(['blood_user_relation_calculated' => $flag]);
+            
+            // 2. Get all related user IDs from user_relations table
+            $relatedUserIds = DB::table('user_relations')
+                ->where('creator_id', $userId)
+                ->pluck('related_with_user_id')
+                ->toArray();
+            
+            // 3. Update all related users (if any exist)
+            if (!empty($relatedUserIds)) {
+                User::whereIn('id', $relatedUserIds)
+                    ->update(['blood_user_relation_calculated' => $flag]);
+            }
+            
+            // Log the updated users
+            $updatedUsers = User::where('id', $userId)
+                ->orWhereIn('id', $relatedUserIds)
+                ->get();
+                
+            Log::info("Updated blood_user_relation_calculated flag to " . ($flag ? 'true' : 'false') . 
+                     " for user ID: {$userId} and related users: " . 
+                     json_encode($updatedUsers->pluck('id')));
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Failed to update user calculation flags: " . $e->getMessage());
+            throw $e;
+        }
     }
 }
