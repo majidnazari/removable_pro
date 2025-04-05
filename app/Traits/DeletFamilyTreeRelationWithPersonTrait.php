@@ -266,62 +266,78 @@ trait DeletFamilyTreeRelationWithPersonTrait
 
     protected function removeMarriage($personId, $gender)
     {
-        Log::info("RemoveMarriage: Attempting to remove marriage for Person ID {$personId}");
-        $marriages = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)->get();
+        Log::info("RemoveMarriage: Attempting to remove marriage(s) for Person ID {$personId}");
+
+        $column = $gender == 1 ? 'man_id' : 'woman_id';
+
+        $marriages = PersonMarriage::where($column, $personId)->get();
 
         foreach ($marriages as $marriage) {
             $hasChildren = PersonChild::where('person_marriage_id', $marriage->id)->exists();
+
             if (!$hasChildren) {
-                Log::info("RemoveMarriage: Removing marriage for Person ID {$personId}");
-                Log::info("RemoveMarriage:man id  { $marriage->man_id} and woman_id {$marriage->woman_id} must be delete directly");
+                Log::info("RemoveMarriage: No children for marriage ID {$marriage->id}, proceeding with deletion.");
 
                 $marriage->delete();
+
+                Log::info("RemoveMarriage: Deleting partners - Man ID: {$marriage->man_id}, Woman ID: {$marriage->woman_id}");
+
+                $this->removePersonDirectly($marriage->man_id);
+                $this->removePersonDirectly($marriage->woman_id);
+
                 return true;
-            } else {
-                Log::warning("RemoveMarriage: Cannot remove marriage for Person ID {$personId} because spouse has children.");
             }
+
+            Log::warning("RemoveMarriage: Cannot remove marriage ID {$marriage->id} because it has children.");
         }
+
+        Log::info("RemoveMarriage: No eligible marriage found for deletion for Person ID {$personId}.");
         return false;
     }
+
 
     protected function removeParentRelation($personId, $gender, $downside = false)
     {
-        Log::info("RemoveParentRelation: Attempting to remove parent relation for Person ID {$personId} and the flas is {$downside}");
+        Log::info("RemoveParentRelation: Starting for Person ID {$personId} | Direction: " . ($downside ? 'upside (parent)' : 'downside (child)'));
 
         if (!$downside) {
-            Log::info("RemoveParentRelation: the person {$personId} is a child  and must remove from downside ");
-
+            // Case: Person is a child, remove parent-child relationship
             $parentRecord = PersonChild::where('child_id', $personId)->first();
 
             if (!$parentRecord) {
-                Log::info("RemoveParentRelation: No parent record found for Person ID {$personId}");
+                Log::info("RemoveParentRelation: No parent-child link found for child Person ID {$personId}");
                 return false;
             }
 
-            Log::info("RemoveParentRelation: Successfully removed parent-child relation for Person ID {$personId}");
-            Log::info("RemoveParentRelation:  Person ID {$personId} must be delete directly ");
             $parentRecord->delete();
-            return true;
+            Log::info("RemoveParentRelation: Parent-child link removed for Person ID {$personId}");
 
-        } else {
-            Log::info("RemoveParentRelation: the person {$personId} is one of parent and remove from upside ");
-            $marriages = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)->get();
+            // Attempt direct deletion of the child
+            return $this->removePersonDirectly($personId);
+        }
 
+        // Case: Person is a parent, remove marriage & children relationship
+        $column = $gender == 1 ? 'man_id' : 'woman_id';
 
-            foreach ($marriages as $marriage) {
-                $hasChildren = PersonChild::where('person_marriage_id', $marriage->id)->first();
-                if ($hasChildren) {
-                    Log::info("RemoveParentRelation: Removing parent marriage relation with child for Person ID {$personId}");
-                    Log::info("RemoveParentRelation: this marriage id  {$marriage->id} should found man and woamn then must be delete directly");
-                    $hasChildren->delete();
-                    return true;
-                } else {
-                    Log::warning("RemoveParentRelation: no children found  for Person ID {$personId} .");
-                }
+        $marriages = PersonMarriage::where($column, $personId)->get();
+
+        foreach ($marriages as $marriage) {
+            $hasChildren = PersonChild::where('person_marriage_id', $marriage->id)->exists();
+
+            if ($hasChildren) {
+                // Delete all children from this marriage
+                PersonChild::where('person_marriage_id', $marriage->id)->delete();
+                Log::info("RemoveParentRelation: All children deleted from marriage ID {$marriage->id}");
+
+                // Remove both individuals from marriage
+                return $this->removePersonDirectlyWithMarriageId($marriage->id);
             }
         }
+
+        Log::info("RemoveParentRelation: No marriage with children found for Person ID {$personId}");
         return false;
     }
+
 
     protected function removeChildRelationWithParent($personId, $gender)
     {
@@ -334,4 +350,107 @@ trait DeletFamilyTreeRelationWithPersonTrait
 
         return ($person->id == $userOwner->id);
     }
+    protected function removePersonDirectly($personId)
+    {
+        DB::beginTransaction();
+        try {
+            $person = Person::find($personId);
+            if (!$person) {
+                Log::warning("removePersonDirectly: Person ID {$personId} not found.");
+                DB::rollBack();
+                return false;
+            }
+
+            $columnGender = $person->gender == 1 ? 'man_id' : 'woman_id';
+            $spouseColumn = $person->gender == 1 ? 'woman_id' : 'man_id';
+
+            $marriages = PersonMarriage::where($columnGender, $personId)->get();
+            $spouseIds = collect();
+
+            foreach ($marriages as $marriage) {
+                $spouseId = $marriage->$spouseColumn;
+                $spouse = Person::find($spouseId);
+                if ($spouse) {
+                    if ($spouse->is_owner) {
+                        Log::info("removePersonDirectly: Cannot delete spouse ID {$spouse->id} (is_owner = true)");
+                        DB::rollBack();
+                        return false;
+                    }
+                    $spouseIds->push($spouse->id);
+                }
+            }
+
+            $relatedPersonIds = $spouseIds->push($personId)->filter()->unique();
+            if ($relatedPersonIds->isEmpty()) {
+                Log::warning("removePersonDirectly: No related persons found for ID {$personId}");
+                DB::rollBack();
+                return false;
+            }
+
+            $ownersCount = Person::whereIn('id', $relatedPersonIds)->where('is_owner', true)->count();
+            if ($ownersCount > 0) {
+                Log::info("removePersonDirectly: Cannot delete, at least one person is owner in group: " . $relatedPersonIds->implode(', '));
+                DB::rollBack();
+                return false;
+            }
+
+            // Delete all related persons (person + spouses)
+            foreach ($relatedPersonIds as $id) {
+                $p = Person::find($id);
+                if ($p) {
+                    Log::info("removePersonDirectly: Deleting Person ID {$p->id}");
+                    $p->delete();
+                }
+            }
+
+            DB::commit();
+            return true;
+
+        } catch (Exception $e) {
+            Log::error("removePersonDirectly: Exception occurred - " . $e->getMessage());
+            DB::rollBack();
+            return false;
+        }
+    }
+
+
+    protected function removePersonDirectlyWithMarriageId($marriageId)
+    {
+        DB::beginTransaction();
+        try {
+            $marriage = PersonMarriage::find($marriageId);
+            if (!$marriage) {
+                Log::warning("removePersonDirectlyWithMarriageId: Marriage ID {$marriageId} not found.");
+                DB::rollBack();
+                return false;
+            }
+
+            $man = Person::find($marriage->man_id);
+            $woman = Person::find($marriage->woman_id);
+
+            // Check ownership before proceeding
+            if (($man && $man->is_owner) || ($woman && $woman->is_owner)) {
+                Log::info("removePersonDirectlyWithMarriageId: Cannot delete because one or both Marriage ID {$marriageId} is owner.");
+                DB::rollBack();
+                return false;
+            }
+            // Remove man
+            $this->removePersonDirectly($marriage->man_id);
+
+            // Remove woman
+            $this->removePersonDirectly($marriage->woman_id);
+
+            DB::commit();
+            Log::info("removePersonDirectlyWithMarriageId: Marriage ID {$marriageId} and partners successfully removed.");
+            return true;
+
+        } catch (Exception $e) {
+            Log::error("removePersonDirectlyWithMarriageId: Exception - " . $e->getMessage());
+            DB::rollBack();
+            return false;
+        }
+    }
+
+
+
 }
