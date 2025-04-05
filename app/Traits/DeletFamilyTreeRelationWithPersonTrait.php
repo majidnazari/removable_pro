@@ -22,7 +22,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
     use GetAllUsersRelationInClanFromHeads;
     use AuthUserTrait;
     use UpdateUserFlagTrait;
-    private $thereIsOwner=false;
+    private $thereIsOwner = false;
 
     public function deleteFamilyTreeRelationWithPerson($personId)
     {
@@ -75,8 +75,8 @@ trait DeletFamilyTreeRelationWithPersonTrait
 
 
 
-            $this->thereIsOwner=$this->personSpousesOwner($person);
-            Log::warning("hereIsOwner is:". $this->thereIsOwner);
+            $this->thereIsOwner = $this->personSpousesOwner($person);
+            Log::warning("hereIsOwner is:" . $this->thereIsOwner);
 
             // 4. Perform deletion
             //Log::info("DeletePerson: Deleting Person ID {$personId}");
@@ -84,12 +84,11 @@ trait DeletFamilyTreeRelationWithPersonTrait
             DB::commit();
 
 
-            if( $person->is_owner || $this->thereIsOwner)
-            {
+            if ($person->is_owner || $this->thereIsOwner) {
                 Log::warning("DeletFamilyTreeRelationWithPersonTrait updateUserCalculationFlag into false.");
 
                 $this->updateUserCalculationFlag($userId, false);
-    
+
                 // Ensure the method from another trait is called
                 if (method_exists($this, 'getAllUsersInClanFromHeads')) {
                     $allUsers = $this->getAllUsersInClanFromHeads($userId);
@@ -98,7 +97,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
                     Log::warning("The method getAllUsersInClanFromHeads does not exist in this class.");
                 }
             }
-           
+
 
             //Log::info("DeletePerson: Successfully deleted Person ID {$personId}");
             return true;
@@ -274,6 +273,8 @@ trait DeletFamilyTreeRelationWithPersonTrait
             $hasChildren = PersonChild::where('person_marriage_id', $marriage->id)->exists();
             if (!$hasChildren) {
                 Log::info("RemoveMarriage: Removing marriage for Person ID {$personId}");
+                Log::info("RemoveMarriage:man id  { $marriage->man_id} and woman_id {$marriage->woman_id} must be delete directly");
+
                 $marriage->delete();
                 return true;
             } else {
@@ -298,6 +299,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
             }
 
             Log::info("RemoveParentRelation: Successfully removed parent-child relation for Person ID {$personId}");
+            Log::info("RemoveParentRelation:  Person ID {$personId} must be delete directly ");
             $parentRecord->delete();
             return true;
 
@@ -310,6 +312,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
                 $hasChildren = PersonChild::where('person_marriage_id', $marriage->id)->first();
                 if ($hasChildren) {
                     Log::info("RemoveParentRelation: Removing parent marriage relation with child for Person ID {$personId}");
+                    Log::info("RemoveParentRelation: this marriage id  {$marriage->id} should found man and woamn then must be delete directly");
                     $hasChildren->delete();
                     return true;
                 } else {
