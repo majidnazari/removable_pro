@@ -444,6 +444,8 @@ trait DeletFamilyTreeRelationWithPersonTrait
             // Remove woman
             $this->removePersonDirectly($marriage->woman_id);
 
+            $marriage->delete();
+
             DB::commit();
             Log::info("removePersonDirectlyWithMarriageId: Marriage ID {$marriageId} and partners successfully removed.");
             return true;
