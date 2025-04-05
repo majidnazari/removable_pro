@@ -313,7 +313,9 @@ trait DeletFamilyTreeRelationWithPersonTrait
             Log::info("RemoveParentRelation: Parent-child link removed for Person ID {$personId} must be delete directly");
 
             // Attempt direct deletion of the child
-            return $this->removePersonDirectly($personId);
+            $this->removePersonDirectly($personId);
+
+            return true;
         }
 
         // Case: Person is a parent, remove marriage & children relationship
@@ -330,7 +332,8 @@ trait DeletFamilyTreeRelationWithPersonTrait
                 Log::info("RemoveParentRelation: All children deleted from marriage ID {$marriage->id} must be delete directly");
 
                 // Remove both individuals from marriage
-                return $this->removePersonDirectlyWithMarriageId($marriage->id);
+                $this->removePersonDirectlyWithMarriageId($marriage->id);
+                return true;
             }
         }
 
