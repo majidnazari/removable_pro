@@ -325,6 +325,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
 
         foreach ($marriages as $marriage) {
             $hasChildren = PersonChild::where('person_marriage_id', $marriage->id)->exists();
+            Log::info("RemoveParentRelation: Removing parent marriage relation with child for Person ID {$personId}");
 
             if ($hasChildren) {
                 // Delete all children from this marriage
