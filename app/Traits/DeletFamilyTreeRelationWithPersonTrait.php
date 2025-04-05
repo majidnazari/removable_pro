@@ -280,7 +280,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
 
                 $marriage->delete();
 
-                Log::info("RemoveMarriage: Deleting partners - Man ID: {$marriage->man_id}, Woman ID: {$marriage->woman_id}");
+                Log::info("RemoveMarriage: Deleting partners - Man ID: {$marriage->man_id}, Woman ID: {$marriage->woman_id} must be delete directly");
 
                 $this->removePersonDirectly($marriage->man_id);
                 $this->removePersonDirectly($marriage->woman_id);
@@ -310,7 +310,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
             }
 
             $parentRecord->delete();
-            Log::info("RemoveParentRelation: Parent-child link removed for Person ID {$personId}");
+            Log::info("RemoveParentRelation: Parent-child link removed for Person ID {$personId} must be delete directly");
 
             // Attempt direct deletion of the child
             return $this->removePersonDirectly($personId);
@@ -327,7 +327,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
             if ($hasChildren) {
                 // Delete all children from this marriage
                 PersonChild::where('person_marriage_id', $marriage->id)->delete();
-                Log::info("RemoveParentRelation: All children deleted from marriage ID {$marriage->id}");
+                Log::info("RemoveParentRelation: All children deleted from marriage ID {$marriage->id} must be delete directly");
 
                 // Remove both individuals from marriage
                 return $this->removePersonDirectlyWithMarriageId($marriage->id);
