@@ -11,6 +11,8 @@ use GraphQL\Error\Error;
 use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
+use App\Traits\GetAllBloodPersonsInClanFromHeads;
+use App\Traits\BloodyPersonAncestry;
 use Exception;
 
 
@@ -19,6 +21,8 @@ use Log;
 final class MergePersons
 {
     use AuthUserTrait;
+    use GetAllBloodPersonsInClanFromHeads;
+    use BloodyPersonAncestry;
     protected $userId;
 
 
@@ -53,6 +57,12 @@ final class MergePersons
                 [$primaryPersonId, $secondaryPersonId] = [$primaryPerson->id, $secondaryPerson->id];
             }
 
+            $allBloodPeopleOfPrimaryPerson = $this->getBloodyPersonAncestryAccordingPersonId($primaryPerson->id);
+
+            Log::info("allBloodyPeopleOfPrimaryPerson are:" . json_encode($allBloodPeopleOfPrimaryPerson));
+            $allBloodPeopleOfSecondaryPerson = $this->getBloodyPersonAncestryAccordingPersonId($secondaryPerson->id);
+            Log::info("allBloodyPeopleOfSecondaryPerson are:" . json_encode($allBloodPeopleOfSecondaryPerson));
+
             // Log::info("Switching:" . $primaryPersonId . " - " . $secondaryPersonId);
 
 
@@ -66,6 +76,9 @@ final class MergePersons
             if (($secondaryPerson->is_owner == 1) && ($primaryPerson->is_owner == 1)) {
                 throw new Error("two people you have selected  both  are owner!");
             }
+           
+
+
             // if ($primaryPerson->id == $secondaryPerson->id) {
             //     throw new Error("Persons cannot be merged because they are the same.");
             // }

@@ -19,6 +19,7 @@ use App\Traits\PersonDescendantsWithCompleteMerge;
 use App\Traits\GetAllBloodPersonsInClanFromHeads;
 use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
 use App\Traits\GetAllUsersRelationInClanFromHeads;
+use App\Traits\BloodyPersonAncestry;
 use Log;
 
 final class GetPerson
@@ -32,6 +33,7 @@ final class GetPerson
     use GetAllBloodPersonsInClanFromHeads;
     use GetAllBloodPersonsWithSpousesInClanFromHeads;
     use GetAllUsersRelationInClanFromHeads;
+    use BloodyPersonAncestry;
    
 
     private $rootAncestors = [];

@@ -29,7 +29,7 @@ class UserObserver
         //'person_marriages' => ['creator_id'],
         //'person_scores' => ['creator_id'],
         'talent_details' => ['creator_id'],
-        'talent_detail_scores' => ['creator_id'],
+        //'talent_detail_scores' => ['creator_id'],
         'talent_headers' => ['creator_id'],
         'user_details' => ['creator_id'],
         'user_relations' => ['creator_id','related_with_user_id'],
