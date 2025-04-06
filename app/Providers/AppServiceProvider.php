@@ -9,6 +9,10 @@ use App\Policies\UserMergeRequestPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\Share\CheckPersonOfEachUser;
+use App\Models\Person;
+use App\Observers\PersonObserver;
+use App\Models\User;
+use App\Observers\UserObserver;
 
 use Log;
 
@@ -52,6 +56,8 @@ class AppServiceProvider extends ServiceProvider
             $rule = new CheckPersonOfEachUser($personId);
             return $rule->passes($attribute, $value);
         });
+        Person::observe(PersonObserver::class);
+        User::observe(UserObserver::class);
 
         // if ($this->app->environment('production')) {
         //     Log::info("the production just running!.");
