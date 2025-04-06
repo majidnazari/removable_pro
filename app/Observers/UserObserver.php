@@ -32,7 +32,7 @@ class UserObserver
         'talent_detail_scores' => ['creator_id'],
         'talent_headers' => ['creator_id'],
         'user_details' => ['creator_id'],
-        'user_relations' => ['creator_id'],
+        'user_relations' => ['creator_id','related_with_user_id'],
         'user_merge_requests' => ['creator_id', 'user_receiver_id'],
         //'tasks' => ['creator_id', 'user_id'],
         // Add more tables here as needed
