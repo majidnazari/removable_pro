@@ -5,120 +5,106 @@ namespace App\Observers;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
 use Illuminate\Support\Facades\Schema;
 
 class UserObserver
 {
+    // Define per-table columns to check for user references
     protected $userRelatedColumns = [
-        'creator_id',
-        'notifiable_id',
-        'participating_user_id',
-        'user_sender_id',
-        'user_reciver_id',
-        'editor_id',
+        //'user_merge_requests' => ['user_sender_id'], // ONLY check these columns in this table
+        //'notifications' => ['notifiable_id'],
+        //'audits' => ['editor_id'], // Only include editor_id (creator_id excluded)
+        'addresses' => ['creator_id', 'editor_id'],
+        'events' => ['creator_id'],
+        'family_boards' => ['creator_id'],
+        'family_events' => ['creator_id'],
+        'favorites' => ['creator_id'],
+        'groups' => ['creator_id'],
+        'group_categories' => ['creator_id'],
+        'group_category_details' => ['creator_id'],
+        'group_details' => ['creator_id','user_id'],
+        'memories' => ['creator_id'],
+        'people' => ['creator_id'],
+        'person_children' => ['creator_id'],
+        'person_marriages' => ['creator_id'],
+        'person_scores' => ['creator_id'],
+        'talent_details' => ['creator_id'],
+        'talent_detail_scores' => ['creator_id'],
+        'talent_headers' => ['creator_id'],
+        'user_details' => ['creator_id'],
+        'user_relations' => ['creator_id'],
+        'user_merge_requests' => ['creator_id', 'user_receiver_id'],
+        //'tasks' => ['creator_id', 'user_id'],
+        // Add more tables here as needed
     ];
 
-    // Tables where you want to check only specific columns (include only)
-    protected $specificTableColumns = [
-        'user_merge_requests' => [ 'user_reciver_id'],
-        'notifications' => ['notifiable_id'],
+    // Excluded tables entirely (won’t be checked at all)
+    protected $exceptTables = [
+        'migrations',
+        'failed_jobs',
     ];
 
-    // Tables where you want to exclude certain columns (ignore them)
-    protected $excludedTableColumns = [
-        'audits' => ['creator_id'],
-    ];
+    public function created(User $user): void {}
+    public function updated(User $user): void {}
+    public function restored(User $user): void {}
+    public function forceDeleted(User $user): void {}
 
-    /**
-     * Handle the User "created" event.
-     */
-    public function created(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "updated" event.
-     */
-    public function updated(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "deleted" event.
-     */
     public function deleted(User $user): void
     {
         $tables = $this->getAllTablesWithUserColumns();
 
         foreach ($tables as $table => $columns) {
+            Log::info("UserObserver: Processing table '{$table}' with columns: " . implode(', ', $columns));
+
             foreach ($columns as $column) {
-                Log::info("UserObserver: Table '{$table}' contains user reference in column '{$column}'.");
+                if (!Schema::hasColumn($table, $column)) {
+                    Log::warning("UserObserver: Column '{$column}' does not exist in table '{$table}'. Skipping.");
+                    continue;
+                }
 
                 if (Schema::hasColumn($table, 'deleted_at')) {
                     DB::table($table)
                         ->where($column, $user->id)
                         ->update(['deleted_at' => now()]);
-                    Log::info("UserObserver: Soft deleted records in '{$table}' where '{$column}' = {$user->id}");
+                    Log::info("UserObserver: Soft deleted from '{$table}' where '{$column}' = {$user->id}");
                 } else {
                     DB::table($table)
                         ->where($column, $user->id)
                         ->delete();
-                    Log::info("UserObserver: Hard deleted records in '{$table}' where '{$column}' = {$user->id}");
+                    Log::info("UserObserver: Hard deleted from '{$table}' where '{$column}' = {$user->id}");
                 }
             }
         }
     }
 
-    /**
-     * Handle the User "restored" event.
-     */
-    public function restored(User $user): void
-    {
-        //
-    }
-
-    /**
-     * Handle the User "force deleted" event.
-     */
-    public function forceDeleted(User $user): void
-    {
-        //
-    }
-
-
     protected function getAllTablesWithUserColumns(): array
     {
         $tablesWithUserColumns = [];
         $tables = DB::select('SHOW TABLES');
-        $databaseKey = 'Tables_in_' . DB::getDatabaseName();
+        $dbKey = 'Tables_in_' . DB::getDatabaseName();
 
         foreach ($tables as $table) {
-            $tableName = $table->$databaseKey;
-            $columns = Schema::getColumnListing($tableName);
+            $tableName = $table->$dbKey;
 
-            // If table is in specific list, only include those columns
-            if (array_key_exists($tableName, $this->specificTableColumns)) {
-                $matched = array_intersect($columns, $this->specificTableColumns[$tableName]);
-            } else {
-                // Use default user-related columns
-                $matched = array_intersect($columns, $this->userRelatedColumns);
-
-                // Remove excluded columns for this table if defined
-                if (array_key_exists($tableName, $this->excludedTableColumns)) {
-                    $matched = array_diff($matched, $this->excludedTableColumns[$tableName]);
-                }
+            if (in_array($tableName, $this->exceptTables)) {
+                Log::info("UserObserver: Skipping excluded table '{$tableName}'.");
+                continue;
             }
+
+            if (!array_key_exists($tableName, $this->userRelatedColumns)) {
+                continue; // Only process tables explicitly listed
+            }
+
+            $columnsInTable = Schema::getColumnListing($tableName);
+            $userColumns = $this->userRelatedColumns[$tableName];
+            $matched = array_intersect($columnsInTable, $userColumns);
 
             if (!empty($matched)) {
                 $tablesWithUserColumns[$tableName] = $matched;
             }
         }
 
-        Log::info("UserObserver: Matched Tables => " . json_encode($tablesWithUserColumns));
-
+        Log::info("UserObserver: Final matched table/column list => " . json_encode($tablesWithUserColumns));
         return $tablesWithUserColumns;
     }
 }
