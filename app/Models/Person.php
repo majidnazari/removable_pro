@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\GraphQL\Enums\UserStatus;
+use Illuminate\Support\Facades\DB;
 
 use Log;
 use Eloquent;
@@ -289,7 +290,7 @@ class Person extends Eloquent
         // Log the simplified heads array
         //Log::info("All top-level ancestors: " . json_encode($this->rootAncestors));
 
-        return  $this->rootAncestors;
+        return $this->rootAncestors;
     }
     private function crawlAncestors($person, $depth)
     {
@@ -357,7 +358,25 @@ class Person extends Eloquent
         return $query->where('status', UserStatus::Active);
     }
 
+    public function getParents($personId)
+    {
+        $personChild = \App\Models\PersonChild::where('child_id', $personId)->first();
+    
+        if (!$personChild) {
+            return null;
+        }
+    
+        $marriage = $personChild->PersonMarriage; // assuming relationship is defined
 
+        Log::info("the father of getParents of person {$personId} is :" . json_encode($marriage?->Man));
+        Log::info("the mother of getParents of person {$personId} is :" . json_encode($marriage?->Woman));
+    
+        return [
+            'father' => $marriage?->Man, // if relation: man() or father() → belongsTo(Person::class, 'man_id')
+            'mother' => $marriage?->Woman, // if relation: woman() or mother() → belongsTo(Person::class, 'woman_id')
+        ];
+    }
+    
 
     public static function getAuthorizationColumns()
     {

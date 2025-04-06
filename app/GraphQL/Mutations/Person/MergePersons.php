@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
 use App\Traits\GetAllBloodPersonsInClanFromHeads;
-use App\Traits\BloodyPersonAncestry;
+use App\Traits\GetAllBloodPersonsInClanFromHeadsAccordingPersonId;
+use App\Traits\ValidateMergeTwoBloodyPeopleTrait;
+use App\Traits\ValidateMergeTwoSubGroupPeopleTrait;
 use Exception;
 
 
@@ -22,7 +24,9 @@ final class MergePersons
 {
     use AuthUserTrait;
     use GetAllBloodPersonsInClanFromHeads;
-    use BloodyPersonAncestry;
+    use GetAllBloodPersonsInClanFromHeadsAccordingPersonId;
+    use ValidateMergeTwoBloodyPeopleTrait;
+    use ValidateMergeTwoSubGroupPeopleTrait;
     protected $userId;
 
 
@@ -57,12 +61,44 @@ final class MergePersons
                 [$primaryPersonId, $secondaryPersonId] = [$primaryPerson->id, $secondaryPerson->id];
             }
 
-            $allBloodPeopleOfPrimaryPerson = $this->getBloodyPersonAncestryAccordingPersonId($primaryPerson->id,10);
+            $this->validateSubGroupMerge($primaryPerson->id, $secondaryPerson->id);
+            $this->validatePersonsForMerge($primaryPerson, $secondaryPerson);
 
-            Log::info("allBloodyPeopleOfPrimaryPerson are:" . json_encode($allBloodPeopleOfPrimaryPerson));
-            $allBloodPeopleOfSecondaryPerson = $this->getBloodyPersonAncestryAccordingPersonId($secondaryPerson->id,10);
-            Log::info("allBloodyPeopleOfSecondaryPerson are:" . json_encode($allBloodPeopleOfSecondaryPerson));
 
+                                    // $allBloodPeopleOfPrimaryPerson = $this->getAllBloodPersonsInClanFromHeadsAccordingPersonId($primaryPerson->id, 10);
+
+                                    // Log::info("allBloodyPeopleOfPrimaryPerson are:" . json_encode($allBloodPeopleOfPrimaryPerson));
+                                    // $allBloodPeopleOfSecondaryPerson = $this->getAllBloodPersonsInClanFromHeadsAccordingPersonId($secondaryPerson->id, 10);
+                                    // Log::info("allBloodyPeopleOfSecondaryPerson are:" . json_encode($allBloodPeopleOfSecondaryPerson));
+
+
+                                    // $primarySet = collect($allBloodPeopleOfPrimaryPerson)->sort()->values()->all();
+                                    // $secondarySet = collect($allBloodPeopleOfSecondaryPerson)->sort()->values()->all();
+
+                                    // if ($primarySet === $secondarySet) {
+                            
+                                    //     $primaryParents = $primaryPerson->getParents(personId: $primaryPerson->id); 
+                                    //     $secondaryParents = $secondaryPerson->getParents($secondaryPerson->id);
+                                    
+                                    //     $primaryFatherId = $primaryParents['father']?->id;
+                                    //     $primaryMotherId = $primaryParents['mother']?->id;
+                                    //     $secondaryFatherId = $secondaryParents['father']?->id;
+                                    //     $secondaryMotherId = $secondaryParents['mother']?->id;
+                                    
+                                    //     if (
+                                    //         $primaryFatherId === $secondaryFatherId &&
+                                    //         $primaryMotherId === $secondaryMotherId
+                                    //     ) {
+                                    //         Log::info("Primary and Secondary persons are in the same family and have same parents.");
+                                    //         // continue your logic here...
+                                    //     } else {
+                                    //         throw new Error('Cannot merge: Primary and Secondary have different parents.');
+                                    //     }
+                                    
+                                    // } else {
+                                    //     throw new Error('Cannot merge: Primary and Secondary belong to different bloodline groups.');
+                                    // }
+            
             // Log::info("Switching:" . $primaryPersonId . " - " . $secondaryPersonId);
 
 
@@ -76,7 +112,7 @@ final class MergePersons
             if (($secondaryPerson->is_owner == 1) && ($primaryPerson->is_owner == 1)) {
                 throw new Error("two people you have selected  both  are owner!");
             }
-           
+
 
 
             // if ($primaryPerson->id == $secondaryPerson->id) {
