@@ -57,10 +57,10 @@ final class MergePersons
                 [$primaryPersonId, $secondaryPersonId] = [$primaryPerson->id, $secondaryPerson->id];
             }
 
-            $allBloodPeopleOfPrimaryPerson = $this->getBloodyPersonAncestryAccordingPersonId($primaryPerson->id);
+            $allBloodPeopleOfPrimaryPerson = $this->getBloodyPersonAncestryAccordingPersonId($primaryPerson->id,10);
 
             Log::info("allBloodyPeopleOfPrimaryPerson are:" . json_encode($allBloodPeopleOfPrimaryPerson));
-            $allBloodPeopleOfSecondaryPerson = $this->getBloodyPersonAncestryAccordingPersonId($secondaryPerson->id);
+            $allBloodPeopleOfSecondaryPerson = $this->getBloodyPersonAncestryAccordingPersonId($secondaryPerson->id,10);
             Log::info("allBloodyPeopleOfSecondaryPerson are:" . json_encode($allBloodPeopleOfSecondaryPerson));
 
             // Log::info("Switching:" . $primaryPersonId . " - " . $secondaryPersonId);
