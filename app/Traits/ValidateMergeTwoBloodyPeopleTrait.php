@@ -34,7 +34,7 @@ trait ValidateMergeTwoBloodyPeopleTrait
             !$primaryFatherId || !$primaryMotherId ||
             !$secondaryFatherId || !$secondaryMotherId
         ) {
-            throw new \Error('Cannot merge: Both persons must have a mother and a father defined for validation.');
+            throw new Error('Cannot merge: Both persons must have a mother and a father defined for validation.');
         }
         if (
             $primaryFatherId !== $secondaryFatherId ||

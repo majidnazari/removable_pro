@@ -258,7 +258,8 @@ final class GetPerson
         if ($person) {
             return $person;
         } else {
-            throw new \RuntimeException("The person not found!");
+            //throw new \RuntimeException("The person not found!");
+            throw new \Exception("The person not found!");
             //return  Error::createLocatedError("The person not found!");
         }
     }
