@@ -30,11 +30,16 @@ trait ValidateMergeTwoSubGroupPeopleTrait
         Log::info("Secondary group: " . json_encode($secondaryGroup));
 
         // Check for intersection
-        $intersect = array_intersect($primaryGroup, $secondaryGroup);
-
-        if (!empty($intersect)) {
-            Log::warning("Cannot merge: common people found: " . json_encode($intersect));
-            throw new Exception("Cannot merge: one or both persons belong to another subgroup.");
+        if (in_array($primaryId, $secondaryGroup)) {
+            Log::warning("Cannot merge: Primary ID {$primaryId} exists in secondary group.");
+            throw new Exception("Cannot merge: Primary person already belongs to the secondary's subgroup.");
         }
+
+        if (in_array($secondaryId, $primaryGroup)) {
+            Log::warning("Cannot merge: Secondary ID {$secondaryId} exists in primary group.");
+            throw new Exception("Cannot merge: Secondary person already belongs to the primary's subgroup.");
+        }
+
+        Log::info("Subgroups are independent. Merge is allowed.");
     }
 }

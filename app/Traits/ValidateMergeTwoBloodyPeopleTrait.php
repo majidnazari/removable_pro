@@ -19,10 +19,10 @@ trait ValidateMergeTwoBloodyPeopleTrait
         $secondarySet = collect($allBloodPeopleOfSecondaryPerson)->sort()->values()->all();
 
         if ($primarySet !== $secondarySet) {
-            throw new Error('Cannot merge: Primary and Secondary belong to different bloodline groups.');
+            throw new Error('Cannot merge: Primary and Secondary belong to different family.');
         }
 
-        $primaryParents = $primaryPerson->getParents(personId: $primaryPerson->id); 
+        $primaryParents = $primaryPerson->getParents(personId: $primaryPerson->id);
         $secondaryParents = $secondaryPerson->getParents($secondaryPerson->id);
 
         $primaryFatherId = $primaryParents['father']?->id;
@@ -30,6 +30,12 @@ trait ValidateMergeTwoBloodyPeopleTrait
         $secondaryFatherId = $secondaryParents['father']?->id;
         $secondaryMotherId = $secondaryParents['mother']?->id;
 
+        if (
+            !$primaryFatherId || !$primaryMotherId ||
+            !$secondaryFatherId || !$secondaryMotherId
+        ) {
+            throw new \Error('Cannot merge: Both persons must have a mother and a father defined for validation.');
+        }
         if (
             $primaryFatherId !== $secondaryFatherId ||
             $primaryMotherId !== $secondaryMotherId
