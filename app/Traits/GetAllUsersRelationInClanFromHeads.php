@@ -122,8 +122,19 @@ trait GetAllUsersRelationInClanFromHeads
 
             return $this->getAllUserRelation($user->id);
         }
-       
+
         $result = $this->getPersonAncestryHeads($user->id, $depth);
+        Log::info("getPersonAncestryHeads result: " . json_encode($result));
+
+        // Handle the case when result is null or doesn't contain 'heads'
+        if (is_null($result) || !isset($result['heads'])) {
+            Log::warning("No heads found in getPersonAncestryHeads. Result was null or invalid.", [
+                'userId' => $user->id,
+                'depth' => $depth,
+            ]);
+            return []; // Or handle however your app expects (e.g. throw custom exception, return early, etc.)
+        }
+
         $heads = collect($result['heads'])->pluck('person_id')->toArray();
         Log::info("heads found: " . json_encode($heads));
 

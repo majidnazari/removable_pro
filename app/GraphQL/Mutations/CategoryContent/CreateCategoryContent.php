@@ -8,6 +8,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
+use App\Exceptions\CustomValidationException;
+
 
 use Log;
 
@@ -34,7 +36,9 @@ final class CreateCategoryContent
         ];
         $is_exist = CategoryContent::where('title', $args['title'])->first();
         if ($is_exist) {
-            return Error::createLocatedError("CategoryContent-CREATE-RECORD_IS_EXIST");
+            throw new CustomValidationException("CategoryContent-CREATE-RECORD_IS_EXIST", "CategoryContent-CREATE-RECORD_IS_EXIST", 400);
+
+            //return Error::createLocatedError("CategoryContent-CREATE-RECORD_IS_EXIST");
         }
         $CategoryContentResult_result = CategoryContent::create($CategoryContentResult);
         return $CategoryContentResult_result;

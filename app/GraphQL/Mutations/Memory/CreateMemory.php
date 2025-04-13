@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
+use App\Exceptions\CustomValidationException;
 
 use Log;
 
@@ -31,18 +32,18 @@ final class CreateMemory
     {
         // TODO implement the resolver
     }
-    public function resolveMemory($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
-        $person=Person::where('id',$args['person_id'])->first();
+        $person = Person::where('id', $args['person_id'])->first();
 
         $MemoryModel = [
             "creator_id" => $this->userId,
             "person_id" => $args['person_id'],
             "category_content_id" => $args['category_content_id'],
             "group_category_id" => $args['group_category_id'],
-            "confirm_status" =>  $person->is_owner==1 ? ConfirmMemoryStatus::Suspend : ConfirmMemoryStatus::Accept,
+            "confirm_status" => $person->is_owner == 1 ? ConfirmMemoryStatus::Suspend : ConfirmMemoryStatus::Accept,
             "title" => $args['title'],
             // "content" => $args['content'],
             // "description" => $args['description'],
@@ -63,7 +64,9 @@ final class CreateMemory
         if (isset($args['content'])) {
             $file = $args['content'];
             if (!$file->isValid()) {
-                throw new Error('Invalid file upload.');
+                throw new CustomValidationException("Invalid file upload.", "Invalid file upload.", 400);
+
+                //throw new Error('Invalid file upload.');
             }
             // Dynamically handle file types based on category_content_id
             $categoryContentId = $args['category_content_id'];
@@ -101,11 +104,15 @@ final class CreateMemory
             // Log::info("the file nme is: " . $args['person_id'] . '.' . $file->getClientOriginalExtension());
 
             if (!in_array(strtolower($extension), $allowedFileTypes)) {
-                throw new Error('Invalid file type. Allowed types: ' . implode(', ', $allowedFileTypes));
+                throw new CustomValidationException("Invalid file type. Allowed types: " . implode(', ', $allowedFileTypes), "Invalid file type. Allowed types: " . implode(', ', $allowedFileTypes), 400);
+
+                //throw new Error('Invalid file type. Allowed types: ' . implode(', ', $allowedFileTypes));
             }
 
             if ($fileSize > $maxFileSize) {
-                throw new Error('File size exceeds the maximum limit of 1 MB.');
+                throw new CustomValidationException("File size exceeds the maximum limit of 1 MB.", "File size exceeds the maximum limit of 1 MB.", 400);
+
+                //throw new Error('File size exceeds the maximum limit of 1 MB.');
             }
 
             $path = $args['person_id'] . '.' . $file->getClientOriginalExtension();
@@ -124,7 +131,7 @@ final class CreateMemory
         $MemoryModel['is_shown_after_death'] = $args['is_shown_after_death'] ?? false;
         $MemoryModel['status'] = $args['status'] ?? Status::Active;
         // $MemoryModel['confirm_status'] = $args['confirm_status'] ?? ConfirmMemoryStatus::Accept;
-        
+
 
         $MemoryModelResult = Memory::create($MemoryModel);
         return $MemoryModelResult;

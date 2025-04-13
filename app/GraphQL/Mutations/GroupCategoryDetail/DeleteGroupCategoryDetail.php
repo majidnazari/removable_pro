@@ -9,6 +9,7 @@ use GraphQL\Error\Error;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
+use App\Exceptions\CustomValidationException;
 
 use App\GraphQL\Enums\AuthAction;
 use Exception;
@@ -38,6 +39,9 @@ final class DeleteGroupCategoryDetail
 
             $GroupCategoryDetailResult = $this->userAccessibility(GroupCategoryDetail::class, AuthAction::Delete, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
 

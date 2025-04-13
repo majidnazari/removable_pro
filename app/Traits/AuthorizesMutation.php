@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use App\GraphQL\Enums\AuthAction;
 use GraphQL\Error\Error;
+use App\Exceptions\CustomValidationException;
+
 use Exception;
 
 
@@ -16,7 +18,7 @@ use Log;
 trait AuthorizesMutation
 {
     protected $user;
-
+   
     public function __construct()
     {
         //$this->user = $this->getUser();
@@ -57,7 +59,9 @@ trait AuthorizesMutation
             $modelInstance = (new $modelClass)->findOrFail($args['id']);
             if (!$modelInstance) {
                 // Return a custom error response if the model doesn't exist
-                throw new Exception(message: "Model not found");
+                //throw new Exception(message: "Model not found");
+        
+                throw new CustomValidationException("Model is not found", "مدل مربوطه پیدا نشد.", 400);
             }
             //Log::info("after fetch FB and ".json_encode($modelInstance));
             if ($this->user->isAdmin() || $this->user->isSupporter()) {
@@ -75,7 +79,9 @@ trait AuthorizesMutation
             }
 
             if (!$isAuthorized) {
-                throw new Exception("You are not authorized to perform this action.");
+                //throw new Exception("You are not authorized to perform this action.");
+
+                throw new CustomValidationException("You are not authorized to perform this action.", "شما مجاز به انجام این عملیات نیستید.", 403);
             }
         }
 

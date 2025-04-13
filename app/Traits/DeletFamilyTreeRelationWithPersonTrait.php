@@ -12,6 +12,8 @@ use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
 use App\Traits\GetAllUsersRelationInClanFromHeads;
 use App\Traits\AuthUserTrait;
 use App\Traits\UpdateUserFlagTrait;
+use App\Exceptions\CustomValidationException;
+
 use Exception;
 
 trait DeletFamilyTreeRelationWithPersonTrait
@@ -23,92 +25,104 @@ trait DeletFamilyTreeRelationWithPersonTrait
     use AuthUserTrait;
     use UpdateUserFlagTrait;
     private $thereIsOwner = false;
+    protected $message = "";
+    protected $endUserMessage = "";
+    protected $statusCode = 0;
 
     public function deleteFamilyTreeRelationWithPerson($personId)
     {
+
         DB::beginTransaction();
-        try {
-            $userId = $this->getUserId();//auth()->id();
-            $userOwner = $this->findOwner();
-            Log::info("DeletePerson: User {$userId} attempting to delete Person ID {$personId}");
+        //try {
+        $userId = $this->getUserId();//auth()->id();
+        $userOwner = $this->findOwner();
+        Log::info("DeletePerson: User {$userId} attempting to delete Person ID {$personId}");
 
-            $person = Person::where('id', $personId)->where('status', Status::Active)->first();
-            if (!$person) {
-                Log::warning("DeletePerson: Person ID {$personId} not found or inactive.");
-                throw new Exception("Person not found.");
-            }
-
-            $heads = $this->getAllBloodPersonsWithSpousesInClanFromHeads($userId);
-            if (!in_array($personId, $heads)) {
-                Log::warning("getAllBloodPersonsWithSpousesInClanFromHeads:  {$personId} is not in the big clan.");
-                throw new Exception("This person is not in your clan!.");
-            }
-
-            // 1. Check if user is part of the small clan
-            $smallClanIds = $this->getAllUserIdsSmallClan($personId);
-            Log::info("DeletePerson: Small Clan Members: " . implode(', ', $smallClanIds));
-            if (!in_array($userId, $smallClanIds) && !empty($smallClanIds)) {
-                Log::warning("DeletePerson: User {$userId} is not in the small clan.");
-                throw new Exception("You are not allowed to delete this person.");
-            }
-
-            // 2. Special deletion rules for owners
-            if ($person->is_owner) {
-                $personId = $person->id;
-                Log::info("DeletePerson: Checking if User {$userId} is the creator of Owner ID {$personId}");
-
-                if ($userOwner->id != $personId) {
-                    Log::warning("DeletePerson: User {$userOwner->id} is not the creator of the sole owner.");
-                    throw new Exception("Only the creator can delete the sole owner.");
-                } elseif ($this->hasParentsPersonOrPersonSpouses($person)) {
-                    Log::warning("DeletePerson: Person ID {$personId} has parents and cannot be deleted.");
-                    throw new Exception("The person has parents and cannot be deleted.");
-                }
-            }
-
-            // 3. Check deletion conditions
-            Log::info("DeletePerson: Checking if Person ID {$personId} can be deleted.");
-            if (!$this->canDeletePerson($person, $userOwner)) {
-                Log::warning("DeletePerson: Person ID {$personId} cannot be deleted due to existing relationships.");
-                throw new Exception("Person cannot be deleted due to existing relationships.");
-            }
+        $person = Person::where('id', $personId)->where('status', Status::Active)->first();
+        if (!$person) {
+            Log::warning("DeletePerson: Person ID {$personId} not found or inactive.");
+            //throw new Exception("Person not found.");
+            $this->handleError("Person not found.", "شخص مورد نظر پیدا نشد", 400);
 
 
-
-            $this->thereIsOwner = $this->personSpousesOwner($person);
-            Log::warning("hereIsOwner is:" . $this->thereIsOwner);
-
-            // 4. Perform deletion
-            //Log::info("DeletePerson: Deleting Person ID {$personId}");
-            //Person::where('id', $personId)->delete();
-            DB::commit();
-
-
-            if ($person->is_owner || $this->thereIsOwner) {
-                Log::warning("DeletFamilyTreeRelationWithPersonTrait updateUserCalculationFlag into false.");
-
-                $this->updateUserCalculationFlag($userId, false);
-
-                // Ensure the method from another trait is called
-                if (method_exists($this, 'getAllUsersInClanFromHeads')) {
-                    $allUsers = $this->getAllUsersInClanFromHeads($userId);
-                    Log::info("The result of getAllUsersInClanFromHeads in getUser: " . json_encode($allUsers));
-                } else {
-                    Log::warning("The method getAllUsersInClanFromHeads does not exist in this class.");
-                }
-            }
-
-
-            //Log::info("DeletePerson: Successfully deleted Person ID {$personId}");
-            return true;
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::error("DeletePerson Error: " . $e->getMessage());
-            return $e->getMessage();
         }
+
+        $heads = $this->getAllBloodPersonsWithSpousesInClanFromHeads($userId);
+        if (!in_array($personId, $heads)) {
+            Log::warning("getAllBloodPersonsWithSpousesInClanFromHeads:  {$personId} is not in the big clan.");
+            //throw new Exception("This person is not in your clan!.");
+            $this->handleError("This person is not in your clan!", "این شخص در خانواده شما نیست!", 403);
+        }
+
+        // 1. Check if user is part of the small clan
+        $smallClanIds = $this->getAllUserIdsSmallClan($personId);
+        Log::info("DeletePerson: Small Clan Members: " . implode(', ', $smallClanIds));
+        if (!in_array($userId, $smallClanIds) && !empty($smallClanIds)) {
+            Log::warning("DeletePerson: User {$userId} is not in the small clan.");
+            //throw new Exception("You are not allowed to delete this person.");
+            $this->handleError("You are not allowed to delete this person.", "شما اجازه حذف این شخص را ندارید.", 403);
+        }
+
+        // 2. Special deletion rules for owners
+        if ($person->is_owner) {
+            $personId = $person->id;
+            Log::info("DeletePerson: Checking if User {$userId} is the creator of Owner ID {$personId}");
+
+            if ($userOwner->id != $personId) {
+                Log::warning("DeletePerson: User {$userOwner->id} is not the creator of the sole owner.");
+                //throw new Exception("Only the creator can delete the sole owner.");
+                $this->handleError("Only the creator can delete the sole owner.", "فقط سازنده مالک میتواند آن را حذف کند.", 403);
+            } elseif ($this->hasParentsPersonOrPersonSpouses($person)) {
+                Log::warning("DeletePerson: Person ID {$personId} has parents and cannot be deleted.");
+                //throw new Exception("The person has parents and cannot be deleted.");
+                $this->handleError("The person has parents and cannot be deleted.", "این شخص والدین دارد و نمی توان آن را حذف کرد.", 403);
+            }
+        }
+
+        // 3. Check deletion conditions
+        Log::info("DeletePerson: Checking if Person ID {$personId} can be deleted.");
+        if (!$this->canDeletePerson($person, $userOwner)) {
+            Log::warning("DeletePerson: Person ID {$personId} cannot be deleted due to existing relationships.");
+            //throw new Exception("Person cannot be deleted due to existing relationships.");
+
+            $this->handleError("Person cannot be deleted due to existing relationships.", "شخص به دلیل روابط موجود قابل حذف نیست.", 403);
+        }
+
+
+        $this->thereIsOwner = $this->personSpousesOwner($person);
+        Log::warning("hereIsOwner is:" . $this->thereIsOwner);
+
+        // 4. Perform deletion
+        //Log::info("DeletePerson: Deleting Person ID {$personId}");
+        //Person::where('id', $personId)->delete();
+        DB::commit();
+
+
+        if ($person->is_owner || $this->thereIsOwner) {
+            Log::warning("DeletFamilyTreeRelationWithPersonTrait updateUserCalculationFlag into false.");
+
+            $this->updateUserCalculationFlag($userId, false);
+
+            // Ensure the method from another trait is called
+            if (method_exists($this, 'getAllUsersInClanFromHeads')) {
+                $allUsers = $this->getAllUsersInClanFromHeads($userId);
+                Log::info("The result of getAllUsersInClanFromHeads in getUser: " . json_encode($allUsers));
+            } else {
+                Log::warning("The method getAllUsersInClanFromHeads does not exist in this class.");
+            }
+        }
+
+
+        //Log::info("DeletePerson: Successfully deleted Person ID {$personId}");
+        return true;
+        // } catch (Exception $e) {
+        //     DB::rollBack();
+        //     Log::error("DeletePerson Error: " . $e->getMessage());
+        //     return $e->getMessage();
+        // }
     }
 
-    protected function canDeletePerson($person, $userOwner)
+    protected function canDeletePerson($person, $userOwner): bool
     {
         $spouseIds = [];
         $personId = $person->id;
@@ -143,12 +157,16 @@ trait DeletFamilyTreeRelationWithPersonTrait
                     if ($this->hasParentsPersonOrPersonSpouses($person)) {
                         return $this->removeParentRelation($personId, $gender);
                     }
-                    throw new Exception("This person doesn't have any relation yet and you can delete it.");
+                    //throw new Exception("This person doesn't have any relation yet and you can delete it.");
+                    $this->handleError("This person doesn't have any relation yet and you can delete it.", "این شخص  هیچ رابطه ای ندارد و شما می توانید آن را حذف کنید.", 403);
+
 
 
                 } else {
                     Log::info("Person Can be delete and has no relations here.");
-                    throw new Exception("This person doesn't have any relation yet and you can delete it.");
+                    //throw new Exception("This person doesn't have any relation yet and you can delete it.");
+                    $this->handleError("This person doesn't have any relation yet and you can delete it.", "این شخص  هیچ رابطه ای ندارد و شما می توانید آن را حذف کنید.", 403);
+
                     //return true;
                 }
             }
@@ -169,7 +187,10 @@ trait DeletFamilyTreeRelationWithPersonTrait
 
         if ($countChildren > 1) {
             Log::warning("CanDeletePerson: Person ID {$personId} has multiple children and cannot be deleted.");
-            throw new Exception("Person has more than one child and cannot be deleted.");
+            //throw new Exception("Person has more than one child and cannot be deleted.");
+
+            $this->handleError("Person has more than one child and cannot be deleted.", "فرد بیش از یک فرزند دارد و نمی توان آن را حذف کرد.", 403);
+
         }
 
         if ($countChildren == 1 && (!$this->hasParentsPersonOrPersonSpouses($person))) {
@@ -177,7 +198,9 @@ trait DeletFamilyTreeRelationWithPersonTrait
             Log::info("CanDeletePerson: Removing child relation with parent for Person ID {$personId}");
             return $this->removeChildRelationWithParent($personId, $gender);
         } else {
-            throw new Exception("person parents exist and cannot delete it.");
+            //throw new Exception("person parents exist and cannot delete it.");
+            $this->handleError("This person doesn't have any relation yet and you can delete it.", "والدین شخصی وجود دارند و نمی توانند آن را حذف کنند.", 403);
+
 
         }
 
@@ -410,6 +433,11 @@ trait DeletFamilyTreeRelationWithPersonTrait
             DB::commit();
             return true;
 
+        } catch (CustomValidationException $e) {
+            Log::error("removePersonDirectly: Exception occurred - " . $e->message);
+            DB::rollBack();
+
+            throw new CustomValidationException($e->message, $e->endUserMessage, $e->statusCode);
         } catch (Exception $e) {
             Log::error("removePersonDirectly: Exception occurred - " . $e->getMessage());
             DB::rollBack();
@@ -450,6 +478,11 @@ trait DeletFamilyTreeRelationWithPersonTrait
             Log::info("removePersonDirectlyWithMarriageId: Marriage ID {$marriageId} and partners successfully removed.");
             return true;
 
+        } catch (CustomValidationException $e) {
+            Log::error("removePersonDirectlyWithMarriageId - " . $e->message);
+            DB::rollBack();
+
+            throw new CustomValidationException($e->message, $e->endUserMessage, $e->statusCode);
         } catch (Exception $e) {
             Log::error("removePersonDirectlyWithMarriageId: Exception - " . $e->getMessage());
             DB::rollBack();
@@ -457,6 +490,14 @@ trait DeletFamilyTreeRelationWithPersonTrait
         }
     }
 
-
+    protected function handleError($message, $userMessage, $statusCode)
+    {
+        $this->message = $message;
+        $this->endUserMessage = $userMessage;
+        $this->statusCode = $statusCode;
+        Log::warning("Error: {$message}");
+        //return response()->json(['message' => $userMessage], $statusCode);
+        throw new CustomValidationException($this->message, $this->endUserMessage, $this->statusCode);
+    }
 
 }

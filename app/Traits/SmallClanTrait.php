@@ -8,6 +8,8 @@ use App\Models\PersonChild;
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Arr;
+use App\Exceptions\CustomValidationException;
+
 
 trait SmallClanTrait
 {
@@ -21,7 +23,9 @@ trait SmallClanTrait
     {
         $person = Person::where('id', $personId)->where('status', Status::Active)->first();
         if (!$person)
-            throw new \Exception("Person with ID {$personId} not found in the clan.");
+            //throw new \Exception("Person with ID {$personId} not found in the clan.");
+            throw new CustomValidationException("Person with ID {$personId} not found in the clan.", "شخص با شناسه {$personId} در خانواده یافت نشد.", 400);
+
         if ($person->is_owner)
             return $person->id;
 

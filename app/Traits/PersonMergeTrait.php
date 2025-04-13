@@ -9,6 +9,8 @@ use App\Models\PersonChild;
 use Illuminate\Support\Facades\DB;
 use App\GraphQL\Enums\Status;
 use GraphQL\Error\Error;
+use App\Exceptions\CustomValidationException;
+
 use Exception;
 use Log;
 
@@ -50,14 +52,20 @@ trait PersonMergeTrait
 
 
             if (!$primaryPerson || !$secondaryPerson) {
-                throw new Error("One or both persons do not exist.");
+                //throw new Error("One or both persons do not exist.");
+                throw new CustomValidationException("One or both persons do not exist.", "یک یا هر دو نفر وجود ندارند.", 400);
             }
             // Check if both persons have the same gender
             if ($primaryPerson->gender !== $secondaryPerson->gender) {
-                throw new Error("Persons cannot be merged because they have different genders.");
+                //throw new Error("Persons cannot be merged because they have different genders.");
+
+                throw new CustomValidationException("Persons cannot be merged because they have different genders.", "افراد را نمی توان ادغام کرد زیرا جنسیت های متفاوتی دارند.", 400);
+
             }
             if (($secondaryPerson->is_owner == 1) && ($primaryPerson->is_owner == 1)) {
-                throw new Error("two people you have selected  both  are owner!");
+                // throw new Error("two people you have selected  both  are owner!");
+                throw new CustomValidationException("One or both persons do not exist.", "دو نفری که انتخاب کرده اید هر دو صاحب هستند!", 400);
+
             }
 
             $this->mergeMarriages($primaryPerson, $secondaryPerson, auth_id: $this->userId);
@@ -72,6 +80,11 @@ trait PersonMergeTrait
 
             DB::commit();
 
+        } catch (CustomValidationException $e) {
+            Log::error("Failed to merge persons: " . $e->message);
+            DB::rollBack();
+
+            throw new CustomValidationException($e->message, $e->endUserMessage, $e->statusCode);
         } catch (Exception $e) {
             DB::rollback();
             throw new Error("Failed to merge persons: " . $e->getMessage());

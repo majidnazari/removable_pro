@@ -5,6 +5,8 @@ namespace App\Traits;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Exceptions\CustomValidationException;
+
 
 trait UpdateUserFlagTrait
 {
@@ -53,7 +55,13 @@ trait UpdateUserFlagTrait
             
             DB::commit();
             
-        } catch (\Exception $e) {
+       
+        } catch (CustomValidationException $e) {
+            Log::error("Failed to update user calculation flags: " . $e->message);
+            DB::rollBack();
+
+            throw new CustomValidationException($e->message, $e->endUserMessage, $e->statusCode);
+        }  catch (\Exception $e) {
             DB::rollBack();
             Log::error("Failed to update user calculation flags: " . $e->getMessage());
             throw $e;

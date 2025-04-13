@@ -9,6 +9,8 @@ use GraphQL\Error\Error;
 use App\GraphQL\Enums\Status;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
+use App\Exceptions\CustomValidationException;
+
 
 use Log;
 

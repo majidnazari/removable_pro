@@ -10,7 +10,9 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
 use Exception;
+
 
 
 final class DeleteGroup
@@ -28,7 +30,7 @@ final class DeleteGroup
     {
         // TODO implement the resolver
     }
-    public function resolveGroup($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveGroup($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();
@@ -37,6 +39,9 @@ final class DeleteGroup
 
             $GroupResult = $this->userAccessibility(Group::class, AuthAction::Delete, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
 

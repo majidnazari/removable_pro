@@ -10,6 +10,8 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
+
 use Exception;
 
 final class DeleteCategoryContent
@@ -36,7 +38,9 @@ final class DeleteCategoryContent
             $CategoryContentResult = $this->userAccessibility(CategoryContent::class, AuthAction::Delete, $args);
 
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new CustomValidationException("CategoryContent-DELETE-FAILED", "CategoryContent-DELETE-FAILED", 400);
+
+            //throw new Exception($e->getMessage());
 
         }
 
