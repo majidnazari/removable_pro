@@ -148,14 +148,18 @@ class User extends Authenticatable
         // return $this->where('mobile', $username)->where('status','Active')->where('mobile_is_verified',1)->first();
         //return $this->whereRaw("CONCAT(country_code, mobile) = ?", [$username])->first();
         return $this->where(self::COLUMN_MOBILE, [$username])
-        ->where('status',UserStatus::Active->value)
-        ->where('mobile_is_verified',true)
-        ->first();
+            ->where('status', UserStatus::Active->value)
+            ->where('mobile_is_verified', true)
+            ->first();
     }
 
-    public function Persons()
+    public function People()
     {
         return $this->hasMany(person::class, self::COLUMN_USER_ID);
+    }
+    public function OwnerPerson()
+    {
+        return $this->hasOne(Person::class, 'creator_id')->where('is_owner', 1);
     }
 
     public function PersonCreates()
@@ -210,7 +214,7 @@ class User extends Authenticatable
     {
         return $this->morphMany(Notif::class, 'notifiable');
     }
-   
+
     protected $casts = [
         'last_attempt_at' => 'datetime',
         'code_expired_at' => 'datetime', // if also necessary
@@ -235,9 +239,9 @@ class User extends Authenticatable
     public static function getAuthorizationColumns()
     {
         return [
-            "country_code", 
-            "mobile", 
-             
+            "country_code",
+            "mobile",
+
         ];
     }
 

@@ -11,6 +11,8 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
+
 use Exception;
 
 use Log;
@@ -40,13 +42,18 @@ final class UpdateAddress
 
         //args["user_id_creator"]=$user_id;
         // $AddressResult=Address::find($args['id']);
-        try {
+       // try {
 
             $AddressResult = $this->userAccessibility(Address::class, AuthAction::Update, $args);
 
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
-        }
+        // } catch (CustomValidationException $e) {
+
+        //     throw new Error($e->getMessage(), null, null, [], null, $e, [
+        //         'endUserMessage' => $e->getEndUserMessage(),
+        //         'statusCode' => $e->getStatusCode()
+        //     ]);
+        //     //throw new Exception($e->getMessage());
+        // }
 
         // if (!$AddressResult) {
         //     return Error::createLocatedError("Address-UPDATE-RECORD_NOT_FOUND");

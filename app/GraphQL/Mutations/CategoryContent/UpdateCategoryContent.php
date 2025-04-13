@@ -11,6 +11,8 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
+
 use Exception;
 
 
@@ -21,6 +23,7 @@ final class UpdateCategoryContent
     use AuthorizesMutation;
     use DuplicateCheckTrait;
     use HandlesModelUpdateAndDelete;
+
 
     protected $userId;
 
@@ -40,7 +43,9 @@ final class UpdateCategoryContent
             $CategoryContentResult = $this->userAccessibility(CategoryContent::class, AuthAction::Update, $args);
 
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new CustomValidationException("CategoryContent-UPDATE-FAILED", "CategoryContent-UPDATE-FAILED", 400);
+
+            //throw new Exception($e->getMessage());
         }
         $this->checkDuplicate(
             new CategoryContent(),

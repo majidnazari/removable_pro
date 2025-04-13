@@ -187,7 +187,7 @@ trait HandlesPersonDeletion_old3
         }
 
         $personMarriage = PersonMarriage::where('id', $personChild->person_marriage_id)
-            ->where(column: 'status', Status::Active->value)
+           // ->where(column: 'status', Status::Active->value)
             ->first();
 
         if (empty($personMarriage)) {

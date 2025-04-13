@@ -12,6 +12,7 @@ use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
+use App\Exceptions\CustomValidationException;
 
 
 
@@ -69,6 +70,9 @@ final class UpdateGroupDetail
 
             $GroupDetailResult = $this->userAccessibility(GroupDetail::class, AuthAction::Update, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

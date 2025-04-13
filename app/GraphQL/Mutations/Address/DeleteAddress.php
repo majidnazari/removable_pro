@@ -10,7 +10,10 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use Log;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 
 
 
@@ -34,17 +37,27 @@ final class DeleteAddress
         $this->userId = $this->getUserId();
         //  $this->userAccessibility(Address::class, AuthAction::Delete, $args);
 
-        try {
-
+        //try {
+            //Log::info("inside try");
             $AddressResult = $this->userAccessibility(Address::class, AuthAction::Delete, $args);
+            //Log::info("inside try afteruserAccessibility");
 
-        } catch (Exception $e) {
-            throw new Exception($e->getMessage());
 
-        }
+        // } catch (CustomValidationException $e) {
+        //     Log::error("DeleteAddress: " . json_encode($e));
+
+        //     throw new Exception($e->getMessage());
+
+        //     //throw new CustomValidationException($e->getMessage, "");
+        // } catch (Exception $e) {
+        //     Log::info("inside catch error occured ");
+
+        //     throw new Exception($e->getMessage());
+
+        // }
 
         return $this->updateAndDeleteModel($AddressResult, $args, $this->userId);
-        //$AddressResult = Address::find($args['id']);
+        //$AddressResult = Address::find($args['id']);             
 
         // if(!$AddressResult)
         // {

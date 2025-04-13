@@ -14,6 +14,8 @@ use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use App\GraphQL\Enums\Status;
+use App\Exceptions\CustomValidationException;
+
 
 final class UpdateFamilyBoard
 {
@@ -41,7 +43,10 @@ final class UpdateFamilyBoard
 
             $FamilyBoardResult = $this->userAccessibility(FamilyBoard::class, AuthAction::Update, $args);
 
-        } catch (Exception $e) {
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
+        }  catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
         $this->checkDuplicate(

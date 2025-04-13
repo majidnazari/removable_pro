@@ -11,6 +11,8 @@ use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
+use App\Exceptions\CustomValidationException;
+
 
 use Exception;
 
@@ -39,6 +41,9 @@ final class UpdateGroupCategory
 
             $GroupCategoryResult = $this->userAccessibility(GroupCategory::class, AuthAction::Update, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

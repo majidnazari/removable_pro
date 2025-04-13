@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\ValidationException;
+use App\Exceptions\CustomValidationException;
 use Log;
 
 trait DuplicateCheckTrait
@@ -42,12 +43,22 @@ trait DuplicateCheckTrait
        // Log::info('Final Query: ' . $sqlWithBindings);
 
         // If duplicate exists, throw an error
+        // if ($query->exists()) {
+        //     $filteredColumns = array_diff(array_keys($columnsAndValues), $exceptionColumns);
+        //     $columns = implode(', ', $filteredColumns);
+        //     throw ValidationException::withMessages([
+        //         "duplicate" => "A record with the same {$columns} already exists."
+        //     ]);
+        // }
+
         if ($query->exists()) {
             $filteredColumns = array_diff(array_keys($columnsAndValues), $exceptionColumns);
             $columns = implode(', ', $filteredColumns);
-            throw ValidationException::withMessages([
-                'duplicate' => "A record with the same {$columns} already exists."
-            ]);
+            $message = "A record with the same {$columns} exists.";
+            $endUserMessage="رکوردی با اطلاعات {$columns} قبلا ثبت شده است.";
+            $statusCode=422;
+    
+            throw new CustomValidationException($message, $endUserMessage, $statusCode);
         }
     }
 

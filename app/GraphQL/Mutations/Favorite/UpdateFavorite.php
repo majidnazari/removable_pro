@@ -11,6 +11,8 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
+
 use Exception;
 
 
@@ -31,7 +33,7 @@ final class UpdateFavorite
     {
         // TODO implement the resolver
     }
-    public function resolveFavorite($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveFavorite($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
@@ -39,16 +41,19 @@ final class UpdateFavorite
 
             $FavoriteResult = $this->userAccessibility(Favorite::class, AuthAction::Update, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
         $data = [
-            "title" => isset($args['title']) ? $args['title'] : $FavoriteResult['title'] ,
-            "person_id" => isset($args['person_id'])  ? $args['person_id'] : $FavoriteResult['person_id'] 
+            "title" => isset($args['title']) ? $args['title'] : $FavoriteResult['title'],
+            "person_id" => isset($args['person_id']) ? $args['person_id'] : $FavoriteResult['person_id']
         ];
         $this->checkDuplicate(
             new Favorite(),
-             $data,
+            $data,
             ['id', 'editor_id', 'created_at', 'updated_at'],
             excludeId: $args['id']
         );

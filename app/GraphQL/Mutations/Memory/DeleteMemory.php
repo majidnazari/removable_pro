@@ -11,6 +11,8 @@ use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 use App\Traits\HandlesModelUpdateAndDelete;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 
 final class DeleteMemory
 {
@@ -35,7 +37,10 @@ final class DeleteMemory
 
             $GroupDetailResult = $this->userAccessibility(Memory::class, AuthAction::Delete, $args);
 
-        } catch (Exception $e) {
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
+        }  catch (Exception $e) {
             throw new Exception($e->getMessage());
 
         }

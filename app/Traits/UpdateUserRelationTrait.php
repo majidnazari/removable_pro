@@ -6,6 +6,8 @@ use App\Models\UserRelation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use App\Exceptions\CustomValidationException;
+
 
 trait UpdateUserRelationTrait
 {
@@ -31,6 +33,11 @@ trait UpdateUserRelationTrait
 
             return $updatedRelations;
 
+        } catch (CustomValidationException $e) {
+            Log::error("Failed to update user calculation flags: " . $e->message);
+            DB::rollBack();
+
+            throw new CustomValidationException($e->message, $e->endUserMessage, $e->statusCode);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("Transaction failed for user {$user->id}: " . $e->getMessage());
