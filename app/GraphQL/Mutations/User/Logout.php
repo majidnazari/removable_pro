@@ -10,6 +10,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use App\Traits\AuthUserTrait;
 
+use App\Exceptions\CustomValidationException;
 
 class Logout extends BaseAuthResolver
 {

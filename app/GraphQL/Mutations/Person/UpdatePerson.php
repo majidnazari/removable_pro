@@ -14,6 +14,7 @@ use App\GraphQL\Enums\AuthAction;
 use App\Traits\HandlesModelUpdateAndDelete;
 use Exception;
 use Log;
+use App\Exceptions\CustomValidationException;
 
 
 final class UpdatePerson
@@ -34,13 +35,17 @@ final class UpdatePerson
         // TODO implement the resolver
     }
     public function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {  
+    {
 
         $this->userId = $this->getUserId();
 
         try {
 
             $GroupDetailResult = $this->userAccessibility(Person::class, AuthAction::Update, $args);
+
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
@@ -72,7 +77,7 @@ final class UpdatePerson
         // }
 
         // $PersonResult=Person::find($args['id']);
-        
+
         // if(!$PersonResult)
         // {
         //     return Error::createLocatedError("Person-UPDATE-RECORD_NOT_FOUND");
@@ -86,9 +91,9 @@ final class UpdatePerson
         // $args['editor_id']=$this->userId ;
         // $PersonResult_filled= $PersonResult->fill($args);
         // $PersonResult->save();       
-       
+
         // return $PersonResult;
 
-        
+
     }
 }

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Traits\AuthUserTrait;
 use Exception;
+use App\Exceptions\CustomValidationException;
 
 use GraphQL\Error\Error;
 use App\GraphQL\Enums\UserStatus;
@@ -46,15 +47,21 @@ class ChangePassword extends BaseAuthResolver
             ->first();
 
         if (!$user) {
-            return Error::createLocatedError("User not found");
+            throw new CustomValidationException("User not found", "کاربر پیدا نشد", 404);
+
+            //return Error::createLocatedError("User not found");
         }
         if ($this->userId != $user->id) {
-            return Error::createLocatedError("access denied!");
+            throw new CustomValidationException("access denied!", "دسترسی ممنوع است!", 403);
+
+            //return Error::createLocatedError("access denied!");
         }
 
 
         if ($user->code_expired_at && Carbon::parse($user->code_expired_at)->gt(Carbon::now())) {
-            return Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
+            throw new CustomValidationException("You can only request a new code every 5 minutes. Please wait.", "شما فقط می توانید هر 5 دقیقه یک کد جدید درخواست کنید. لطفا صبر کنید.", 429);
+
+            //return Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
         }
 
         // Log::info("the inside of resolve is running");
@@ -85,10 +92,14 @@ class ChangePassword extends BaseAuthResolver
 
 
         if (!$user) {
-            return Error::createLocatedError('User not found');
+            throw new CustomValidationException("User not found", "کاربر پیدا نشد", 404);
+
+            //return Error::createLocatedError('User not found');
         }
         if ($this->userId != $user->id) {
-            return Error::createLocatedError("access denied!");
+            throw new CustomValidationException("access denied!", "دسترسی ممنوع است!", 403);
+
+            //return Error::createLocatedError("access denied!");
         }
 
         //Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));
@@ -100,15 +111,19 @@ class ChangePassword extends BaseAuthResolver
             // Reset attempts for the new day
             $user->password_change_attempts = 0;
         }
-        
+
         // Now check if password change attempts exceed the daily limit
         if ($user->password_change_attempts >= 2) {
-            return Error::createLocatedError("You cannot change your password more than 2 times in a day.");
+            throw new CustomValidationException("You cannot change your password more than 2 times in a day.", "شما نمی توانید رمز عبور خود را بیش از 2 بار در روز تغییر دهید.", 429);
+
+            //return Error::createLocatedError("You cannot change your password more than 2 times in a day.");
         }
-        
+
         // If the verification code is expired, return an error
         if ($user->code_expired_at && Carbon::parse(Carbon::now())->gt($user->code_expired_at)) {
-            return Error::createLocatedError("The code is expired. Please send the code again.");
+            throw new CustomValidationException("The code is expired. Please send the code again.", "کد منقضی شده است. لطفا دوباره کد را ارسال کنید.", 410);
+
+            //return Error::createLocatedError("The code is expired. Please send the code again.");
         }
 
         // Increment attempt count and update last attempt timestamp

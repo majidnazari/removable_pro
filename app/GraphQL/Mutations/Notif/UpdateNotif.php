@@ -11,6 +11,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 use App\Traits\HandlesModelUpdateAndDelete;
+use App\Exceptions\CustomValidationException;
 
 
 use Exception;
@@ -32,13 +33,16 @@ final class UpdateNotif
         // TODO implement the resolver
     }
     public function resolveNotif($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {  
+    {
         $this->userId = $this->getUserId();
 
         try {
 
             $NotifResult = $this->userAccessibility(Notif::class, AuthAction::Update, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -52,21 +56,21 @@ final class UpdateNotif
         return $this->updateModel($NotifResult, $args, $this->userId);
 
 
-    //    $this->userAccessibility(Notif::class, AuthAction::Update, $args);
-        
-    //     $NotifResult=Notif::find($args['id']);
-        
-    //     if(!$NotifResult)
-    //     {
-    //         return Error::createLocatedError("Notif-UPDATE-RECORD_NOT_FOUND");
-    //     }
-    //    // $args['editor_id']=$this->userId;
-        
-    //     $NotifResult_filled= $NotifResult->fill($args);
-    //     $NotifResult->save();       
-       
-    //     return $NotifResult;
+        //    $this->userAccessibility(Notif::class, AuthAction::Update, $args);
 
-        
+        //     $NotifResult=Notif::find($args['id']);
+
+        //     if(!$NotifResult)
+        //     {
+        //         return Error::createLocatedError("Notif-UPDATE-RECORD_NOT_FOUND");
+        //     }
+        //    // $args['editor_id']=$this->userId;
+
+        //     $NotifResult_filled= $NotifResult->fill($args);
+        //     $NotifResult->save();       
+
+        //     return $NotifResult;
+
+
     }
 }

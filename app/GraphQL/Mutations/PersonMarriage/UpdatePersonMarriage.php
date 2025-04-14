@@ -12,6 +12,7 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
 
 use Exception;
 
@@ -63,6 +64,11 @@ final class UpdatePersonMarriage
         try {
 
             $PersonMarriageResult = $this->userAccessibility(PersonMarriage::class, AuthAction::Update, $args);
+
+        
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());

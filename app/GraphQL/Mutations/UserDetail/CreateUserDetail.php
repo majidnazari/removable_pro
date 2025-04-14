@@ -10,6 +10,7 @@ use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
+use App\Exceptions\CustomValidationException;
 
 use Exception;
 use Log;
@@ -42,7 +43,9 @@ final class CreateUserDetail
         ];
 
         if ( $this->user->mobile !== $args['mobile']) {
-            return Error::createLocatedError("The provided mobile does not belong to the logged-in user.");
+            throw new CustomValidationException("The provided mobile does not belong to the logged-in user.", "تلفن همراه ارائه شده به کاربر وارد شده تعلق ندارد.", 422);
+
+            //return Error::createLocatedError("The provided mobile does not belong to the logged-in user.");
         }
         // $is_exist= UserDetail::where('title',$args['title'])->first();
         // if($is_exist)

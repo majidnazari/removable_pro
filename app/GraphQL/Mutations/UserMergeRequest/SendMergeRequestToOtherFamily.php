@@ -18,6 +18,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
 
 
 use Exception;
@@ -42,29 +43,30 @@ final class SendMergeRequestToOtherFamily
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->user = $this->getUser();
-    
+
         $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
         // Fetch the sender person
-        $userMergeRequest = UserMergeRequest::where('id',$args['id'])
-        //->where('status',MergeStatus::Active)
-        ->where('request_status_sender',  RequestStatusSender::Active->value)
-        ->where('request_status_receiver',  RequestStatusReceiver::Active->value)
-        ->first();
+        $userMergeRequest = UserMergeRequest::where('id', $args['id'])
+            //->where('status',MergeStatus::Active)
+            ->where('request_status_sender', RequestStatusSender::Active->value)
+            ->where('request_status_receiver', RequestStatusReceiver::Active->value)
+            ->first();
 
-        if(!$userMergeRequest)
-        {
-            return Error::createLocatedError("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
+        if (!$userMergeRequest) {
+            throw new CustomValidationException("USERMERGEREQUEST-SEND-MERGE-RECORD_NOT_FOUND", "درخواست ادغام کاربر. ارسال درخواست. رکورد یافت نشد", 404);
+
+            //return Error::createLocatedError("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
         }
-       
+
         $this->checkDuplicate(
             new UserMergeRequest(),
             $args,
-            ['id','editor_id','created_at', 'updated_at'],
+            ['id', 'editor_id', 'created_at', 'updated_at'],
             $args['id']
         );
         // Prepare data for creating UserMergeRequest
-        $data= [
-           
+        $data = [
+
             'merge_ids_sender' => $args['merge_ids_sender'],
             'merge_ids_receiver' => $args['merge_ids_receiver'],
             "merge_sender_expired_at" => Carbon::now()->addDays(1)->format("Y-m-d H:i:s"),
@@ -73,7 +75,7 @@ final class SendMergeRequestToOtherFamily
 
         ];
 
-        $userModelRequestResult= $userMergeRequest->fill($data);
+        $userModelRequestResult = $userMergeRequest->fill($data);
         $userModelRequestResult->save();
         // Create the UserMergeRequest
         return $userModelRequestResult;

@@ -24,6 +24,7 @@ use App\Traits\FindOwnerTrait;
 use App\GraphQL\Enums\AuthAction;
 use App\Events\DeleteUserFromAllRelations;
 
+use App\Exceptions\CustomValidationException;
 
 use GraphQL\Error\Error;
 use Exception;
@@ -50,7 +51,9 @@ final class DeleteJustPersonWithFamilyTreeRelation
         $owner = $this->findOwner();
 
         if ($owner->id != $personId) {
-            throw new Exception("You are not allowed to use this method for others!");
+            throw new CustomValidationException("You are not allowed to use this method for others!", "شما مجاز به استفاده از این روش برای دیگران نیستید!", 403);
+
+            //throw new Exception("You are not allowed to use this method for others!");
         }
 
         try {
@@ -65,7 +68,9 @@ final class DeleteJustPersonWithFamilyTreeRelation
 
             if (empty($allBloodUserIdsWithoutItself) || !is_array($allBloodUserIdsWithoutItself) || count($allBloodUserIdsWithoutItself) === 0) {
                 Log::info("The allBloodUserIdsWithoutItself is empty or null.");
-                throw new Exception("You must use the delete relation person method instead.");
+                throw new CustomValidationException("You must use the delete relation person method instead.", "شما باید از روش حذف شخص رابطه استفاده کنید.", 400);
+
+                //throw new Exception("You must use the delete relation person method instead.");
             }
 
             DB::transaction(function () use ($personId) {
@@ -76,7 +81,9 @@ final class DeleteJustPersonWithFamilyTreeRelation
                 $person = Person::find($personId);
 
                 if (!$person) {
-                    throw new Exception("Person not found");
+                    throw new CustomValidationException("Person not found", "شخص پیدا نشد", 400);
+
+                    //throw new Exception("Person not found");
                 }
 
                 $person->update(['is_owner' => 0]);
@@ -102,6 +109,11 @@ final class DeleteJustPersonWithFamilyTreeRelation
             //     event(new PersonDeletedEvent($PersonResult->id));
             // });
 
+        } catch (CustomValidationException $e) {
+
+            Log::error("Failed  resolveDeletePersonWithFamilyTreeRelation: " . $e->getMessage());
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
 

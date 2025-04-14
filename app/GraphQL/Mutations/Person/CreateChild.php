@@ -16,6 +16,10 @@ use App\GraphQL\Enums\ChildKind;
 use App\GraphQL\Enums\ChildStatus;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
+use App\Exceptions\CustomValidationException;
+
+
+use Exception;
 use Log;
 
 final class CreateChild
@@ -39,12 +43,16 @@ final class CreateChild
             // Check if the child (person) exists
             $man = Person::find($manId);
             if (!$man) {
-                throw new \Exception("man not found");
+                throw new CustomValidationException("man not found", "مرد پیدا نشد", 404);
+
+                //throw new \Exception("man not found");
             }
             // Check if the child (person) exists
             $woman = Person::find($womanId);
             if (!$woman) {
-                throw new \Exception("woman not found");
+                throw new CustomValidationException("woman not found", "زن پیدا نشد", 404);
+
+                //throw new \Exception("woman not found");
             }
 
             // $allUsers = $this->getAllUserIdsSmallClan($manId);
@@ -62,7 +70,9 @@ final class CreateChild
 
             if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
                 if (!in_array($this->userId, $getAllusersInSmallClan)) {
-                    throw new \Exception("The user logged doesn't have permission to change this person.");
+                    throw new CustomValidationException("The user logged doesn't have permission to change this person.", "کاربری که وارد سیستم شده است، اجازه تغییر این شخص را ندارد.", 404);
+
+                    //throw new \Exception("The user logged doesn't have permission to change this person.");
                 }
             }
 
@@ -83,7 +93,9 @@ final class CreateChild
 
             $marriage = PersonMarriage::where(['man_id' => $manId, 'woman_id' => $womanId])->where('status', Status::Active)->first();
             if (!$marriage) {
-                throw new \Exception("marriage not found");
+                throw new CustomValidationException("marriage not found", "ازدواج پیدا نشد", 404);
+
+                //throw new \Exception("marriage not found");
             }
             // Link the child to this marriage
             $PersonChildModel = [
@@ -97,16 +109,21 @@ final class CreateChild
             ];
             $this->checkDuplicate(new PersonChild(), $PersonChildModel);
 
-            
+
             $childRelation = PersonChild::create($PersonChildModel);
 
             DB::commit(); // Commit transaction
 
             return $child_created;
 
-        } catch (\Exception $e) {
+        } catch (CustomValidationException $e) {
+            DB::rollBack();
+            Log::error("Failed to create child: " . $e->getMessage());
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
+        } catch (Exception $e) {
             DB::rollBack(); // Rollback on failure
-            Log::error("Failed to create parents: " . $e->getMessage());
+            Log::error("Failed to create child: " . $e->getMessage());
             return \GraphQL\Error\Error::createLocatedError($e->getMessage());
         }
     }

@@ -20,6 +20,8 @@ use App\Traits\GetAllBloodPersonsInClanFromHeads;
 use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
 use App\Traits\GetAllUsersRelationInClanFromHeads;
 use App\Traits\BloodyPersonAncestry;
+use App\Exceptions\CustomValidationException;
+
 use Log;
 
 final class GetPerson
@@ -258,8 +260,9 @@ final class GetPerson
         if ($person) {
             return $person;
         } else {
-            //throw new \RuntimeException("The person not found!");
-            throw new \Exception("The person not found!");
+            throw new CustomValidationException("The person not found!", "فرد پیدا نشد!", 404);
+
+            //throw new \Exception("The person not found!");
             //return  Error::createLocatedError("The person not found!");
         }
     }

@@ -10,6 +10,8 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
+
 use Exception;
 
 
@@ -37,6 +39,10 @@ final class DeletePersonChild
         try {
 
             $PersonChildResult = $this->userAccessibility(PersonChild::class, AuthAction::Delete, $args);
+
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());

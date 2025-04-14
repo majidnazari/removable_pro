@@ -15,6 +15,8 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 use Log;
 
 
@@ -38,21 +40,23 @@ final class UpdatePersonDetails
     {
         $this->userId = $this->getUserId();
 
-       $this->userAccessibility(PersonDetail::class, AuthAction::Update, $args);
+        $this->userAccessibility(PersonDetail::class, AuthAction::Update, $args);
 
 
         //args["user_id_creator"]=$this->userId;
         $personDetail = PersonDetail::find($args['id']);
 
-        $fileName="";
+        $fileName = "";
 
         if (!$personDetail) {
-            return Error::createLocatedError("PersonDetails-UPDATE-RECORD_NOT_FOUND");
+            throw new CustomValidationException("PersonDetails-UPDATE-RECORD_NOT_FOUND", "جزئیات شخص - رکورد به روز رسانی یافت نشد", 400);
+
+            //return Error::createLocatedError("PersonDetails-UPDATE-RECORD_NOT_FOUND");
         }
         $this->checkDuplicate(
             new PersonDetail(),
             $args,
-            ['id','editor_id','created_at', 'updated_at'],
+            ['id', 'editor_id', 'created_at', 'updated_at'],
             $args['id']
         );
         // Fetch existing record if it exists
@@ -64,7 +68,9 @@ final class UpdatePersonDetails
 
             // Check if the file is valid
             if (!$file->isValid()) {
-                throw new Error('Invalid file upload.');
+                throw new CustomValidationException("Invalid file upload.", "آپلود فایل نامعتبر است.", 400);
+
+                //throw new Error('Invalid file upload.');
             }
 
             // Define allowed file types and max size (in bytes)
@@ -77,12 +83,16 @@ final class UpdatePersonDetails
 
             // Check file type
             if (!in_array(strtolower($extension), $allowedFileTypes)) {
-                throw new Error('Invalid file type. Allowed types: ' . implode(', ', $allowedFileTypes));
+                throw new CustomValidationException("Invalid file type. Allowed types: " . implode(', ', $allowedFileTypes), "نوع فایل نامعتبر است. انواع مجاز: " . implode(', ', $allowedFileTypes), 400);
+
+                //throw new Error('Invalid file type. Allowed types: ' . implode(', ', $allowedFileTypes));
             }
 
             // Check file size
             if ($fileSize > $maxFileSize) {
-                throw new Error('File size exceeds the maximum limit of 1 MB.');
+                throw new CustomValidationException("File size exceeds the maximum limit of 1 MB.", "اندازه فایل از حداکثر 1 مگابایت بیشتر است.", 400);
+
+                //throw new Error('File size exceeds the maximum limit of 1 MB.');
             }
 
             // Get the person ID
@@ -94,12 +104,12 @@ final class UpdatePersonDetails
 
             //Log::info("the old pic is:" . $personDetail['profile_picture'] );
             // Delete the old image if it exists
-            if ($personDetail && $personDetail['profile_picture'] !=null ) {
-                $oldImagePath = public_path('storage/profile_pictures/' . $personDetail['profile_picture'] ); // Use `public_path` to get the full path
+            if ($personDetail && $personDetail['profile_picture'] != null) {
+                $oldImagePath = public_path('storage/profile_pictures/' . $personDetail['profile_picture']); // Use `public_path` to get the full path
                 //Log::info("the old image in updateis: ". $oldImagePath );
 
                 if (file_exists($oldImagePath)) {
-                   // Log::info("it should unlink it");
+                    // Log::info("it should unlink it");
                     unlink($oldImagePath); // Delete the old image
                     //Log::info("Deleted old image: " . $oldImagePath);
                 }
@@ -112,25 +122,24 @@ final class UpdatePersonDetails
             $profilePictureUrl = Storage::url($storagePath);
         }
 
-           $PersonDetailsModel = [
+        $PersonDetailsModel = [
             "editor_id" => $this->userId,
             // "person_id" => $args['person_id'],
             // "profile_picture" =>  $path ?? null,
             //"gender" => $args['gender'] ?? 'None',
-            "physical_condition" => $args['physical_condition'] ??  PhysicalCondition::Healthy // 'Healthy'
+            "physical_condition" => $args['physical_condition'] ?? PhysicalCondition::Healthy // 'Healthy'
         ];
 
-        if(!empty($fileName))
-        {
-            $PersonDetailsModel['profile_picture']=$fileName;
+        if (!empty($fileName)) {
+            $PersonDetailsModel['profile_picture'] = $fileName;
         }
-       
+
         if ($personDetail) {
             $personDetail->fill($PersonDetailsModel); // Assuming `$args` contains all necessary fields to update
-            $personDetail->save();       
+            $personDetail->save();
 
-        } 
-       
+        }
+
         return $personDetail;
 
     }

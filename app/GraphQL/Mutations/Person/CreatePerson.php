@@ -9,6 +9,7 @@ use App\GraphQL\Enums\Status;
 use Carbon\Carbon;
 use App\Traits\AuthUserTrait;
 use App\Traits\DuplicateCheckTrait;
+use App\Exceptions\CustomValidationException;
 
 use Log;
 

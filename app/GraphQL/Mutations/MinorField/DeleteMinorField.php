@@ -11,6 +11,8 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 
 
 final class DeleteMinorField
@@ -28,21 +30,24 @@ final class DeleteMinorField
     {
         // TODO implement the resolver
     }
-    public function resolveMinorField($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {  
-        
+    public function resolveMinorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+
         $this->userId = $this->getUserId();
 
         try {
 
             $MinorFieldResult = $this->userAccessibility(MinorField::class, AuthAction::Delete, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
 
         }
 
         return $this->updateAndDeleteModel($MinorFieldResult, $args, $this->userId);
-       
+
     }
 }

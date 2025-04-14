@@ -12,6 +12,8 @@ use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 
 
 final class UpdateMinorField
@@ -31,7 +33,7 @@ final class UpdateMinorField
     {
         // TODO implement the resolver
     }
-    public function resolveMinorField($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveMinorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
@@ -39,6 +41,9 @@ final class UpdateMinorField
 
             $MinorFieldResult = $this->userAccessibility(MinorField::class, AuthAction::Update, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -50,7 +55,7 @@ final class UpdateMinorField
         );
 
         return $this->updateModel($MinorFieldResult, $args, $this->userId);
-        
+
 
     }
 }

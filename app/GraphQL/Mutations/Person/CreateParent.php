@@ -20,11 +20,13 @@ use App\Traits\FindOwnerTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\PersonAncestryHeads;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 use Log;
 
 final class CreateParent
 {
-    use AuthUserTrait, DuplicateCheckTrait, FindOwnerTrait, PersonAncestryWithCompleteMerge, SmallClanTrait,PersonAncestryHeads;
+    use AuthUserTrait, DuplicateCheckTrait, FindOwnerTrait, PersonAncestryWithCompleteMerge, SmallClanTrait, PersonAncestryHeads;
 
     public function resolveParent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
@@ -34,7 +36,9 @@ final class CreateParent
         // Validate if person exists
         $person = Person::find($personId);
         if (!$person) {
-            throw new Exception("Person not found.");
+            throw new CustomValidationException("Person not found.", "شخص پیدا نشد", 404);
+
+            // throw new Exception("Person not found.");
         }
 
         DB::beginTransaction();
@@ -73,6 +77,11 @@ final class CreateParent
 
             return compact('father', 'mother', 'marriage', 'childRelation');
 
+        } catch (CustomValidationException $e) {
+            DB::rollBack();
+            Log::error("Failed to create parents: " . $e->getMessage());
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             DB::rollBack();
             return \GraphQL\Error\Error::createLocatedError($e->getMessage());
@@ -102,11 +111,15 @@ final class CreateParent
         $motherBirthDate = Carbon::parse($mother->birth_date);
 
         if ($fatherBirthDate->diffInYears($childBirthDate) < 12) {
-            throw new Exception("Child's birth date must be at least 12 years after the father's birth date.");
+            throw new CustomValidationException("Child's birth date must be at least 12 years after the father's birth date.", "تاریخ تولد کودک باید حداقل 12 سال پس از تاریخ تولد پدر باشد.", 400);
+
+            //throw new Exception("Child's birth date must be at least 12 years after the father's birth date.");
         }
 
         if ($motherBirthDate->diffInYears($childBirthDate) < 9) {
-            throw new Exception("Child's birth date must be at least 9 years after the mother's birth date.");
+            throw new CustomValidationException("Child's birth date must be at least 9 years after the mother's birth date.", "تاریخ تولد کودک باید حداقل 9 سال پس از تاریخ تولد مادر باشد.", 400);
+
+            //throw new Exception("Child's birth date must be at least 9 years after the mother's birth date.");
         }
     }
 
@@ -130,14 +143,18 @@ final class CreateParent
         if ($marriage->marriage_date) {
             $marriageDate = Carbon::parse($marriage->marriage_date);
             if ($childBirthDate->lt($marriageDate->addMonths(6))) {
-                throw new Exception("Child's birth date must be at least 6 months after the marriage date.");
+                throw new CustomValidationException("Child's birth date must be at least 6 months after the marriage date.", "تاریخ تولد کودک باید حداقل 6 ماه پس از تاریخ ازدواج باشد.", 400);
+
+                // throw new Exception("Child's birth date must be at least 6 months after the marriage date.");
             }
         }
 
         if ($marriage->divorce_date) {
             $divorceDate = Carbon::parse($marriage->divorce_date);
             if ($childBirthDate->gt($divorceDate->copy()->addMonths(8))) {
-                throw new Exception("Child's birth date cannot be more than 8 months after the divorce date.");
+                throw new CustomValidationException("Child's birth date cannot be more than 8 months after the divorce date.", "تاریخ تولد فرزند نمی تواند بیش از 8 ماه پس از تاریخ طلاق باشد.", 400);
+
+                //throw new Exception("Child's birth date cannot be more than 8 months after the divorce date.");
             }
         }
     }
@@ -148,12 +165,14 @@ final class CreateParent
         // Log::info("theuser logggd in is :" . $this->userId . "the result of active complete is :" . json_encode( $result['heads']));
         // $headsIds = collect($result['heads'])->pluck("person_id")->toArray();
 
-        $result= $this->getPersonAncestryHeads($this->userId,10);
+        $result = $this->getPersonAncestryHeads($this->userId, 10);
         $heads = collect($result['heads'])->pluck('person_id')->toArray();
         Log::info("heads found: " . json_encode($heads));
 
         if (!in_array($personId, $heads)) {
-            throw new Exception("Person with ID {$personId} not found in the list of heads."); 
+            throw new CustomValidationException("Person with ID {$personId} not found in the list of heads.", "شخص با شناسه {$personId} در لیست سرها یافت نشد.", 400);
+
+            //throw new Exception("Person with ID {$personId} not found in the list of heads.");
         }
 
         // $usersInSmallClan = $this->getAllUserIdsSmallClan($personId);
@@ -162,10 +181,12 @@ final class CreateParent
         // }
 
         $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($personId);
-       
+
         if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {
             if (!in_array($this->userId, $getAllusersInSmallClan)) {
-                throw new Exception("The user logged doesn't have permission to change this person.");
+                throw new CustomValidationException("The user logged doesn't have permission to change this person.", "کاربری که وارد سیستم شده است، اجازه تغییر این شخص را ندارد.", 400);
+
+                //throw new Exception("The user logged doesn't have permission to change this person.");
             }
         }
     }
