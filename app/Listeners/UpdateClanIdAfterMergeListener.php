@@ -27,7 +27,7 @@ class UpdateClanIdAfterMergeListener
     {
 
         //Log::info("the sender is :" . $event->senderId);
-       // Log::info("the receiver is :" . $event->receiverId);
+        // Log::info("the receiver is :" . $event->receiverId);
 
         // Get the sender and receiver user IDs from the event
         $senderId = $event->senderId;

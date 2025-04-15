@@ -434,10 +434,11 @@ trait DeletFamilyTreeRelationWithPersonTrait
             return true;
 
         } catch (CustomValidationException $e) {
-            Log::error("removePersonDirectly: Exception occurred - " . $e->message);
+            Log::error("removePersonDirectly: Exception occurred - " . $e->getMessage());
             DB::rollBack();
 
-            throw new CustomValidationException($e->message, $e->endUserMessage, $e->statusCode);
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), $e->getStatusCode());
+
         } catch (Exception $e) {
             Log::error("removePersonDirectly: Exception occurred - " . $e->getMessage());
             DB::rollBack();
@@ -479,10 +480,10 @@ trait DeletFamilyTreeRelationWithPersonTrait
             return true;
 
         } catch (CustomValidationException $e) {
-            Log::error("removePersonDirectlyWithMarriageId - " . $e->message);
+            Log::error("removePersonDirectlyWithMarriageId - " . $e->getMessage());
             DB::rollBack();
 
-            throw new CustomValidationException($e->message, $e->endUserMessage, $e->statusCode);
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), $e->getStatusCode());
         } catch (Exception $e) {
             Log::error("removePersonDirectlyWithMarriageId: Exception - " . $e->getMessage());
             DB::rollBack();

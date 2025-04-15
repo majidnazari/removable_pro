@@ -11,6 +11,7 @@ use App\Rules\Person\ValidDeathDate;
 use App\Rules\Person\UniqueSpouseForWoman;
 use App\Rules\Person\PersonInBloodline;
 use App\Traits\AuthUserTrait;
+use App\Exceptions\CustomValidationException;
 
 use Log;
 
@@ -23,14 +24,16 @@ class CreateSpouseInputValidator extends GraphQLValidator
         $spouseData = $this->arg('spouse');
         $marriageDate = $this->arg('marriage_date');
         $divorceDate = $this->arg('divorce_date');
-        $userId=$this->getUserId();
+        $userId = $this->getUserId();
 
         Log::info("the spouse is :" . json_encode($spouseData));
         // Fetch existing person from DB
         $person = Person::find($personId);
 
         if (!$person) {
-            throw new \Exception("Person not found");
+            throw new CustomValidationException("Person not found", "شخص پیدا نشد", 404);
+
+            //throw new \Exception("Person not found");
         }
         // Extract spouse data (not saved in DB yet)
         $spouseBirthDate = $spouseData['birth_date'] ?? null;
@@ -44,14 +47,14 @@ class CreateSpouseInputValidator extends GraphQLValidator
             'person_id' => [
                 'required',
                 'exists:people,id',
-                new UniqueSpouseForWoman( $person, $spouseData, $marriageDate),
+                new UniqueSpouseForWoman($person, $spouseData, $marriageDate),
                 new PersonInBloodline($personId, $userId),
                 // new NotSelfMarriage($personId, $spouseId), // Custom rule to check self-marriage
             ],
             'spouse.first_name' => ['required', 'string'],
             'spouse.last_name' => ['required', 'string'],
             'spouse.birth_date' => ['required', 'date'],
-            'spouse.death_date' => ['nullable', 'date', "after:spouse.birth_date",new ValidDeathDate($manBirthdate, $womanBirthdate, $marriageDate, $divorceDate)],
+            'spouse.death_date' => ['nullable', 'date', "after:spouse.birth_date", new ValidDeathDate($manBirthdate, $womanBirthdate, $marriageDate, $divorceDate)],
 
             // Marriage date must be after both birthdates
             'marriage_date' => [
@@ -72,7 +75,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
                 new ValidDivorceDate($marriageDate, $manBirthdate, $womanBirthdate),
             ],
 
-            
+
             // Ensure unique marriage
             // new UniqueMarriage($personId, null), // Check if person already has an active marriage
         ];
@@ -83,7 +86,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
         return [
             'person_id.required' => 'The child person ID is required.',
             'person_id.exists' => 'The specified child person does not exist.',
-            
+
 
             'marriage_date.required_with' => 'Marriage date is required if a divorce date is provided.',  // Custom message for marriage_date
             'marriage_date.before_or_equal' => 'Marriage date cannot be in the future.',

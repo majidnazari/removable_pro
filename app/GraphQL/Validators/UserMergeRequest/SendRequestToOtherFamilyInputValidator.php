@@ -19,6 +19,7 @@ use App\Rules\UserMergeRequest\ReceiverHasOwner;
 use App\Rules\UserMergeRequest\SenderNodeAndReceiverNodeSameGender;
 use App\Rules\UserMergeRequest\UserSenderReceiverStatusCompleteOnce;
 use App\Traits\GetAllBloodPersonsWithSpousesInClanFromHeads;
+use App\Exceptions\CustomValidationException;
 
 use App\GraphQL\Enums\Status;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +40,9 @@ class SendRequestToOtherFamilyInputValidator extends Validator
         $user = Auth::guard('api')->user();
 
         if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
+            throw new CustomValidationException("Authentication required. No user is currently logged in.", "احراز هویت لازم است. هیچ کاربری در حال حاضر وارد نشده است.", 403);
+
+            //throw new Exception("Authentication required. No user is currently logged in.");
         }
 
         $this->user_sender_id = $user->id;

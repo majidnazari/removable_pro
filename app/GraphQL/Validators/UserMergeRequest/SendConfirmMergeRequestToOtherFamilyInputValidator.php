@@ -14,6 +14,7 @@ use App\Rules\UserMergeRequest\MergeRequestIdExists;
 use App\Rules\UserMergeRequest\MergeValidateAllStatusesAreActive;
 use App\Rules\UserMergeRequest\MergeEnsureNotEmpty;
 use App\Rules\UserMergeRequest\PreventChangeCompleteStatus;
+use App\Exceptions\CustomValidationException;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,9 @@ class SendConfirmMergeRequestToOtherFamilyInputValidator extends Validator
         $user = Auth::guard('api')->user();
 
         if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
+            throw new CustomValidationException("Authentication required. No user is currently logged in.", "احراز هویت لازم است. هیچ کاربری در حال حاضر وارد نشده است.", 403);
+
+            //throw new Exception("Authentication required. No user is currently logged in.");
         }
 
         $this->userId = $user->id;

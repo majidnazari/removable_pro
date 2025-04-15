@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 use App\GraphQL\Enums\AuthAction;
 use GraphQL\Error\Error;
 use App\Exceptions\CustomValidationException;
-
+use App\Traits\AuthUserTrait;
 use Exception;
 
 
@@ -17,6 +17,7 @@ use Log;
 
 trait AuthorizesMutation
 {
+    use AuthUserTrait;
     protected $user;
    
     public function __construct()

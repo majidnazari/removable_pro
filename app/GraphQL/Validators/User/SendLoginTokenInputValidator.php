@@ -8,7 +8,10 @@ use App\Rules\User\JwtTokenIsNotExpired;
 use App\Rules\User\JwtTokenHasValidFormat;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
+use App\Exceptions\CustomValidationException;
+
 use Exception;
+
 use Log;
 
 class SendLoginTokenInputValidator extends Validator
@@ -22,7 +25,9 @@ class SendLoginTokenInputValidator extends Validator
         $user = $this->getUser();// Auth::guard('api')->user();
 
         if (!$user) {
-            throw new Exception("Authentication required. No user is currently logged in.");
+            throw new CustomValidationException("Authentication required. No user is currently logged in.", "احراز هویت لازم است. هیچ کاربری در حال حاضر وارد نشده است.", 403);
+
+            //throw new Exception("Authentication required. No user is currently logged in.");
         }
 
         $this->userId = $user->id;
@@ -37,7 +42,9 @@ class SendLoginTokenInputValidator extends Validator
         $authorizationHeader = request()->header('Authorization');
 
         if (!$authorizationHeader) {
-            throw new Exception("Authorization header is missing.");
+            throw new CustomValidationException("Authorization header is missing.", "سرصفحه مجوز وجود ندارد.", 400);
+
+            //throw new Exception("Authorization header is missing.");
         }
 
         // Remove the 'Bearer ' prefix to get the actual token
