@@ -12,6 +12,7 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
 
 use Exception;
 
@@ -64,8 +65,14 @@ final class UpdateUserDetail
 
             $UserDetailResult = $this->userAccessibility(UserDetail::class, AuthAction::Update, $args);
             if (isset($args['mobile']) && ($this->user->mobile !== $args['mobile'])) {
-                return Error::createLocatedError("The provided mobile does not belong to the logged-in user.");
+                throw new CustomValidationException("The provided mobile does not belong to the logged-in user.", "تلفن همراه ارائه شده به کاربر وارد شده تعلق ندارد.", 422);
+
+                //return Error::createLocatedError("The provided mobile does not belong to the logged-in user.");
             }
+
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());

@@ -8,6 +8,8 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesUser;
 use App\Traits\SearchQueryBuilder;
+use App\Exceptions\CustomValidationException;
+
 use Log;
 
 
@@ -30,7 +32,9 @@ final class GetTalentDetailScoresReportsMinorHistory
 
         // Ensure the minor_field_id is provided in the arguments
         if (!isset($args['minor_field_id'])) {
-            throw new \Exception("minor_field_id is required");
+            throw new CustomValidationException("minor_field_id is required", "شناسه فیلد رشته مورد نیاز است", 400);
+
+            //throw new \Exception("minor_field_id is required");
         }
     
         $query = TalentDetailScore::selectRaw('

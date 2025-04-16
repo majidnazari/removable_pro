@@ -11,6 +11,8 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 
 
 final class DeleteMiddleField
@@ -28,22 +30,25 @@ final class DeleteMiddleField
     {
         // TODO implement the resolver
     }
-    public function resolveMiddleField($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {  
-        
+    public function resolveMiddleField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+
         $this->userId = $this->getUserId();
 
         try {
 
             $MiddleFieldResult = $this->userAccessibility(MiddleField::class, AuthAction::Delete, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
 
         }
 
         return $this->updateAndDeleteModel($MiddleFieldResult, $args, $this->userId);
-       
-        
+
+
     }
 }

@@ -19,6 +19,7 @@ use App\Traits\SmallClanTrait;
 use App\Traits\PersonAncestryWithCompleteMerge;
 use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
 
 use GraphQL\Error\Error;
 use Exception;
@@ -59,6 +60,11 @@ final class DeletePersonWithAllTraces
                 event(new PersonDeletedEvent($PersonResult->id));
             });
 
+        } catch (CustomValidationException $e) {
+
+            Log::error("Failed  resolveDeletePersonWithAllTraces: " . $e->getMessage());
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
 

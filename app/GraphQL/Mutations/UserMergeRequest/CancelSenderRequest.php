@@ -11,6 +11,7 @@ use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
 
+use App\Exceptions\CustomValidationException;
 
 use Exception;
 
@@ -39,7 +40,9 @@ final class CancelSenderRequest
         $UserMergeRequestResult = UserMergeRequest::where($this->user->creator_id, $this->user->id)->first();
 
         if (!$UserMergeRequestResult) {
-            return Error::createLocatedError("UserSendeRequest-UPDATE-RECORD_NOT_FOUND");
+            throw new CustomValidationException("USERMERGEREQUEST-CANCEL-SENDER-RECORD_NOT_FOUND", "درخواست ادغام کاربر. لغو رکورد ارسال کننده. رکورد یافت نشد", 404);
+
+            //return Error::createLocatedError("UserSendeRequest-UPDATE-RECORD_NOT_FOUND");
         }
         $UserMergeRequestResult->editor_id = $this->user->id;
 

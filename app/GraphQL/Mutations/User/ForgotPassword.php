@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\LoginAttempt;
 use App\GraphQL\Enums\UserStatus;
 use App\Traits\AuthUserTrait;
+use App\Exceptions\CustomValidationException;
 
 
 
@@ -55,12 +56,16 @@ class ForgotPassword extends BaseAuthResolver
         if ($user) {
             // Check if mobile is already verified
             if (!$user->mobile_is_verified) {
-                return Error::createLocatedError("This mobile number is not verified yet please register first!");
+                throw new CustomValidationException("This mobile number is not verified yet please register first!", "این شماره موبایل هنوز تایید نشده است لطفا ابتدا ثبت نام کنید!", 403);
+
+                //return Error::createLocatedError("This mobile number is not verified yet please register first!");
             }
 
             // Ensure the user hasn't requested a code within the past 5 minutes
             if ($user->last_attempt_at && Carbon::parse($user->last_attempt_at)->gt($cooldownPeriod)) {
-                return Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
+                throw new CustomValidationException("This mobile number is not verified yet please register first!", "فقط می توانید هر 5 دقیقه یک کد جدید درخواست کنید. لطفا صبر کنید.", 429);
+
+                //return Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
             }
 
             // Update user with a new code and update the last attempt time
@@ -71,7 +76,9 @@ class ForgotPassword extends BaseAuthResolver
             $user->save();
 
         } else {
-            return Error::createLocatedError("User not found!");
+            throw new CustomValidationException("User not found!", "کاربر پیدا نشد!", 404);
+
+            //return Error::createLocatedError("User not found!");
         }
 
         return [
@@ -163,14 +170,18 @@ class ForgotPassword extends BaseAuthResolver
 
         // Return an error if the user is not found
         if (!$user) {
-            return Error::createLocatedError(config('auth.password_reset.errors.user_not_found', 'User not found'));
+            throw new CustomValidationException("User not found", "کاربر پیدا نشد", 404);
+
+            //return Error::createLocatedError(config('auth.password_reset.errors.user_not_found', 'User not found'));
         }
 
         // Check if the code is expired
         if ($user->code_expired_at && Carbon::now()->gt($user->code_expired_at)) {
-            return Error::createLocatedError(
-                config('auth.password_reset.errors.code_expired', 'The code is expired') . ". Expired at: " . $user->code_expired_at->toDateTimeString()
-            );
+            throw new CustomValidationException("The code is expired. Please send the code again.", "کد منقضی شده است. لطفا دوباره کد را ارسال کنید.", 410);
+
+            // return Error::createLocatedError(
+            //     config('auth.password_reset.errors.code_expired', 'The code is expired') . ". Expired at: " . $user->code_expired_at->toDateTimeString()
+            // );
         }
 
         // Check and reset password change attempts if the day has changed
@@ -182,7 +193,9 @@ class ForgotPassword extends BaseAuthResolver
         // Check if daily password change attempts have been exceeded
         $maxAttempts = config('auth.password_reset.max_attempts', 2);
         if ($user->password_change_attempts >= $maxAttempts) {
-            return Error::createLocatedError(config('auth.password_reset.errors.max_attempts_exceeded', 'You cannot change your password more than ' . $maxAttempts . ' times in a day.'));
+            throw new CustomValidationException("You cannot change your password more than ' . $maxAttempts . ' times in a day.", "شما نمی توانید رمز عبور خود را بیش از ". $maxAttempts . "بار در در روز تغییر دهید.", 429);
+
+            //return Error::createLocatedError(config('auth.password_reset.errors.max_attempts_exceeded', 'You cannot change your password more than ' . $maxAttempts . ' times in a day.'));
         }
 
         // Update user details
@@ -204,6 +217,10 @@ class ForgotPassword extends BaseAuthResolver
 
         try {
             $response = $this->makeRequest($credentials);
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
+
         } catch (\Exception $e) {
             return Error::createLocatedError('Authentication failed. Please try again.');
         }

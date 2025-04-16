@@ -10,6 +10,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Joselfonseca\LighthouseGraphQLPassport\GraphQL\Mutations\BaseAuthResolver;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\MergeRequestTrait;
+use App\Exceptions\CustomValidationException;
 
 use Log;
 

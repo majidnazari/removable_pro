@@ -34,10 +34,11 @@ trait UpdateUserRelationTrait
             return $updatedRelations;
 
         } catch (CustomValidationException $e) {
-            Log::error("Failed to update user calculation flags: " . $e->message);
+            Log::error("Failed to update user calculation flags: " . $e->getMessage());
             DB::rollBack();
 
-            throw new CustomValidationException($e->message, $e->endUserMessage, $e->statusCode);
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), statusCode: $e->getStatusCode());
+
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("Transaction failed for user {$user->id}: " . $e->getMessage());

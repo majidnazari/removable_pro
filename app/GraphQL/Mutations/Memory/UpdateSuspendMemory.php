@@ -44,7 +44,9 @@ final class UpdateSuspendMemory
         $MemoryResult = Memory::find($args['id']);
 
         if (!$MemoryResult) {
-            return Error::createLocatedError("Memory-UPDATE-RECORD_NOT_FOUND");
+            throw new CustomValidationException("Memory-UPDATE-RECORD_NOT_FOUND", "رکورد برای به روز رسانی حافظه پیدا نشد", 404);
+
+            //return Error::createLocatedError("Memory-UPDATE-RECORD_NOT_FOUND");
         }
 
 
@@ -53,7 +55,9 @@ final class UpdateSuspendMemory
 
         if ($MemoryResult->person_id !== $this->findOwner()->id) {
             // If person_id doesn't match, throw an exception
-            return Error::createLocatedError("This is not your own memory.");
+            throw new CustomValidationException("This is not your own memory.", "این خاطره خودتان نیست.", 403);
+
+            ///return Error::createLocatedError("This is not your own memory.");
         }
 
 

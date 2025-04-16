@@ -12,6 +12,8 @@ use App\Traits\DuplicateCheckTrait;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 
 
 final class UpdateMiddleField
@@ -31,7 +33,7 @@ final class UpdateMiddleField
     {
         // TODO implement the resolver
     }
-    public function resolveMiddleField($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveMiddleField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
@@ -39,6 +41,9 @@ final class UpdateMiddleField
 
             $MiddleFieldResult = $this->userAccessibility(MiddleField::class, AuthAction::Update, $args);
 
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

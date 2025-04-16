@@ -16,6 +16,7 @@ use App\Traits\GetAllBloodPersonsInClanFromHeadsAccordingPersonId;
 use App\Traits\ValidateMergeTwoBloodyPeopleTrait;
 use App\Traits\ValidateMergeTwoSubGroupPeopleTrait;
 use Exception;
+use App\Exceptions\CustomValidationException;
 
 
 use Log;
@@ -65,40 +66,40 @@ final class MergePersons
             $this->validatePersonsForMerge($primaryPerson, $secondaryPerson);
 
 
-                                    // $allBloodPeopleOfPrimaryPerson = $this->getAllBloodPersonsInClanFromHeadsAccordingPersonId($primaryPerson->id, 10);
+            // $allBloodPeopleOfPrimaryPerson = $this->getAllBloodPersonsInClanFromHeadsAccordingPersonId($primaryPerson->id, 10);
 
-                                    // Log::info("allBloodyPeopleOfPrimaryPerson are:" . json_encode($allBloodPeopleOfPrimaryPerson));
-                                    // $allBloodPeopleOfSecondaryPerson = $this->getAllBloodPersonsInClanFromHeadsAccordingPersonId($secondaryPerson->id, 10);
-                                    // Log::info("allBloodyPeopleOfSecondaryPerson are:" . json_encode($allBloodPeopleOfSecondaryPerson));
+            // Log::info("allBloodyPeopleOfPrimaryPerson are:" . json_encode($allBloodPeopleOfPrimaryPerson));
+            // $allBloodPeopleOfSecondaryPerson = $this->getAllBloodPersonsInClanFromHeadsAccordingPersonId($secondaryPerson->id, 10);
+            // Log::info("allBloodyPeopleOfSecondaryPerson are:" . json_encode($allBloodPeopleOfSecondaryPerson));
 
 
-                                    // $primarySet = collect($allBloodPeopleOfPrimaryPerson)->sort()->values()->all();
-                                    // $secondarySet = collect($allBloodPeopleOfSecondaryPerson)->sort()->values()->all();
+            // $primarySet = collect($allBloodPeopleOfPrimaryPerson)->sort()->values()->all();
+            // $secondarySet = collect($allBloodPeopleOfSecondaryPerson)->sort()->values()->all();
 
-                                    // if ($primarySet === $secondarySet) {
-                            
-                                    //     $primaryParents = $primaryPerson->getParents(personId: $primaryPerson->id); 
-                                    //     $secondaryParents = $secondaryPerson->getParents($secondaryPerson->id);
-                                    
-                                    //     $primaryFatherId = $primaryParents['father']?->id;
-                                    //     $primaryMotherId = $primaryParents['mother']?->id;
-                                    //     $secondaryFatherId = $secondaryParents['father']?->id;
-                                    //     $secondaryMotherId = $secondaryParents['mother']?->id;
-                                    
-                                    //     if (
-                                    //         $primaryFatherId === $secondaryFatherId &&
-                                    //         $primaryMotherId === $secondaryMotherId
-                                    //     ) {
-                                    //         Log::info("Primary and Secondary persons are in the same family and have same parents.");
-                                    //         // continue your logic here...
-                                    //     } else {
-                                    //         throw new Error('Cannot merge: Primary and Secondary have different parents.');
-                                    //     }
-                                    
-                                    // } else {
-                                    //     throw new Error('Cannot merge: Primary and Secondary belong to different bloodline groups.');
-                                    // }
-            
+            // if ($primarySet === $secondarySet) {
+
+            //     $primaryParents = $primaryPerson->getParents(personId: $primaryPerson->id); 
+            //     $secondaryParents = $secondaryPerson->getParents($secondaryPerson->id);
+
+            //     $primaryFatherId = $primaryParents['father']?->id;
+            //     $primaryMotherId = $primaryParents['mother']?->id;
+            //     $secondaryFatherId = $secondaryParents['father']?->id;
+            //     $secondaryMotherId = $secondaryParents['mother']?->id;
+
+            //     if (
+            //         $primaryFatherId === $secondaryFatherId &&
+            //         $primaryMotherId === $secondaryMotherId
+            //     ) {
+            //         Log::info("Primary and Secondary persons are in the same family and have same parents.");
+            //         // continue your logic here...
+            //     } else {
+            //         throw new Error('Cannot merge: Primary and Secondary have different parents.');
+            //     }
+
+            // } else {
+            //     throw new Error('Cannot merge: Primary and Secondary belong to different bloodline groups.');
+            // }
+
             // Log::info("Switching:" . $primaryPersonId . " - " . $secondaryPersonId);
 
 
@@ -107,10 +108,14 @@ final class MergePersons
             // }
             // Check if both persons have the same gender
             if ($primaryPerson->gender !== $secondaryPerson->gender) {
-                throw new Error("Persons cannot be merged because they have different genders.");
+                throw new CustomValidationException("Persons cannot be merged because they have different genders.", "افراد را نمی توان ادغام کرد زیرا جنسیت های متفاوتی دارند.", 403);
+
+                //throw new Error("Persons cannot be merged because they have different genders.");
             }
             if (($secondaryPerson->is_owner == 1) && ($primaryPerson->is_owner == 1)) {
-                throw new Error("two people you have selected  both  are owner!");
+                throw new CustomValidationException("two people you have selected  both  are owner!", "دو نفری که انتخاب کرده اید هر دو صاحب هستند!", 403);
+
+                //throw new Error("two people you have selected  both  are owner!");
             }
 
 
@@ -131,8 +136,14 @@ final class MergePersons
 
             DB::commit();
 
+        } catch (CustomValidationException $e) {
+            DB::rollback();
+
+            throw new CustomValidationException("Failed to merge persons: ", "ادغام افراد ناموفق بود:", 500);
+
         } catch (Exception $e) {
             DB::rollback();
+
             throw new Error("Failed to merge persons: " . $e->getMessage());
         }
 

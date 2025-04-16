@@ -9,6 +9,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Traits\AuthUserTrait;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 
 class DeletePersonUserListener
 {
@@ -30,6 +32,11 @@ class DeletePersonUserListener
             });
 
             Log::info("Successfully completed soft deletion for person ID: $personId.");
+        } catch (CustomValidationException $e) {
+            Log::error("Soft deletion failed for person ID $personId: " . $e->getMessage());
+            //throw new Exception("Soft deletion failed: " . $e->getMessage());
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
+
         } catch (Exception $e) {
             Log::error("Soft deletion failed for person ID $personId: " . $e->getMessage());
             throw new Exception("Soft deletion failed: " . $e->getMessage());
@@ -42,10 +49,19 @@ class DeletePersonUserListener
     private function softDeleteTables(int $userId, Carbon $timestamp): void
     {
         $tables = [
-            'addresses', 'memories', 'user_details', 'family_boards',
-            'family_events', 'favorites', 'groups', 'group_categories',
-            'group_category_details', 'group_details', 'talent_details',
-            'talent_detail_scores', 'talent_headers',
+            'addresses',
+            'memories',
+            'user_details',
+            'family_boards',
+            'family_events',
+            'favorites',
+            'groups',
+            'group_categories',
+            'group_category_details',
+            'group_details',
+            'talent_details',
+            'talent_detail_scores',
+            'talent_headers',
         ];
 
         foreach ($tables as $table) {

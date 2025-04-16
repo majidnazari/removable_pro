@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Traits\AuthUserTrait;
 use App\Traits\AuthorizesMutation;
 use App\GraphQL\Enums\AuthAction;
+use App\Exceptions\CustomValidationException;
 
 use Exception;
 
@@ -37,20 +38,22 @@ final class UpdateMergeRequestSender
     {
         $this->user_sender_id = $this->getUserId();
 
-       $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
+        $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
 
         $data = [
-            "editor_id" =>  $this->user_sender_id,
+            "editor_id" => $this->user_sender_id,
             "merge_status_sender" => $args['merge_status_sender'] ?? RequestStatusSender::Suspend
         ];
         //Log::info("the update status sender :". json_encode($data));
 
-       // Log::info("the args are:" . json_encode($UserMergeRequestResult));
+        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $UserMergeRequest = UserMergeRequest::where('id', $args['id'])->first();
-       //->where('request_status_sender',  RequestStatusSender::Active->value)
-        
+        //->where('request_status_sender',  RequestStatusSender::Active->value)
+
         if (!$UserMergeRequest) {
-            return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
+            throw new CustomValidationException("USERMERGEREQUEST-UPDATE-MERGE-SENDER-RECORD_NOT_FOUND", "درخواست ادغام کاربر. به روز رسانی ارسال کننده. رکورد یافت نشد", 404);
+
+            //return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
 
         // $this->checkDuplicate(
@@ -63,25 +66,29 @@ final class UpdateMergeRequestSender
         //     ['id','editor_id','created_at', 'updated_at'],
         //     $args['id']
         // );
-        $is_exist = UserMergeRequest::where('user_sender_id',  $this->user_sender_id)
-            ->where('id','!=', $args['id'])
+        $is_exist = UserMergeRequest::where('user_sender_id', $this->user_sender_id)
+            ->where('id', '!=', $args['id'])
             // ->where('user_receiver_id', $user_receiver->id)
-            ->where('request_status_sender',  RequestStatusSender::Active->value)
-            ->where('request_status_sender',  RequestStatusSender::Active->value)
-            ->where('merge_status_sender',  RequestStatusSender::Active->value)
+            ->where('request_status_sender', RequestStatusSender::Active->value)
+            ->where('request_status_sender', RequestStatusSender::Active->value)
+            ->where('merge_status_sender', RequestStatusSender::Active->value)
             ->where('status', '!=', MergeStatus::Complete->value)
             ->first();
 
         if ($is_exist) {
-            return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_MERGE_REQUEST");
+            throw new CustomValidationException("USERMERGEREQUEST-UPDATE-MERGE-SENDER-YOU_HAVE_ONE_ACTIVE_MERGE_REQUEST", "درخواست ادغام کاربر. به روز رسانی ارسال کننده. در حال حاضر وضعیت فعالی وجود دارد", 409);
+
+            //return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_MERGE_REQUEST");
         }
 
-        if($UserMergeRequest->creator_id !=  $this->user_sender_id){
-            return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
+        if ($UserMergeRequest->creator_id != $this->user_sender_id) {
+            throw new CustomValidationException("USERMERGEREQUEST-UPDATE-MERGE-SENDER-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS", "درخواست ادغام کاربر. به روز رسانی ارسال کننده. شما مجاز به تغییر درخواست های خود هستید", 403);
+
+            //return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
 
         }
         $UserMergeRequestResult = $UserMergeRequest->fill($data);
-        $UserMergeRequestResult->save();       
+        $UserMergeRequestResult->save();
 
         return $UserMergeRequestResult;
     }

@@ -16,6 +16,7 @@ use App\GraphQL\Enums\AuthAction;
 use App\Events\UpdateClanIdAfterMerge;
 use App\Events\BloodUserRelationResetEvent;
 use App\Events\UnbloodUserRelationResetEvent;
+use App\Exceptions\CustomValidationException;
 
 
 use Exception;
@@ -52,7 +53,10 @@ class SendConfirmMergeRequestToOtherFamily
             // Fetch the merge request
             $userMergeRequest = UserMergeRequest::find($args['id']);
             if (!$userMergeRequest) {
-                throw new Error("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
+                throw new CustomValidationException("USERMERGEREQUEST-CONFIRM-MERGE-RECORD_NOT_FOUND", "درخواست ادغام کاربر. تاییددرخواست. رکورد یافت نشد", 404);
+
+
+                //throw new Error("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
             }
             $this->checkDuplicate(
                 new UserMergeRequest(),
@@ -62,7 +66,9 @@ class SendConfirmMergeRequestToOtherFamily
             );
 
             if ($userMergeRequest->user_sender_id !== $this->user->id) {
-                throw new Error("UserMergeRequest-UNAUTHORIZED_ACCESS!");
+                throw new CustomValidationException("USERMERGEREQUEST-CONFIRM-MERGE-UNAUTHORIZED_ACCESS!", "ارسال درخواست مرج کاربر. تاییددرخواست . دسترسی غیر مجاز", 403);
+
+                //throw new Error("UserMergeRequest-UNAUTHORIZED_ACCESS!");
             }
 
             $mergeIdsSender = explode(',', $mergeIdsSender);
@@ -91,12 +97,17 @@ class SendConfirmMergeRequestToOtherFamily
             // Dispatch unblood user event for receiver
             event(new UnbloodUserRelationResetEvent($userMergeRequest->user_receiver_id));
 
-           // $this->updateUserCalculationFlag($userMergeRequest->user_sender_id, false);
-           // $this->updateUserCalculationFlag($userMergeRequest->user_receiver_id, false);
+            // $this->updateUserCalculationFlag($userMergeRequest->user_sender_id, false);
+            // $this->updateUserCalculationFlag($userMergeRequest->user_receiver_id, false);
 
             DB::commit();
 
             return $userMergeRequest;
+        } catch (CustomValidationException $e) {
+            DB::rollBack();
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
+
         } catch (Exception $e) {
             DB::rollBack();
             throw new Error("Transaction failed: " . $e->getMessage());

@@ -6,6 +6,8 @@ use Nuwave\Lighthouse\Validation\Validator as GraphQLValidator;
 use App\Models\PersonMarriage;
 use App\Models\Person;
 use Carbon\Carbon;
+use App\Exceptions\CustomValidationException;
+
 
 class CreateChildInputValidator extends GraphQLValidator
 {

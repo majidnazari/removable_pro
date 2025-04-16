@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Traits\AuthUserTrait;
 use App\Events\UserRegistered;
+use App\Exceptions\CustomValidationException;
 
 use App\GraphQL\Enums\UserStatus;
 use Illuminate\Support\Facades\RateLimiter;
@@ -46,7 +47,7 @@ class Register extends BaseAuthResolver
 
         // // Increment the registration attempts for the IP
         // RateLimiter::hit('register:' . $context->request->ip(), 60);  // 1 minute time window
-        
+
         // Log::info("the inside of resolve is running");
         $code = 159951;//rand(100000, 999999);
         $code_expired_at = Carbon::now()->addMinutes(2)->format("Y-m-d H:i:s");
@@ -92,7 +93,9 @@ class Register extends BaseAuthResolver
             return;
         }
 
-        throw new \RuntimeException("Auth model must be an instance of {$authModelClass}");
+        throw new CustomValidationException("Auth model must be an instance of {$authModelClass}", "مدل تایید باید نمونه ای از {$authModelClass} باشد", 400);
+
+        //throw new \RuntimeException("Auth model must be an instance of {$authModelClass}");
     }
 
     protected function createAuthModel(array $data): Model
@@ -109,11 +112,13 @@ class Register extends BaseAuthResolver
     {
 
         $user = User::where('id', $args['user_id'])
-            ->where('status', UserStatus::New )
+            ->where('status', UserStatus::New)
             ->whereNull('password')
             ->first();
         if (!$user) {
-            throw new \RuntimeException('User not found');
+            throw new CustomValidationException("User not found", "کاربر پیدا نشد", 404);
+
+            //throw new \RuntimeException('User not found');
         }
 
         // Extract the country code and mobile number separately

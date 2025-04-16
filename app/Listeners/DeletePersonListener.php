@@ -10,6 +10,8 @@ use App\Models\PersonMarriage;
 use App\Models\PersonChild;
 use App\Models\Person;
 use Exception;
+use App\Exceptions\CustomValidationException;
+
 
 class DeletePersonListener
 {
@@ -27,20 +29,26 @@ class DeletePersonListener
 
         $person = Person::where('id', $personId)->first();
         if (!$person) {
-            throw new Exception("the person doesn't exist!.");
+            throw new CustomValidationException("the person doesn't exist!.", "فرد وجود ندارد!", 404);
+
+            //throw new Exception("the person doesn't exist!.");
         }
         // Check if the person has any relationships
         $hasMarriage = PersonMarriage::where($person->gender == 1 ? 'man_id' : 'woman_id', $personId)
             ->exists();
 
         if ($hasMarriage) {
-            throw new Exception('Person has existing relationships and cannot be deleted.');
+            throw new CustomValidationException("Person has existing relationships and cannot be deleted.", "شخص دارای روابط موجود است و نمی توان آن را حذف کرد.", 403);
+
+            //throw new Exception('Person has existing relationships and cannot be deleted.');
         }
 
         $hasChildren = PersonChild::where('child_id', $personId)->exists();
 
         if ($hasChildren) {
-            throw new Exception('Person has existing relationships and cannot be deleted.');
+            throw new CustomValidationException("Person has existing relationships and cannot be deleted.", "شخص دارای روابط موجود است و نمی توان آن را حذف کرد.", 403);
+
+            //throw new Exception('Person has existing relationships and cannot be deleted.');
         }
 
         $deletedCount = Person::where('id', $personId)->update(['deleted_at' => now()]);

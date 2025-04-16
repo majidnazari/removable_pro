@@ -22,7 +22,7 @@ type User {
     "When the account was last updated."
     updated_at: DateTime!
     Notifications: [Notif]
-   OwnerPerson:Person
+    OwnerPerson:Person
 
 #    notifs: [Notif!]! @field(resolver: "App\\GraphQL\\Queries\\User\\Resolvers\\UserResolver@notifs")
     

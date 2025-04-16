@@ -11,6 +11,7 @@ use App\Traits\AuthorizesMutation;
 use App\Traits\HandlesModelUpdateAndDelete;
 use App\GraphQL\Enums\AuthAction;
 use Exception;
+use App\Exceptions\CustomValidationException;
 
 
 final class DeleteTalentHeader
@@ -29,13 +30,17 @@ final class DeleteTalentHeader
         // TODO implement the resolver
     }
     public function resolveTalentHeader($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {  
-        
+    {
+
         $this->userId = $this->getUserId();
 
         try {
 
             $TalentHeaderResult = $this->userAccessibility(TalentHeader::class, AuthAction::Delete, $args);
+
+        } catch (CustomValidationException $e) {
+
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
 
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
@@ -43,7 +48,7 @@ final class DeleteTalentHeader
         }
 
         return $this->updateAndDeleteModel($TalentHeaderResult, $args, $this->userId);
-       
-        
+
+
     }
 }
