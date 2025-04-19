@@ -19,7 +19,7 @@ class UniqueSpouseForWoman implements Rule
     {
         $this->person = $person;
         $this->spouseData = $spouseData;
-        $this->marriageDate =Carbon::parse( $marriageDate);
+        $this->marriageDate = Carbon::parse($marriageDate);
     }
 
     public function passes($attribute, $value)
@@ -44,7 +44,7 @@ class UniqueSpouseForWoman implements Rule
             // Check if any of the husbands is still alive
             foreach ($hasActiveMarriage as $marriage) {
                 $husband = Person::find($marriage->man_id);
-                
+
                 if (($husband && is_null($husband->death_date)) || (Carbon::parse($husband->death_date)->gt($this->marriageDate))) {
                     // If at least one husband is alive, deny remarriage
                     $this->errorMessage = "This woman already has an active marriage with a living husband.";

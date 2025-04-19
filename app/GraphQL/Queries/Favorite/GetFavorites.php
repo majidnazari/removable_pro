@@ -26,13 +26,9 @@ final class GetFavorites
     }
     function resolveFavorite($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
 
-        // $Favorites = Favorite::where('deleted_at', null);
-        // return $Favorites;
-
-        $query = $this->getModelByAuthorization(Favorite::class, $args, true,true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->getModelByAuthorization(Favorite::class, $args, true, true);
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

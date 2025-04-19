@@ -27,26 +27,21 @@ final class CreateMinorField
     {
         // TODO implement the resolver
     }
-    public function resolveMinorField($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    { 
+    public function resolveMinorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
 
         $this->userId = $this->getUserId();
 
-        $MinorFieldModel=[
-          
+        $MinorFieldModel = [
+
             "middle_field_id" => $args['middle_field_id'],
             "title" => $args['title'],
-            "creator_id" =>  $this->userId,
-                 
+            "creator_id" => $this->userId,
+
         ];
-        // $is_exist= MinorField::where($MinorFieldModel)->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("MinorField-CREATE-RECORD_IS_EXIST");
-        //  }
 
         $this->checkDuplicate(new MinorField(), $MinorFieldModel);
-        $MinorFieldResult=MinorField::create($MinorFieldModel);
+        $MinorFieldResult = MinorField::create($MinorFieldModel);
         return $MinorFieldResult;
     }
 }

@@ -34,22 +34,6 @@ final class DeletePersonScore
     {
         $this->userId = $this->getUserId();
 
-        //    $this->userAccessibility(PersonScore::class, AuthAction::Delete, $args);
-
-
-        //     $PersonScoreResult=PersonScore::find($args['id']);
-
-        //     if(!$PersonScoreResult)
-        //     {
-        //         return Error::createLocatedError("PersonScore-DELETE-RECORD_NOT_FOUND");
-        //     }
-
-        //     $PersonScoreResult->editor_id= $this->userId;
-        //     $PersonScoreResult->save(); 
-
-        //     $PersonScoreResult_filled= $PersonScoreResult->delete();  
-        //     return $PersonScoreResult;
-
         try {
 
             $PersonScoreResult = $this->userAccessibility(PersonScore::class, AuthAction::Delete, $args);
@@ -65,8 +49,6 @@ final class DeletePersonScore
         }
 
         return $this->updateAndDeleteModel($PersonScoreResult, $args, $this->userId);
-
-
 
     }
 }

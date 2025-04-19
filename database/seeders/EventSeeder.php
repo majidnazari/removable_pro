@@ -16,22 +16,9 @@ class EventSeeder extends Seeder
     {
         //
 
-        $data=[
-            // [
-            //     "title" => "دوره",
-            //     "status" =>1,
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ],
-            // [
-            //     "title" => "ازدواج",
-            //     "status" =>1,
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-
-            // ],
+        $data = [
             [
-                "creator_id" =>1,
+                "creator_id" => 1,
                 "title" => "تولد",
                 "status" => 1,
                 'created_at' => now(),
@@ -39,14 +26,14 @@ class EventSeeder extends Seeder
 
             ],
             [
-                "creator_id" =>1,
+                "creator_id" => 1,
                 "title" => "وفات",
                 "status" => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
 
             ],
-            
+
         ];
 
         Event::insert($data);

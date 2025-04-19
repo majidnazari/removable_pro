@@ -29,25 +29,10 @@ final class UpdateEvent
     {
         // TODO implement the resolver
     }
-    public function resolveEvent($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveEvent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
-        //    $this->userAccessibility(Event::class, AuthAction::Delete, $args);
 
-
-        //     //args["user_id_creator"]=$user_id;
-        //     $EventResult=Event::find($args['id']);
-
-        //     if(!$EventResult)
-        //     {
-        //         return Error::createLocatedError("Event-UPDATE-RECORD_NOT_FOUND");
-        //     }
-        //     $args['editor_id']= $this->userId;
-
-        //     $EventResult_filled= $EventResult->fill($args);
-        //     $EventResult->save();       
-
-        //     return $EventResult;
         try {
 
             $CityResult = $this->userAccessibility(Event::class, AuthAction::Update, $args);

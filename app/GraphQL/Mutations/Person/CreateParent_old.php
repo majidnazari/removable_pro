@@ -81,7 +81,7 @@ final class CreateParent_old
             // Check the age of the person
             $childBirthDate = Carbon::parse($person->birth_date);
 
-//           Log::info("the child birthdtae:{$childBirthDate}");
+            //           Log::info("the child birthdtae:{$childBirthDate}");
 
             $fatherBirthDate = Carbon::parse($father_created->birth_date);
             // Ensure the child is at least 12 years younger than the father
@@ -96,7 +96,7 @@ final class CreateParent_old
             if ($ageDifference < 9) {
                 throw new \Exception("The child's birth date must be at least 9 years after the mother's birth date.");
             }
-//           Log::info("the motherBirthDate birthdtae:{$motherBirthDate}");
+            //           Log::info("the motherBirthDate birthdtae:{$motherBirthDate}");
 
 
             // Create marriage relation
@@ -124,7 +124,7 @@ final class CreateParent_old
 
                 // Ensure child's birth date is at least 6 months after the marriage date
                 if ($childBirthDate->lt($marriageDate->addMonths(6))) {
-//                   Log::info("the marriage date is {$marriageDate} and the child birthdate is {$childBirthDate}");
+                    //                   Log::info("the marriage date is {$marriageDate} and the child birthdate is {$childBirthDate}");
                     throw new \Exception("Child's birth date must be at least 6 months after the marriage date.");
                 }
             }
@@ -156,26 +156,26 @@ final class CreateParent_old
             $this->checkDuplicate(new PersonChild(), $PersonChildModel);
 
             // $result = $this->getPersonAncestryWithCompleteMerge($this->userId);
-//           Log::info("the result of with complete ancestry  is:" . json_encode($result['heads']));
+            //           Log::info("the result of with complete ancestry  is:" . json_encode($result['heads']));
 
             // $allheads = $result['heads'];
 
-            $result= $this->getPersonAncestryHeads($this->userId);
+            $result = $this->getPersonAncestryHeads($this->userId);
             $heads = collect($result['heads'])->pluck('person_id')->toArray();
-//           Log::info("heads found: " . json_encode($heads));
+            //           Log::info("heads found: " . json_encode($heads));
 
-            $allheads =$heads;
-//           Log::info("the allheads is". json_encode( $allheads));
+            $allheads = $heads;
+            //           Log::info("the allheads is". json_encode( $allheads));
 
             $headsids = collect($allheads)->pluck("person_id")->toArray();
-//           Log::info("the heads are". json_encode($headsids));
+            //           Log::info("the heads are". json_encode($headsids));
 
             if (!in_array($personId, $headsids)) {
                 throw new \Exception("The person with ID {$personId} was not found in the list of heads.");
             }
             $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($personId);
-//           Log::info("the getAllusersInSmallClan are" . json_encode(value: $getAllusersInSmallClan));
-//           Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
+            //           Log::info("the getAllusersInSmallClan are" . json_encode(value: $getAllusersInSmallClan));
+            //           Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
 
 
             if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {

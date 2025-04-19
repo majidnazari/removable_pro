@@ -28,7 +28,7 @@ final class UpdateCity
     {
         // TODO implement the resolver
     }
-    public function resolveCity($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveCity($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();
@@ -48,20 +48,6 @@ final class UpdateCity
         );
 
         return $this->updateModel($CityResult, $args, $this->userId);
-        //    $this->userAccessibility(City::class, AuthAction::Delete, $args);
-
-
-        //     //args["user_id_creator"]=$user_id;
-        //     $CityResult=City::find($args['id']);
-
-        //     if(!$CityResult)
-        //     {
-        //         return Error::createLocatedError("City-UPDATE-RECORD_NOT_FOUND");
-        //     }
-        //     $CityResult_filled= $CityResult->fill($args);
-        //     $CityResult->save();       
-
-        //     return $CityResult;
 
 
     }

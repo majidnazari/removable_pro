@@ -25,22 +25,18 @@ final class CreateGroupCategory
     {
         // TODO implement the resolver
     }
-    public function resolveGroupCategory($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    { 
+    public function resolveGroupCategory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
         $this->userId = $this->getUserId();
- 
-        $GroupCategoryModel=[
-            "creator_id" =>  $this->userId,
-            "title" => $args['title'],          
-            "status" => $args['status'] ?? Status::Active            
+
+        $GroupCategoryModel = [
+            "creator_id" => $this->userId,
+            "title" => $args['title'],
+            "status" => $args['status'] ?? Status::Active
         ];
-        // $is_exist= GroupCategory::where($GroupCategoryModel)->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("GroupCategory-CREATE-RECORD_IS_EXIST");
-        //  }
-         $this->checkDuplicate(new GroupCategory(),  $GroupCategoryModel);
-        $GroupCategoryResult=GroupCategory::create($GroupCategoryModel);
+
+        $this->checkDuplicate(new GroupCategory(), $GroupCategoryModel);
+        $GroupCategoryResult = GroupCategory::create($GroupCategoryModel);
         return $GroupCategoryResult;
     }
 }

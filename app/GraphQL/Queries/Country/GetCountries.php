@@ -25,10 +25,6 @@ final class GetCountries
     }
     function resolveCountry($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $countries = Country::where('deleted_at', null);
-        // return $countries;
         $query = $this->getModelByAuthorization(Country::class, $args, true);
         $query = $this->applySearchFilters( $query, $args);
         return  $query;

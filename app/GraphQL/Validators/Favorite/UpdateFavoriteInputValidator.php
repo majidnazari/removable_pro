@@ -24,7 +24,7 @@ class UpdateFavoriteInputValidator extends Validator
                 new MaxRecordsForPerson($this->arg('person_id'), $recordId),
                 new CheckPersonOwner(),
             ],
-            
+
         ];
     }
     public function messages(): array

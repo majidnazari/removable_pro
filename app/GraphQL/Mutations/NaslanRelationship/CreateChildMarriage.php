@@ -24,32 +24,24 @@ final class CreateChildMarriage
     {
         // TODO implement the resolver
     }
-    public function resolveCreateChildMarriage($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveCreateChildMarriage($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        
-         $this->userId = $this->getUserId();
 
-        // if (($args['relationship_type'] === "Father") || ($args['relationship_type'] === "Daughter")) //it is Marriage relation and should check first with second and also check inverse relation too 
-        // {
-            $NaslanRelationModel= [
-                "creator_id" =>$this->userId,
-                "person_marriage_id" => $args['person_marriage_id'],
-                //"relationship_id" => $args['relationship_id'] ,           
-                "child_id" => $args['child_id'],
-                "child_kind" => $args['child_kind'] ?? ChildKind::None,
-                "child_status" => $args['child_status']  ?? ChildStatus::None,
-                "status" => $args["status"] ?? Status::Active
-    
-            ];
-            
-        // }
-        // else{
-        //         //return Error::createLocatedError("Relationship-ISNOT_VALID");
-        //         throw new Error("Relationship-ISNOT_VALID");
-        // }
-       // return PersonChild::where('deleted_at',null);
-      
-        $is_exist_builder = PersonChild::where('person_marriage_id', $args['person_marriage_id'])->where('child_id', $args['child_id']);    
+        $this->userId = $this->getUserId();
+
+        $NaslanRelationModel = [
+            "creator_id" => $this->userId,
+            "person_marriage_id" => $args['person_marriage_id'],
+            //"relationship_id" => $args['relationship_id'] ,           
+            "child_id" => $args['child_id'],
+            "child_kind" => $args['child_kind'] ?? ChildKind::None,
+            "child_status" => $args['child_status'] ?? ChildStatus::None,
+            "status" => $args["status"] ?? Status::Active
+
+        ];
+
+
+        $is_exist_builder = PersonChild::where('person_marriage_id', $args['person_marriage_id'])->where('child_id', $args['child_id']);
 
         // If the specific relationship already exists, find all marriages involving the person
         if ($is_exist_builder->exists()) {

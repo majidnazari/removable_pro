@@ -15,31 +15,14 @@ class CreateAddressValidator extends Validator
 
     public function rules(): array
     {
-        // Get the authenticated user
-        // $user = Auth::guard('api')->user();
-
-        // if (!$user) {
-        //     throw new Exception("Authentication required. No user is currently logged in.");
-        // }
-
-        // $this->userId = $user->id;
-
-        // Get the arguments passed to the GraphQL mutation
         $personId = $this->arg('person_id');
 
         return [
             'person_id' => [
                 'required',
                 'exists:people,id', // Ensure the person exists in the database
-                // function ($attribute, $value, $fail) use ($personId) {
-                //     $person = Person::find($value);
 
-                //     // Check if the person exists and that the user is the creator
-                //     if ($person && $person->creator_id != $this->userId) {
-                //         $fail("You can only create an address for persons you have created.");
-                //     }
-                // },
-                new AllUsersCanAccessPerson( $personId),
+                new AllUsersCanAccessPerson($personId),
             ],
             'country_id' => [
                 'nullable',
@@ -86,7 +69,7 @@ class CreateAddressValidator extends Validator
                 'nullable',
                 'numeric',
             ],
-           
+
         ];
     }
 

@@ -30,9 +30,9 @@ final class DeleteGroupCategory
     {
         // TODO implement the resolver
     }
-    public function resolveGroupCategory($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {  
-        
+    public function resolveGroupCategory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+
         $this->userId = $this->getUserId();
 
         try {
@@ -48,31 +48,6 @@ final class DeleteGroupCategory
         }
 
         return $this->updateAndDeleteModel($GroupCategoryResult, $args, $this->userId);
-        // $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
 
-    
-        // $GroupCategoryResult=GroupCategory::find($args['id']);
-        
-        // if(!$GroupCategoryResult)
-        // {
-        //     return Error::createLocatedError("GroupCategory-DELETE-RECORD_NOT_FOUND");
-        // }
-
-        // try {
-
-        //     $GroupCategoryResult = $this->userAccessibility(GroupCategory::class, AuthAction::Delete, $args);
-
-        // } catch (Exception $e) {
-        //     throw new Exception($e->getMessage());
-        // }
-
-        // $GroupCategoryResult->update([
-        //     'editor_id' => $this->userId,
-        // ]);
-        
-        // $GroupCategoryResult->delete();
-        
-        // return $GroupCategoryResult;
-        
     }
 }

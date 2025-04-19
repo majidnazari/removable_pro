@@ -46,21 +46,6 @@ final class DeleteNotif
         }
 
         return $this->updateAndDeleteModel($NotifResult, $args, $this->userId);
-        //    $this->userAccessibility(Notif::class, AuthAction::Delete, $args);
-
-        //     $NotifResult=Notif::find($args['id']);
-
-        //     if(!$NotifResult)
-        //     {
-        //         return Error::createLocatedError("Notif-DELETE-RECORD_NOT_FOUND");
-        //     }
-        //     $NotifResult->editor_id= $this->userId;
-        //     $NotifResult->save(); 
-
-
-        //     $NotifResult_filled= $NotifResult->delete();  
-        //     return $NotifResult;
-
 
     }
 }

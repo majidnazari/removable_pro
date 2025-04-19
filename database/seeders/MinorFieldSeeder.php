@@ -20,8 +20,8 @@ class MinorFieldSeeder extends Seeder
         if (File::exists($jsonPath)) {
             $jsonData = json_decode(File::get($jsonPath), true);
 
-            if (!empty( $jsonData )) {
-                DB::table('minor_fields')->insert( $jsonData );
+            if (!empty($jsonData)) {
+                DB::table('minor_fields')->insert($jsonData);
             } else {
                 $this->command->info("No valid records to insert.");
             }

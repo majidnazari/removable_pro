@@ -13,15 +13,15 @@ trait PersonAncestryHeadsAccordingPersonId
     use FindOwnerTrait;
     public function getPersonAncestryHeadsAccordingPersonId($personId, $depth = 3)
     {
-        
+
         // If no relationships, return only the user's own ancestry
-        $minePerson = Person::where('id',$personId)->first();
+        $minePerson = Person::where('id', $personId)->first();
         if (!$minePerson) {
             return null;
         }
 
-         $rootAncestors = $minePerson->getFullBinaryAncestryheads($depth);
-        
+        $rootAncestors = $minePerson->getFullBinaryAncestryheads($depth);
+
         return [
             'heads' => $rootAncestors
         ];

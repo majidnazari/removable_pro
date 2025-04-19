@@ -15,22 +15,22 @@ class PersonDetailSeeder extends Seeder
     public function run(): void
     {
         //
-        $data=[
-                [
-                    "person_id" => 1,
-                    "profile_picture" =>"pic1.jpg",
-                    // "gender" => "Male",
-                    "physical_condition" => 1,
-                    "created_at" =>\Carbon\Carbon::now()->format("Y-m-d H:i:s"),
-                ],
-                [
-                    "person_id" => 1,
-                    "profile_picture" =>"pic1.jpg",
-                    // "gender" => "Male",
-                    "physical_condition" => 1,
-                    "created_at" =>\Carbon\Carbon::now()->format("Y-m-d H:i:s"),
-                ]
-            ];
-            PersonDetail::insert($data);
+        $data = [
+            [
+                "person_id" => 1,
+                "profile_picture" => "pic1.jpg",
+                // "gender" => "Male",
+                "physical_condition" => 1,
+                "created_at" => \Carbon\Carbon::now()->format("Y-m-d H:i:s"),
+            ],
+            [
+                "person_id" => 1,
+                "profile_picture" => "pic1.jpg",
+                // "gender" => "Male",
+                "physical_condition" => 1,
+                "created_at" => \Carbon\Carbon::now()->format("Y-m-d H:i:s"),
+            ]
+        ];
+        PersonDetail::insert($data);
     }
 }

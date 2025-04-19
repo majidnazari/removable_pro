@@ -24,10 +24,7 @@ final class GetEvent
     }
     function resolveEvent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $Event = Event::where('id', $args['id']);       
-        // return $Event->first();
+     
         $Event = $this->getModelByAuthorization(Event::class, $args);
         return $Event->first();
     }

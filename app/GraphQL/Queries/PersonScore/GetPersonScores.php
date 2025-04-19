@@ -27,15 +27,8 @@ final class GetPersonScores
     }
     function resolvePersonScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $PersonScores = PersonScore::where('deleted_at', null);
-
-        // //log::info("the Scores is:" . json_encode($PersonScores));
-        // return $PersonScores;
-
         $query = $this->getModelByAuthorization(PersonScore::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

@@ -27,7 +27,7 @@ class OneActiveMarriage implements Rule
         // Query for active marriages for the person, excluding the current marriage if $excludeMarriageId is provided
         $query = PersonMarriage::where(function ($query) {
             $query->where('man_id', $this->personId)
-                  ->orWhere('woman_id', $this->personId);
+                ->orWhere('woman_id', $this->personId);
         })->where('status', 'Active');
 
         if ($this->excludeMarriageId) {

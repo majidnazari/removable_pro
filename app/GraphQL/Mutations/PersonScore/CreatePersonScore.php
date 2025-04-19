@@ -43,13 +43,6 @@ final class CreatePersonScore
             "status" => $args['status'] ?? Status::Active, // Default to 'None' if not provided
         ];
         
-        // Check if a similar details profile already exists for the same person_id
-        // $is_exist = PersonScore::where('person_id', $args['person_id'])->first();
-        
-        // if ($is_exist) {
-        //     return Error::createLocatedError("PersonScore-CREATE-RECORD_IS_EXIST");
-        // }
-
         $this->checkDuplicate(
             new PersonScore(),
             $PersonScoreModel

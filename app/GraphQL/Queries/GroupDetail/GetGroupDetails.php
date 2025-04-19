@@ -25,13 +25,8 @@ final class GetGroupDetails
     }
     function resolveGroupDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $GroupDetails = GroupDetail::where('deleted_at', null);
-        // return $GroupDetails;
-
         $query = $this->getModelByAuthorization(GroupDetail::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

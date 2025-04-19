@@ -13,7 +13,6 @@ use App\Traits\AuthorizesUser;
 use App\Traits\SearchQueryBuilder;
 use App\Traits\GetsPeopleInGroups;
 use App\Traits\FindOwnerTrait;
-
 use Log;
 
 
@@ -37,23 +36,6 @@ final class GetSpecialPersonMemories
     function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
-        // $memory = Memory::with([
-        //     'GroupCategory.GroupCategoryDetails.Group.GroupDetails.UserCanSee' // Eager load the necessary relationships
-        // ])
-        //     ->find(2);
-//       Log::info("memory with with: " . json_encode($memory));
-
-        // // Retrieve distinct user_ids from the related group_details
-        // $userIds = $memory->GroupCategory
-        //     ->GroupCategoryDetails
-        //     ->flatMap(function ($gcd) {
-        //         return $gcd->Group->GroupDetails->pluck('user_id'); // Get all user_ids from group_details for each group
-        //     })
-        //     ->unique(); // Make sure to get unique user_ids
-
-        // // Log or return the user_ids
-//       Log::info("Distinct user_ids: " . json_encode($userIds));
-
         $this->userId = $this->getUserId();
         $this->personOwner = $this->findOwner();
 
@@ -62,7 +44,6 @@ final class GetSpecialPersonMemories
             ->where('confirm_status', ConfirmMemoryStatus::Accept->value)
             ->where('person_id', $args['person_id'] ?? $this->personOwner->id);
 
-//      Log::info("the query is:" . json_encode($query->get()));
         if (isset($args['person_id']) && $args['person_id'] != $this->personOwner->id) {
 
             // Condition 2: For another person_id, apply the additional checks
@@ -74,8 +55,6 @@ final class GetSpecialPersonMemories
                         $innerQuery->whereHas('GroupCategory.GroupCategoryDetails.Group.GroupDetails.UserCanSee', function ($groupDetailsQuery) {
                             // Step 2: Check if the logged-in user_id exists in the group_details
                             $groupDetailsQuery->where('id', $this->userId);
-
-
                         });
                     });
             });
@@ -83,13 +62,7 @@ final class GetSpecialPersonMemories
 
         // Fetch and log the memories
         $memories = $query;
-
-//      Log::info("pall memories can this user see are : " . json_encode($memories->get()));
-
         return $memories;
     }
-
-
-
 
 }

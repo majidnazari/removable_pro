@@ -36,7 +36,7 @@ class Notif extends Eloquent
         "notifiable_type",
         "message",
         "notif_status",
-    ] ;
+    ];
 
     public const TABLE_NAME = 'notifs';
     protected $table = self::TABLE_NAME;
@@ -63,7 +63,7 @@ class Notif extends Eloquent
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 

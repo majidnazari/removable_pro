@@ -16,22 +16,17 @@ class CreateFavoriteInputValidator extends Validator
     public function rules(): array
     {
         return [
-            // 'person_id' => [
-            //     'nullable',
-            //     'exists:people,id',   
-            // ],
-            'title'=>[
+            'title' => [
                 "required",
-                new MaxRecordsForPerson( null ),
-                //new CheckPersonOwner(),
+                new MaxRecordsForPerson(null),
             ]
-           
+
         ];
     }
     public function messages(): array
     {
         return [
-            
+
             'person_id.exists' => 'The specified person does not exist.',
             'title.required' => 'The title is reuired!',
         ];

@@ -25,14 +25,10 @@ final class GetGroupCategoryDetails
     }
     function resolveGroupCategoryDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $GroupCategoryDetails = GroupCategoryDetail::where('deleted_at', null);
-        // return $GroupCategoryDetails;
 
         $query = $this->getModelByAuthorization(GroupCategoryDetail::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        $query->with('personsInRelatedGroups'); 
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        $query->with('personsInRelatedGroups');
+        return $query;
     }
 }

@@ -47,7 +47,7 @@ class OppositeGenderMarriage implements Rule
 
         $this->userId = $user->id;
 
-//      Log::info("the is is :". $userId);
+        //      Log::info("the is is :". $userId);
 
         // If either manId or womanId is null, the rule passes (considered valid if only one ID is provided)
         if (isset($this->manId) || isset($this->womanId)) {
@@ -60,13 +60,13 @@ class OppositeGenderMarriage implements Rule
 
 
         // Check if both persons have the same creator_id as the logged-in user
-        if ($man->creator_id !==  $this->userId || $woman->creator_id !==  $this->userId) {
+        if ($man->creator_id !== $this->userId || $woman->creator_id !== $this->userId) {
             $this->errorMessage = 'You can only marry persons you have created.';
             return false;
         }
 
         // Ensure both people exist and have a defined gender
-        if (!$man || !$woman || isset($man->gender) || isset( $woman->gender)||($man->gender===$woman->gender)) {
+        if (!$man || !$woman || isset($man->gender) || isset($woman->gender) || ($man->gender === $woman->gender)) {
             $this->errorMessage = 'Two people of the same gender cannot marry each other.';
             return false;
         }

@@ -66,7 +66,7 @@ class GraphQLStatusCodeMiddleware
 
             // Authentication Errors (General case)
             if (
-                str_contains($message, 'authentication exception') || 
+                str_contains($message, 'authentication exception') ||
                 str_contains($reason, 'authentication')
             ) {
                 return 401; // Unauthorized
@@ -93,7 +93,7 @@ class GraphQLStatusCodeMiddleware
             if (
                 str_contains($message, 'not found') ||
                 str_contains($reason, 'not found') ||
-                str_contains($debugMessage, 'not found') 
+                str_contains($debugMessage, 'not found')
             ) {
                 return 404; // Not Found
             }

@@ -39,7 +39,7 @@ class ImplementRelations extends Command
         foreach ($migrationFiles as $file) {
             $migrationContent = File::get($file);
             $tableName = $this->getTableNameFromMigration($file->getFilename());
-//                      Log::info("the migration file name is:" . $file->getFilename());
+            //                      Log::info("the migration file name is:" . $file->getFilename());
 //          Log::info("the table names is:" . $tableName);
 
             // Skip if the table is in the exception list
@@ -101,9 +101,7 @@ class ImplementRelations extends Command
     {
 
         $model = $this->getModelFromTableName($tableName);
-//               Log::info("the relatedModels file is:" . json_encode($relatedModels));
-//       Log::info("the tableName file is:" . $tableName);
-//       Log::info("the model name s is:" . $model);
+
         $modelPath = app_path("Models/{$model}.php");
 
         if (File::exists($modelPath)) {

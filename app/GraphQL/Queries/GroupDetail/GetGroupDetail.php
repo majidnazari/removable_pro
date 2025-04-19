@@ -24,11 +24,6 @@ final class GetGroupDetail
     }
     function resolveGroupDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $GroupDetail = GroupDetail::where('id', $args['id']);       
-        // return $GroupDetail->first();
-
         $GroupDetail = $this->getModelByAuthorization(GroupDetail::class, $args);
         return $GroupDetail->first();
     }

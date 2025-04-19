@@ -33,7 +33,7 @@ final class CreatePerson
 
         $this->userId = $this->getUserId();
 
-//       Log::info("the user is:" .$this->userId . "and is_owner is:" .$args['is_owner'] );
+        //       Log::info("the user is:" .$this->userId . "and is_owner is:" .$args['is_owner'] );
 
         $PersonModel = [
             "creator_id" => $this->userId,
@@ -49,14 +49,8 @@ final class CreatePerson
             "is_owner" => $args['is_owner'] ?? false,
             "status" => $args['status'] ?? status::Active
         ];
-        
-        // $is_exist = Person::where('first_name' , $args['first_name'])
-        // ->where('last_name' , $args['last_name'])
-        // ->first();
-        // if ($is_exist) {
-        //     return Error::createLocatedError("Person-CREATE-RECORD_IS_EXIST");
-        // }
-        $this->checkDuplicate(new Person(),  $PersonModel);
+
+        $this->checkDuplicate(new Person(), $PersonModel);
         $PersonResult = Person::create($PersonModel);
         return $PersonResult;
     }

@@ -33,40 +33,9 @@ final class UpdateGroupCategoryDetail
     {
         // TODO implement the resolver
     }
-    public function resolveGroupCategoryDetail($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveGroupCategoryDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
-        // $this->userAccessibility(GroupCategoryDetail::class, AuthAction::Update, $args);
-
-
-        // //args["user_id_creator"]=$user_id;
-        // $GroupCategoryDetailResult=GroupCategoryDetail::find($args['id']);
-
-        // if(!$GroupCategoryDetailResult)
-        // {
-        //     return Error::createLocatedError("GroupCategoryDetail-UPDATE-RECORD_NOT_FOUND");
-        // }
-
-        // try {
-
-        //     $GroupCategoryDetailResult = $this->userAccessibility(GroupCategoryDetail::class, AuthAction::Update, $args);
-
-        // } catch (Exception $e) {
-        //     throw new Exception($e->getMessage());
-        // }
-
-
-        // $this->checkDuplicate(
-        //     new GroupCategoryDetail(),
-        //     $args,
-        //     ['id','editor_id','created_at', 'updated_at'],
-        //     $args['id']
-        // );
-        // $args['editor_id']= $this->userId;
-        // $GroupCategoryDetailResult_filled= $GroupCategoryDetailResult->fill($args);
-        // $GroupCategoryDetailResult->save();       
-
-        // return $GroupCategoryDetailResult;
 
 
         try {

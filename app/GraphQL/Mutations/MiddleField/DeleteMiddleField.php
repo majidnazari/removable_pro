@@ -49,6 +49,5 @@ final class DeleteMiddleField
 
         return $this->updateAndDeleteModel($MiddleFieldResult, $args, $this->userId);
 
-
     }
 }

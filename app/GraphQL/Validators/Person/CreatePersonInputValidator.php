@@ -25,15 +25,10 @@ class CreatePersonInputValidator extends Validator
 
         if (!$user) {
             throw new CustomValidationException("Authentication required. No user is currently logged in.", "احراز هویت لازم است. هیچ کاربری در حال حاضر وارد نشده است.", 403);
-
-            //throw new Exception("Authentication required. No user is currently logged in.");
         }
 
         $this->userId = $user->id;
-        ;
 
-//       Log::info("the user is:" . $this->userId);
-        //$id = $this->arg('id');  // Get the id argument for update
         $firstName = $this->arg('first_name');
         $lastName = $this->arg('last_name');
         $birthDate = $this->arg('birth_date');

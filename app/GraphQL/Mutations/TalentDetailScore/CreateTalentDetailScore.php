@@ -33,27 +33,22 @@ final class CreateTalentDetailScore
         // TODO implement the resolver
     }
     public function resolveTalentDetailScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    { 
+    {
 
         $this->userId = $this->getUserId();
 
-        $TalentDetailScoreModel=[
-            "creator_id" =>  $this->userId,
+        $TalentDetailScoreModel = [
+            "creator_id" => $this->userId,
             "participating_user_id" => $this->userId,//$args['participating_user_id'],
 
             "talent_detail_id" => $args['talent_detail_id'],
             "score" => $args['score'] ?? TalentScore::None,
-           
-            "status" => $args['status']  ?? status::Active       
-        ];
-        // $is_exist= TalentDetailScore::where($TalentDetailScoreModel)->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("TalentDetailScore-CREATE-RECORD_IS_EXIST");
-        //  }
 
-        $this->checkDuplicate(new TalentDetailScore(), ["participating_user_id" => $this->userId ,  "talent_detail_id" => $args['talent_detail_id'] ]);
-        $TalentDetailScoreResult=TalentDetailScore::create($TalentDetailScoreModel);
+            "status" => $args['status'] ?? status::Active
+        ];
+
+        $this->checkDuplicate(new TalentDetailScore(), ["participating_user_id" => $this->userId, "talent_detail_id" => $args['talent_detail_id']]);
+        $TalentDetailScoreResult = TalentDetailScore::create($TalentDetailScoreModel);
         return $TalentDetailScoreResult;
     }
 }

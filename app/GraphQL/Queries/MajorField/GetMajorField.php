@@ -24,10 +24,6 @@ final class GetMajorField
     }
     function resolveMajorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $MajorField = MajorField::where('id', $args['id']);       
-        // return $MajorField->first();
 
         $MajorField = $this->getModelByAuthorization(MajorField::class, $args);
         return $MajorField->first();

@@ -37,10 +37,10 @@ class UniqueMarriage implements Rule
         // Query to check if a marriage already exists between the man and woman
         $query = PersonMarriage::where(function ($query) {
             $query->where('man_id', $this->manId)
-                  ->where('woman_id', $this->womanId);
+                ->where('woman_id', $this->womanId);
         })->orWhere(function ($query) {
             $query->where('man_id', $this->womanId)
-                  ->where('woman_id', $this->manId);
+                ->where('woman_id', $this->manId);
         });
 
         // Exclude the current marriage record if provided

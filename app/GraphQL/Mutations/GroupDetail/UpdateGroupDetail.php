@@ -33,39 +33,10 @@ final class UpdateGroupDetail
     {
         // TODO implement the resolver
     }
-    public function resolveGroupDetail($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveGroupDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
-        // $this->userAccessibility(GroupDetail::class, AuthAction::Update, $args);
 
-
-        // //args["user_id_creator"]=$user_id;
-        // $GroupDetailResult=GroupDetail::find($args['id']);
-
-        // if(!$GroupDetailResult)
-        // {
-        //     return Error::createLocatedError("GroupDetail-UPDATE-RECORD_NOT_FOUND");
-        // }
-        // try {
-
-        //     $GroupDetailResult = $this->userAccessibility(GroupDetail::class, AuthAction::Delete, $args);
-
-        // } catch (Exception $e) {
-        //     throw new Exception($e->getMessage());
-        // }
-
-
-        // $this->checkDuplicate(
-        //     new GroupDetail(),
-        //     $args,
-        //     ['id', 'editor_id', 'created_at', 'updated_at'],
-        //     $args['id']
-        // );
-        // $args['editor_id'] = $this->userId;
-        // $GroupDetailResult_filled = $GroupDetailResult->fill($args);
-        // $GroupDetailResult->save();
-
-        // return $GroupDetailResult;
         try {
 
             $GroupDetailResult = $this->userAccessibility(GroupDetail::class, AuthAction::Update, $args);

@@ -24,11 +24,6 @@ final class GetProvince
     }
     function resolveProvince($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $Province = Province::where('id', $args['id']);       
-        // return $Province->first();
-
         $user = $this->getModelByAuthorization(Province::class, $args);
         return $user->first();
     }

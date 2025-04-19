@@ -17,11 +17,11 @@ use Log;
 
 final class CreateUserDetail
 {
-    use  AuthUserTrait;
+    use AuthUserTrait;
     use DuplicateCheckTrait;
 
     protected $userId;
-   
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -31,32 +31,26 @@ final class CreateUserDetail
         // TODO implement the resolver
     }
     public function resolveUserDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {        
+    {
         $this->user = $this->getUser();
-        
 
-        $UserDetailResult=[
-            "creator_id" =>  $this->user->id,
+        $UserDetailResult = [
+            "creator_id" => $this->user->id,
             "status" => $args['status'] ?? Status::Active,
             "mobile" => $args['mobile'],
             "last_seen_family_board_id" => $args['last_seen_family_board_id'],
         ];
 
-        if ( $this->user->mobile !== $args['mobile']) {
+        if ($this->user->mobile !== $args['mobile']) {
             throw new CustomValidationException("The provided mobile does not belong to the logged-in user.", "تلفن همراه ارائه شده به کاربر وارد شده تعلق ندارد.", 422);
 
-            //return Error::createLocatedError("The provided mobile does not belong to the logged-in user.");
         }
-        // $is_exist= UserDetail::where('title',$args['title'])->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("UserDetail-CREATE-RECORD_IS_EXIST");
-        //  }
+
         $this->checkDuplicate(
             new UserDetail(),
             $UserDetailResult
         );
-        $UserDetailResult_result=UserDetail::create($UserDetailResult);
+        $UserDetailResult_result = UserDetail::create($UserDetailResult);
         return $UserDetailResult_result;
     }
 }

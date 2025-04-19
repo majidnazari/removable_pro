@@ -43,7 +43,7 @@ final class FamilyReports
     {
         // TODO implement the resolver
     }
-    public function resolveFamilyReport($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveFamilyReport($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
@@ -51,11 +51,11 @@ final class FamilyReports
         $clanId = User::where('id', $this->userId)->first()->clan_id;
         //$this->users = $this->getAllowedUserIds();
 
-//       Log::info("the method resolveFamilyReport are running");
+        //       Log::info("the method resolveFamilyReport are running");
 
-        $this->users=$this->getAllUsersInClanFromHeads( $this->userId);
+        $this->users = $this->getAllUsersInClanFromHeads($this->userId);
 
-//       Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $this->users));
+        //       Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $this->users));
 
 
         //$this->users= $this->calculateUserRelationInClan();
@@ -70,18 +70,18 @@ final class FamilyReports
         $familyReport = FamilyReport::where('clan_id', $clanId)->first();
 
         if (!$familyReport) {
-//           Log::info("the create1 is running ");
+            //           Log::info("the create1 is running ");
 
             // If no report exists, create one and populate it
             $familyReport = $this->generateFamilyReport($clanId);
         }
         if (!$familyReport->change_flag) {
-//           Log::info("the update1 is running ");
+            //           Log::info("the update1 is running ");
 
             $familyReport = $this->generateFamilyReport($clanId, $familyReport, true);
         }
 
-//       Log::info("the familyReport is running " . json_encode($familyReport));
+        //       Log::info("the familyReport is running " . json_encode($familyReport));
 
         return $familyReport;
     }
@@ -127,11 +127,10 @@ final class FamilyReports
         )
             ->orderByDesc('age') // Order by age descending to get the oldest person first
             ->first();
-            if($maxLongevityPerson)
-            {
-                $max_longevity=$maxLongevityPerson->age;
-            }
-//       Log::info("final max_longevity_person is :" . json_encode($maxLongevityPerson));
+        if ($maxLongevityPerson) {
+            $max_longevity = $maxLongevityPerson->age;
+        }
+        //       Log::info("final max_longevity_person is :" . json_encode($maxLongevityPerson));
 
 
         $oldestquery = clone $query;
@@ -161,7 +160,7 @@ final class FamilyReports
             ->count();
 
         if ($flag) {
-//           Log::info("the update is running ");
+            //           Log::info("the update is running ");
             $familyReport->update([
                 'men_count' => $menCount,
                 'women_count' => $womenCount,
@@ -175,7 +174,7 @@ final class FamilyReports
             ]);
             $newfamilyReport = $familyReport;
         } else {
-//           Log::info("the create is running ");
+            //           Log::info("the create is running ");
 
             // Create the FamilyReport record
             $newfamilyReport = FamilyReport::create([

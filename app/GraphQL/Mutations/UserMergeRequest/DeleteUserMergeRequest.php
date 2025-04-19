@@ -36,20 +36,6 @@ final class DeleteUserMergeRequest
     {
         $this->user = $this->getUser();
 
-        //    $this->userAccessibility(UserMergeRequest::class, AuthAction::Delete, $args);
-
-        //     $UserMergeRequestResult=UserMergeRequest::find($args['id']);
-
-        //     if(!$UserMergeRequestResult)
-        //     {
-        //         return Error::createLocatedError("UserMergeRequest-DELETE-RECORD_NOT_FOUND");
-        //     }
-
-        //     $UserMergeRequestResult->editor_id= $this->user->id;
-        //     $UserMergeRequestResult->save(); 
-
-        //     $UserMergeRequestResult_filled= $UserMergeRequestResult->delete();  
-        //     return $UserMergeRequestResult;
         try {
 
             $UserMergeRequestResult = $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
@@ -61,7 +47,7 @@ final class DeleteUserMergeRequest
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
-     
+
         return $this->updateModel($UserMergeRequestResult, $args, $this->userId);
 
     }

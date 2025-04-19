@@ -44,7 +44,7 @@ class TalentDetailScore extends Eloquent
         'participating_user_id',
         'score',
         'status',
-       
+
     ];
     use HasFactory;
     use SoftDeletes;
@@ -57,7 +57,7 @@ class TalentDetailScore extends Eloquent
 
     public const COLUMN_TALENT_DETAIL_ID = 'talent_detail_id';
     public const COLUMN_PARTICIPATE_USER_ID = 'participating_user_id';
-   
+
 
     public function Creator()
     {
@@ -75,11 +75,11 @@ class TalentDetailScore extends Eloquent
     {
         return $this->belongsTo(TalentDetail::class, self::COLUMN_TALENT_DETAIL_ID);
     }
-    
+
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 

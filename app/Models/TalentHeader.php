@@ -59,7 +59,7 @@ class TalentHeader extends Eloquent
 
     public const COLUMN_GROUP_CATEGORY_ID = 'group_category_id';
     public const COLUMN_TALENT_HEADER_ID = 'talent_header_id';
-    
+
 
     public function Creator()
     {
@@ -82,7 +82,7 @@ class TalentHeader extends Eloquent
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

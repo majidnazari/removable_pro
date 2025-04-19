@@ -19,7 +19,7 @@ trait AuthorizesMutation
 {
     use AuthUserTrait;
     protected $user;
-   
+
     public function __construct()
     {
         //$this->user = $this->getUser();
@@ -35,36 +35,17 @@ trait AuthorizesMutation
     protected function userAccessibility(string $modelClass, AuthAction $action, array $args, ?array $columnsToCheck = null): mixed
     {
         $this->user = $this->getUser();
-        $modelInstance=null;
-//       Log::info("the user loggee din is:" . $this->user);
-
-
-        // if (in_array($action, [AuthAction::Update, AuthAction::Delete])) {
-        //     $modelInstance = (new $modelClass)->findOrFail($args['id']);
-        //    // Log::info("the model  loggee  is:" . json_encode($modelInstance));
-
-        //     // For update and delete, ensure the user is the creator
-        //     $creatorColumn = 'creator_id'; // You can adjust this to your needs (e.g., creator_id, user_id, etc.)
-        //     if ($modelInstance->{$creatorColumn} != $this->user->id) {
-        //         throw new Exception("You are not authorized to perform this action.");
-        //     }
-        // }
-
-        // return true;
+        $modelInstance = null;
 
         // Default to checking only 'creator_id' if no columns are provided
         $columnsToCheck = $columnsToCheck ?? ['creator_id'];
 
         if (in_array($action, [AuthAction::Update, AuthAction::Delete])) {
-//           Log::info("before fetch FB");
             $modelInstance = (new $modelClass)->findOrFail($args['id']);
             if (!$modelInstance) {
-                // Return a custom error response if the model doesn't exist
-                //throw new Exception(message: "Model not found");
-        
+
                 throw new CustomValidationException("Model is not found", "مدل مربوطه پیدا نشد.", 400);
             }
-//           Log::info("after fetch FB and ".json_encode($modelInstance));
             if ($this->user->isAdmin() || $this->user->isSupporter()) {
                 // Admins and Supporters can perform any action
                 return $modelInstance;
@@ -80,7 +61,6 @@ trait AuthorizesMutation
             }
 
             if (!$isAuthorized) {
-                //throw new Exception("You are not authorized to perform this action.");
 
                 throw new CustomValidationException("You are not authorized to perform this action.", "شما مجاز به انجام این عملیات نیستید.", 403);
             }

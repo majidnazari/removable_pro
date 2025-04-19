@@ -16,20 +16,20 @@ class MajorFieldSeeder extends Seeder
      */
     public function run(): void
     {
-        $json = File::get(database_path('datasample/majorfield.json')); 
+        $json = File::get(database_path('datasample/majorfield.json'));
         $majors = json_decode($json, true); // Decode JSON into an array
-      
+
         $majorData = [];
         foreach ($majors as $major) {
-           
+
             $title = !empty($major['title']) ? $major['title'] : null;
             $majorData[] = [
                 'creator_id' => $major['creator_id'],
-                'title' => $title, 
-               
+                'title' => $title,
+
             ];
         }
-       
+
         DB::table('major_fields')->insert($majorData);
 
     }

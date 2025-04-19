@@ -13,23 +13,23 @@ class ScoreSeeder extends Seeder
      */
     public function run(): void
     {
-        $data=[
+        $data = [
             [
-                'title' => "محبوبیت رفتاری",                
-                'status' => 1,                
+                'title' => "محبوبیت رفتاری",
+                'status' => 1,
                 'created_at' => now(),
             ],
             [
-                'title' => "محبوبیت علمی",                
-                'status' => 1,                
+                'title' => "محبوبیت علمی",
+                'status' => 1,
                 'created_at' => now(),
             ],
             [
-                'title' => "محبوبیت مالی",                   
-                'status' => 1,                
+                'title' => "محبوبیت مالی",
+                'status' => 1,
                 'created_at' => now(),
             ],
-            
+
         ];
 
         Score::Insert($data);

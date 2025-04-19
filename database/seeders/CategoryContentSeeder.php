@@ -13,7 +13,7 @@ class CategoryContentSeeder extends Seeder
      */
     public function run(): void
     {
-        $data=[
+        $data = [
             [
                 "title" => "صدا",
                 'created_at' => now(),

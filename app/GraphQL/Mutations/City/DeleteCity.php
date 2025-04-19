@@ -28,7 +28,7 @@ final class DeleteCity
     {
         // TODO implement the resolver
     }
-    public function resolveCity($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveCity($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
@@ -42,23 +42,6 @@ final class DeleteCity
         }
 
         return $this->updateAndDeleteModel($CityResult, $args, $this->userId);
-        //    $this->userAccessibility(City::class, AuthAction::Delete, $args);
-
-
-        //     $CityResult=City::find($args['id']);
-
-        //     if(!$CityResult)
-        //     {
-        //         return Error::createLocatedError("City-DELETE-RECORD_NOT_FOUND");
-        //     }
-
-        //     $CityResult->editor_id= $this->userId;
-        //     $CityResult->save();
-
-
-        //     $CityResult_filled= $CityResult->delete();  
-        //     return $CityResult;
-
 
     }
 }

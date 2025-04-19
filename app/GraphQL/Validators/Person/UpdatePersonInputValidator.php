@@ -16,16 +16,11 @@ class UpdatePersonInputValidator extends Validator
         $birthDate = $this->arg('birth_date');
 
         return [
-            // 'id' => [
-            //     'required',
-            //     'integer',
-            //     'exists:people,id',  // Check if the person exists in the people table
-            // ],
             'first_name' => [
                 'sometimes',
                 'string',
                 'max:255',
-               //new UniquePerson($firstName, $lastName, $birthDate, $id),
+                //new UniquePerson($firstName, $lastName, $birthDate, $id),
             ],
             'last_name' => [
                 'sometimes',

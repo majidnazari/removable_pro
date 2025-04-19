@@ -42,7 +42,7 @@ class Favorite extends Eloquent
         'creator_id',
         'editor_id',
         'person_id',
-       // 'group_category_id',
+        // 'group_category_id',
         'image',
         'title',
         'description',

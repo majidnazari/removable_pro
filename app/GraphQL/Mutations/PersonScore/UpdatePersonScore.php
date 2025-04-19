@@ -33,34 +33,8 @@ final class UpdatePersonScore
         // TODO implement the resolver
     }
     public function resolvePersonScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {  
+    {
         $this->userId = $this->getUserId();
-        // $this->userAccessibility(PersonScore::class, AuthAction::Update, $args);
-
-
-        // //args["user_id_creator"]=$this->userId;
-        // $PersonScoreResult=PersonScore::find($args['id']);
-        // $PersonScoremodel=$args;
-        // $PersonScoremodel['editor_id']=$this->userId;
-        
-        // if(!$PersonScoreResult)
-        // {
-        //     return Error::createLocatedError("PersonScore-UPDATE-RECORD_NOT_FOUND");
-        // }
-
-        // $this->checkDuplicate(
-        //     new PersonScore(),
-        //     $args,
-        //     ['id','editor_id','created_at', 'updated_at'],
-        //     $args['id']
-        // );
-
-
-        // $args['editor_id']=$this->userId;
-        // $PersonScoreResult_filled= $PersonScoreResult->fill($PersonScoremodel);
-        // $PersonScoreResult->save();       
-       
-        // return $PersonScoreResult;
 
         try {
 

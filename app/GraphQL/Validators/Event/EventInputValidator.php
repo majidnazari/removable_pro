@@ -15,12 +15,6 @@ class EventInputValidator extends Validator
     {
         $title = $this->arg('title');
 
-        // Fetch the person by ID for conditional validation
-        // $person = Person::where('id', $title)->first();
-        // if (!$person) {
-        //     throw new Exception("The specified person does not exist.");
-        // }
-
         return [
             'title' => [
                 'required',
@@ -28,7 +22,7 @@ class EventInputValidator extends Validator
                 'min:3',
                 'max:255',
             ],
-           
+
         ];
     }
 
@@ -38,7 +32,7 @@ class EventInputValidator extends Validator
             'title.required' => 'The title field is required.',
             'title.max' => 'The title may not exceed 255 characters.',
             'title.min' => 'The title min is 3 characters.',
-           
+
         ];
     }
 }

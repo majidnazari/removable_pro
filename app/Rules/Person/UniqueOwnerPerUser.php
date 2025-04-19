@@ -16,7 +16,7 @@ class UniqueOwnerPerUser implements Rule
      * @param  int  $userId  The ID of the user creating the person record
      * @return void
      */
-    public function __construct($userId,$is_owner)
+    public function __construct($userId, $is_owner)
     {
         $this->userId = $userId;
         $this->isOwner = $is_owner;
@@ -38,8 +38,8 @@ class UniqueOwnerPerUser implements Rule
 
         // Check if a Person record already exists with is_owner=true for this user_id
         return !Person::where('creator_id', $this->userId)
-                      ->where('is_owner', true)
-                      ->exists();
+            ->where('is_owner', true)
+            ->exists();
     }
 
     /**

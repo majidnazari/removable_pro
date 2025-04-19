@@ -37,10 +37,10 @@ trait HandlesPersonRelations
     protected function handleChildRemoval(int $personId, int $gender, array $childrenIds, array $parentIds): void
     {
         if (count($childrenIds) === 1 && empty($parentIds)) {
-//           Log::info("Person {$personId} has one child but no parents. Removing child relation...");
+            //           Log::info("Person {$personId} has one child but no parents. Removing child relation...");
             $this->removeChildRelation($personId, $gender, true);
         } else {
-//           Log::info("Person {$personId} is a child, removing parental relation.");
+            //           Log::info("Person {$personId} is a child, removing parental relation.");
             $this->removeChildRelation($personId, $gender);
         }
     }
@@ -51,9 +51,9 @@ trait HandlesPersonRelations
     protected function isPersonIsolated(int $personId): bool
     {
         return empty($this->getParentIds($personId)) &&
-               empty($this->getSpouseIds($personId, 1)) && // Male spouses
-               empty($this->getSpouseIds($personId, 0)) && // Female spouses
-               empty($this->getChildrenIds($this->getSpouseIds($personId, 1))) &&
-               empty($this->getChildrenIds($this->getSpouseIds($personId, 0)));
+            empty($this->getSpouseIds($personId, 1)) && // Male spouses
+            empty($this->getSpouseIds($personId, 0)) && // Female spouses
+            empty($this->getChildrenIds($this->getSpouseIds($personId, 1))) &&
+            empty($this->getChildrenIds($this->getSpouseIds($personId, 0)));
     }
 }

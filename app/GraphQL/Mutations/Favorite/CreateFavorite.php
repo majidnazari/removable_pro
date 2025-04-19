@@ -29,14 +29,14 @@ final class CreateFavorite
     {
         // TODO implement the resolver
     }
-    public function resolveFavorite($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveFavorite($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();
 
         $FavoriteModel = [
             "creator_id" => $this->userId,
-            "person_id" =>  $this->findOwner()->id,
+            "person_id" => $this->findOwner()->id,
 
             "image" => $args['image'] ?? null,
             "title" => $args['title'],
@@ -44,13 +44,9 @@ final class CreateFavorite
             "priority" => $args['priority'] ?? 0,
             "status" => $args['status'] ?? status::Active
         ];
-        // $is_exist= Favorite::where($FavoriteModel)->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("Favorite-CREATE-RECORD_IS_EXIST");
-        //  }
 
-        $this->checkDuplicate(new Favorite(), ["title" =>$args['title'] , "person_id" => $args['person_id'] ?? $this->findOwner()->id]);
+
+        $this->checkDuplicate(new Favorite(), ["title" => $args['title'], "person_id" => $args['person_id'] ?? $this->findOwner()->id]);
         $FavoriteResult = Favorite::create($FavoriteModel);
         return $FavoriteResult;
     }

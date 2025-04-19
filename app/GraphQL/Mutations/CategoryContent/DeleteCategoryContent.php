@@ -29,38 +29,23 @@ final class DeleteCategoryContent
     {
         // TODO implement the resolver
     }
-    public function resolveCategoryContent($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {  
-       
+    public function resolveCategoryContent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+
         $this->userId = $this->getUserId();
         try {
 
             $CategoryContentResult = $this->userAccessibility(CategoryContent::class, AuthAction::Delete, $args);
 
+        } catch (CustomValidationException $e) {
+            throw new CustomValidationException("CategoryContent-DELETE-FAILED", "CategoryContent-DELETE-FAILED", 500);
+
         } catch (Exception $e) {
-            throw new CustomValidationException("CategoryContent-DELETE-FAILED", "CategoryContent-DELETE-FAILED", 400);
 
-            //throw new Exception($e->getMessage());
-
+            throw new Exception($e->getMessage());
         }
 
         return $this->updateAndDeleteModel($CategoryContentResult, $args, $this->userId);
-    //    $this->userAccessibility(CategoryContent::class, AuthAction::Delete, $args);
 
-       
-    //     $CategoryContentResult=CategoryContent::find($args['id']);
-        
-    //     if(!$CategoryContentResult)
-    //     {
-    //         return Error::createLocatedError("CategoryContent-DELETE-RECORD_NOT_FOUND");
-    //     }
-        
-    //     $CategoryContentResult->editor_id=$this->userId ;
-    //     $CategoryContentResult->save();
-
-    //     $CategoryContentResult_filled= $CategoryContentResult->delete();  
-    //     return $CategoryContentResult;
-
-        
     }
 }

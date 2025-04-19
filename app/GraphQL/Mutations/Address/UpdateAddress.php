@@ -34,33 +34,12 @@ final class UpdateAddress
     {
         // TODO implement the resolver
     }
-    public function resolveAddress($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveAddress($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();
-        //$this->userAccessibility(Address::class, AuthAction::Delete, $args);
 
-        //args["user_id_creator"]=$user_id;
-        // $AddressResult=Address::find($args['id']);
-       // try {
-
-            $AddressResult = $this->userAccessibility(Address::class, AuthAction::Update, $args);
-
-        // } catch (CustomValidationException $e) {
-
-        //     throw new Error($e->getMessage(), null, null, [], null, $e, [
-        //         'endUserMessage' => $e->getEndUserMessage(),
-        //         'statusCode' => $e->getStatusCode()
-        //     ]);
-        //     //throw new Exception($e->getMessage());
-        // }
-
-        // if (!$AddressResult) {
-        //     return Error::createLocatedError("Address-UPDATE-RECORD_NOT_FOUND");
-        // }
-//       Log::info("the address is :" . json_encode($AddressResult));
-//       Log::info("the address must change into  :" . json_encode($args));
-
+        $AddressResult = $this->userAccessibility(Address::class, AuthAction::Update, $args);
         $this->checkDuplicate(
             new Address(),
             $args,
@@ -69,12 +48,6 @@ final class UpdateAddress
         );
 
         return $this->updateModel($AddressResult, $args, $this->userId);
-        // $args['editor_id'] = $this->userId;
-        // $AddressResult_filled = $AddressResult->fill($args);
-        // $AddressResult->save();
-
-        // return $AddressResult;
-
 
     }
 }

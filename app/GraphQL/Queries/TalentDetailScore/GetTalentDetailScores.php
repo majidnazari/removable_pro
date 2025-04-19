@@ -25,13 +25,8 @@ final class GetTalentDetailScores
     }
     function resolveTalentDetailScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $TalentDetailScores = TalentDetailScore::where('deleted_at', null);
-        // return $TalentDetailScores;
-
         $query = $this->getModelByAuthorization(TalentDetailScore::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

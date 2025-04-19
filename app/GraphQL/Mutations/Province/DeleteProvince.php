@@ -33,23 +33,6 @@ final class DeleteProvince
     public function resolveProvince($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
-        //    $this->userAccessibility(Score::class, AuthAction::Delete, $args);
-
-
-        //     $ProvinceResult=Province::find($args['id']);
-
-        //     if(!$ProvinceResult)
-        //     {
-        //         return Error::createLocatedError("Province-DELETE-RECORD_NOT_FOUND");
-        //     }
-
-        //     $ProvinceResult->editor_id= $this->userId;
-        //     $ProvinceResult->save(); 
-
-
-        //     $ProvinceResult_filled= $ProvinceResult->delete();  
-        //     return $ProvinceResult;
-
 
         try {
 

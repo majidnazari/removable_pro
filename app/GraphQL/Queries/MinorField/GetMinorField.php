@@ -24,11 +24,6 @@ final class GetMinorField
     }
     function resolveMinorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $MinorField = MinorField::where('id', $args['id']);       
-        // return $MinorField->first();
-
         $MinorField = $this->getModelByAuthorization(MinorField::class, $args);
         return $MinorField->first();
     }

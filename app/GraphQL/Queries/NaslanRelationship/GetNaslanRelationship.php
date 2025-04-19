@@ -23,7 +23,7 @@ final class GetNaslanRelationship
     {
         $this->userId = $this->getUserId();
 
-        $NaslanRelationship = NaslanRelationship::where('id', $args['id']);       
+        $NaslanRelationship = NaslanRelationship::where('id', $args['id']);
         return $NaslanRelationship->first();
     }
 }

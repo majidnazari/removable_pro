@@ -40,7 +40,7 @@ final class GetSpecialTalentHeaders
         $query = TalentHeader::where('deleted_at', null)
             ->where('status', Status::Active->value)
             ->where('person_id', $args['person_id'] ?? $this->personOwner->id)
-           ->where('end_date', '>', now());
+            ->where('end_date', '>', now());
 
         // Apply the 'hasNoScores' filter if provided
         if (isset($args['hasNoScores']) && $args['hasNoScores']) {
@@ -53,7 +53,6 @@ final class GetSpecialTalentHeaders
                 });
             });
         }
-//       Log::info("the query is:" . json_encode($query->get()));
         if (isset($args['person_id']) && $args['person_id'] != $this->personOwner->id) {
 
             // Condition 2: For another person_id, apply the additional checks
@@ -72,10 +71,8 @@ final class GetSpecialTalentHeaders
             });
         }
 
-        // Fetch and log the talentheader
         $talentheader = $query;
 
-        // Now we need to filter the TalentDetailScores based on the logged-in user
         $talentheader->with([
             'TalentDetails' => function ($query) {
                 $query->with([

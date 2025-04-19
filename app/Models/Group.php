@@ -58,7 +58,7 @@ class Group extends Eloquent
 
     public function GroupCategoryDetails()
     {
-        return $this->hasMany(GroupCategoryDetail::class,self::COLUMN_GROUP_CATEGORY_ID);
+        return $this->hasMany(GroupCategoryDetail::class, self::COLUMN_GROUP_CATEGORY_ID);
     }
 
     public function people()
@@ -66,11 +66,11 @@ class Group extends Eloquent
         // Retrieve people via the GroupDetails relationship
         return $this->hasManyThrough(Person::class, GroupDetail::class, 'group_id', 'id', 'id', 'person_id');
     }
-    
+
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

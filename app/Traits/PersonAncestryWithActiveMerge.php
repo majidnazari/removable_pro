@@ -16,12 +16,12 @@ trait PersonAncestryWithActiveMerge
             $query->where('user_sender_id', $user_id)
                 ->orWhere('user_receiver_id', $user_id);
         })
-        ->where(function ($query) {
-            $query->where('request_status_sender', RequestStatusSender::Active)
-                ->where('request_status_receiver', RequestStatusReceiver::Active)
-                ->where('status', '!=', MergeStatus::Complete);
-        })
-        ->first();
+            ->where(function ($query) {
+                $query->where('request_status_sender', RequestStatusSender::Active)
+                    ->where('request_status_receiver', RequestStatusReceiver::Active)
+                    ->where('status', '!=', MergeStatus::Complete);
+            })
+            ->first();
 
         // If no relationship is found, return only the user's own ancestry
         if (!$relation) {

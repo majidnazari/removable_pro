@@ -23,10 +23,6 @@ final class GetPersonMarriage
     }
     function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $PersonMarriage = PersonMarriage::where('id', $args['id']);       
-        // return $PersonMarriage->first();
 
         $user = $this->getModelByAuthorization(PersonMarriage::class, $args);
         return $user->first();

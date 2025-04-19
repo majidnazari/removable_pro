@@ -12,36 +12,12 @@ trait PersonAncestryHeads
     use FindOwnerTrait;
     public function getPersonAncestryHeads($user_id, $depth = 3)
     {
-        // Fetch all UserMergeRequests with Complete status
-        // $relations = UserMergeRequest::where(function ($query) use ($user_id) {
-        //     $query->where('user_sender_id', $user_id)
-        //         ->orWhere('user_receiver_id', $user_id);
-        // })
-        // ->where('status', MergeStatus::Complete)
-        // ->get();
-
         // If no relationships, return only the user's own ancestry
         $minePerson = $this->findOwner($user_id);
         if (!$minePerson) {
             return null;
         }
-
-         $rootAncestors = $minePerson->getFullBinaryAncestryheads($depth);
-        // $relatedNodes = [];
-
-        // foreach ($relations as $relation) {
-        //     // Determine related user ID
-        //     $relatedUserId = $relation->user_sender_id === $user_id
-        //         ? $relation->user_receiver_id
-        //         : $relation->user_sender_id;
-
-        //     // Fetch the related person's ancestry
-        //     $relatedPerson = $this->findOwner($relatedUserId);
-        //     if ($relatedPerson) {
-        //         [$relatedNodes[]] = $relatedPerson->getFullBinaryAncestry($depth);
-        //     }
-        // }
-
+        $rootAncestors = $minePerson->getFullBinaryAncestryheads($depth);
         return [
             'heads' => $rootAncestors
         ];

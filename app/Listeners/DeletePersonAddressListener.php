@@ -24,7 +24,7 @@ class DeletePersonAddressListener
      */
     public function handle(PersonDeletedEvent $event)
     {
-        
+
         $personId = $event->personId;
 
         $deletedCount = Address::where('person_id', $personId)->update(['deleted_at' => now()]);
@@ -32,7 +32,7 @@ class DeletePersonAddressListener
         if ($deletedCount === 0) {
             Log::warning("No Address records found for person ID: $personId");
         } else {
-//           Log::info("Soft deleted {$deletedCount} Address records for person ID: $personId");
+            //           Log::info("Soft deleted {$deletedCount} Address records for person ID: $personId");
         }
     }
 }

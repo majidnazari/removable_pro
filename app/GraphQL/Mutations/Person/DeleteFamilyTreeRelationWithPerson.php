@@ -45,17 +45,12 @@ final class DeleteFamilyTreeRelationWithPerson
     {
         try {
             $this->userId = auth()->id();
-//           Log::info("User ID logged in: {$this->userId}");
 
             $personId = $args['personId'] ?? null;
             if (!$personId) {
                 throw new CustomValidationException("Person ID is required.", "شناسه شخصی الزامی است.", 400);
 
-                //throw new Exception("Person ID is required.");
             }
-
-//           Log::info("Attempting to delete Person ID: {$personId}");
-
             // Validate deletion permission
             $validationResult = $this->deleteFamilyTreeRelationWithPerson($personId);
 
@@ -66,7 +61,6 @@ final class DeleteFamilyTreeRelationWithPerson
                 //throw new Error($validationResult); // Properly throw the GraphQL error
             }
 
-//           Log::info("Person ID {$personId} successfully deleted.");
             return true;
         } catch (CustomValidationException $e) {
 

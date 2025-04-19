@@ -14,37 +14,37 @@ class PersonScoreSeeder extends Seeder
      */
     public function run(): void
     {
-        $data=
-        [
-            
+        $data =
             [
-                'creator_id' => 1,
-                'editor_id' => null,
-                'person_id' => 1,
-                'score_id' => 1,
-                'score_level' => 2,               
-                'status' => 1,
-                'created_at' => now(),
-            ],
-            [
-                'creator_id' => 1,
-                'editor_id' => null,
-                'person_id' => 1,
-                'score_id' => 2,
-                'score_level' => 3,               
-                'status' => 1,
-                'created_at' => now(),
-            ],
-            [
-                'creator_id' => 1,
-                'editor_id' => null,
-                'person_id' => 1,
-                'score_id' => 3,
-                'score_level' => 1,               
-                'status' => 1,
-                'created_at' => now(),
-            ],
-        ];
+
+                [
+                    'creator_id' => 1,
+                    'editor_id' => null,
+                    'person_id' => 1,
+                    'score_id' => 1,
+                    'score_level' => 2,
+                    'status' => 1,
+                    'created_at' => now(),
+                ],
+                [
+                    'creator_id' => 1,
+                    'editor_id' => null,
+                    'person_id' => 1,
+                    'score_id' => 2,
+                    'score_level' => 3,
+                    'status' => 1,
+                    'created_at' => now(),
+                ],
+                [
+                    'creator_id' => 1,
+                    'editor_id' => null,
+                    'person_id' => 1,
+                    'score_id' => 3,
+                    'score_level' => 1,
+                    'status' => 1,
+                    'created_at' => now(),
+                ],
+            ];
 
         PersonScore::insert($data);
     }

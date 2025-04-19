@@ -34,9 +34,8 @@ final class GetTalentDetailScoresReportsMinorHistory
         if (!isset($args['minor_field_id'])) {
             throw new CustomValidationException("minor_field_id is required", "شناسه فیلد رشته مورد نیاز است", 400);
 
-            //throw new \Exception("minor_field_id is required");
         }
-    
+
         $query = TalentDetailScore::selectRaw('
             talent_details.talent_header_id,
             minor_fields.id as minor_field_id,
@@ -55,20 +54,18 @@ final class GetTalentDetailScoresReportsMinorHistory
             ->where('talent_details.creator_id', $this->userId)
             // Filter by the specific minor_field_id
             ->where('minor_fields.id', $args['minor_field_id']);
-    
+
         // Group by talent_header_id and middle fields to get unique records for each minor field
         $query->groupBy(
-         'talent_details.talent_header_id',
+            'talent_details.talent_header_id',
             'minor_fields.id',
             'minor_fields.title',
             'middle_fields.id',
             'middle_fields.title',
-           
+
             'talent_headers.title',
         );
-    
-//       Log::info("the sql is: " . $query->toSql());
-    
+
         return $query; // Return query builder for pagination
     }
 }

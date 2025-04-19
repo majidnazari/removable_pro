@@ -44,28 +44,17 @@ final class UpdateMergeRequestReceiver
 
         // Check if the user matches any of the columns in the array
         $this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args, $columnsToCheck);
-        //$this->userAccessibility(UserMergeRequest::class, AuthAction::Update, $args);
 
         $data = [
-            // "editor_id" => $user_sender_id,
             "merge_status_receiver" => $args['merge_status_receiver'] ?? RequestStatusReceiver::Suspend->value
         ];
 
-//       Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $UserMergeRequest = UserMergeRequest::where('id', $args['id'])->first();
         if (!$UserMergeRequest) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-RECORD_NOT_FOUND", "درخواست ادغام کاربر. به روزرسانی گیرنده. رکورد یافت نشد", 404);
-
-
-            //return Error::createLocatedError("UserMergeRequest-NOT_FOUND");
         }
 
-        // $this->checkDuplicate(
-        //     new UserMergeRequest(),
-        //     $args,
-        //     ['id','editor_id','created_at', 'updated_at'],
-        //     $args['id']
-        // );
+
 
         $is_exist = UserMergeRequest::where('user_receiver_id', $this->user_receiver_id)
             ->where('id', '!=', $args['id'])
@@ -74,48 +63,27 @@ final class UpdateMergeRequestReceiver
             ->where('request_status_receiver', RequestStatusReceiver::Active->value)
             ->where('merge_status_sender', RequestStatusSender::Active->value)
             ->where('status', '!=', MergeStatus::Complete->value)
-
-        ->first();
-
-
-        // Log the SQL query with parameters
-        // $sql = $is_exist->toSql();
-        // $bindings = $is_exist->getBindings();
-
-//       Log::info('SQL Query for Merge Request:', [
-//           'query' => $sql,
-//           'bindings' => $bindings,
-//       ]);
-
-        // // Execute the query
-        // $is_exist = $is_exist->first();
+            ->first();
 
         if ($is_exist) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-YOU_HAVE_ONE_ACTIVE_REQUEST", "درخواست ادغام کاربر. به روزرسانی گیرنده .درخواست فعال وجود دارد", 409);
 
-            //return Error::createLocatedError("UserMergeRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
         }
 
         if ($UserMergeRequest->user_receiver_id != $this->user_receiver_id) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS", "درخواست ادغام کاربر. به روزرسانی گیرنده .شما فقط می توانید درخواست های خود را تغییر دهید", 403);
 
-           // return Error::createLocatedError("UserMergeRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
-
         }
 
 
-//       Log::info("the active sttaus us:".RequestStatusSender::Active->value);
+        //       Log::info("the active sttaus us:".RequestStatusSender::Active->value);
         if ($UserMergeRequest->request_status_sender != RequestStatusSender::Active->value) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE1", "درخواست ادغام کاربر. به روزرسانی گیرنده .ارسال کننده باید تایید", 403);
-
-            //return Error::createLocatedError("UserMergeRequest-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE");
 
         }
 
         if ($UserMergeRequest->merge_status_sender != RequestStatusSender::Active->value && ($args['merge_status_receiver'] === RequestStatusReceiver::Active->value)) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE2", "درخواست ادغام کاربر. به روزرسانی گیرنده .ارسال کننده باید تایید", 403);
-
-            //return Error::createLocatedError("UserMergeRequest-FIRST_MERGE_SENDER_MUST_MAKE_REQUEST_ACTIVE");
 
         }
         if (
@@ -125,9 +93,6 @@ final class UpdateMergeRequestReceiver
                 $UserMergeRequest->merge_status_sender != RequestStatusSender::Active->value)
         ) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-ALL_STATUS_MUST_BE_ACTIVE", "درخواست ادغام کاربر. به روزرسانی گیرنده . تمام وضعیت ها باید فعال باشند", 403);
-
-            //return Error::createLocatedError("UserMergeRequest-ALL_STATUS_MUST_BE_ACTIVE");
-
         }
 
         $UserMergeRequestResult = $UserMergeRequest->fill($data);

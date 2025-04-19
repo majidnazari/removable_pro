@@ -13,7 +13,7 @@ trait BloodyPersonAncestry
     use FindOwnerTrait;
     public function getBloodyPersonAncestry($user_id, $depth = 3)
     {
-        
+
         // If no relationships, return only the user's own ancestry
         $minePerson = $this->findOwner($user_id);
         if (!$minePerson) {
@@ -21,7 +21,7 @@ trait BloodyPersonAncestry
         }
 
         [$mineAncestry, $rootAncestors] = $minePerson->getFullBinaryAncestry($depth);
-       
+
         return [
             'mine' => $mineAncestry,
             'heads' => $rootAncestors
@@ -29,15 +29,15 @@ trait BloodyPersonAncestry
     }
     public function getBloodyPersonAncestryAccordingPersonId($personId, $depth = 3)
     {
-        
+
         // If no relationships, return only the user's own ancestry
-        $minePerson =Person::where('id',$personId)->first();
+        $minePerson = Person::where('id', $personId)->first();
         if (!$minePerson) {
             return null;
         }
 
         [$mineAncestry, $rootAncestors] = $minePerson->getFullBinaryAncestry($depth);
-       
+
         return [
             'mine' => $mineAncestry,
             'heads' => $rootAncestors

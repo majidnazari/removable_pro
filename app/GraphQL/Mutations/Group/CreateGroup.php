@@ -30,23 +30,19 @@ final class CreateGroup
     {
         // TODO implement the resolver
     }
-    public function resolveGroup($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    { 
+    public function resolveGroup($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
         $this->userId = $this->getUserId();
- 
-        $GroupModel=[
-            "creator_id" =>  $this->userId,
-            "title" => $args['title'],          
-            "status" => $args['status'] ?? Status::Active            
-        ];
-        // $is_exist= Group::where($GroupModel)->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("Group-CREATE-RECORD_IS_EXIST");
-        //  }
 
-        $this->checkDuplicate(new Group(),  $GroupModel);
-        $GroupResult=Group::create($GroupModel);
+        $GroupModel = [
+            "creator_id" => $this->userId,
+            "title" => $args['title'],
+            "status" => $args['status'] ?? Status::Active
+        ];
+
+
+        $this->checkDuplicate(new Group(), $GroupModel);
+        $GroupResult = Group::create($GroupModel);
         return $GroupResult;
     }
 }

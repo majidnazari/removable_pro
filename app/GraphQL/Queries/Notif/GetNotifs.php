@@ -26,14 +26,8 @@ final class GetNotifs
     }
     function resolveNotif($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $Notifs = Notif::where('deleted_at', null);
-
-        // //log::info("the Notifs is:" . json_encode($Notifs));
-        // return $Notifs;
         $query = $this->getModelByAuthorization(Notif::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

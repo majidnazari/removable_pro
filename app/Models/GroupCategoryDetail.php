@@ -27,25 +27,6 @@ use Eloquent;
  * @property-read \App\Models\User|null $Editor
  * @property-read \App\Models\Group|null $Group
  * @property-read GroupCategoryDetail|null $GroupCategoryDetail
- * @method static \Database\Factories\GroupCategoryDetailFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereEditorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail wherePersonId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereStar($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|GroupCategoryDetail withoutTrashed()
  * @mixin Eloquent
  */
 class GroupCategoryDetail extends Eloquent
@@ -77,13 +58,6 @@ class GroupCategoryDetail extends Eloquent
     {
         return $this->hasMany(Group::class, self::COLUMN_ID);
     }
-
-
-    // public function GroupCategory()
-    // {
-    //     return $this->belongsTo(GroupCategory::class, self::COLUMN_GROUP_ID);
-    // }
-    // In GroupCategoryDetail.php
 
     public function GroupCategory()
     {
@@ -117,7 +91,7 @@ class GroupCategoryDetail extends Eloquent
     //             return $group->GroupDetails->pluck('Person');
     //         });
 
-//       Log::info("The persons are: " . json_encode( $persons));
+    //       Log::info("The persons are: " . json_encode( $persons));
 
     //     return $persons;
     // }

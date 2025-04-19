@@ -28,14 +28,6 @@ final class GetTalentDetailScoresReports
     {
         $this->userId = $this->getUserId();
 
-        // $TalentDetailScores = TalentDetailScore::where('deleted_at', null)->with('TalentDetail');
-
-        // $TalentDetailScores->where(function($query){
-        //     $query->whereHas('talent_details.creator_id',$this->userId);
-        // });
-        // return $TalentDetailScores;
-
-
         $TalentDetailScores = TalentDetailScore::whereNull('deleted_at')
             ->whereHas('TalentDetail', function ($query) {
                 $query->where('creator_id', $this->userId);
@@ -51,27 +43,22 @@ final class GetTalentDetailScoresReports
         }
 
         if (isset($args['scoreEqual'])) {
-//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores->where("score", (int) $args['scoreEqual']);
         }
         if (isset($args['scoreEqualOrMore'])) {
-//           Log::info("the score sttaus is :" . (int) $args['scoreEqualOrMore']);
 
             $TalentDetailScores = $TalentDetailScores->where("score", ">=", (int) $args['scoreEqualOrMore']);
         }
         if (isset($args['scoreEqualOrLess'])) {
-//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores->where("score", "<=", (int) $args['scoreEqualOrLess']);
         }
         if (isset($args['status'])) {
-//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores->where("score", (int) $args['status']);
         }
         if (isset($args['minor_field_id'])) {
-//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores
                 ->whereHas('TalentDetail', function ($query) use ($args) {
@@ -81,23 +68,18 @@ final class GetTalentDetailScoresReports
                         ->with('TalentDetail.MinorField');
                 })
                 ->with('TalentDetail');
-
         }
 
         if (isset($args['middle_field_id'])) {
-//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores
                 ->whereHas('TalentDetail', function ($query) use ($args) {
                     $query->whereHas('MinorField', function ($queryMinor) use ($args) {
-
                         $queryMinor->whereHas('id', $args['middle_field_id'], function ($queryMiddle) use ($args) {
                             $queryMiddle->where('Middle', $args['middle_field_id']);
                         })->with('TalentDetail.MinorField.MiddleField');
-                    })
-                        ->with('TalentDetail.MinorField');
-                })
-                ->with('TalentDetail');
+                    })->with('TalentDetail.MinorField');
+                })->with('TalentDetail');
 
         }
         if (isset($args['major_field_id'])) {
@@ -105,7 +87,7 @@ final class GetTalentDetailScoresReports
                 ->whereHas('TalentDetail', function ($query) use ($args) {
                     $query->whereHas('MinorField', function ($queryMinor) use ($args) {
 
-                        $queryMinor->whereHas('MiddleField',  function ($queryMiddle) use ($args) {
+                        $queryMinor->whereHas('MiddleField', function ($queryMiddle) use ($args) {
                             $queryMiddle->whereHas('MajorField', function ($queryMajor) use ($args) {
                                 $queryMajor->where('id', $args['major_field_id']);
 
@@ -117,10 +99,7 @@ final class GetTalentDetailScoresReports
                 ->with('TalentDetail');
         }
         //->get(); // Fetch results
-
         return $TalentDetailScores;
-        // $query = $this->getModelByAuthorization(TalentDetailScore::class, $args, true);
-        // $query = $this->applySearchFilters( $query, $args);
-        // return  $query;
+
     }
 }

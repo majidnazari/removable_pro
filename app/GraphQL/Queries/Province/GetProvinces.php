@@ -25,11 +25,6 @@ final class GetProvinces
     }
     function resolveProvince($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $Provinces = Province::where('deleted_at', null);
-        // return $Provinces;
-
         $query = $this->getModelByAuthorization(Province::class, $args, true);
         $query = $this->applySearchFilters($query, $args);
         return $query;

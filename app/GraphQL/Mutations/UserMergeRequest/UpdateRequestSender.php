@@ -51,8 +51,6 @@ final class UpdateRequestSender
 
         if (!$UserMergeRequest) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-SENDER-RECORD_NOT_FOUND", "درخواست ادغام کاربر. به روز رسانی ارسال کننده. رکورد یافت نشد", 404);
-
-            //return Error::createLocatedError("UserSendRequest-NOT_FOUND");
         }
 
         $is_exist = UserMergeRequest::where('user_sender_id', $this->user_sender_id)
@@ -65,14 +63,10 @@ final class UpdateRequestSender
         if ($is_exist) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-SENDER-YOU_HAVE_ONE_ACTIVE_REQUEST", "درخواست ادغام کاربر. به روز رسانی ارسال کننده. در حال حاضر رکورد فعال وجود دارد.", 409);
 
-            //return Error::createLocatedError("UserSendRequest-YOU_HAVE_ONE_ACTIVE_REQUEST");
         }
 
         if ($UserMergeRequest->creator_id != $this->user_sender_id) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-SENDER-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS", "درخواست ادغام کاربر. به روز رسانی ارسال کننده. شما مجاز به تغییر درخواست خود هستید  ", 403);
-
-            //return Error::createLocatedError("UserSendRequest-YOU_CAN_JUST_CHANGE_YOUR_OWN_REQUESTS");
-
         }
         $UserMergeRequestResult = $UserMergeRequest->fill($data);
         $UserMergeRequestResult->save();

@@ -23,11 +23,6 @@ final class GetPersonScore
     }
     function resolvePersonScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $PersonScore = PersonScore::where('id', $args['id']);       
-        // return $PersonScore->first();
-
         $user = $this->getModelByAuthorization(PersonScore::class, $args);
         return $user->first();
     }

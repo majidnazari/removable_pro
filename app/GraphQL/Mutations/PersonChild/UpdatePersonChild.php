@@ -36,29 +36,7 @@ final class UpdatePersonChild
     public function resolvePersonChild($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {  
         $this->userId = $this->getUserId();
-        // $this->userAccessibility(PersonChild::class, AuthAction::Update, $args);
-
-
-        // //args["user_id_creator"]=$this->userId;
-        // $PersonChildResult=PersonChild::find($args['id']);
-        // $personChildmodel=$args;
-        // $personChildmodel['editor_id']=$this->userId;
         
-        // if(!$PersonChildResult)
-        // {
-        //     return Error::createLocatedError("PersonChild-UPDATE-RECORD_NOT_FOUND");
-        // }
-        // $this->checkDuplicate(
-        //     new PersonChild(),
-        //     $args,
-        //     ['id','editor_id','created_at', 'updated_at'],
-        //     $args['id']
-        // );
-        // $args['editor_id']=$this->userId;
-        // $PersonChildResult_filled= $PersonChildResult->fill($personChildmodel);
-        // $PersonChildResult->save();       
-       
-        // return $PersonChildResult;
 
         try {
 
@@ -79,7 +57,6 @@ final class UpdatePersonChild
         );
 
         return $this->updateModel($GroupDetailResult, $args, $this->userId);
-
 
         
     }

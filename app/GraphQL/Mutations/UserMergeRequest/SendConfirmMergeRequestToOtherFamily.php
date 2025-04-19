@@ -54,9 +54,6 @@ class SendConfirmMergeRequestToOtherFamily
             $userMergeRequest = UserMergeRequest::find($args['id']);
             if (!$userMergeRequest) {
                 throw new CustomValidationException("USERMERGEREQUEST-CONFIRM-MERGE-RECORD_NOT_FOUND", "درخواست ادغام کاربر. تاییددرخواست. رکورد یافت نشد", 404);
-
-
-                //throw new Error("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
             }
             $this->checkDuplicate(
                 new UserMergeRequest(),
@@ -68,17 +65,14 @@ class SendConfirmMergeRequestToOtherFamily
             if ($userMergeRequest->user_sender_id !== $this->user->id) {
                 throw new CustomValidationException("USERMERGEREQUEST-CONFIRM-MERGE-UNAUTHORIZED_ACCESS!", "ارسال درخواست مرج کاربر. تاییددرخواست . دسترسی غیر مجاز", 403);
 
-                //throw new Error("UserMergeRequest-UNAUTHORIZED_ACCESS!");
             }
 
             $mergeIdsSender = explode(',', $mergeIdsSender);
             $mergeIdsReceiver = explode(',', $mergeIdsReceiver);
 
-
             foreach (array_map(null, $mergeIdsSender, $mergeIdsReceiver) as $pair) {
                 [$senderId, $receiverId] = $pair;
 
-//               Log::info("before mergePersonsByIds is: {$senderId} and the receiver is: {$receiverId}");
 
                 $this->mergePersonsByIds($senderId, $receiverId, $this->user->id);
             }
@@ -96,9 +90,6 @@ class SendConfirmMergeRequestToOtherFamily
 
             // Dispatch unblood user event for receiver
             event(new UnbloodUserRelationResetEvent($userMergeRequest->user_receiver_id));
-
-            // $this->updateUserCalculationFlag($userMergeRequest->user_sender_id, false);
-            // $this->updateUserCalculationFlag($userMergeRequest->user_receiver_id, false);
 
             DB::commit();
 

@@ -29,9 +29,9 @@ final class DeleteCountry
     {
         // TODO implement the resolver
     }
-    public function resolveCountry($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {  
-        
+    public function resolveCountry($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+
         $this->userId = $this->getUserId();
 
         try {
@@ -44,23 +44,7 @@ final class DeleteCountry
         }
 
         return $this->updateAndDeleteModel($CountryResult, $args, $this->userId);
-    //    $this->userAccessibility(Country::class, AuthAction::Delete, $args);
 
- 
-    //     $CountryResult=Country::find($args['id']);
-        
-    //     if(!$CountryResult)
-    //     {
-    //         return Error::createLocatedError("Country-DELETE-RECORD_NOT_FOUND");
-    //     }
-    //     //$args['editor_id']=$user_id;
 
-    //     $CountryResult->editor_id=  $this->userId ;
-    //     $CountryResult->save();
-
-    //     $CountryResult_filled= $CountryResult->delete();  
-    //     return $CountryResult;
-
-        
     }
 }

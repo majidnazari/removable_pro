@@ -30,10 +30,9 @@ final class GetSpecialPersonFamilyEvents
         //$this->personOwner = $this->findOwner();
 
         // Start with the base query for 'deleted_at' and 'person_id'
-        $query = FamilyEvent::where('deleted_at', null) 
+        $query = FamilyEvent::where('deleted_at', null)
             ->where('status', Status::Active->value);
-//       Log::info("the query is:" . json_encode($query->get()));
-        // Condition 2: For another person_id, apply the additional checks
+
         $query->where(function ($subQuery) {
             // First check: creator_id matches logged-in user
             $subQuery->where('creator_id', $this->userId)
@@ -50,8 +49,6 @@ final class GetSpecialPersonFamilyEvents
 
         // Fetch and log the memories
         $Events = $query;
-
-//       Log::info("pall memories can this user see are : " . json_encode($memories->get()));
 
         return $Events;
     }

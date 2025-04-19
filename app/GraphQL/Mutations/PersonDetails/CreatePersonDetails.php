@@ -34,14 +34,7 @@ final class CreatePersonDetails
     {
         $this->userId = $this->getUserId();
 
-        // $isExist = PersonDetail::where('person_id', $args['person_id'])->first();
-
-        // if ($isExist) {
-        //     return Error::createLocatedError("PersonDetail-CREATE-RECORD_IS_EXIST");
-        // }        
-
         $this->checkDuplicate(new PersonDetail(), $args['person_id']);
-//       Log::info("the args are: " . $args['profile_picture']);
         $path = "";
         // Check if the file exists in the input
         if (isset($args['profile_picture'])) {
@@ -76,8 +69,6 @@ final class CreatePersonDetails
                 //throw new Error('File size exceeds the maximum limit of 1 MB.');
             }
 
-            // Store the file with a unique name
-            // $path = 'profile_pictures/' . time() . '_' . $file->getClientOriginalName();
             $path = $args['person_id'] . '.' . $file->getClientOriginalExtension();
             Storage::disk('public')->put("profile_pictures/" . $path, file_get_contents($file->getRealPath()));
 
@@ -100,26 +91,6 @@ final class CreatePersonDetails
         // Create the new person detail record
         $PersonDetailResult = PersonDetail::create($PersonDetailsModel);
         return $PersonDetailResult;
-        // log::info("the file is:" . json_encode($file));
-        //return $file->storePublicly('uploads');
 
-//       Log::info("the args are:" . json_encode($args));
-        //
-        //     $PersonDetailsModel = [
-        //         "create_id" => 1,
-        //         "person_id" => $args['person_id'],
-        //         "profile_picture" => $args['profile_picture'] ?? null,
-        //         "gender" => $args['gender'] ?? 'None', // Default to 'None' if not provided
-        //         "physical_condition" => $args['physical_condition'] ?? 'Healthy' // Default to 'Healthy' if not provided
-        //     ];
-
-        //     // Check if a similar details profile already exists for the same person_id
-        //     $is_exist = PersonDetail::where('person_id', $args['person_id'])->first();
-
-        //     if ($is_exist) {
-        //         return Error::createLocatedError("PersonDetail-CREATE-RECORD_IS_EXIST");
-        //     }
-        //     $PersonDetailResult = PersonDetail::create($PersonDetailsModel);
-        //     return $PersonDetailResult;
     }
 }

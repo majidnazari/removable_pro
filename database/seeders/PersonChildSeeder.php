@@ -80,31 +80,31 @@ class PersonChildSeeder extends Seeder
         //     ["id" => 13, "creator_id" => 1, "editor_id" => null, "person_marriage_id" => 12, "child_id" => 17, "child_kind" => "Direct_child", "child_status" => "With_family", "status" => 1, "created_at" => null, "updated_at" => null, "deleted_at" => null],
         //     ["id" => 14, "creator_id" => 1, "editor_id" => null, "person_marriage_id" => 12, "child_id" => 44, "child_kind" => "Direct_child", "child_status" => "With_family", "status" => 1, "created_at" => null, "updated_at" => null, "deleted_at" => null]
         // ];
-        
+
 
         // foreach ($data as $personChild) {
         //     PersonChild::create($personChild);
         // }
 
-          $jsonPath = database_path('datasample/personchild.json');
+        $jsonPath = database_path('datasample/personchild.json');
 
-          if (File::exists($jsonPath)) {
-              $jsonData = json_decode(File::get($jsonPath), true);
-  
-              // Filter records to ensure `creator_id` and `editor_id` exist in the `users` table
-              $validUsers = User::pluck('id')->toArray();
-              $filteredData = array_filter($jsonData, function ($person) use ($validUsers) {
-                  return in_array($person['creator_id'], $validUsers) && 
-                          (empty($person['editor_id']) || in_array($person['editor_id'], $validUsers));
-              });
-  
-              if (!empty($filteredData)) {
-                  DB::table('person_children')->insert($filteredData);
-              } else {
-                  $this->command->info("No valid records to insert.");
-              }
-          } else {
-              $this->command->info("JSON file not found at {$jsonPath}");
-          }
+        if (File::exists($jsonPath)) {
+            $jsonData = json_decode(File::get($jsonPath), true);
+
+            // Filter records to ensure `creator_id` and `editor_id` exist in the `users` table
+            $validUsers = User::pluck('id')->toArray();
+            $filteredData = array_filter($jsonData, function ($person) use ($validUsers) {
+                return in_array($person['creator_id'], $validUsers) &&
+                    (empty($person['editor_id']) || in_array($person['editor_id'], $validUsers));
+            });
+
+            if (!empty($filteredData)) {
+                DB::table('person_children')->insert($filteredData);
+            } else {
+                $this->command->info("No valid records to insert.");
+            }
+        } else {
+            $this->command->info("JSON file not found at {$jsonPath}");
+        }
     }
 }

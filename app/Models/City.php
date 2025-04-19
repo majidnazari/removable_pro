@@ -51,12 +51,12 @@ class City extends Eloquent
     {
         return $this->belongsTo(Province::class, self::COLUMN_PROVINCE_ID);
     }
-   
+
 
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

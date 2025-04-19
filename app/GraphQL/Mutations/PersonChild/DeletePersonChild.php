@@ -50,21 +50,7 @@ final class DeletePersonChild
         }
 
         return $this->updateAndDeleteModel($PersonChildResult, $args, $this->userId);
-        //    $this->userAccessibility(PersonChild::class, AuthAction::Delete, $args);
 
-
-        //     $PersonChildResult=PersonChild::find($args['id']);
-
-        //     if(!$PersonChildResult)
-        //     {
-        //         return Error::createLocatedError("PersonChild-DELETE-RECORD_NOT_FOUND");
-        //     }
-
-        //     $PersonChildResult->editor_id= $this->userId;
-        //     $PersonChildResult->save(); 
-
-        //     $PersonChildResult_filled= $PersonChildResult->delete();  
-        //     return $PersonChildResult;
 
     }
 

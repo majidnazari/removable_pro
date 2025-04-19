@@ -29,8 +29,8 @@ class CreatePersonMarriageInputValidator extends GraphQLValidator
                 new NotSelfMarriage($manId, $womanId),
                 new NotCloseRelativeMarriage($manId, $womanId),
                 new UniqueMarriage($manId, $womanId),
-               // new OppositeGenderMarriage($manId, $womanId), // Ensure opposite gender marriage
-                new MatchCreator(Person::class,[$manId, $womanId]), // Apply the custom rule to check all IDs
+                // new OppositeGenderMarriage($manId, $womanId), // Ensure opposite gender marriage
+                new MatchCreator(Person::class, [$manId, $womanId]), // Apply the custom rule to check all IDs
             ],
             'woman_id' => [
                 'required',

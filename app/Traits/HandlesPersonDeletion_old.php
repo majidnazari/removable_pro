@@ -22,19 +22,19 @@ trait HandlesPersonDeletion_old
      */
     public function canDeletePerson($userId, $personId)
     {
-//       Log::info("Checking if user {$userId} can delete person {$personId}");
+        //       Log::info("Checking if user {$userId} can delete person {$personId}");
 
         // Fetch all people in the small clan
         $allPeopleIds = $this->getAllPeopleIdsInSmallClan($personId);
-//       Log::info("All people IDs in small clan: " . json_encode($allPeopleIds));
+        //       Log::info("All people IDs in small clan: " . json_encode($allPeopleIds));
 
         // Get all owner IDs in the small clan
         $ownerIds = $this->getAllOwnerIdsInSmallClan($personId);
-//       Log::info("Owner IDs in small clan: " . json_encode($ownerIds));
+        //       Log::info("Owner IDs in small clan: " . json_encode($ownerIds));
 
         // Get all user IDs in the small clan
         $userIds = $this->getAllUserIdsInSmallClan($personId);
-//       Log::info("User IDs in small clan: " . json_encode($userIds));
+        //       Log::info("User IDs in small clan: " . json_encode($userIds));
 
         // Ensure the person exists
         $person = Person::find($personId);
@@ -45,40 +45,33 @@ trait HandlesPersonDeletion_old
 
         // Prevent deletion of another owner (unless deleting oneself)
         if ($person->is_owner && $person->creator_id !== $userId) {
-//           Log::info("Attempting to delete another owner. User ID: {$userId}, Person ID: {$personId}");
+            //           Log::info("Attempting to delete another owner. User ID: {$userId}, Person ID: {$personId}");
             return $this->errorResponse("Person-DELETE-CANNOT_DELETE_OTHER_OWNER");
         }
         if ($person->is_owner && $person->creator_id == $userId) {
-//           Log::info("Attempting to delete another owner. User ID: {$userId}, Person ID: {$personId}");
+            //           Log::info("Attempting to delete another owner. User ID: {$userId}, Person ID: {$personId}");
             return $this->errorResponse("Person-DELETE-CANNOT_DELETE_YOUR_OWNER");
         }
 
         // Ensure the logged-in user has permission
         if (!in_array($userId, $userIds)) {
-//           Log::info("User {$userId} does not have permission to delete person {$personId}.");
+            //           Log::info("User {$userId} does not have permission to delete person {$personId}.");
             return $this->errorResponse("Person-DELETE-YOU_DONT_HAVE_PERMISSION");
         }
 
         // Prevent deletion if the person has children
         if ($this->hasChildren($personId)) {
-//           Log::info("Person {$personId} has children and cannot be deleted.");
+            //           Log::info("Person {$personId} has children and cannot be deleted.");
             return $this->errorResponse("Person-DELETE-HAS_CHILDREN");
         }
 
-//       Log::info("own owners exist and user {$userId} and owner is: {$ownerIds[0]} count of owner ids  {count($ownerIds)}");
-
-
-        // if (!empty($ownerIds) && !in_array($userId, $ownerIds) && (count($ownerIds)==1) && ($ownerIds[0]==$userId) ) {
-//           Log::info("own owners exist and user {$userId} and owner is: {$ownerIds} ");
-        //     return $this->errorResponse("Person-DELETE-CANNOT-DELETE-YOURSELF");
-        // }
         // Prevent deletion if there are other owners and the user isn't one of them
         if (!empty($ownerIds) && !in_array($userId, $ownerIds)) {
-//           Log::info("Other owners exist and user {$userId} is not one of them.");
+            //           Log::info("Other owners exist and user {$userId} is not one of them.");
             return $this->errorResponse("Person-DELETE-OTHER_OWNER_EXISTS");
         }
 
-//       Log::info("User {$userId} is authorized to delete person {$personId}.");
+        //       Log::info("User {$userId} is authorized to delete person {$personId}.");
         return true; // Person can be deleted
     }
 
@@ -91,7 +84,7 @@ trait HandlesPersonDeletion_old
     protected function hasChildren($personId)
     {
         $children = $this->getAllChildren([$personId]);
-//       Log::info("Checking if person {$personId} has children: " . json_encode($children));
+        //       Log::info("Checking if person {$personId} has children: " . json_encode($children));
         return !empty($children);
     }
 
@@ -116,12 +109,12 @@ trait HandlesPersonDeletion_old
     protected function getAllUserIdsInSmallClan($personId)
     {
         $ownerIds = $this->getAllOwnerIdsInSmallClan($personId);
-//       Log::info("Retrieving user IDs for owners: " . json_encode($ownerIds));
+        //       Log::info("Retrieving user IDs for owners: " . json_encode($ownerIds));
         $users = Person::whereIn('id', $ownerIds)
             ->where('status', Status::Active)
             ->pluck('creator_id')
             ->toArray();
-//       Log::info("User IDs in small clan: " . json_encode($users));
+        //       Log::info("User IDs in small clan: " . json_encode($users));
         return $users;
     }
 
@@ -137,7 +130,7 @@ trait HandlesPersonDeletion_old
             ->where('is_owner', true)
             ->get(['id']);
         $ownerIds = $people->pluck('id')->toArray();
-//       Log::info("Owner IDs in small clan: " . json_encode($ownerIds));
+        //       Log::info("Owner IDs in small clan: " . json_encode($ownerIds));
         return $ownerIds;
     }
 
@@ -150,7 +143,7 @@ trait HandlesPersonDeletion_old
     protected function getAllPeopleIdsInSmallClan($personId)
     {
         if (!$personId) {
-//           Log::info("No person ID provided for small clan retrieval.");
+            //           Log::info("No person ID provided for small clan retrieval.");
             return [];
         }
 
@@ -167,7 +160,7 @@ trait HandlesPersonDeletion_old
             ->unique()
             ->values()
             ->all();
-//       Log::info("All people IDs in small clan: " . json_encode($allIds));
+        //       Log::info("All people IDs in small clan: " . json_encode($allIds));
         return $allIds;
     }
 
@@ -181,7 +174,7 @@ trait HandlesPersonDeletion_old
     {
         $parentRelation = PersonChild::where('child_id', $personId)->first();
         if (!$parentRelation || !$parentRelation->person_marriage_id) {
-//           Log::info("No parent relation found for person {$personId}.");
+            //           Log::info("No parent relation found for person {$personId}.");
             return [];
         }
 
@@ -191,10 +184,10 @@ trait HandlesPersonDeletion_old
 
         if ($parentMarriage) {
             $parentIds = [$parentMarriage->man_id, $parentMarriage->woman_id];
-//           Log::info("Parent IDs for person {$personId}: " . json_encode($parentIds));
+            //           Log::info("Parent IDs for person {$personId}: " . json_encode($parentIds));
             return $parentIds;
         } else {
-//           Log::info("No active parent marriage found for person {$personId}.");
+            //           Log::info("No active parent marriage found for person {$personId}.");
             return [];
         }
     }
@@ -218,7 +211,7 @@ trait HandlesPersonDeletion_old
             return $id === $personId;
         })->values()->all();
 
-//       Log::info("Spouse IDs for person {$personId}: " . json_encode($spouseIds));
+        //       Log::info("Spouse IDs for person {$personId}: " . json_encode($spouseIds));
         return $spouseIds;
     }
 
@@ -231,7 +224,7 @@ trait HandlesPersonDeletion_old
     protected function getChildrenAndSpousesIds(array $parentIds)
     {
         if (empty($parentIds)) {
-//           Log::info("No parent IDs provided for children and spouses retrieval.");
+            //           Log::info("No parent IDs provided for children and spouses retrieval.");
             return [];
         }
 
@@ -240,7 +233,7 @@ trait HandlesPersonDeletion_old
             ->get(['id', 'man_id', 'woman_id']);
 
         if ($parentMarriages->isEmpty()) {
-//           Log::info("No parent marriages found for parent IDs: " . json_encode($parentIds));
+            //           Log::info("No parent marriages found for parent IDs: " . json_encode($parentIds));
             return [];
         }
 
@@ -268,7 +261,7 @@ trait HandlesPersonDeletion_old
 
 
         $allIds = array_unique(array_merge($childrenIds, $spouseIds));
-//       Log::info("Children and spouse IDs for parent IDs: " . json_encode($allIds));
+        //       Log::info("Children and spouse IDs for parent IDs: " . json_encode($allIds));
         return $allIds;
     }
 
@@ -281,7 +274,7 @@ trait HandlesPersonDeletion_old
     protected function getAllChildren($childrenIds)
     {
         if (empty($childrenIds)) {
-//           Log::info("No children IDs provided for retrieving all children.");
+            //           Log::info("No children IDs provided for retrieving all children.");
             return [];
         }
 
@@ -300,7 +293,7 @@ trait HandlesPersonDeletion_old
         }
 
         $uniqueDescendants = array_unique($allDescendants);
-//       Log::info("All descendants IDs: " . json_encode($uniqueDescendants));
+        //       Log::info("All descendants IDs: " . json_encode($uniqueDescendants));
         return $uniqueDescendants;
     }
 }

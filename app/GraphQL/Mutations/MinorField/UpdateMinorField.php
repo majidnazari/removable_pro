@@ -56,6 +56,5 @@ final class UpdateMinorField
 
         return $this->updateModel($MinorFieldResult, $args, $this->userId);
 
-
     }
 }

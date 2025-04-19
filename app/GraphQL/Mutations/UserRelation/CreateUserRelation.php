@@ -25,7 +25,7 @@ final class CreateUserRelation
     use AuthUserTrait;
     use DuplicateCheckTrait;
     use GetAllBloodUsersRelationInClanFromHeads;
-   // use GetAllUsersRelationInClanFromHeads;
+    // use GetAllUsersRelationInClanFromHeads;
 
     protected $userId;
 
@@ -43,10 +43,6 @@ final class CreateUserRelation
         $depth = $args['depth'] ?? 3;
 
         $userIds = $this->getAllBloodUsersInClanFromHeads($user_id, $depth);
-        //$unblooduserIds = $this->getAllUsersInClanFromHeads($user_id, $depth);
-
-//       Log::info(" unblooduserIds are:" . json_encode( $unblooduserIds));
-
 
         $userBloodRelation = User::where("id", $user_id)->first()->blood_user_relation_calculated;
 
@@ -63,24 +59,16 @@ final class CreateUserRelation
                         ->where('related_with_user_id', $userId)
                         ->exists();
 
-
                     // If the relation doesn't exist, insert it
                     if (!$relationExists) {
                         $this->createUserRelation($user_id, $userId);
                     }
-                    // Insert into user_relations
-                    // $this->createUserRelation($user_id, $head);
-
 
                 }
                 // Update blood_relation column in users table
                 $this->updateBloodRelation($user_id);
                 // Commit the transaction if everything was successful
                 DB::commit();
-//               Log::info("Transaction committed successfully.");
-
-
-
 
             } catch (Exception $e) {
                 // Rollback the transaction if any exception occurs
@@ -89,7 +77,6 @@ final class CreateUserRelation
             }
         }
         $userRelations = $this->getBloodUserRelation($user_id);
-//       Log::info("Transaction committed successfully." . json_encode($userRelations));
 
         return $userRelations;
 
