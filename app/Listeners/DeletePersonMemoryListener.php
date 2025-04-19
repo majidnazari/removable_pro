@@ -31,7 +31,7 @@ class DeletePersonMemoryListener
         if ($deletedCount === 0) {
             Log::warning("No Memory records found for person ID: $personId");
         } else {
-            Log::info("Soft deleted {$deletedCount} Memory records for person ID: $personId");
+//           Log::info("Soft deleted {$deletedCount} Memory records for person ID: $personId");
         }
     }
 }

@@ -56,7 +56,7 @@ final class CreateChild
             }
 
             // $allUsers = $this->getAllUserIdsSmallClan($manId);
-            // Log::info("the all users in small clan are:" . json_encode($allUsers) . " and the users logged in {$this->userId}");
+//           Log::info("the all users in small clan are:" . json_encode($allUsers) . " and the users logged in {$this->userId}");
 
             // if (!empty($allUsers) && in_array($this->userId, $allUsers) == false) {
             //     throw new \Exception("you don't have permision to add node!.");
@@ -64,8 +64,8 @@ final class CreateChild
             // }
 
             $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($manId);
-            // Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
-            //Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
+//           Log::info("the getAllusersInSmallClan are". json_encode(value: $getAllusersInSmallClan). "and the condition i s:" );
+//           Log::info("the  user id is {$this->userId} and the users in clan are:". json_encode($getAllusersInSmallClan) . " and the conditions is". !in_array($this->userId,$getAllusersInSmallClan));
 
 
             if (!is_null($getAllusersInSmallClan) && is_array($getAllusersInSmallClan) && count($getAllusersInSmallClan) > 0) {

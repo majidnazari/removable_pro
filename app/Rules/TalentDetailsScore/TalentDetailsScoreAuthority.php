@@ -61,12 +61,12 @@ class TalentDetailsScoreAuthority implements Rule
         //     $query->where('group_category_id', $groupCategoryId);
         // })->get();
 
-        // Log::info("The groupCategoryDetails are: " . json_encode($groupCategoryDetails));
+//       Log::info("The groupCategoryDetails are: " . json_encode($groupCategoryDetails));
 
         // // Step 2: Extract all group IDs
         // $groupIds = $groupCategoryDetails->pluck('group_id')->toArray();
 
-        // Log::info("The groupIds are: " . json_encode($groupIds));
+//       Log::info("The groupIds are: " . json_encode($groupIds));
 
 
         // // Step 3: Get all User IDs from GroupDetails with group_id in the list
@@ -75,7 +75,7 @@ class TalentDetailsScoreAuthority implements Rule
         //     ->toArray();
 
         // // Step 4: Log the result
-        // Log::info("The user IDs in the groups are: " . json_encode($userIds));
+//       Log::info("The user IDs in the groups are: " . json_encode($userIds));
 
         // Check if the logged-in user exists in the group category
         // $userExistsInCategory = GroupCategoryDetail::whereHas('Groups', function ($query) use ($groupCategoryId) {
@@ -85,13 +85,13 @@ class TalentDetailsScoreAuthority implements Rule
         //         });
         // })->exists();
 
-        //Log::info(" userExistsInCategory is :" . json_encode( $userExistsInCategory));
-        //Log::info("Does the user  $this->userId exist in this category? " . ($userExistsInCategory ? 'Yes' : 'No'));
+//       Log::info(" userExistsInCategory is :" . json_encode( $userExistsInCategory));
+//       Log::info("Does the user  $this->userId exist in this category? " . ($userExistsInCategory ? 'Yes' : 'No'));
         // return false;
 
         $isUserInGroup = $this->isUserInGroupCategory($groupCategoryId);
 
-        //Log::info("the result is :" . $isUserInGroup);
+//       Log::info("the result is :" . $isUserInGroup);
         if (!$isUserInGroup) {
             $this->errorMessage = "You must be a part of the associated group to create a talent detail score.";
             return false;

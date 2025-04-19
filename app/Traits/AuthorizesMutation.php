@@ -36,7 +36,7 @@ trait AuthorizesMutation
     {
         $this->user = $this->getUser();
         $modelInstance=null;
-        //Log::info("the user loggee din is:" . $this->user);
+//       Log::info("the user loggee din is:" . $this->user);
 
 
         // if (in_array($action, [AuthAction::Update, AuthAction::Delete])) {
@@ -56,7 +56,7 @@ trait AuthorizesMutation
         $columnsToCheck = $columnsToCheck ?? ['creator_id'];
 
         if (in_array($action, [AuthAction::Update, AuthAction::Delete])) {
-            //Log::info("before fetch FB");
+//           Log::info("before fetch FB");
             $modelInstance = (new $modelClass)->findOrFail($args['id']);
             if (!$modelInstance) {
                 // Return a custom error response if the model doesn't exist
@@ -64,7 +64,7 @@ trait AuthorizesMutation
         
                 throw new CustomValidationException("Model is not found", "مدل مربوطه پیدا نشد.", 400);
             }
-            //Log::info("after fetch FB and ".json_encode($modelInstance));
+//           Log::info("after fetch FB and ".json_encode($modelInstance));
             if ($this->user->isAdmin() || $this->user->isSupporter()) {
                 // Admins and Supporters can perform any action
                 return $modelInstance;

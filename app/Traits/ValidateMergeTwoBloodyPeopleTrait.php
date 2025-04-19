@@ -12,10 +12,10 @@ trait ValidateMergeTwoBloodyPeopleTrait
     public function validatePersonsForMerge(Person $primaryPerson, Person $secondaryPerson): void
     {
         $allBloodPeopleOfPrimaryPerson = $this->getAllBloodPersonsInClanFromHeadsAccordingPersonId($primaryPerson->id, 10);
-        Log::info("allBloodyPeopleOfPrimaryPerson are:" . json_encode($allBloodPeopleOfPrimaryPerson));
+//       Log::info("allBloodyPeopleOfPrimaryPerson are:" . json_encode($allBloodPeopleOfPrimaryPerson));
 
         $allBloodPeopleOfSecondaryPerson = $this->getAllBloodPersonsInClanFromHeadsAccordingPersonId($secondaryPerson->id, 10);
-        Log::info("allBloodyPeopleOfSecondaryPerson are:" . json_encode($allBloodPeopleOfSecondaryPerson));
+//       Log::info("allBloodyPeopleOfSecondaryPerson are:" . json_encode($allBloodPeopleOfSecondaryPerson));
 
         $primarySet = collect($allBloodPeopleOfPrimaryPerson)->sort()->values()->all();
         $secondarySet = collect($allBloodPeopleOfSecondaryPerson)->sort()->values()->all();
@@ -51,6 +51,6 @@ trait ValidateMergeTwoBloodyPeopleTrait
 
         }
 
-        Log::info("Primary and Secondary persons are in the same family and have same parents.");
+//       Log::info("Primary and Secondary persons are in the same family and have same parents.");
     }
 }

@@ -55,7 +55,7 @@ class MergeValidateMergeIdReceiver implements Rule
 
          $this->user_receiver_id = UserMergeRequest::where('id', $this->id)->first()->user_receiver_id;
 
-         //Log::info("the request is: ".  $this->user_receiver_id);
+//        Log::info("the request is: ".  $this->user_receiver_id);
 
            
         $completeRelations = UserMergeRequest::where('status', MergeStatus::Complete)
@@ -63,7 +63,7 @@ class MergeValidateMergeIdReceiver implements Rule
                     ->orWhere('user_sender_id',   $this->user_receiver_id)
                     ->get();
                 
-           // Log::info("the complete are:". json_encode($completeRelations));
+//          Log::info("the complete are:". json_encode($completeRelations));
 
         if ($completeRelations->isNotEmpty()) {
             return $this->getPersonIdsForCompleteRelations($completeRelations);
@@ -78,7 +78,7 @@ class MergeValidateMergeIdReceiver implements Rule
         //     ->toArray();
         
         $activeRelations[]=$this->user_receiver_id ;
-            // Log::info("the all active as a creators are:" . json_encode( $activeRelations));
+//           Log::info("the all active as a creators are:" . json_encode( $activeRelations));
 
         return $this->getPersonIdsForCreators($activeRelations);
     }

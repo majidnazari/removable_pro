@@ -14,7 +14,7 @@ class ScorePolicy
      */
     public function viewAny(User $user): bool
     {
-        //Log::info("view any policy :". json_encode($user));
+//       Log::info("view any policy :". json_encode($user));
 
         return false;
         //
@@ -25,7 +25,7 @@ class ScorePolicy
      */
     public function view(User $user, Score $score): bool
     {
-        //Log::info("view policy :". json_encode($user));
+//       Log::info("view policy :". json_encode($user));
 
         return false;
     }

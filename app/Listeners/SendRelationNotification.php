@@ -37,7 +37,7 @@ class SendRelationNotification
         $local_mobile = substr($raw_mobile, strlen($country_code));
         
         // Now you have separate country_code and local_mobile
-        //Log::info("The local mobile is: {$local_mobile} and the country code is: {$country_code}");
+//       Log::info("The local mobile is: {$local_mobile} and the country code is: {$country_code}");
         
         // Check if user's mobile exists in person table
         $persons = Person::where('mobile', $local_mobile)->where('country_code',$country_code)->get();

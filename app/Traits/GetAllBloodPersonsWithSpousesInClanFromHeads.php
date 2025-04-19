@@ -71,7 +71,7 @@ trait GetAllBloodPersonsWithSpousesInClanFromHeads
         // $ancestryData = $this->getPersonAncestryWithCompleteMerge($user_id, $depth);
         // $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
 
-        // Log::info("Heads found: " . json_encode($heads));
+//       Log::info("Heads found: " . json_encode($heads));
 
         $ancestryData= $this->getPersonAncestryHeads($user_id,10);
 
@@ -79,10 +79,10 @@ trait GetAllBloodPersonsWithSpousesInClanFromHeads
             Log::warning("Ancestry data is null or empty for user ID: {$user_id}");
             return $allPersonIds ; // Return null instead of throwing an error
         }
-        Log::info("ancestryData are : " . json_encode($ancestryData));
+//       Log::info("ancestryData are : " . json_encode($ancestryData));
 
         $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
-        Log::info("headstmp found: " . json_encode($heads));
+//       Log::info("headstmp found: " . json_encode($heads));
 
         // Fetch descendants for each head
         foreach ($heads as $head) {
@@ -90,8 +90,8 @@ trait GetAllBloodPersonsWithSpousesInClanFromHeads
             $allPersonIds = array_merge($allPersonIds, $descendants);
         }
 
-        //Log::info("All people in clan: " . json_encode(array_unique($allPersonIds)));
-        Log::info("All people in clan: " . json_encode(array_values(array_unique($allPersonIds))));
+//       Log::info("All people in clan: " . json_encode(array_unique($allPersonIds)));
+//       Log::info("All people in clan: " . json_encode(array_values(array_unique($allPersonIds))));
 
 
         return array_values(array_unique($allPersonIds));

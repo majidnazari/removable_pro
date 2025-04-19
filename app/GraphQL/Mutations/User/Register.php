@@ -48,14 +48,14 @@ class Register extends BaseAuthResolver
         // // Increment the registration attempts for the IP
         // RateLimiter::hit('register:' . $context->request->ip(), 60);  // 1 minute time window
 
-        // Log::info("the inside of resolve is running");
+//       Log::info("the inside of resolve is running");
         $code = 159951;//rand(100000, 999999);
         $code_expired_at = Carbon::now()->addMinutes(2)->format("Y-m-d H:i:s");
         $args['sent_code'] = $code;
         $args['code_expired_at'] = $code_expired_at;
         $model = $this->createAuthModel($args);
 
-        //Log::info("the user is:" . json_encode($model));
+//       Log::info("the user is:" . json_encode($model));
 
         $this->validateAuthModel($model);
 
@@ -135,11 +135,11 @@ class Register extends BaseAuthResolver
             'password' => $args['password'],
         ]);
 
-        //Log::info("cred is:".  json_encode($credentials));
+//       Log::info("cred is:".  json_encode($credentials));
 
         $response = $this->makeRequest($credentials);
 
-        //Log::info("the event must run here and user ise:" . json_encode($user));
+//       Log::info("the event must run here and user ise:" . json_encode($user));
         // Fire the UserRegistered event after user is fully registered
         event(new UserRegistered($user));
 

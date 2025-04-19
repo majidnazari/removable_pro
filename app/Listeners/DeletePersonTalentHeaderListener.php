@@ -32,7 +32,7 @@ class DeletePersonTalentHeaderListener
         if ($deletedCount === 0) {
             Log::warning("No TalentHeader records found for person ID: $personId");
         } else {
-            Log::info("Soft deleted {$deletedCount} TalentHeader records for person ID: $personId");
+//           Log::info("Soft deleted {$deletedCount} TalentHeader records for person ID: $personId");
         }
     }
 }

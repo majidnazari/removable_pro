@@ -55,12 +55,12 @@ trait GetAllBloodPersonsInClanFromHeads
         // $ancestryData = $this->getPersonAncestryWithCompleteMerge($user_id, $depth);
         // $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
 
-        // Log::info("Heads found: " . json_encode($heads));
+//       Log::info("Heads found: " . json_encode($heads));
 
         $ancestryData= $this->getPersonAncestryHeads($user_id,10);
         $heads = collect($ancestryData['heads'])->pluck('person_id')->toArray();
 
-        Log::info("headstmp found: " . json_encode($heads));
+//       Log::info("headstmp found: " . json_encode($heads));
 
 
         $visited = [];
@@ -72,7 +72,7 @@ trait GetAllBloodPersonsInClanFromHeads
             $allPersonIds = array_merge($allPersonIds, $descendants);
         }
 
-        Log::info("all people are : " . json_encode($allPersonIds));
+//       Log::info("all people are : " . json_encode($allPersonIds));
 
         return array_unique($allPersonIds);
     }

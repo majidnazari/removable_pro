@@ -53,14 +53,14 @@ final class GetPerson
         $user = $this->getUser();
         $Person = $this->findUser($args['id']);//Person::where('id', $args['id']);
 
-        Log::info("the method resolvePerson are running");
+//       Log::info("the method resolvePerson are running");
 
         $getAllUsersInClanFromHeads=$this->getAllUsersInClanFromHeads( $user->id);
 
-        Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $getAllUsersInClanFromHeads));
+//       Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $getAllUsersInClanFromHeads));
 
 
-        // Log::info("the id is:" . $args['id'] ."the peson found is :". json_encode($Person) );
+//       Log::info("the id is:" . $args['id'] ."the peson found is :". json_encode($Person) );
         return $Person;
     }
     // function resolvePersonFatherOfFather($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
@@ -272,7 +272,7 @@ final class GetPerson
         $user_id = $args['user_id'] ?? $this->getUserId();
         $depth = $args['depth'] ?? 3;
 
-        //Log::info("the user {$user_id} and depth {$depth}");
+//       Log::info("the user {$user_id} and depth {$depth}");
         return $this->getPersonAncestryWithCompleteMerge($user_id, $depth);
     }
 
@@ -289,7 +289,7 @@ final class GetPerson
         $user_id = $args['user_id'] ?? $this->getUserId();
         $depth = $args['depth'] ?? 3;
 
-        //Log::info("the user {$user_id} and depth {$depth}");
+//       Log::info("the user {$user_id} and depth {$depth}");
         return $this->getBloodyPersonAncestry($user_id, $depth);
     }
 

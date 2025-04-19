@@ -26,7 +26,7 @@ class UpdateSuspendMemoryInputValidator extends Validator
 
         $this->userId = $user->id;
 
-        // Log::info("UpdateSuspendMemoryInputValidator User ID: " . $this->userId);
+//       Log::info("UpdateSuspendMemoryInputValidator User ID: " . $this->userId);
 
         $confirmStatus = $this->arg('confirm_status');
        

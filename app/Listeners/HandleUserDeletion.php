@@ -39,7 +39,7 @@ class HandleUserDeletion
                 ->where('creator_id', $userId)
                 ->update(['deleted_at' => $timestamp]);
 
-            Log::info("Soft deleted $count records from $table for creator_id = $userId. for table {$table}");
+//           Log::info("Soft deleted $count records from $table for creator_id = $userId. for table {$table}");
         }
 
         // Soft delete group_details separately for user_id
@@ -47,7 +47,7 @@ class HandleUserDeletion
             ->where('user_id', $userId)
             ->update(['deleted_at' => $timestamp]);
 
-        Log::info("Soft deleted $groupDetailsCount records from group_details for user_id = $userId.");
+//       Log::info("Soft deleted $groupDetailsCount records from group_details for user_id = $userId.");
     
     }
 }

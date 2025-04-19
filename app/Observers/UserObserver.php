@@ -54,7 +54,7 @@ class UserObserver
         $tables = $this->getAllTablesWithUserColumns();
 
         foreach ($tables as $table => $columns) {
-            Log::info("UserObserver: Processing table '{$table}' with columns: " . implode(', ', $columns));
+//           Log::info("UserObserver: Processing table '{$table}' with columns: " . implode(', ', $columns));
 
             foreach ($columns as $column) {
                 if (!Schema::hasColumn($table, $column)) {
@@ -66,12 +66,12 @@ class UserObserver
                     DB::table($table)
                         ->where($column, $user->id)
                         ->update(['deleted_at' => now()]);
-                    Log::info("UserObserver: Soft deleted from '{$table}' where '{$column}' = {$user->id}");
+//                   Log::info("UserObserver: Soft deleted from '{$table}' where '{$column}' = {$user->id}");
                 } else {
                     DB::table($table)
                         ->where($column, $user->id)
                         ->delete();
-                    Log::info("UserObserver: Hard deleted from '{$table}' where '{$column}' = {$user->id}");
+//                   Log::info("UserObserver: Hard deleted from '{$table}' where '{$column}' = {$user->id}");
                 }
             }
         }
@@ -87,7 +87,7 @@ class UserObserver
             $tableName = $table->$dbKey;
 
             if (in_array($tableName, $this->exceptTables)) {
-                Log::info("UserObserver: Skipping excluded table '{$tableName}'.");
+//               Log::info("UserObserver: Skipping excluded table '{$tableName}'.");
                 continue;
             }
 
@@ -104,7 +104,7 @@ class UserObserver
             }
         }
 
-        Log::info("UserObserver: Final matched table/column list => " . json_encode($tablesWithUserColumns));
+//       Log::info("UserObserver: Final matched table/column list => " . json_encode($tablesWithUserColumns));
         return $tablesWithUserColumns;
     }
 }

@@ -15,7 +15,7 @@ class ValidDeathDate_old implements Rule
 
     public function __construct($birthDateMan=null,$birthDateWoman=null, $marriageDate = null, $divorceDate = null)
     {
-        Log::info("construct ValidDeathDate man birth date {$birthDateMan} and woman {$birthDateWoman} and marriage is {$marriageDate} and divorce  is {$divorceDate}");
+//       Log::info("construct ValidDeathDate man birth date {$birthDateMan} and woman {$birthDateWoman} and marriage is {$marriageDate} and divorce  is {$divorceDate}");
 
         $this->birthDateMan = $birthDateMan ? Carbon::parse($birthDateMan) : null;
         $this->birthDateWoman = $birthDateWoman ? Carbon::parse($birthDateWoman) : null;
@@ -33,13 +33,13 @@ class ValidDeathDate_old implements Rule
     public function passes($attribute, $value)
     {
 
-        Log::info("the log of passes death date value is {$value}");
+//       Log::info("the log of passes death date value is {$value}");
         if (!$value) {
             return true; // If no death_date is provided, validation should pass
         }
 
         $deathDate = Carbon::parse($value);
-        Log::info("the death date is {$deathDate} and  man birth date {$this->birthDateMan} and woman {$this->birthDateWoman} and m date is {$this->marriageDate} and divore date is {$this->divorceDate}");
+//       Log::info("the death date is {$deathDate} and  man birth date {$this->birthDateMan} and woman {$this->birthDateWoman} and m date is {$this->marriageDate} and divore date is {$this->divorceDate}");
 
         // 1. Death date must be after or equal to birth date
         if ($this->birthDateMan && $deathDate->lessThan($this->birthDateMan)) {

@@ -30,22 +30,22 @@ class Login extends BaseAuthResolver
     public function resolve($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {
 
-        //Log::info("the new pass is:" . Hash::make("12345678"));
+//       Log::info("the new pass is:" . Hash::make("12345678"));
         $credentials = $this->buildCredentials($args);
-        //Log::info("the credentials is :" .json_encode( $credentials));
+//       Log::info("the credentials is :" .json_encode( $credentials));
 
         $response = $this->makeRequest($credentials);
 
 
         $user = $this->findUser($args['username']);
 
-       // Log::info("the user is:" . json_encode($user));
+//      Log::info("the user is:" . json_encode($user));
 
         $this->validateUser($user);
 
         event(new UserLoggedIn($user));
 
-        // Log::info("the all MR are:" . json_encode($this->getRelatedUserIds()));
+//       Log::info("the all MR are:" . json_encode($this->getRelatedUserIds()));
 
         return array_merge(
             $response,

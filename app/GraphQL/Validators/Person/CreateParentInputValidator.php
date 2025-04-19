@@ -20,9 +20,9 @@ class CreateParentInputValidator extends Validator
         $motherBirthDate = $this->arg('mother')['birth_date'] ?? null;
         $marriageDate = $this->arg('marriage_date') ?? null;
         $divorceDate = $this->arg('divorce_date') ?? null;
-        //Log::info("Passing to ValidDeathDate: father=$fatherBirthDate, mother=$motherBirthDate, marriage=$marriageDate, divorce=$divorceDate");
+//       Log::info("Passing to ValidDeathDate: father=$fatherBirthDate, mother=$motherBirthDate, marriage=$marriageDate, divorce=$divorceDate");
 
-        //Log::info("th all are :" . json_encode($this->arg("father.birth_date")));
+//       Log::info("th all are :" . json_encode($this->arg("father.birth_date")));
         return [
             'person_id' => ['required', 'exists:people,id'],
 

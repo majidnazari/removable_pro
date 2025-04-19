@@ -26,7 +26,7 @@ trait SearchQueryBuilder
                 $columnType = Schema::getColumnType($table, $key);
                 // If the column is a string, apply a LIKE query
                 if ($columnType == 'varchar' || $columnType == 'text') {
-               // Log::info("the column name is:" . $key . " and the type of column is :" .  $columnType);
+//              Log::info("the column name is:" . $key . " and the type of column is :" .  $columnType);
 
                     $query->where($key, 'LIKE', '%' . $value . '%'); // Use LIKE for string columns
                 } else {

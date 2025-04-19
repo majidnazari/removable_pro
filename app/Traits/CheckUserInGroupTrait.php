@@ -25,8 +25,8 @@ trait CheckUserInGroupTrait
             return false; // User is not logged in
         }
 
-        //Log::info("the user id is :" . $userId);
-        //Log::info("the groupCategoryId id is :" . $groupCategoryId);
+//       Log::info("the user id is :" . $userId);
+//       Log::info("the groupCategoryId id is :" . $groupCategoryId);
         // Check if the user exists in the specified group category
         //    $result= GroupCategoryDetail::whereHas('Groups', function ($query) use ($groupCategoryId, $userId) {
         //         $query->where('group_category_id', $groupCategoryId)
@@ -67,7 +67,7 @@ trait CheckUserInGroupTrait
             ->exists();
 
         return $userCanSee;
-        //Log::info("the result is:" . $userCanSee);
+//       Log::info("the result is:" . $userCanSee);
 
         //return false;
     }

@@ -32,7 +32,7 @@ final class GetPersons
         // return $Persons;
 
         $query = $this->getModelByAuthorization(Person::class, $args, true);
-        //Log::info("the user id is:".  $this->userId);
+//       Log::info("the user id is:".  $this->userId);
 
         $query = $this->applySearchFilters( $query, $args);
         return  $query;

@@ -32,7 +32,7 @@ class UniquePerson implements Rule
         $this->birthDate = $birthDate;
         $this->id = $id;
         $this->userId =$this->getUserId();
-       // Log::info("the args of rule constructor are  :" . json_encode($this) );
+//      Log::info("the args of rule constructor are  :" . json_encode($this) );
 
     }
 
@@ -50,7 +50,7 @@ class UniquePerson implements Rule
             ->where('birth_date', $this->birthDate)
             ->where('creator_id', $this->userId );
 
-           // Log::info("the args of rule passes are  :" . json_encode($this) );
+//          Log::info("the args of rule passes are  :" . json_encode($this) );
 
         // Exclude the current person from the check if updating
         if ($this->id) {

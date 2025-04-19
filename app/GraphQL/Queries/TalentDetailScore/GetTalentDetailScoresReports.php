@@ -51,27 +51,27 @@ final class GetTalentDetailScoresReports
         }
 
         if (isset($args['scoreEqual'])) {
-            //Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
+//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores->where("score", (int) $args['scoreEqual']);
         }
         if (isset($args['scoreEqualOrMore'])) {
-            // Log::info("the score sttaus is :" . (int) $args['scoreEqualOrMore']);
+//           Log::info("the score sttaus is :" . (int) $args['scoreEqualOrMore']);
 
             $TalentDetailScores = $TalentDetailScores->where("score", ">=", (int) $args['scoreEqualOrMore']);
         }
         if (isset($args['scoreEqualOrLess'])) {
-            // Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
+//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores->where("score", "<=", (int) $args['scoreEqualOrLess']);
         }
         if (isset($args['status'])) {
-            // Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
+//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores->where("score", (int) $args['status']);
         }
         if (isset($args['minor_field_id'])) {
-            // Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
+//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores
                 ->whereHas('TalentDetail', function ($query) use ($args) {
@@ -85,7 +85,7 @@ final class GetTalentDetailScoresReports
         }
 
         if (isset($args['middle_field_id'])) {
-            // Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
+//           Log::info("the score sttaus is :" . (int) $args['scoreEqual']);
 
             $TalentDetailScores = $TalentDetailScores
                 ->whereHas('TalentDetail', function ($query) use ($args) {

@@ -22,7 +22,7 @@ class CheckPersonOwner implements Rule
             return false;
         }
 
-        //Log::info("the owner is :" . $owner->id . " and the entered person id is :" . $value );
+//       Log::info("the owner is :" . $owner->id . " and the entered person id is :" . $value );
         // If the owner ID does not match the person ID, return false
         return $owner->id == (int) $value;
     }

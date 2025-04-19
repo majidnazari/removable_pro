@@ -14,8 +14,8 @@ class UserMergeRequestPolicy
      */
     public function viewAny(User $user, UserMergeRequest $userMergeRequest=null): bool
     {
-        // Log::info("view any  this is user:". json_encode($user));
-        // Log::info("view any this is request:". json_encode($userMergeRequest));
+//       Log::info("view any  this is user:". json_encode($user));
+//       Log::info("view any this is request:". json_encode($userMergeRequest));
         // if ($user->isAdmin()) {
         //     return true;
         // }
@@ -30,7 +30,7 @@ class UserMergeRequestPolicy
      */
     public function view(User $user, UserMergeRequest $userMergeRequest=null): bool
     {
-        // Log::info("view :". json_encode($user));
+//       Log::info("view :". json_encode($user));
         // //return false;
         // // Admins can view all requests
         // if ($user->isAdmin()) {

@@ -50,8 +50,8 @@ final class UpdateSuspendMemory
         }
 
 
-        //Log::info("the memory is:". json_encode($MemoryResult));
-        //Log::info("the owner of this user is: is:".$this->findOwner()->id);
+//       Log::info("the memory is:". json_encode($MemoryResult));
+//       Log::info("the owner of this user is: is:".$this->findOwner()->id);
 
         if ($MemoryResult->person_id !== $this->findOwner()->id) {
             // If person_id doesn't match, throw an exception
@@ -61,7 +61,7 @@ final class UpdateSuspendMemory
         }
 
 
-        //Log::info("the memory is:" . json_encode($MemoryResult));
+//       Log::info("the memory is:" . json_encode($MemoryResult));
        // $this->checkDuplicate(new Memory(), $MemoryResult->toArray());
 
         // // Ignore 'created_at' and 'updated_at' columns

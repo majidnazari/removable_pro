@@ -28,8 +28,8 @@ trait ValidateMergeTwoSubGroupPeopleTrait
         $primaryGroup = $this->getAllBloodPersonIdsFromDescendantsAccordingPersonId($primaryId, $visitedPrimary);
         $secondaryGroup = $this->getAllBloodPersonIdsFromDescendantsAccordingPersonId($secondaryId, $visitedSecondary);
 
-        Log::info("Primary group: " . json_encode($primaryGroup));
-        Log::info("Secondary group: " . json_encode($secondaryGroup));
+//       Log::info("Primary group: " . json_encode($primaryGroup));
+//       Log::info("Secondary group: " . json_encode($secondaryGroup));
 
         // Check for intersection
         if (in_array($primaryId, $secondaryGroup)) {
@@ -47,6 +47,6 @@ trait ValidateMergeTwoSubGroupPeopleTrait
 
         }
 
-        Log::info("Subgroups are independent. Merge is allowed.");
+//       Log::info("Subgroups are independent. Merge is allowed.");
     }
 }

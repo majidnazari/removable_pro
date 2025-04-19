@@ -24,7 +24,7 @@ class OwnerMergeRule implements Rule
     {
         // Get the actual owner user
         $userOwner = $this->findOwner();
-        Log::info("User Owner: " . json_encode($userOwner));
+//       Log::info("User Owner: " . json_encode($userOwner));
 
         // Fetch primary and secondary persons
         $primaryPerson = Person::find($this->primaryPersonId);
@@ -34,15 +34,15 @@ class OwnerMergeRule implements Rule
             return false;
         }
 
-        Log::info("Primary Person: " . json_encode($primaryPerson));
-        Log::info("Secondary Person: " . json_encode($secondaryPerson));
+//       Log::info("Primary Person: " . json_encode($primaryPerson));
+//       Log::info("Secondary Person: " . json_encode($secondaryPerson));
 
         // Check if either person is an owner
         $isPrimaryOwner = $primaryPerson->is_owner;
         $isSecondaryOwner = $secondaryPerson->is_owner;
 
-        Log::info("Is Primary Owner: " . ($isPrimaryOwner ? 'Yes' : 'No'));
-        Log::info("Is Secondary Owner: " . ($isSecondaryOwner ? 'Yes' : 'No'));
+//       Log::info("Is Primary Owner: " . ($isPrimaryOwner ? 'Yes' : 'No'));
+//       Log::info("Is Secondary Owner: " . ($isSecondaryOwner ? 'Yes' : 'No'));
 
         // If neither person is an owner, allow the merge
         if (!$isPrimaryOwner && !$isSecondaryOwner) {

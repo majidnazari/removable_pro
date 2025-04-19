@@ -37,10 +37,10 @@ trait HandlesPersonRelations
     protected function handleChildRemoval(int $personId, int $gender, array $childrenIds, array $parentIds): void
     {
         if (count($childrenIds) === 1 && empty($parentIds)) {
-            Log::info("Person {$personId} has one child but no parents. Removing child relation...");
+//           Log::info("Person {$personId} has one child but no parents. Removing child relation...");
             $this->removeChildRelation($personId, $gender, true);
         } else {
-            Log::info("Person {$personId} is a child, removing parental relation.");
+//           Log::info("Person {$personId} is a child, removing parental relation.");
             $this->removeChildRelation($personId, $gender);
         }
     }

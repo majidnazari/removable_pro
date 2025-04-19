@@ -20,7 +20,7 @@ use Log;
 
 //         // ✅ Handle custom app-level validation exception
 //         if ($originalError instanceof CustomValidationException) {
-//             Log::info("inside of custom error " . json_encode($originalError->getMessage()));
+//           Log::info("inside of custom error " . json_encode($originalError->getMessage()));
 //             return [
 //                 'message' => $originalError->getMessage(),
 //                 'end_user_message' => $originalError->getEndUserMessage(),
@@ -30,7 +30,7 @@ use Log;
 
 //         // ✅ Handle Laravel's native validation exception
 //         if ($originalError instanceof ValidationException) {
-//             Log::info("inside of ValidationException error: " . json_encode($originalError->errors()));
+//           Log::info("inside of ValidationException error: " . json_encode($originalError->errors()));
 
 
 
@@ -64,10 +64,10 @@ class GraphQLErrorHandler implements ErrorHandler
         $previous = $error?->getPrevious();
         
         // Log the previous error to see what type it is
-        Log::info('Previous exception type: ' . get_class($previous));
+//       Log::info('Previous exception type: ' . get_class($previous));
 
         if ($previous instanceof CustomValidationException) {
-            Log::info("inside of custom error " . json_encode($previous->getMessage()));
+//           Log::info("inside of custom error " . json_encode($previous->getMessage()));
             return [
                 'message' => $previous->getMessage(),
                 'end_user_message' => $previous->getEndUserMessage(),
@@ -80,7 +80,7 @@ class GraphQLErrorHandler implements ErrorHandler
             $extensions = $previous->getExtensions();
            
             if (isset($extensions['validation'])) {
-                Log::info("GraphQL Validation Error", $extensions['validation']);
+//               Log::info("GraphQL Validation Error", $extensions['validation']);
             }
 
             return [

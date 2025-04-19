@@ -23,7 +23,7 @@ class ClanUpdatedListener
     public function handle(ClanUpdated $event): void
     {
         //
-        Log::info("Clan ID updated for user {$event->userId}: {$event->newClanId}");
+//       Log::info("Clan ID updated for user {$event->userId}: {$event->newClanId}");
  
     }
 }

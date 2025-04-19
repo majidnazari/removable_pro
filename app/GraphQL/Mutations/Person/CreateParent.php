@@ -162,12 +162,12 @@ final class CreateParent
     private function validatePersonAncestry(int $personId)
     {
         // $result = $this->getPersonAncestryWithCompleteMerge($this->userId,10);
-        // Log::info("theuser logggd in is :" . $this->userId . "the result of active complete is :" . json_encode( $result['heads']));
+//       Log::info("theuser logggd in is :" . $this->userId . "the result of active complete is :" . json_encode( $result['heads']));
         // $headsIds = collect($result['heads'])->pluck("person_id")->toArray();
 
         $result = $this->getPersonAncestryHeads($this->userId, 10);
         $heads = collect($result['heads'])->pluck('person_id')->toArray();
-        Log::info("heads found: " . json_encode($heads));
+//       Log::info("heads found: " . json_encode($heads));
 
         if (!in_array($personId, $heads)) {
             throw new CustomValidationException("Person with ID {$personId} not found in the list of heads.", "شخص با شناسه {$personId} در لیست سرها یافت نشد.", 400);

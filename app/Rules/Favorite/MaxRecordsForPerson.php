@@ -22,7 +22,7 @@ class MaxRecordsForPerson implements Rule
     public function __construct($personId=null, $ignoreRecordId = null)
     {
         $this->personId = $personId ?? $this->findOwner()->id;
-       // Log::info("the person id is:" .$this->personId);
+//      Log::info("the person id is:" .$this->personId);
         $this->ignoreRecordId = $ignoreRecordId;
     }
 
@@ -42,7 +42,7 @@ class MaxRecordsForPerson implements Rule
             $query->where('id', '!=', $this->ignoreRecordId);
         }
 
-        //Log::info("the user count is:" . $query->count());
+//       Log::info("the user count is:" . $query->count());
         return $query->count() < 10; // Allow only if less than 10 records exist
     }
 

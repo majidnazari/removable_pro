@@ -52,7 +52,7 @@ final class CreateMemory
         ];
 
 
-        //Log::info("the args are:" . $args['content']);
+//       Log::info("the args are:" . $args['content']);
 
         // $is_exist = Memory::where($MemoryModel)->first();
         // if ($is_exist) {
@@ -101,7 +101,7 @@ final class CreateMemory
             $extension = $file->getClientOriginalExtension();
             $fileSize = $file->getSize();
 
-            // Log::info("the file nme is: " . $args['person_id'] . '.' . $file->getClientOriginalExtension());
+//           Log::info("the file nme is: " . $args['person_id'] . '.' . $file->getClientOriginalExtension());
 
             if (!in_array(strtolower($extension), $allowedFileTypes)) {
                 throw new CustomValidationException("Invalid file type. Allowed types: " . implode(', ', $allowedFileTypes), "Invalid file type. Allowed types: " . implode(', ', $allowedFileTypes), 400);

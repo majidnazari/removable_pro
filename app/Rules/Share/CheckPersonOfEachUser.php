@@ -37,7 +37,7 @@ class CheckPersonOfEachUser implements Rule
     {
         // Log the entire request payload for debugging
         $requestData = request()->all();
-        // Log::info("Request Data: " . json_encode($requestData));
+//       Log::info("Request Data: " . json_encode($requestData));
 
         // Attempt to extract `person_id` directly from the `variables` or fallback to parsing the query
         $personId = null;
@@ -53,17 +53,17 @@ class CheckPersonOfEachUser implements Rule
             }
         }
         $this->personId = $personId;
-       // Log::info("Extracted person_id: " . $personId);
+//      Log::info("Extracted person_id: " . $personId);
 
-        // Log::info("The person id is: " . $personId);
-        // Log::info("the person id is:" .$this->personId);
+//       Log::info("The person id is: " . $personId);
+//       Log::info("the person id is:" .$this->personId);
         // Check if the person has any active children
         //$allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
-        Log::info("the method CheckPersonOfEachUser rule are running");
+//       Log::info("the method CheckPersonOfEachUser rule are running");
 
         $allowedCreatorIds=$this->getAllUsersInClanFromHeads($this->getUserId());
 
-        Log::info("the result of getAllUsersInClanFromHeads are ".json_encode($allowedCreatorIds));
+//       Log::info("the result of getAllUsersInClanFromHeads are ".json_encode($allowedCreatorIds));
 
 
         //$allowedCreatorIds= $this->calculateUserRelationInClan();
@@ -79,7 +79,7 @@ class CheckPersonOfEachUser implements Rule
         // if (($person) && ($person->is_owner == true) && ($person->creator_id != $this->getUserId())) {
         //     return false;
         // }
-        //Log::info(message: "the allowedCreatorIds is :" . json_encode($allowedCreatorIds));
+//       Log::info(message: "the allowedCreatorIds is :" . json_encode($allowedCreatorIds));
         return $person;
 
     }
