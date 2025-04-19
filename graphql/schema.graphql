@@ -27,8 +27,6 @@
       #import Types/PersonChild/type.graphql
       #import Types/PersonMarriage/type.graphql
       #import Types/PersonDetails/type.graphql
-      #import Types/PersonScore/type.graphql
-      #import Types/Score/type.graphql
       #import Types/UserMergeRequest/type.graphql
       #import Types/Notif/type.graphql
       #import Types/MajorField/type.graphql
@@ -62,8 +60,6 @@
         #import Queries/PersonChild/PersonChild.graphql
         #import Queries/PersonMarriage/PersonMarriage.graphql
         #import Queries/PersonDetails/PersonDetails.graphql
-        #import Queries/PersonScore/PersonScore.graphql
-        #import Queries/Score/Score.graphql
         #import Queries/UserMergeRequest/UserMergeRequest.graphql
         #import Queries/Notif/Notif.graphql
         #import Queries/MajorField/MajorField.graphql
@@ -98,8 +94,6 @@
       #import Mutations/PersonChild/PersonChild.graphql
       #import Mutations/PersonMarriage/PersonMarriage.graphql
       #import Mutations/PersonDetails/PersonDetails.graphql
-      #import Mutations/PersonScore/PersonScore.graphql
-      #import Mutations/Score/Score.graphql
       #import Mutations/UserMergeRequest/UserMergeRequest.graphql
       #import Mutations/Notif/Notif.graphql
       #import Mutations/MajorField/MajorField.graphql
