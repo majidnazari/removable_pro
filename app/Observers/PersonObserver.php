@@ -35,7 +35,7 @@ class PersonObserver
         }
 
         $personId = $person->id;
-        Log::info("PersonObserver: Soft deleting related records for person_id = {$personId}");
+//       Log::info("PersonObserver: Soft deleting related records for person_id = {$personId}");
 
         // Add all related tables that reference person_id
         $tables = [
@@ -54,7 +54,7 @@ class PersonObserver
                 ->where('person_id', $personId)
                 ->update(['deleted_at' => now()]);
 
-            Log::info("PersonObserver: Soft deleted records from {$table} where person_id = {$personId}");
+//           Log::info("PersonObserver: Soft deleted records from {$table} where person_id = {$personId}");
         }
     }
 

@@ -49,9 +49,9 @@ trait UpdateUserFlagTrait
                 ->whereNull('deleted_at')
                 ->get();
                 
-            Log::info("Updated blood_user_relation_calculated flag to " . ($flag ? 'true' : 'false') . 
-                     " for user ID: {$userId} and related users: " . 
-                     json_encode($updatedUsers->pluck('id')));
+//           Log::info("Updated blood_user_relation_calculated flag to " . ($flag ? 'true' : 'false') . 
+//                    " for user ID: {$userId} and related users: " . 
+//                    json_encode($updatedUsers->pluck('id')));
             
             DB::commit();
             

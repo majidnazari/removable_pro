@@ -31,7 +31,7 @@ class DeletePersonFavoriteListener
         if ($deletedCount === 0) {
             Log::warning("No Favorite records found for person ID: $personId");
         } else {
-            Log::info("Soft deleted {$deletedCount} Favorite records for person ID: $personId");
+//           Log::info("Soft deleted {$deletedCount} Favorite records for person ID: $personId");
         }
     }
 }

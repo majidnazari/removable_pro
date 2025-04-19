@@ -35,7 +35,7 @@ final class GetUserMergeRequests
         $query = $this->applySearchFilters( $query, $args);
         return  $query;
 
-       // Log::info("the user merge request is:" . json_encode($userMergeRequest));
+//      Log::info("the user merge request is:" . json_encode($userMergeRequest));
         // Make sure the model exists and the user has access
         // if (!$userMergeRequest) {
         //     throw new \Exception("UserMergeRequest not found or you don't have permission.");

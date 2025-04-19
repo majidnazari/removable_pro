@@ -40,7 +40,7 @@ trait DuplicateCheckTrait
         $sqlWithBindings = $this->replaceQueryBindings($query->toSql(), $query->getBindings());
 
         // Log the final query
-       // Log::info('Final Query: ' . $sqlWithBindings);
+//      Log::info('Final Query: ' . $sqlWithBindings);
 
         // If duplicate exists, throw an error
         // if ($query->exists()) {

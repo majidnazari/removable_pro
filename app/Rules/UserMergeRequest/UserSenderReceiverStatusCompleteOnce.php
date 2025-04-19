@@ -34,7 +34,7 @@ class UserSenderReceiverStatusCompleteOnce implements Rule
         // Step 1: Get the sender's mobile using node_sender_id
         $senderPerson = Person::where('id', $value)->first();
 
-        //Log::info("The sender person is: ". json_encode($senderPerson));
+//       Log::info("The sender person is: ". json_encode($senderPerson));
 
         if (!$senderPerson || !$senderPerson->mobile) {
             return $this->failValidation('StatusComplete:Sender node does not exist.');
@@ -43,7 +43,7 @@ class UserSenderReceiverStatusCompleteOnce implements Rule
         // Step 3: Get receiver's user ID
         $receiverUser = User::where('mobile',  $senderMobile )->first();
 
-       // Log::info("The receiver person is: ". json_encode($receiverUser));
+//      Log::info("The receiver person is: ". json_encode($receiverUser));
 
         if (!$receiverUser) {
             return $this->failValidation('StatusComplete:Receiver user not found.');
@@ -64,7 +64,7 @@ class UserSenderReceiverStatusCompleteOnce implements Rule
             ->where('status', MergeStatus::Complete)            
             ->first();
 
-        //Log::info("The UserMergeRequest StatusComplete is: ". json_encode($existingRequest));
+//       Log::info("The UserMergeRequest StatusComplete is: ". json_encode($existingRequest));
 
 
         // If an existing request is found, prevent duplicates

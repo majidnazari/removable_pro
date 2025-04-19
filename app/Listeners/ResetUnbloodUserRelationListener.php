@@ -19,16 +19,16 @@ class ResetUnbloodUserRelationListener
         $userId = $event->userId;
         $depth = 10; // Adjust depth if needed
 
-        Log::info("Resetting blood_user_relation_calculated for user: $userId");
+//       Log::info("Resetting blood_user_relation_calculated for user: $userId");
 
         // Get all clan users (including non-blood-related users)
         //$unbloodUserIds = $this->getAllUsersInClanFromHeads($userId, $depth);
 
-        Log::info("the method ResetUnbloodUserRelationListener are running");
+//       Log::info("the method ResetUnbloodUserRelationListener are running");
 
 
         $unbloodUserIds=$this->getAllUsersInClanFromHeads($userId);
-        Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $unbloodUserIds));
+//       Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $unbloodUserIds));
 
         //$unbloodUserIds= $this->calculateUserRelationInClan();
 
@@ -36,6 +36,6 @@ class ResetUnbloodUserRelationListener
         // Update `blood_user_relation_calculated` to false for all users
         User::whereIn('id', $unbloodUserIds)->update(['blood_user_relation_calculated' => false]);
 
-        Log::info("Updated unblood_user_relation_calculated to false for users: " . implode(', ', $unbloodUserIds));
+//       Log::info("Updated unblood_user_relation_calculated to false for users: " . implode(', ', $unbloodUserIds));
     }
 }

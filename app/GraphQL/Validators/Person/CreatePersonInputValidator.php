@@ -32,7 +32,7 @@ class CreatePersonInputValidator extends Validator
         $this->userId = $user->id;
         ;
 
-        //Log::info("the user is:" . $this->userId);
+//       Log::info("the user is:" . $this->userId);
         //$id = $this->arg('id');  // Get the id argument for update
         $firstName = $this->arg('first_name');
         $lastName = $this->arg('last_name');

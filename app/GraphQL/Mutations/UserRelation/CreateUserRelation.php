@@ -45,7 +45,7 @@ final class CreateUserRelation
         $userIds = $this->getAllBloodUsersInClanFromHeads($user_id, $depth);
         //$unblooduserIds = $this->getAllUsersInClanFromHeads($user_id, $depth);
 
-        //Log::info(" unblooduserIds are:" . json_encode( $unblooduserIds));
+//       Log::info(" unblooduserIds are:" . json_encode( $unblooduserIds));
 
 
         $userBloodRelation = User::where("id", $user_id)->first()->blood_user_relation_calculated;
@@ -77,7 +77,7 @@ final class CreateUserRelation
                 $this->updateBloodRelation($user_id);
                 // Commit the transaction if everything was successful
                 DB::commit();
-                Log::info("Transaction committed successfully.");
+//               Log::info("Transaction committed successfully.");
 
 
 
@@ -89,7 +89,7 @@ final class CreateUserRelation
             }
         }
         $userRelations = $this->getBloodUserRelation($user_id);
-        Log::info("Transaction committed successfully." . json_encode($userRelations));
+//       Log::info("Transaction committed successfully." . json_encode($userRelations));
 
         return $userRelations;
 

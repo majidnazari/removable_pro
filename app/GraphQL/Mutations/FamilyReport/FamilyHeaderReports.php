@@ -78,7 +78,7 @@ final class FamilyHeaderReports
     //     // Make the list unique based on 'id'
     //     $major = collect($major)->unique('id')->values()->all();
 
-    //     Log::info("the major is :" . json_encode($major));
+//       Log::info("the major is :" . json_encode($major));
 
     //     // Log::info("the majorList are:" . json_encode($major));
 

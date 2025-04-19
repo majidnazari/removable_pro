@@ -44,9 +44,9 @@ final class UpdateMergeRequestSender
             "editor_id" => $this->user_sender_id,
             "merge_status_sender" => $args['merge_status_sender'] ?? RequestStatusSender::Suspend
         ];
-        //Log::info("the update status sender :". json_encode($data));
+//       Log::info("the update status sender :". json_encode($data));
 
-        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
+//       Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $UserMergeRequest = UserMergeRequest::where('id', $args['id'])->first();
         //->where('request_status_sender',  RequestStatusSender::Active->value)
 

@@ -51,7 +51,7 @@ final class UpdateMergeRequestReceiver
             "merge_status_receiver" => $args['merge_status_receiver'] ?? RequestStatusReceiver::Suspend->value
         ];
 
-        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
+//       Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $UserMergeRequest = UserMergeRequest::where('id', $args['id'])->first();
         if (!$UserMergeRequest) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-RECORD_NOT_FOUND", "درخواست ادغام کاربر. به روزرسانی گیرنده. رکورد یافت نشد", 404);
@@ -82,10 +82,10 @@ final class UpdateMergeRequestReceiver
         // $sql = $is_exist->toSql();
         // $bindings = $is_exist->getBindings();
 
-        // Log::info('SQL Query for Merge Request:', [
-        //     'query' => $sql,
-        //     'bindings' => $bindings,
-        // ]);
+//       Log::info('SQL Query for Merge Request:', [
+//           'query' => $sql,
+//           'bindings' => $bindings,
+//       ]);
 
         // // Execute the query
         // $is_exist = $is_exist->first();
@@ -104,7 +104,7 @@ final class UpdateMergeRequestReceiver
         }
 
 
-        //Log::info("the active sttaus us:".RequestStatusSender::Active->value);
+//       Log::info("the active sttaus us:".RequestStatusSender::Active->value);
         if ($UserMergeRequest->request_status_sender != RequestStatusSender::Active->value) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE1", "درخواست ادغام کاربر. به روزرسانی گیرنده .ارسال کننده باید تایید", 403);
 

@@ -47,7 +47,7 @@ class OppositeGenderMarriage implements Rule
 
         $this->userId = $user->id;
 
-       // Log::info("the is is :". $userId);
+//      Log::info("the is is :". $userId);
 
         // If either manId or womanId is null, the rule passes (considered valid if only one ID is provided)
         if (isset($this->manId) || isset($this->womanId)) {

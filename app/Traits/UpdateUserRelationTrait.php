@@ -29,7 +29,7 @@ trait UpdateUserRelationTrait
             $updatedRelations = $this->getAllUsersRelatedToCreator($user->id);
 
             DB::commit();
-            Log::info("User {$user->id} blood relations updated successfully.");
+//           Log::info("User {$user->id} blood relations updated successfully.");
 
             return $updatedRelations;
 
@@ -59,8 +59,8 @@ trait UpdateUserRelationTrait
         $usersToAdd = array_diff($allUserIds, $existingRelations);
         $usersToRemove = array_diff($existingRelations, $allUserIds);
 
-        Log::info("Users to add for user {$creatorId}: " . json_encode($usersToAdd));
-        Log::info("Users to remove for user {$creatorId}: " .   json_encode($usersToRemove));
+//       Log::info("Users to add for user {$creatorId}: " . json_encode($usersToAdd));
+//       Log::info("Users to remove for user {$creatorId}: " .   json_encode($usersToRemove));
 
         // Delete extra relations
         if (!empty($usersToRemove)) {
@@ -108,7 +108,7 @@ trait UpdateUserRelationTrait
             ];
         }, $newRelations);
     
-        Log::info("The user relations to be created: " . json_encode($relations));
+//       Log::info("The user relations to be created: " . json_encode($relations));
     
         if (!empty($relations)) {
             DB::table('user_relations')->insertOrIgnore($relations);
@@ -119,7 +119,7 @@ trait UpdateUserRelationTrait
     {
         $userRelated=UserRelation::where('creator_id', $creatorId)->pluck('related_with_user_id')->toArray();
 
-        Log::info("getAllUsersRelatedToCreator for user {$creatorId}.".json_encode($userRelated));
+//       Log::info("getAllUsersRelatedToCreator for user {$creatorId}.".json_encode($userRelated));
 
         return  $userRelated;
     }
@@ -127,7 +127,7 @@ trait UpdateUserRelationTrait
     {
         $userRelated=UserRelation::where('related_with_user_id', $creatorId)->pluck('creator_id')->toArray();
 
-        Log::info("getAllCreatorExistIn for user {$creatorId}.".json_encode($userRelated));
+//       Log::info("getAllCreatorExistIn for user {$creatorId}.".json_encode($userRelated));
 
         return  $userRelated;
     }
@@ -135,7 +135,7 @@ trait UpdateUserRelationTrait
     {
         // Check if these users have family ties (e.g., shared parents/children)
         User::where('id', $userId)->update(['blood_user_relation_calculated'=>true]);
-        Log::info("Updated user  for creator_id: {$userId}");
+//       Log::info("Updated user  for creator_id: {$userId}");
      
     }
 

@@ -144,7 +144,7 @@ class User extends Authenticatable
     public function findForPassport($username)
     {
 
-        //Log::info("the user name is:". $username);
+//       Log::info("the user name is:". $username);
         // return $this->where('mobile', $username)->where('status','Active')->where('mobile_is_verified',1)->first();
         //return $this->whereRaw("CONCAT(country_code, mobile) = ?", [$username])->first();
         return $this->where(self::COLUMN_MOBILE, [$username])

@@ -29,14 +29,14 @@ trait PersonMergeTrait_tmp
 
             // Prioritize is_owner = 1 as the primary person
             if ($secondaryPerson->is_owner && !$primaryPerson->is_owner) {
-                //Log::info("Switching primary and secondary as secondaryPerson is the owner.");
+//               Log::info("Switching primary and secondary as secondaryPerson is the owner.");
                 [$primaryPerson, $secondaryPerson] = [$secondaryPerson, $primaryPerson];
                 [$primaryPersonId, $secondaryPersonId] = [$primaryPerson->id, $secondaryPerson->id];
             }
 
-            // Log::info("the primaryPerson is:" .$primaryPersonId. json_encode($primaryPerson));
-            //Log::info("the secondaryPerson is:" .$secondaryPersonId. json_encode($secondaryPerson));
-            //Log::info("the authId is:" .$authId);
+//           Log::info("the primaryPerson is:" .$primaryPersonId. json_encode($primaryPerson));
+//           Log::info("the secondaryPerson is:" .$secondaryPersonId. json_encode($secondaryPerson));
+//           Log::info("the authId is:" .$authId);
             if (!$primaryPerson || !$secondaryPerson) {
                 throw new Error("One or both persons do not exist.");
             }

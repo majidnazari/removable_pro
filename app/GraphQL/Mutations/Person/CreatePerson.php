@@ -33,7 +33,7 @@ final class CreatePerson
 
         $this->userId = $this->getUserId();
 
-        //Log::info("the user is:" .$this->userId . "and is_owner is:" .$args['is_owner'] );
+//       Log::info("the user is:" .$this->userId . "and is_owner is:" .$args['is_owner'] );
 
         $PersonModel = [
             "creator_id" => $this->userId,

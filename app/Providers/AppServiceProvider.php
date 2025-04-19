@@ -26,12 +26,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // if ($this->app->environment('local')) {
         //     // Register local-only services
-        //    Log::info("reister some of services in local");
+//          Log::info("reister some of services in local");
         // }
 
         // if ($this->app->environment('production')) {
         //     // Register local-only services
-        //    Log::info("reister some of services in production");
+//          Log::info("reister some of services in production");
         // }  
     }  
 
@@ -60,10 +60,10 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
 
         // if ($this->app->environment('production')) {
-        //     Log::info("the production just running!.");
+//           Log::info("the production just running!.");
         // }
         // if ($this->app->environment('local')) {
-        //     Log::info("the local just running!.");
+//           Log::info("the local just running!.");
         // }
 
         //Gate::policy(UserMergeRequest::class, UserMergeRequestPolicy::class);

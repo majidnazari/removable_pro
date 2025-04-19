@@ -26,7 +26,7 @@ class CreateSpouseInputValidator extends GraphQLValidator
         $divorceDate = $this->arg('divorce_date');
         $userId = $this->getUserId();
 
-        Log::info("the spouse is :" . json_encode($spouseData));
+//       Log::info("the spouse is :" . json_encode($spouseData));
         // Fetch existing person from DB
         $person = Person::find($personId);
 

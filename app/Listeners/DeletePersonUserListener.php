@@ -22,7 +22,7 @@ class DeletePersonUserListener
         $user = $this->getUser();
         $timestamp = Carbon::now(); // Current timestamp for soft delete
 
-        Log::info("Initiating soft deletion for person ID: $personId by user ID: {$user->id}");
+//       Log::info("Initiating soft deletion for person ID: $personId by user ID: {$user->id}");
 
         try {
             DB::transaction(function () use ($personId, $timestamp, $user) {
@@ -31,7 +31,7 @@ class DeletePersonUserListener
                 $this->softDeleteUser($user->id, $timestamp);
             });
 
-            Log::info("Successfully completed soft deletion for person ID: $personId.");
+//           Log::info("Successfully completed soft deletion for person ID: $personId.");
         } catch (CustomValidationException $e) {
             Log::error("Soft deletion failed for person ID $personId: " . $e->getMessage());
             //throw new Exception("Soft deletion failed: " . $e->getMessage());
@@ -69,7 +69,7 @@ class DeletePersonUserListener
                 ->where('creator_id', $userId)
                 ->update(['deleted_at' => $timestamp]);
 
-            Log::info("Soft deleted $count records from $table for creator_id = $userId. for table {$table}");
+//           Log::info("Soft deleted $count records from $table for creator_id = $userId. for table {$table}");
         }
 
         // Soft delete group_details separately for user_id
@@ -77,7 +77,7 @@ class DeletePersonUserListener
             ->where('user_id', $userId)
             ->update(['deleted_at' => $timestamp]);
 
-        Log::info("Soft deleted $groupDetailsCount records from group_details for user_id = $userId.");
+//       Log::info("Soft deleted $groupDetailsCount records from group_details for user_id = $userId.");
     }
 
     /**
@@ -91,7 +91,7 @@ class DeletePersonUserListener
             $updatedUsers = User::whereIn('id', $relatedUserIds)
                 ->update(['blood_user_relation_calculated' => false]);
 
-            Log::info("Updated blood_user_relation_calculated to false for $updatedUsers users.");
+//           Log::info("Updated blood_user_relation_calculated to false for $updatedUsers users.");
         }
 
         // Soft delete user relations
@@ -100,7 +100,7 @@ class DeletePersonUserListener
             ->orWhere('related_with_user_id', $userId)
             ->update(['deleted_at' => $timestamp]);
 
-        Log::info("Soft deleted $updatedRelations records from user_relations for user ID: $userId.");
+//       Log::info("Soft deleted $updatedRelations records from user_relations for user ID: $userId.");
     }
 
     /**
@@ -118,7 +118,7 @@ class DeletePersonUserListener
 
         $relatedUserIds = $createdByUserIds->merge($relatedWithUserIds)->unique()->toArray();
 
-        Log::info("Related user IDs affected: " . implode(',', $relatedUserIds));
+//       Log::info("Related user IDs affected: " . implode(',', $relatedUserIds));
 
         return $relatedUserIds;
     }
@@ -131,6 +131,6 @@ class DeletePersonUserListener
         $updatedUser = User::where('id', $userId)
             ->update(['deleted_at' => $timestamp]);
 
-        Log::info("Soft deleted user with ID: $userId (Rows affected: $updatedUser).");
+//       Log::info("Soft deleted user with ID: $userId (Rows affected: $updatedUser).");
     }
 }

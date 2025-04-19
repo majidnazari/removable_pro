@@ -53,41 +53,41 @@ final class GetMemories
         $query = $this->applySearchFilters($query, $args,$extraConditions);
 
         return $query;
-        //Log::info("Query before filtering: " . json_encode($query->toSql()));
+//       Log::info("Query before filtering: " . json_encode($query->toSql()));
 
         // Apply the user access check during the query build
         //$query->whereHas('GroupCategory.GroupCategoryDetails', function ($query) {
-        //  Log::info("each memory : " . json_encode($query));
+//        Log::info("each memory : " . json_encode($query));
 
         // Check if the user is related to the group via the GroupCategoryDetail
         //$query->whereIn('group_category_id', $this->getUserGroupCategoryIds());
         // });
 
-        //Log::info("Query after filtering: " . $query->toSql());
-        // Log::info("Final query parameters: " . json_encode($query->getBindings()));
+//       Log::info("Query after filtering: " . $query->toSql());
+//       Log::info("Final query parameters: " . json_encode($query->getBindings()));
         // Return the query builder (without fetching the data yet)
 
         // //Use the canAccessMemory method to filter based on access rights
         // $query->get()->filter(function ($memory) {
         //     //$result= $this->canAccessMemory($memory);
-        //     Log::info("each memory  must check exist in group or not : " . json_encode($memory));
+//           Log::info("each memory  must check exist in group or not : " . json_encode($memory));
 
         //     // Fetch the group category details associated with the memory's group category ID
         //     $groupCategoryDetails = GroupCategoryDetail::where('group_category_id', $memory->group_category_id)->get();
 
-        //     Log::info("get memory groupCategorydetails according group category : ".json_encode($groupCategoryDetails));
+//           Log::info("get memory groupCategorydetails according group category : ".json_encode($groupCategoryDetails));
 
 
         //     if ($groupCategoryDetails->isEmpty()) {
         //         // If no group category details are found, deny access
-        //         Log::info("No groupCategoryDetails found for memory, access denied.");
+//               Log::info("No groupCategoryDetails found for memory, access denied.");
         //         return false;
         //     }
 
         //     // Retrieve all group_ids associated with the group category details
         //     $groupIds = $groupCategoryDetails->pluck('group_id')->toArray();
 
-        //         Log::info("No groupIds ".json_encode($groupIds));
+//               Log::info("No groupIds ".json_encode($groupIds));
 
         //     // Fetch the related person_ids from the GroupDetails table for all the group_ids
         //     $userIds = GroupDetail::whereIn('group_id', $groupIds)
@@ -98,7 +98,7 @@ final class GetMemories
         //     $hasAccess = in_array($this->userId, $userIds);
 
         //     // Log if access is granted or denied for this memory
-        //     Log::info("Memory access check result: " . ($hasAccess ? 'Access Granted' : 'Access Denied'));
+//           Log::info("Memory access check result: " . ($hasAccess ? 'Access Granted' : 'Access Denied'));
 
         //     return $hasAccess;
         // });
@@ -113,7 +113,7 @@ final class GetMemories
         // Get the user’s groups via GroupCategoryDetail
         $user = $this->getUser();
 
-        // Log::info("the user id is :" . $user->id);
+//       Log::info("the user id is :" . $user->id);
         $groupCategoryIds = GroupCategoryDetail::whereHas('Group', function ($query) use ($user) {
             // Check if the user is associated with the group through GroupDetail
             $query->whereHas('GroupDetails', function ($query) use ($user) {
@@ -121,7 +121,7 @@ final class GetMemories
             });
         })->pluck('group_category_id')->toArray();
 
-        // Log::info("User group category IDs: " . json_encode($groupCategoryIds));
+//       Log::info("User group category IDs: " . json_encode($groupCategoryIds));
 
         return $groupCategoryIds;
     }

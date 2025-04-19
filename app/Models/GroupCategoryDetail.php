@@ -117,7 +117,7 @@ class GroupCategoryDetail extends Eloquent
     //             return $group->GroupDetails->pluck('Person');
     //         });
 
-    //     Log::info("The persons are: " . json_encode( $persons));
+//       Log::info("The persons are: " . json_encode( $persons));
 
     //     return $persons;
     // }

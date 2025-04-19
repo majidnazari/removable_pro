@@ -64,7 +64,7 @@ class ChangePassword extends BaseAuthResolver
             //return Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
         }
 
-        // Log::info("the inside of resolve is running");
+//       Log::info("the inside of resolve is running");
         $code = 159951;//rand(100000, 999999);
 
         $user->sent_code = $code;
@@ -102,7 +102,7 @@ class ChangePassword extends BaseAuthResolver
             //return Error::createLocatedError("access denied!");
         }
 
-        //Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));
+//       Log::info("the code_expired_at is: ". Carbon::parse($user->code_expired_at) . " and now is :" . Carbon::now() ." and result :". Carbon::parse(Carbon::now())->gt($user->code_expired_at));
 
         $today = Carbon::today(); // Current date without time (midnight of today)
 
@@ -139,7 +139,7 @@ class ChangePassword extends BaseAuthResolver
             'password' => $args['password'],
         ]);
 
-        //Log::info("cred is:".  json_encode($credentials));
+//       Log::info("cred is:".  json_encode($credentials));
 
         $response = $this->makeRequest($credentials);
 

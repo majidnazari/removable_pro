@@ -103,10 +103,10 @@ class RegisterMobile extends BaseAuthResolver
     {
         $user = User::find($args['user_id']);
 
-        //Log::info('VerifyMobile args: '.json_encode($args));
-        // Log::info('Database used:', [
-        //    'connection' => \DB::connection()->getDatabaseName(),
-        // ]);
+//       Log::info('VerifyMobile args: '.json_encode($args));
+//       Log::info('Database used:', [
+//          'connection' => \DB::connection()->getDatabaseName(),
+//       ]);
 
         if (!$user) {
             throw new CustomValidationException("User not found", "کاربر پیدا نشد", 404);
@@ -143,7 +143,7 @@ class RegisterMobile extends BaseAuthResolver
             'password' => $args['password'],
         ]);
 
-        //Log::info("cred is:".  json_encode($credentials));
+//       Log::info("cred is:".  json_encode($credentials));
 
         $response = $this->makeRequest($credentials);
 

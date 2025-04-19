@@ -78,7 +78,7 @@ class UserRegisterTest extends TestCase
         '
         ]);
         //$response->dump();
-        //Log::info("response is:" . json_encode($response));
+//       Log::info("response is:" . json_encode($response));
 
         $response->assertJson([
             'errors' => [

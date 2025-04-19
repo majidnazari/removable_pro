@@ -31,8 +31,8 @@ final class CreateAddress
     public function resolveAddress($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
     {        
         
-       // Log::info("the status is:". $statusValue );
-       // Log::info("the status is:". $statusValue );
+//      Log::info("the status is:". $statusValue );
+//      Log::info("the status is:". $statusValue );
 
         $AddressResult=[
             "creator_id"=>  $this->getUserId(),

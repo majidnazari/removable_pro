@@ -27,7 +27,7 @@ class MergeValidateMergeIdsWithinActiveRelations implements Rule
 
     public function passes($attribute, $value)
     {
-        //Log::info("MergeValidateMergeIdsWithinActiveRelations: Checking {$attribute} with value: {$value}");
+//       Log::info("MergeValidateMergeIdsWithinActiveRelations: Checking {$attribute} with value: {$value}");
         $this->attributeName = $attribute; // Capture the attribute name
 
         $this->allowedPersonIds = []; // Initialize allowed person IDs
@@ -49,7 +49,7 @@ class MergeValidateMergeIdsWithinActiveRelations implements Rule
                         ->pluck('id')
                         ->toArray()
                 );
-               // Log::info("Active Relationship - merge_ids_sender allowedPersonIds: " . json_encode($this->allowedPersonIds));
+//              Log::info("Active Relationship - merge_ids_sender allowedPersonIds: " . json_encode($this->allowedPersonIds));
             } elseif ($this->attributeName === 'input.merge_ids_receiver') {
                 // Fetch persons created by user_receiver_id
                 $this->allowedPersonIds = array_merge(
@@ -58,11 +58,11 @@ class MergeValidateMergeIdsWithinActiveRelations implements Rule
                         ->pluck('id')
                         ->toArray()
                 );
-                //Log::info("Active Relationship - merge_ids_receiver allowedPersonIds: " . json_encode($this->allowedPersonIds));
+//               Log::info("Active Relationship - merge_ids_receiver allowedPersonIds: " . json_encode($this->allowedPersonIds));
             }
         } 
         //else {
-            //Log::info("No active relationship found for user {$this->loggedInUserId}");
+//           Log::info("No active relationship found for user {$this->loggedInUserId}");
         //}
 
         // Handle Complete Relationships
@@ -87,17 +87,17 @@ class MergeValidateMergeIdsWithinActiveRelations implements Rule
                 );
             }
 
-            //Log::info("Complete Relationships - merged allowedPersonIds: " . json_encode($this->allowedPersonIds));
+//           Log::info("Complete Relationships - merged allowedPersonIds: " . json_encode($this->allowedPersonIds));
         }
 
         // Remove duplicate IDs
         $this->allowedPersonIds = array_unique($this->allowedPersonIds);
-       // Log::info("Final Allowed Person IDs for {$this->attributeName}: " . json_encode($this->allowedPersonIds));
+//      Log::info("Final Allowed Person IDs for {$this->attributeName}: " . json_encode($this->allowedPersonIds));
 
         // Validate input merge IDs
         $mergeIds = explode(',', $value);
         $this->invalidIds = array_diff($mergeIds, $this->allowedPersonIds);
-        //Log::info("Invalid IDs for {$this->attributeName}: " . json_encode($this->invalidIds));
+//       Log::info("Invalid IDs for {$this->attributeName}: " . json_encode($this->invalidIds));
 
         // Validation passes if there are no invalid IDs
         return empty($this->invalidIds);

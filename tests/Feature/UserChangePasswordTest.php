@@ -33,14 +33,14 @@ class UserChangePasswordTest extends TestCase
             'mobile_is_verified' => true,
         ]);
 
-        // Log::info('Personal access client ID: ' . Passport::personalAccessClient()->getKey());
-        //Log::info('Personal access client secret: ' . Passport::personalAccessClient()->secret);
+//       Log::info('Personal access client ID: ' . Passport::personalAccessClient()->getKey());
+//       Log::info('Personal access client secret: ' . Passport::personalAccessClient()->secret);
 
 
         // Generate a token for the user (mock the token or use Passport/Token generation)
         $token = $user->createToken('TestApp')->accessToken;
 
-        //Log::info("the user token is :" . json_encode($token));
+//       Log::info("the user token is :" . json_encode($token));
 
         // Send the GraphQL request to request a new verification code using postJson
         $response = $this->postJson('/graphql', [
@@ -57,7 +57,7 @@ class UserChangePasswordTest extends TestCase
             'Authorization' => "Bearer {$token}",  // Send the token in the header
         ]);
 
-        //Log::info("GraphQL Response: " . json_encode($response));
+//       Log::info("GraphQL Response: " . json_encode($response));
 
         //$response->dump();
         // Assert the response status is successful
@@ -141,7 +141,7 @@ class UserChangePasswordTest extends TestCase
         $user = $user->fresh();
 
         // Log the sent code to verify it's being set
-        //Log::info('Sent code: ' . $user->sent_code);
+//       Log::info('Sent code: ' . $user->sent_code);
 
         // Ensure the sent code is a 6-digit number
         $this->assertMatchesRegularExpression('/^\d{6}$/', $user->sent_code, 'The sent code should be a 6-digit number.');
@@ -1043,15 +1043,15 @@ class UserChangePasswordTest extends TestCase
 
         // Debug: Check password_change_attempts before moving to the next day
         $user = $user->fresh();
-        //Log::info('Password change attempts before next day: ' . $user->password_change_attempts);
+//       Log::info('Password change attempts before next day: ' . $user->password_change_attempts);
 
         // Step 5: Simulate the user waiting until the next day (move to the next day)
         Carbon::setTestNow(Carbon::today()->addDay()); // Set to midnight of the next day
 
         // Debug: Check the date change and user details
         $user = $user->fresh();
-        //Log::info('Current date after manipulation: ' . Carbon::now());
-        //Log::info('Password change attempts after day reset: ' . $user->password_change_attempts);
+//       Log::info('Current date after manipulation: ' . Carbon::now());
+//       Log::info('Password change attempts after day reset: ' . $user->password_change_attempts);
 
         // Step 6: Attempt to change password for the third time (now on the new day)
         $response = $this->postJson('/graphql', [
@@ -1111,7 +1111,7 @@ class UserChangePasswordTest extends TestCase
 
         // Final assertion: password_change_attempts should now be 1 (because the day reset)
         $user = $user->fresh();
-        //Log::info('Password change attempts after third change: ' . $user->password_change_attempts);
+//       Log::info('Password change attempts after third change: ' . $user->password_change_attempts);
 
         // Step 8: Assert that the password_change_attempts is now 1 (since we moved to the next day)
         $this->assertEquals(1, $user->password_change_attempts, 'Password change attempts should be 1 after the new day starts.');

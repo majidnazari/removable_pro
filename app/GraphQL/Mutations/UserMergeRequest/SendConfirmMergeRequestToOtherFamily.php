@@ -78,7 +78,7 @@ class SendConfirmMergeRequestToOtherFamily
             foreach (array_map(null, $mergeIdsSender, $mergeIdsReceiver) as $pair) {
                 [$senderId, $receiverId] = $pair;
 
-                // Log::info("before mergePersonsByIds is: {$senderId} and the receiver is: {$receiverId}");
+//               Log::info("before mergePersonsByIds is: {$senderId} and the receiver is: {$receiverId}");
 
                 $this->mergePersonsByIds($senderId, $receiverId, $this->user->id);
             }

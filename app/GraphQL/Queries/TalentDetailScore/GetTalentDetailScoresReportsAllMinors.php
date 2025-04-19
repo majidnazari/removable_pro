@@ -56,7 +56,7 @@ final class GetTalentDetailScoresReportsAllMinors
             'middle_fields.title'
         );
 
-       // Log::info("the sql is :" . $query->toSql());
+//      Log::info("the sql is :" . $query->toSql());
 
         return $query; // Return query builder for 
     }

@@ -22,7 +22,7 @@ class GraphQLStatusCodeMiddleware
 
             if (!empty($data['errors'])) {
                 // Log the errors for debugging
-                //Log::info("GraphQL Error Response: ". json_encode($data['errors']));
+//               Log::info("GraphQL Error Response: ". json_encode($data['errors']));
 
                 // Determine the status code based on errors
                 $statusCode = $this->determineStatusCode($data['errors']);

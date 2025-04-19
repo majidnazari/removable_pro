@@ -67,7 +67,7 @@ final class GetTalentDetailScoresReportsMinorHistory
             'talent_headers.title',
         );
     
-        // Log::info("the sql is: " . $query->toSql());
+//       Log::info("the sql is: " . $query->toSql());
     
         return $query; // Return query builder for pagination
     }

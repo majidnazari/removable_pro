@@ -56,7 +56,7 @@ class DeletePersonListener
         if ($deletedCount === 0) {
             Log::warning("No Person records found for person ID: $personId");
         } else {
-            Log::info("Soft deleted {$deletedCount} Person records for person ID: $personId");
+//           Log::info("Soft deleted {$deletedCount} Person records for person ID: $personId");
         }
     }
 }

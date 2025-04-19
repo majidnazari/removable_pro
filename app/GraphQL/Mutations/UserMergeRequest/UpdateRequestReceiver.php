@@ -53,7 +53,7 @@ final class UpdateRequestReceiver
             "request_status_receiver" => $args['request_status_receiver'] ?? RequestStatusReceiver::Suspend->value
         ];
 
-        // Log::info("the args are:" . json_encode($UserMergeRequestResult));
+//       Log::info("the args are:" . json_encode($UserMergeRequestResult));
         $UserMergeRequest = UserMergeRequest::where('id', $args['id'])->first();
         if (!$UserMergeRequest) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-RECORD_NOT_FOUND", "درخواست ادغام کاربر. به روز رسانی دریافت کننده. رکورد یافت نشد", 404);
@@ -82,7 +82,7 @@ final class UpdateRequestReceiver
 
         }
 
-        //Log::info("the active sttaus us:".RequestStatusSender::Active->value);
+//       Log::info("the active sttaus us:".RequestStatusSender::Active->value);
         if ($UserMergeRequest->request_status_sender != RequestStatusSender::Active->value) {
             throw new CustomValidationException("USERMERGEREQUEST-UPDATE-RECEIVER-FIRST_SENDER_MUST_MAKE_REQUEST_ACTIVE", "درخواست ادغام کاربر. به روز رسانی دریافت کننده. باید ابتدا ارسال کننده تایید کند ", 403);
 

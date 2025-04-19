@@ -41,7 +41,7 @@ final class CreatePersonDetails
         // }        
 
         $this->checkDuplicate(new PersonDetail(), $args['person_id']);
-        //Log::info("the args are: " . $args['profile_picture']);
+//       Log::info("the args are: " . $args['profile_picture']);
         $path = "";
         // Check if the file exists in the input
         if (isset($args['profile_picture'])) {
@@ -103,7 +103,7 @@ final class CreatePersonDetails
         // log::info("the file is:" . json_encode($file));
         //return $file->storePublicly('uploads');
 
-        //Log::info("the args are:" . json_encode($args));
+//       Log::info("the args are:" . json_encode($args));
         //
         //     $PersonDetailsModel = [
         //         "create_id" => 1,

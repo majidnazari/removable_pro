@@ -36,7 +36,7 @@ trait GetAllUsersRelationInClanFromHeads
 
         // Mark this person as visited
         $visited[] = $personId;
-        Log::info("Fetching descendants for person: $personId");
+//       Log::info("Fetching descendants for person: $personId");
 
         // Get the person's record from the database
         $person = Person::find($personId);
@@ -48,7 +48,7 @@ trait GetAllUsersRelationInClanFromHeads
         // Check if the person is an owner and add their user_id
         if ($person->is_owner == 1) {
             $userIds[] = $person->creator_id;
-            Log::info("Person $personId is an owner, creator_id: " . $person->creator_id);
+//           Log::info("Person $personId is an owner, creator_id: " . $person->creator_id);
         }
 
         // Determine the correct column to use based on gender
@@ -59,15 +59,15 @@ trait GetAllUsersRelationInClanFromHeads
         $personMarriageRecords = PersonMarriage::where($marriageColumn, $personId)->get();
 
         if ($personMarriageRecords->isEmpty()) {
-            Log::info("No marriages found for person: $personId");
+//           Log::info("No marriages found for person: $personId");
         } else {
-            Log::info("Marriages found for person $personId: " . json_encode($personMarriageRecords->pluck('id')->toArray()));
+//           Log::info("Marriages found for person $personId: " . json_encode($personMarriageRecords->pluck('id')->toArray()));
 
             // Fetch all spouse IDs
             $spouseIds = $personMarriageRecords->pluck($spouseColumn)->unique()->toArray();
 
             if (!empty($spouseIds)) {
-                Log::info("Spouses found for person $personId: " . json_encode($spouseIds));
+//               Log::info("Spouses found for person $personId: " . json_encode($spouseIds));
 
                 // Get all spouse records
                 $spouses = Person::whereIn('id', $spouseIds)->get();
@@ -75,7 +75,7 @@ trait GetAllUsersRelationInClanFromHeads
                 foreach ($spouses as $spouse) {
                     if ($spouse->is_owner == 1) {
                         $userIds[] = $spouse->creator_id;
-                        Log::info("Spouse $spouse->id is an owner, creator_id: " . $spouse->creator_id);
+//                       Log::info("Spouse $spouse->id is an owner, creator_id: " . $spouse->creator_id);
                     }
                 }
             }
@@ -84,18 +84,18 @@ trait GetAllUsersRelationInClanFromHeads
         // Get all children associated with these marriages
         $personMarriageIds = $personMarriageRecords->pluck('id')->toArray();
         if (!empty($personMarriageIds)) {
-            Log::info("personMarriageIds found : " . json_encode($personMarriageIds));
+//           Log::info("personMarriageIds found : " . json_encode($personMarriageIds));
             $childrenIds = PersonChild::whereIn('person_marriage_id', $personMarriageIds)
                 ->pluck('child_id')
                 ->unique()
                 ->toArray();
         }
         if (empty($childrenIds)) {
-            Log::info("No children found for person: $personId");
+//           Log::info("No children found for person: $personId");
             return array_unique($userIds);
         }
 
-        Log::info("Children found for person $personId: " . json_encode($childrenIds));
+//       Log::info("Children found for person $personId: " . json_encode($childrenIds));
 
         // Merge descendants by recursively calling the function for each child
         foreach ($childrenIds as $childId) {
@@ -113,18 +113,18 @@ trait GetAllUsersRelationInClanFromHeads
         // $user = $this->getUser();
         // $user->refresh(); // Reload attributes from database
 
-        Log::info("user is " . json_encode($user));
-        Log::info("getAllUsersInClanFromHeads running and the user id is {$user_id} and flag is {$user->blood_user_relation_calculated}");
+//       Log::info("user is " . json_encode($user));
+//       Log::info("getAllUsersInClanFromHeads running and the user id is {$user_id} and flag is {$user->blood_user_relation_calculated}");
 
         // If blood_user_relation_calculated is true, fetch from user_relations directly
         if ($user->blood_user_relation_calculated) {
-            Log::info("read from table user relations");
+//           Log::info("read from table user relations");
 
             return $this->getAllUserRelation($user->id);
         }
 
         $result = $this->getPersonAncestryHeads($user->id, $depth);
-        Log::info("getPersonAncestryHeads result: " . json_encode($result));
+//       Log::info("getPersonAncestryHeads result: " . json_encode($result));
 
         // Handle the case when result is null or doesn't contain 'heads'
         if (is_null($result) || !isset($result['heads'])) {
@@ -136,7 +136,7 @@ trait GetAllUsersRelationInClanFromHeads
         }
 
         $heads = collect($result['heads'])->pluck('person_id')->toArray();
-        Log::info("heads found: " . json_encode($heads));
+//       Log::info("heads found: " . json_encode($heads));
 
         // Initialize visited array to track processed IDs
         $visited = [];
@@ -152,14 +152,14 @@ trait GetAllUsersRelationInClanFromHeads
             // Merge the returned user IDs into the final array
             $allUserIds = array_merge($allUserIds, $descendants);
 
-            Log::info("Descendants for person $head: " . json_encode($descendants));
+//           Log::info("Descendants for person $head: " . json_encode($descendants));
         }
 
         // Remove duplicates and return the final list of user IDs
         $allUserIds = array_unique($allUserIds);
-        Log::info("Final list of user IDs before remove itself: " . json_encode($allUserIds));
+//       Log::info("Final list of user IDs before remove itself: " . json_encode($allUserIds));
 
-        //Log::info("Final list of user IDs after remove itself: " . json_encode($allUserIds));
+//       Log::info("Final list of user IDs after remove itself: " . json_encode($allUserIds));
 
         return $this->calculateUserRelationInClan($allUserIds);
 

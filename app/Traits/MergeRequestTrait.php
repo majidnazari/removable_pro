@@ -43,7 +43,7 @@ trait MergeRequestTrait
         // }
 
         // Log the related user IDs for debugging
-       // Log::info("The user MR are: " . json_encode($relatedUserIds));
+//      Log::info("The user MR are: " . json_encode($relatedUserIds));
 
         // Return the final list of related user IDs
         return $relatedUserIds;

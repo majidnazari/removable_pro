@@ -21,16 +21,16 @@ trait PersonMergeTrait
 
     protected function mergePersonsByIds($primaryPersonId, $secondaryPersonId, $authId)
     {
-        //Log::info("mergePersonsByIds:" . $primaryPersonId . " - " . $secondaryPersonId . " - " . $authId);
+//       Log::info("mergePersonsByIds:" . $primaryPersonId . " - " . $secondaryPersonId . " - " . $authId);
 
         $this->userId = $authId;
 
-        // Log::info("mergePersonsByIds:" . $primaryPersonId . " - " . $secondaryPersonId . " - " . $this->userId);
+//       Log::info("mergePersonsByIds:" . $primaryPersonId . " - " . $secondaryPersonId . " - " . $this->userId);
 
 
-        // Log::info("the primaryPersonId is:" . $primaryPersonId);
-        // Log::info("the secondaryPersonId is:" . $secondaryPersonId);
-        // Log::info("the authId is:" . $this->userId);
+//       Log::info("the primaryPersonId is:" . $primaryPersonId);
+//       Log::info("the secondaryPersonId is:" . $secondaryPersonId);
+//       Log::info("the authId is:" . $this->userId);
 
         DB::beginTransaction();
 
@@ -39,16 +39,16 @@ trait PersonMergeTrait
             $secondaryPerson = Person::where('id', $secondaryPersonId)->where('status', Status::Active)->first();
 
 
-            Log::info("the primary person is :" . json_encode($primaryPerson));
-            Log::info("the secondaryPerson person is :" . json_encode($secondaryPerson));
+//           Log::info("the primary person is :" . json_encode($primaryPerson));
+//           Log::info("the secondaryPerson person is :" . json_encode($secondaryPerson));
 
             if ($secondaryPerson->is_owner && !$primaryPerson->is_owner) {
-                //Log::info("Switching primary and secondary as secondaryPerson is the owner.");
+//               Log::info("Switching primary and secondary as secondaryPerson is the owner.");
                 [$primaryPerson, $secondaryPerson] = [$secondaryPerson, $primaryPerson];
                 [$primaryPersonId, $secondaryPersonId] = [$primaryPerson->id, $secondaryPerson->id];
             }
 
-            // Log::info("Switching:" . $primaryPersonId . " - " . $secondaryPersonId);
+//           Log::info("Switching:" . $primaryPersonId . " - " . $secondaryPersonId);
 
 
             if (!$primaryPerson || !$secondaryPerson) {
@@ -107,7 +107,7 @@ trait PersonMergeTrait
         $primaryIsMan = ($primaryPerson->gender == 1); // 1 for man, 0 for woman
         $secondaryGenderField = $primaryGenderField = $primaryIsMan ? 'man_id' : 'woman_id';
 
-        // Log::info("gender {$primaryPerson->gender} is for id {$primaryPerson->id} ");
+//       Log::info("gender {$primaryPerson->gender} is for id {$primaryPerson->id} ");
 
         // Find all marriages where the secondary person is involved (either as man or woman)
         $query = PersonMarriage::where(function ($query) use ($secondaryPerson, $secondaryGenderField) {
@@ -118,7 +118,7 @@ trait PersonMergeTrait
         $sql = $query->toSql();
         $bindings = $query->getBindings();
         $fullSql = vsprintf(str_replace('?', '%s', $sql), $bindings);
-        // Log::info("mergeMarriages query: " . $fullSql);
+//       Log::info("mergeMarriages query: " . $fullSql);
 
         // Iterate through each marriage involving the secondary person
         $query->each(function ($marriage) use ($primaryPerson, $secondaryPerson, $auth_id, $primaryGenderField, $secondaryGenderField) {
@@ -129,7 +129,7 @@ trait PersonMergeTrait
             // Update the marriage and save
             $marriage->editor_id = $auth_id;
             $marriage->save();
-            //Log::info("Updated marriage for primary person ID " . $primaryPerson->id);//. " and secondary person ID " . $secondaryPerson->id);
+//           Log::info("Updated marriage for primary person ID " . $primaryPerson->id);//. " and secondary person ID " . $secondaryPerson->id);
         });
 
         // Find and update all children of the secondary person
@@ -139,12 +139,12 @@ trait PersonMergeTrait
         $sqlChildren = $childrenQuery->toSql();
         $bindingsChildren = $childrenQuery->getBindings();
         $fullSqlChildren = vsprintf(str_replace('?', '%s', $sqlChildren), $bindingsChildren);
-        // Log::info("mergeChildren query: " . $fullSqlChildren);
+//       Log::info("mergeChildren query: " . $fullSqlChildren);
 
         // Iterate through each child and update the child_id to the primary person
         $childrenQuery->each(function ($child) use ($primaryPerson, $secondaryPerson, $auth_id) {
             // Log the child before any update
-            // Log::info("Updating child with ID: " . $child->id);
+//           Log::info("Updating child with ID: " . $child->id);
 
             // Update the child reference to primaryPersonId
             if ($child->child_id == $secondaryPerson->id) {
@@ -152,7 +152,7 @@ trait PersonMergeTrait
                 $child->editor_id = $auth_id;
                 $child->save();
 
-                // Log::info("Updated child to reflect merge: " . json_encode($child));
+//               Log::info("Updated child to reflect merge: " . json_encode($child));
             }
         });
 
@@ -161,9 +161,9 @@ trait PersonMergeTrait
         $secondaryPerson = Person::find($secondaryPerson->id);
         if ($secondaryPerson) {
             // Ensure the secondary person exists before attempting to delete
-            //Log::info("Deleting secondary person with ID: " . $secondaryPerson->id);
+//           Log::info("Deleting secondary person with ID: " . $secondaryPerson->id);
             $secondaryPerson->delete();  // Delete the secondary person
-            //Log::info("Successfully deleted secondary person: " . $secondaryPerson->id);
+//           Log::info("Successfully deleted secondary person: " . $secondaryPerson->id);
         } else {
             // If no secondary person is found by ID, log the error
             //Log::error("No secondary person found to delete with ID: " . $secondaryPerson->id);
@@ -189,12 +189,12 @@ trait PersonMergeTrait
         $sql = $query->toSql();
         $bindings = $query->getBindings();
         $fullSql = vsprintf(str_replace('?', '%s', $sql), $bindings);
-        //Log::info("mergeChildren query: " . $fullSql);
+//       Log::info("mergeChildren query: " . $fullSql);
 
         // Iterate through each PersonChild record and update accordingly
         $query->each(function ($child) use ($primaryPerson, $secondaryPerson, $auth_id) {
             // Log the child before any update
-            // Log::info("Updating child with ID: " . $child->id);
+//           Log::info("Updating child with ID: " . $child->id);
 
             // Update all references where child_id = secondaryPersonId to primaryPersonId
             if ($child->child_id == $secondaryPerson->id) {
@@ -205,13 +205,13 @@ trait PersonMergeTrait
                 $child->editor_id = $auth_id;
                 $child->save();
 
-                //Log::info("Updated child to reflect merge: " . json_encode($child));
+//               Log::info("Updated child to reflect merge: " . json_encode($child));
             }
         });
 
         // After all the references are updated, delete the secondary person (secondaryPersonId)
         $secondaryPerson->delete();
-        //Log::info("Deleted secondary person: " . $secondaryPerson->id);
+//       Log::info("Deleted secondary person: " . $secondaryPerson->id);
     }
 
     // Update Memory references
@@ -234,24 +234,24 @@ trait PersonMergeTrait
         })->each(function ($duplicates) use ($auth_id) {
             // Keep the first record in each group and remove the rest
             $firstMarriage = $duplicates->shift(); // Keep the first record
-            //Log::info("Keeping marriage: " . json_encode($firstMarriage));
+//           Log::info("Keeping marriage: " . json_encode($firstMarriage));
 
             $duplicates->each(function ($marriage) use ($auth_id, $firstMarriage) {
                 // Log the marriage being deleted
-                // Log::info("Removing duplicate marriage: " . json_encode($marriage));
+//               Log::info("Removing duplicate marriage: " . json_encode($marriage));
 
                 // Update the corresponding PersonChild entries before deleting the duplicate marriage
                 $updatedCount = PersonChild::where('person_marriage_id', $marriage->id)
                     ->update(['person_marriage_id' => $firstMarriage->id, 'editor_id' => $auth_id]);
 
                 // Log the update
-                // Log::info("Updated " . $updatedCount . " child(ren) to new person_marriage_id: " . $firstMarriage->id);
+//               Log::info("Updated " . $updatedCount . " child(ren) to new person_marriage_id: " . $firstMarriage->id);
 
                 // Mark the duplicate marriage as deleted
                 $marriage->editor_id = $auth_id;
                 $marriage->save();
                 $marriage->delete(); // Delete the duplicate marriage
-                //Log::info("Deleted duplicate marriage: " . json_encode($marriage));
+//               Log::info("Deleted duplicate marriage: " . json_encode($marriage));
             });
         });
 
@@ -261,17 +261,17 @@ trait PersonMergeTrait
         })->each(function ($duplicates) use ($auth_id) {
             // Keep the first record in each group and remove the rest
             $firstChild = $duplicates->shift(); // Keep the first record
-            //Log::info("Keeping child: " . json_encode($firstChild));
+//           Log::info("Keeping child: " . json_encode($firstChild));
 
             $duplicates->each(function ($child) use ($auth_id) {
                 // Log the child being deleted
-                // Log::info("Removing duplicate child: " . json_encode($child));
+//               Log::info("Removing duplicate child: " . json_encode($child));
 
                 // Delete the duplicate child record
                 $child->editor_id = $auth_id;
                 $child->save();
                 $child->delete(); // Delete the duplicate child
-                // Log::info("Deleted duplicate child: " . json_encode($child));
+//               Log::info("Deleted duplicate child: " . json_encode($child));
             });
         });
     }

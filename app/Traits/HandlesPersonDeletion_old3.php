@@ -23,7 +23,7 @@ trait HandlesPersonDeletion_old3
             return true;
         }
 
-        Log::info("Checking deletion for person {$personId}...");
+//       Log::info("Checking deletion for person {$personId}...");
         $checkedIds[] = $personId;
 
         $person = Person::find($personId);
@@ -64,10 +64,10 @@ trait HandlesPersonDeletion_old3
         }
 
         if (count($childrenIds) === 1 && empty($parentIds)) {
-            Log::info("Person {$personId} has one child but no parents. Removing child relation...");
+//           Log::info("Person {$personId} has one child but no parents. Removing child relation...");
             $this->removeParentRelationWithChild($personId, $person->gender);
         } else if (empty($isThereAnyOwnerInParentIds) || in_array($userId, $isThereAnyOwnerInParentIds)) {
-            Log::info("Person {$personId} is a child, removing parental relation.");
+//           Log::info("Person {$personId} is a child, removing parental relation.");
             $this->removeChildRelationWithParent($personId, $person->gender);
         }
 
@@ -85,15 +85,15 @@ trait HandlesPersonDeletion_old3
         $remainingSpouseIds = $this->getSpouseIds($personId, $person->gender);
         $remainingChildrenIds = $this->getChildrenIds($remainingSpouseIds);
 
-        Log::info("remainingParentIds {" . json_encode($remainingParentIds) . "} is remainingSpouseIds {" . json_encode($remainingSpouseIds) . "} and the remainingChildrenIds [" . json_encode($remainingChildrenIds) . "}");
+//       Log::info("remainingParentIds {" . json_encode($remainingParentIds) . "} is remainingSpouseIds {" . json_encode($remainingSpouseIds) . "} and the remainingChildrenIds [" . json_encode($remainingChildrenIds) . "}");
 
 
         if (empty($remainingParentIds) && empty($remainingSpouseIds) && empty($remainingChildrenIds) && ($person->is_owner == 1) && ($person->creator_id == $userId)) {
-            Log::info("Person {$personId} has no remaining relations. Updating clan_id...");
+//           Log::info("Person {$personId} has no remaining relations. Updating clan_id...");
             $this->updateUserClanId($userId);
         }
 
-        Log::info("Person {$personId} can be deleted.");
+//       Log::info("Person {$personId} can be deleted.");
         return true;
     }
 
@@ -105,7 +105,7 @@ trait HandlesPersonDeletion_old3
     {
         $parentRelation = PersonChild::where('child_id', $personId)->first();
         if (!$parentRelation || !$parentRelation->person_marriage_id) {
-            Log::info("No parents found for person {$personId}.");
+//           Log::info("No parents found for person {$personId}.");
             return [];
         }
 
@@ -126,7 +126,7 @@ trait HandlesPersonDeletion_old3
             ->pluck('id')
             ->toArray();
 
-        Log::info("Spouse IDs for person {$personId}: " . json_encode($spouseIds));
+//       Log::info("Spouse IDs for person {$personId}: " . json_encode($spouseIds));
         return $spouseIds;
     }
 
@@ -143,7 +143,7 @@ trait HandlesPersonDeletion_old3
             ->pluck('child_id')
             ->toArray();
 
-        Log::info("Children IDs retrieved: " . json_encode($childrenIds));
+//       Log::info("Children IDs retrieved: " . json_encode($childrenIds));
         return $childrenIds;
     }
 
@@ -159,7 +159,7 @@ trait HandlesPersonDeletion_old3
             ->pluck($isMale == 1 ? 'woman_id' : 'man_id')
             ->toArray();
 
-        Log::info("isThereOwnerInSpouses of person {$personId}  are :" . json_encode($spouseIds));
+//       Log::info("isThereOwnerInSpouses of person {$personId}  are :" . json_encode($spouseIds));
         if (empty($spouseIds)) {
             return $ownerSpouseIds;
         }
@@ -181,7 +181,7 @@ trait HandlesPersonDeletion_old3
             ->pluck('person_marriage_id')
             ->first();
 
-        Log::info("isThereOwnerInParent of person {$personId}  are :" . json_encode($personChild));
+//       Log::info("isThereOwnerInParent of person {$personId}  are :" . json_encode($personChild));
         if (empty($personChild)) {
             return $ownerPresentIds;
         }
@@ -208,9 +208,9 @@ trait HandlesPersonDeletion_old3
      */
     protected function removeChildRelationWithParent(int $personId, int $gender): void
     {
-        Log::info("removeChildRelationWithParent person {$personId}, gender: {$gender}");
+//       Log::info("removeChildRelationWithParent person {$personId}, gender: {$gender}");
         PersonChild::where('child_id', $personId)->delete();
-        Log::info("Child relation removal completed for person {$personId}");
+//       Log::info("Child relation removal completed for person {$personId}");
     }
 
     protected function removeParentRelationWithChild(int $personId, int $gender): void
@@ -224,14 +224,14 @@ trait HandlesPersonDeletion_old3
             $hasChildren = PersonChild::where('person_marriage_id', $marriage->id)
                 ->first();
 
-            Log::info("haschildren {$hasChildren}");
+//           Log::info("haschildren {$hasChildren}");
 
             if ($hasChildren) {
-                Log::info("Person {$personId} has children. Removing parent's relation from the child. marriage id is :{$marriage->id} and  child id is : {$hasChildren->child_id}");
+//               Log::info("Person {$personId} has children. Removing parent's relation from the child. marriage id is :{$marriage->id} and  child id is : {$hasChildren->child_id}");
 
                 $hasChildren->delete();
             } elseif (!$hasChildren) {
-                Log::info("Person {$personId} has no children. Removing child relation from parents.");
+//               Log::info("Person {$personId} has no children. Removing child relation from parents.");
                 PersonChild::where('child_id', $personId)->delete();
             }
         }
@@ -249,11 +249,11 @@ trait HandlesPersonDeletion_old3
             ->get();
 
         foreach ($marriages as $marriage) {
-            Log::info("Removing spouse relation: Marriage ID {$marriage->id} for person {$personId}");
+//           Log::info("Removing spouse relation: Marriage ID {$marriage->id} for person {$personId}");
             $marriage->delete();
         }
 
-        Log::info("All spouse relations removed for person {$personId}.");
+//       Log::info("All spouse relations removed for person {$personId}.");
     }
 
 
@@ -278,7 +278,7 @@ trait HandlesPersonDeletion_old3
         $user->clan_id = $newClanId;
         $user->save();
 
-        Log::info("Updated user {$userId} clan_id to {$newClanId}.");
+//       Log::info("Updated user {$userId} clan_id to {$newClanId}.");
 
         // 🔥 Fire an event to notify about the clan update
         event(new ClanUpdated($userId, $newClanId));

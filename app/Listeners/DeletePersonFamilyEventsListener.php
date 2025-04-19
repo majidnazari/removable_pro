@@ -31,7 +31,7 @@ class DeletePersonFamilyEventsListener
         if ($deletedCount === 0) {
             Log::warning("No FamilyEvent records found for person ID: $personId");
         } else {
-            Log::info("Soft deleted {$deletedCount} FamilyEvent records for person ID: $personId");
+//           Log::info("Soft deleted {$deletedCount} FamilyEvent records for person ID: $personId");
         }
     }
 }

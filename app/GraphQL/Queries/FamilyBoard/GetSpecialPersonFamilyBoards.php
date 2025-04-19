@@ -32,7 +32,7 @@ final class GetSpecialPersonFamilyBoards
         // Start with the base query for 'deleted_at' and 'person_id'
         $query = FamilyBoard::where('deleted_at', null) 
             ->where('status', Status::Active->value);
-        // Log::info("the query is:" . json_encode($query->get()));
+//       Log::info("the query is:" . json_encode($query->get()));
         // Condition 2: For another person_id, apply the additional checks
         $query->where(function ($subQuery) {
             // First check: creator_id matches logged-in user
@@ -51,7 +51,7 @@ final class GetSpecialPersonFamilyBoards
         // Fetch and log the memories
         $boards = $query;
 
-        // Log::info("pall memories can this user see are : " . json_encode($memories->get()));
+//       Log::info("pall memories can this user see are : " . json_encode($memories->get()));
 
         return $boards;
     }

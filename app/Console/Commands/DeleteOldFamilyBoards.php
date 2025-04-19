@@ -33,7 +33,7 @@ class DeleteOldFamilyBoards extends Command
         $deleted = FamilyBoard::where('created_at', '<', Carbon::now()->subDays(2))
             ->delete();
 
-        //Log::info("the delete fb runs");
+//       Log::info("the delete fb runs");
         $this->info("$deleted FamilyBoard(s) deleted successfully.");
     }
 }

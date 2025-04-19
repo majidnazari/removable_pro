@@ -30,11 +30,11 @@ class CheckPersonOfEachUser implements Rule
     {
         $this->personId = $value ?: $this->findOwner()->id;
        
-        // Log::info("the person id is:" .$this->personId);
+//       Log::info("the person id is:" .$this->personId);
        // $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
 
 
-        //Log::info("the all user alowed are :" . json_encode($allowedCreatorIds));
+//       Log::info("the all user alowed are :" . json_encode($allowedCreatorIds));
         $person = Person::where('id', $this->personId)->first();
         //->whereIn('creator_id', $allowedCreatorIds)->first();
 
@@ -48,7 +48,7 @@ class CheckPersonOfEachUser implements Rule
         //     $this->errorMessage = "this person is owner and you cannot set talent to him/her !";
         //     return false;
         // }
-        //Log::info(message: "the allowedCreatorIds is :" . json_encode($allowedCreatorIds));
+//       Log::info(message: "the allowedCreatorIds is :" . json_encode($allowedCreatorIds));
        // return $person;
        return true;
 

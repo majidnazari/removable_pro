@@ -18,11 +18,11 @@ trait HandlesPersonDeletion_old2
      */
     public function canDeletePerson($userId, $personId, &$checkedIds = [])
     {
-        Log::info("Checking if user {$userId} can delete person {$personId}. Checked IDs: " . json_encode($checkedIds));
+//       Log::info("Checking if user {$userId} can delete person {$personId}. Checked IDs: " . json_encode($checkedIds));
     
         if (in_array($personId, $checkedIds)) {
             Log::warning("Preventing infinite loop for person {$personId}");
-            Log::info("Returning TRUE for person {$personId} to prevent recursion.");
+//           Log::info("Returning TRUE for person {$personId} to prevent recursion.");
             return true;
         }
     
@@ -44,16 +44,16 @@ trait HandlesPersonDeletion_old2
         $spouseIds = $this->getSpouseIds($personId);
         $childrenIds = $this->getChildrenIds([$personId]);
     
-        Log::info("Person {$personId} has Parents: " . json_encode($parentIds));
-        Log::info("Person {$personId} has Spouses: " . json_encode($spouseIds));
-        Log::info("Person {$personId} has Children: " . json_encode($childrenIds));
+//       Log::info("Person {$personId} has Parents: " . json_encode($parentIds));
+//       Log::info("Person {$personId} has Spouses: " . json_encode($spouseIds));
+//       Log::info("Person {$personId} has Children: " . json_encode($childrenIds));
     
         //  Special condition: Allow deletion if person has one child & their parent has no parent
         if (count($childrenIds) === 1 && !empty($parentIds)) {
             foreach ($parentIds as $parentId) {
                 $grandParentIds = $this->getParentIds($parentId);
                 if (empty($grandParentIds)) {
-                    Log::info("Person {$personId} has exactly one child and their parent {$parentId} has no parents. Allowing deletion.");
+//                   Log::info("Person {$personId} has exactly one child and their parent {$parentId} has no parents. Allowing deletion.");
                     return true;
                 }
             }
@@ -61,7 +61,7 @@ trait HandlesPersonDeletion_old2
     
         // Recursively check if children can be deleted
         foreach ($childrenIds as $childId) {
-            Log::info("Checking if child {$childId} can be deleted...");
+//           Log::info("Checking if child {$childId} can be deleted...");
             if (!$this->canDeletePerson($userId, $childId, $checkedIds)) {
                 Log::error("Cannot delete child {$childId}. Blocking deletion of person {$personId}.");
                 return $this->errorResponse("Person-DELETE-CANNOT_DELETE_CHILD", $childId);
@@ -70,7 +70,7 @@ trait HandlesPersonDeletion_old2
     
         // Recursively check if spouses can be deleted
         foreach ($spouseIds as $spouseId) {
-            Log::info("Checking if spouse {$spouseId} can be deleted...");
+//           Log::info("Checking if spouse {$spouseId} can be deleted...");
             if (!$this->canDeletePerson($userId, $spouseId, $checkedIds)) {
                 Log::error("Cannot delete spouse {$spouseId}. Blocking deletion of person {$personId}.");
                 return $this->errorResponse("Person-DELETE-CANNOT_DELETE_SPOUSE", $spouseId);
@@ -79,14 +79,14 @@ trait HandlesPersonDeletion_old2
     
         // Recursively check if parents can be deleted
         foreach ($parentIds as $parentId) {
-            Log::info("Checking if parent {$parentId} can be deleted...");
+//           Log::info("Checking if parent {$parentId} can be deleted...");
             if (!$this->canDeletePerson($userId, $parentId, $checkedIds)) {
                 Log::error("Cannot delete parent {$parentId}. Blocking deletion of person {$personId}.");
                 return $this->errorResponse("Person-DELETE-CANNOT_DELETE_PARENT", $parentId);
             }
         }
     
-        Log::info("Person {$personId} can be safely deleted.");
+//       Log::info("Person {$personId} can be safely deleted.");
         return true;
     }
     
@@ -98,7 +98,7 @@ trait HandlesPersonDeletion_old2
     {
         $parentRelation = PersonChild::where('child_id', $personId)->first();
         if (!$parentRelation || !$parentRelation->person_marriage_id) {
-            Log::info("No parents found for person {$personId}.");
+//           Log::info("No parents found for person {$personId}.");
             return [];
         }
 
@@ -108,7 +108,7 @@ trait HandlesPersonDeletion_old2
 
         $parents = $parentMarriage ? array_filter([$parentMarriage->man_id, $parentMarriage->woman_id]) : [];
 
-        Log::info("Found parents for person {$personId}: " . json_encode($parents));
+//       Log::info("Found parents for person {$personId}: " . json_encode($parents));
         return $parents;
     }
 
@@ -128,7 +128,7 @@ trait HandlesPersonDeletion_old2
         ->values()
         ->toArray();
 
-        Log::info("Found spouses for person {$personId}: " . json_encode($spouses));
+//       Log::info("Found spouses for person {$personId}: " . json_encode($spouses));
         return $spouses;
     }
 
@@ -138,7 +138,7 @@ trait HandlesPersonDeletion_old2
     protected function getChildrenIds(array $parentIds)
     {
         if (empty($parentIds)) {
-            Log::info("No parents provided for fetching children.");
+//           Log::info("No parents provided for fetching children.");
             return [];
         }
 
@@ -148,7 +148,7 @@ trait HandlesPersonDeletion_old2
                 ->orWhereIn('woman_id', $parentIds);
         })->pluck('child_id')->toArray();
 
-        Log::info("Found children for parent(s) " . json_encode($parentIds) . ": " . json_encode($children));
+//       Log::info("Found children for parent(s) " . json_encode($parentIds) . ": " . json_encode($children));
         return $children;
     }
 
