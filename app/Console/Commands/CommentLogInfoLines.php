@@ -62,6 +62,6 @@ class CommentLogInfoLines extends Command
             }
         }
 
-        $this->info('✅ All Log::info lines have been commented.');
+        $this->info(' All Log::info lines have been commented.');
     }
 }

@@ -25,11 +25,7 @@ final class GetFamilyEvents
     }
     function resolveFamilyEvent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $FamilyEvents = FamilyEvent::where('deleted_at', null);
-        // return $FamilyEvents;
-
+       
         $query = $this->getModelByAuthorization(FamilyEvent::class, $args, true);
         $query = $this->applySearchFilters( $query, $args);
         return  $query;

@@ -108,8 +108,8 @@ class PersonMarriageSeeder extends Seeder
             // Filter records to ensure `creator_id` and `editor_id` exist in the `users` table
             $validUsers = User::pluck('id')->toArray();
             $filteredData = array_filter($jsonData, function ($person) use ($validUsers) {
-                return in_array($person['creator_id'], $validUsers) && 
-                        (empty($person['editor_id']) || in_array($person['editor_id'], $validUsers));
+                return in_array($person['creator_id'], $validUsers) &&
+                    (empty($person['editor_id']) || in_array($person['editor_id'], $validUsers));
             });
 
             if (!empty($filteredData)) {

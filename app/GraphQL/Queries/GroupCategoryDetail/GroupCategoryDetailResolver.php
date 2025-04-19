@@ -57,10 +57,10 @@ class GroupCategoryDetailResolver
     public function getAllPeopleFromCategories($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
-       //$this->userAccessibility(GroupCategoryDetail::class, AuthAction::Delete, $args);
+        //$this->userAccessibility(GroupCategoryDetail::class, AuthAction::Delete, $args);
         // Step 1: Retrieve all group_ids from the GroupCategoryDetails
         $query = $this->getModelByAuthorization(GroupCategoryDetail::class, $args, true);
-        $groupCategoryDetails =  $query->select('group_id')->get();
+        $groupCategoryDetails = $query->select('group_id')->get();
 
         // Log group IDs to ensure they're retrieved correctly
         //("Group IDs from GroupCategoryDetails: " . json_encode($groupCategoryDetails));
@@ -75,7 +75,6 @@ class GroupCategoryDetailResolver
 
             if ($group) {
                 // Log the group details with people
-//               Log::info("Found group: " . json_encode($group));
 
                 // Step 3: Loop through the group details and add the associated people
                 foreach ($group->GroupDetails as $groupDetail) {
@@ -84,17 +83,11 @@ class GroupCategoryDetailResolver
                         $allPeople->push($groupDetail->Person);
                     }
                 }
-            } else {
-//               Log::info("Group with ID " . $categoryDetail->group_id . " not found.");
             }
         }
 
         // Remove duplicates by person ID
         $allPeople = $allPeople->unique('id');
-
-        // Log final list of all people
-//       Log::info("Final list of all people: " . json_encode($allPeople));
-
         return $allPeople;
     }
 

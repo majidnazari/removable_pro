@@ -25,13 +25,9 @@ final class GetTalentHeaders
     }
     function resolveTalentHeader($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $TalentHeaders = TalentHeader::where('deleted_at', null);
-        // return $TalentHeaders;
 
         $query = $this->getModelByAuthorization(TalentHeader::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

@@ -34,36 +34,9 @@ final class UpdateMemory
     {
         // TODO implement the resolver
     }
-    public function resolveMemory($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
-        //     $this->userAccessibility(Memory::class, AuthAction::Update, $args);
-
-
-        //     //args["user_id_creator"]=$user_id;
-        //     $MemoryResult = Memory::find($args['id']);
-
-        //     if (!$MemoryResult) {
-        //         return Error::createLocatedError("Memory-UPDATE-RECORD_NOT_FOUND");
-        //     }
-
-        //     //Log::info("the memory is:" . json_encode($MemoryResult));
-        //    // $this->checkDuplicate(new Memory(), $MemoryResult->toArray());
-
-        //     // Ignore 'created_at' and 'updated_at' columns
-        //     $this->checkDuplicate(
-        //         new Memory(),
-        //         $args,
-        //         ['id','editor_id','created_at', 'updated_at'],
-        //         $args['id']
-        //     );
-
-
-        //     $args['editor_id'] = $this->userId;
-        //     $MemoryResult_filled = $MemoryResult->fill($args);
-        //     $MemoryResult->save();
-
-        //     return $MemoryResult;
 
         try {
 
@@ -83,8 +56,6 @@ final class UpdateMemory
         );
 
         return $this->updateModel($MemoryResult, $args, $this->userId);
-
-
 
     }
 }

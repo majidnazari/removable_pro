@@ -21,7 +21,7 @@ final class CreatePersonChild
 
     protected $userId;
 
-   
+
     /**
      * @param  null  $_
      * 
@@ -36,23 +36,18 @@ final class CreatePersonChild
         $this->userId = $this->getUserId();
 
         $PersonChildModel = [
-            "creator_id" =>  $this->userId,
+            "creator_id" => $this->userId,
             "editor_id" => $args['editor_id'] ?? null,
-            "person_marriage_id" => $args['person_marriage_id'] ,
+            "person_marriage_id" => $args['person_marriage_id'],
             "child_id" => $args['child_id'],
             "child_kind" => $args['child_kind'] ?? ChildKind::DirectChild, // Default to 'Direct_child' if not provided
             "child_status" => $args['child_status'] ?? ChildStatus::WithFamily, // Default to 'With_family' if not provided
             "status" => $args['status'] ?? status::Active // Default to 'Active' if not provided
         ];
-        
-        // $is_exist = PersonChild::where('person_marriage_id' , $args['person_marriage_id'])
-        // ->where('child_id' , $args['child_id'])
-        //     ->first();
-        // if ($is_exist) {
-        //     return Error::createLocatedError("PersonChild-CREATE-RECORD_IS_EXIST");
-        // }
 
-        $this->checkDuplicate(new PersonChild(),  $PersonChildModel);
+
+
+        $this->checkDuplicate(new PersonChild(), $PersonChildModel);
         $PersonChildResult = PersonChild::create($PersonChildModel);
         return $PersonChildResult;
     }

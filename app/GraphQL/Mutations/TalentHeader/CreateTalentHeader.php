@@ -42,11 +42,6 @@ final class CreateTalentHeader
             "end_date" => $args['end_date'],
             "status" => $args['status'] ?? status::Active
         ];
-        // $is_exist= talentHeader::where($talentHeaderModel)->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("talentHeader-CREATE-RECORD_IS_EXIST");
-        //  }
 
         $this->checkDuplicate(new TalentHeader(), $talentHeaderModel);
         $talentHeaderResult = TalentHeader::create($talentHeaderModel);

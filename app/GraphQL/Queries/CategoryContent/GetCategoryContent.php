@@ -24,10 +24,6 @@ final class GetCategoryContent
     }
     function resolveCategoryContent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $CategoryContent = CategoryContent::where('id', $args['id']);       
-        // return $CategoryContent->first();
         $CategoryContent = $this->getModelByAuthorization(CategoryContent::class, $args);
         return $CategoryContent->first();
     }

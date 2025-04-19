@@ -34,7 +34,7 @@ class GroupDetailSeeder extends Seeder
                     'editor_id' => $record['editor_id'],
                     'group_id' => $record['group_id'],
                     'user_id' => $record['user_id'],
-                    
+
                     'status' => $record['status'],
                     'created_at' => now(),
                     'updated_at' => now(),

@@ -14,10 +14,8 @@ use App\Models\User;
 use App\Traits\AuthUserTrait;
 use App\Events\UserRegistered;
 use App\Exceptions\CustomValidationException;
-
 use App\GraphQL\Enums\UserStatus;
 use Illuminate\Support\Facades\RateLimiter;
-
 use DB;
 use Log;
 
@@ -37,38 +35,16 @@ class Register extends BaseAuthResolver
      */
     public function resolve($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        //  // Use RateLimiter to check if the IP has exceeded the registration attempts
-        //  if (RateLimiter::tooManyAttempts('register:' . $context->request->ip(), 5)) {  // 5 attempts per IP
-        //     return [
-        //         'status' => 'ERROR',
-        //         'message' => 'Too many registration attempts. Please try again later.',
-        //     ];
-        // }
 
-        // // Increment the registration attempts for the IP
-        // RateLimiter::hit('register:' . $context->request->ip(), 60);  // 1 minute time window
-
-//       Log::info("the inside of resolve is running");
         $code = 159951;//rand(100000, 999999);
         $code_expired_at = Carbon::now()->addMinutes(2)->format("Y-m-d H:i:s");
         $args['sent_code'] = $code;
         $args['code_expired_at'] = $code_expired_at;
         $model = $this->createAuthModel($args);
 
-//       Log::info("the user is:" . json_encode($model));
 
         $this->validateAuthModel($model);
 
-        // if ($model instanceof MustVerifyEmail) {
-        //     $model->sendEmailVerificationNotification();
-
-        //     event(new Registered($model));
-
-        //     return [
-        //         'tokens' => [],
-        //         'status' => 'MUST_VERIFY_EMAIL',
-        //     ];
-        // }
         $credentials = $this->buildCredentials([
             'username' => $args[config('lighthouse-graphql-passport.username')],
             'password' => $args['password'],
@@ -95,7 +71,6 @@ class Register extends BaseAuthResolver
 
         throw new CustomValidationException("Auth model must be an instance of {$authModelClass}", "مدل تایید باید نمونه ای از {$authModelClass} باشد", 400);
 
-        //throw new \RuntimeException("Auth model must be an instance of {$authModelClass}");
     }
 
     protected function createAuthModel(array $data): Model
@@ -118,12 +93,7 @@ class Register extends BaseAuthResolver
         if (!$user) {
             throw new CustomValidationException("User not found", "کاربر پیدا نشد", 404);
 
-            //throw new \RuntimeException('User not found');
         }
-
-        // Extract the country code and mobile number separately
-        //$countryCodeLength = strlen($user->country_code);
-        //$pureMobileNumber = substr($user->mobile, $countryCodeLength); // remove country code prefix
 
         $user->password = Hash::make($args['password']);
         $user->status = UserStatus::Active;
@@ -135,11 +105,8 @@ class Register extends BaseAuthResolver
             'password' => $args['password'],
         ]);
 
-//       Log::info("cred is:".  json_encode($credentials));
-
         $response = $this->makeRequest($credentials);
 
-//       Log::info("the event must run here and user ise:" . json_encode($user));
         // Fire the UserRegistered event after user is fully registered
         event(new UserRegistered($user));
 

@@ -17,8 +17,8 @@ trait PersonAncestryWithCompleteMerge
             $query->where('user_sender_id', $user_id)
                 ->orWhere('user_receiver_id', $user_id);
         })
-        ->where('status', MergeStatus::Complete)
-        ->get();
+            ->where('status', MergeStatus::Complete)
+            ->get();
 
         // If no relationships, return only the user's own ancestry
         $minePerson = $this->findOwner($user_id);

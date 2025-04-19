@@ -17,20 +17,20 @@ class CitySeeder extends Seeder
      */
     public function run(): void
     {
-        $json = File::get(database_path('datasample/cities.json')); 
+        $json = File::get(database_path('datasample/cities.json'));
         $cities = json_decode($json, true); // Decode JSON into an array
-      
+
         $cityData = [];
         foreach ($cities as $city) {
-           
+
             $title = !empty($city['faName']) ? $city['faName'] : $city['enName'];
             $cityData[] = [
-                'title' => $title, 
+                'title' => $title,
                 //'country_id' => $city['countryId'], 
-                'province_id' => $city['provinceId'], 
+                'province_id' => $city['provinceId'],
             ];
         }
-       
+
         DB::table('cities')->insert($cityData);
     }
 }

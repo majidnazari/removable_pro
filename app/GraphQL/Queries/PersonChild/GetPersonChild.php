@@ -23,10 +23,6 @@ final class GetPersonChild
     }
     function resolvePersonChild($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $PersonChild = PersonChild::where('id', $args['id']);       
-        // return $PersonChild->first();
 
         $PersonChild = $this->getModelByAuthorization(PersonChild::class, $args);
         return $PersonChild->first();

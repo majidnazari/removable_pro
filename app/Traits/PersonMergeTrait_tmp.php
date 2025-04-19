@@ -29,14 +29,11 @@ trait PersonMergeTrait_tmp
 
             // Prioritize is_owner = 1 as the primary person
             if ($secondaryPerson->is_owner && !$primaryPerson->is_owner) {
-//               Log::info("Switching primary and secondary as secondaryPerson is the owner.");
+                //               Log::info("Switching primary and secondary as secondaryPerson is the owner.");
                 [$primaryPerson, $secondaryPerson] = [$secondaryPerson, $primaryPerson];
                 [$primaryPersonId, $secondaryPersonId] = [$primaryPerson->id, $secondaryPerson->id];
             }
 
-//           Log::info("the primaryPerson is:" .$primaryPersonId. json_encode($primaryPerson));
-//           Log::info("the secondaryPerson is:" .$secondaryPersonId. json_encode($secondaryPerson));
-//           Log::info("the authId is:" .$authId);
             if (!$primaryPerson || !$secondaryPerson) {
                 throw new Error("One or both persons do not exist.");
             }
@@ -45,25 +42,11 @@ trait PersonMergeTrait_tmp
             if ($primaryPerson->gender !== $secondaryPerson->gender) {
                 throw new Error("Persons cannot be merged because they have different genders.");
             }
-
-
-
             $this->mergeMarriages($primaryPersonId, $secondaryPersonId, $authId);
             $this->mergeChildren($primaryPersonId, $secondaryPersonId, $authId);
 
-            // Update references in other tables
-            // $this->updateMemoryReferences($secondaryPersonId, $primaryPersonId);
-            // $this->updateFavoriteReferences($secondaryPersonId, $primaryPersonId);
-            // $this->updateFamilyBoardReferences($secondaryPersonId, $primaryPersonId);
-            // $this->updateFamilyEventReferences($secondaryPersonId, $primaryPersonId);
-            // $this->updateTalentHedaerReferences($secondaryPersonId, $primaryPersonId);
-            // $this->updatePersonScoreReferences($secondaryPersonId, $primaryPersonId);
-
             // Update references in related tables
             $this->updateReferences($secondaryPersonId, $primaryPersonId);
-
-
-
 
             // Mark secondary person as deleted
             $secondaryPerson->editor_id = $authId;
@@ -148,37 +131,5 @@ trait PersonMergeTrait_tmp
         }
     }
 
-    // Update Memory references
-    // private function updateMemoryReferences($oldPersonId, $newPersonId)
-    // {
-    //     Memory::where('person_id', $oldPersonId)->chunk(100, function ($events) use ($newPersonId) {
-    //         foreach ($events as $event) {
-    //             // You update the record, but you still need to call `save()` to persist the change
-    //             $event->person_id = $newPersonId;
-    //             $event->save(); // Save after updating the record
-    //         }
-    //     });
-    // }
 
-    // private function updateFavoriteReferences($oldPersonId, $newPersonId)
-    // {
-    //     Favorite::where('person_id', $oldPersonId)->update(['person_id' => $newPersonId]);
-    // }
-
-    // private function updateFamilyBoardReferences($oldPersonId, $newPersonId)
-    // {
-    //     FamilyBoard::where('person_id', $oldPersonId)->update(['person_id' => $newPersonId]);
-    // }
-    // private function updateFamilyEventReferences($oldPersonId, $newPersonId)
-    // {
-    //     FamilyEvent::where('person_id', $oldPersonId)->update(['person_id' => $newPersonId]);
-    // }
-    // private function updateTalentHedaerReferences($oldPersonId, $newPersonId)
-    // {
-    //     TalentHeader::where('person_id', $oldPersonId)->update(['person_id' => $newPersonId]);
-    // }
-    // private function updatePersonScoreReferences($oldPersonId, $newPersonId)
-    // {
-    //     PersonScore::where('person_id', $oldPersonId)->update(['person_id' => $newPersonId]);
-    // }
 }

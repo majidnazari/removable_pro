@@ -36,30 +36,6 @@ final class UpdateUserDetail
     public function resolveUserDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->user = $this->getUser();
-        // $this->userAccessibility(UserDetail::class, AuthAction::Update, $args);
-
-        // $UserDetailResult=UserDetail::find($args['id']);
-
-        // if(!$UserDetailResult)
-        // {
-        //     return Error::createLocatedError("UserDetail-UPDATE-RECORD_NOT_FOUND");
-        // }
-
-        // if (isset($args['mobile']) && ( $this->user->mobile !== $args['mobile']) ) {
-        //     return Error::createLocatedError("The provided mobile does not belong to the logged-in user.");
-        // }
-        // $this->checkDuplicate(
-        //     new UserDetail(),
-        //     $args,
-        //     ['id','editor_id','created_at','mobile', 'updated_at','status'],
-        //     $args['id']
-        // );
-        // $args['editor_id']=$this->user->id;
-
-        // $UserDetailResult_filled= $UserDetailResult->fill($args);
-        // $UserDetailResult->save();       
-
-        // return $UserDetailResult;
 
         try {
 
@@ -67,7 +43,6 @@ final class UpdateUserDetail
             if (isset($args['mobile']) && ($this->user->mobile !== $args['mobile'])) {
                 throw new CustomValidationException("The provided mobile does not belong to the logged-in user.", "تلفن همراه ارائه شده به کاربر وارد شده تعلق ندارد.", 422);
 
-                //return Error::createLocatedError("The provided mobile does not belong to the logged-in user.");
             }
 
         } catch (CustomValidationException $e) {
@@ -85,8 +60,6 @@ final class UpdateUserDetail
         );
 
         return $this->updateModel($UserDetailResult, $args, $this->userId);
-
-
 
     }
 }

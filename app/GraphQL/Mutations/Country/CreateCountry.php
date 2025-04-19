@@ -23,20 +23,19 @@ final class CreateCountry
     {
         // TODO implement the resolver
     }
-    public function resolveCountry($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {   
+    public function resolveCountry($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
         $this->userId = $this->getUserId();
 
-        $CountryResult=[
+        $CountryResult = [
             "title" => $args['title'],
-            "code" => $args['code']            
+            "code" => $args['code']
         ];
-        $is_exist= Country::where('title',$args['title'])->where('code',$args['code'])->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("Country-CREATE-RECORD_IS_EXIST");
-         }
-        $CountryResult_result=Country::create($CountryResult);
+        $is_exist = Country::where('title', $args['title'])->where('code', $args['code'])->first();
+        if ($is_exist) {
+            return Error::createLocatedError("Country-CREATE-RECORD_IS_EXIST");
+        }
+        $CountryResult_result = Country::create($CountryResult);
         return $CountryResult_result;
     }
 }

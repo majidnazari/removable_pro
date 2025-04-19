@@ -25,13 +25,8 @@ final class GetPersonMarriages
     }
     function resolvePersonMarriage($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-        
-        // $PersonMarriages = PersonMarriage::where('deleted_at', null);
-        // return $PersonMarriages;
-
         $query = $this->getModelByAuthorization(PersonMarriage::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

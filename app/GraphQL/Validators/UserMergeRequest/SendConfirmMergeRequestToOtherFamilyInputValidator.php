@@ -44,14 +44,14 @@ class SendConfirmMergeRequestToOtherFamilyInputValidator extends Validator
      */
     public function rules(): array
     {
-       
+
         $mergeIdsSender = $this->arg('merge_ids_sender');
         $userMergeRequestId = $this->arg('id');
         $mergeIdsReceiver = $this->arg('merge_ids_receiver');
         return [
             'id' => [
                 'required',
-                new MergeRequestIdExists(), 
+                new MergeRequestIdExists(),
                 new MergeValidateNodeIdsInMergeIds($userMergeRequestId, $mergeIdsSender, $mergeIdsReceiver), // Validate sender and receiver node IDs
                 new MergeValidateAllStatusesAreActive($userMergeRequestId, $this->userId),
                 new PreventChangeCompleteStatus($this->arg('id')),

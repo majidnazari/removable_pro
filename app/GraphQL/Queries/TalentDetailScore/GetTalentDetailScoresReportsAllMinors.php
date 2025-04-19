@@ -49,14 +49,14 @@ final class GetTalentDetailScoresReportsAllMinors
 
         // Group by talent header and minor field
         $query->groupBy(
-            
+
             'minor_fields.id',
             'minor_fields.title',
             'middle_fields.id',
             'middle_fields.title'
         );
 
-//      Log::info("the sql is :" . $query->toSql());
+        //      Log::info("the sql is :" . $query->toSql());
 
         return $query; // Return query builder for 
     }

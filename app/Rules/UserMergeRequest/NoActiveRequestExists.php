@@ -23,7 +23,7 @@ class NoActiveRequestExists implements Rule
     {
         return !UserMergeRequest::where('user_sender_id', $this->senderId)
             ->where('request_status_sender', RequestStatusSender::Active->value)
-            ->where('status','!=' ,MergeStatus::Complete->value)
+            ->where('status', '!=', MergeStatus::Complete->value)
             ->exists();
     }
 

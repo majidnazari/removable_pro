@@ -24,11 +24,6 @@ final class GetFavorite
     }
     function resolveFavorite($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $Favorite = Favorite::where('id', $args['id']);       
-        // return $Favorite->first();
-
         $Favorite = $this->getModelByAuthorization(Favorite::class, $args);
         return $Favorite->first();
     }

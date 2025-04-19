@@ -23,11 +23,6 @@ final class GetCountry
     }
     function resolveCountry($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $country = Country::where('id', $args['id']);       
-        // return $country->first();
-
         $Country = $this->getModelByAuthorization(Country::class, $args);
         return $Country->first();
     }

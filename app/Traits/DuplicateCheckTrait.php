@@ -39,25 +39,13 @@ trait DuplicateCheckTrait
         // Generate the final query with bound parameters
         $sqlWithBindings = $this->replaceQueryBindings($query->toSql(), $query->getBindings());
 
-        // Log the final query
-//      Log::info('Final Query: ' . $sqlWithBindings);
-
-        // If duplicate exists, throw an error
-        // if ($query->exists()) {
-        //     $filteredColumns = array_diff(array_keys($columnsAndValues), $exceptionColumns);
-        //     $columns = implode(', ', $filteredColumns);
-        //     throw ValidationException::withMessages([
-        //         "duplicate" => "A record with the same {$columns} already exists."
-        //     ]);
-        // }
-
         if ($query->exists()) {
             $filteredColumns = array_diff(array_keys($columnsAndValues), $exceptionColumns);
             $columns = implode(', ', $filteredColumns);
             $message = "A record with the same {$columns} exists.";
-            $endUserMessage="رکوردی با اطلاعات {$columns} قبلا ثبت شده است.";
-            $statusCode=422;
-    
+            $endUserMessage = "رکوردی با اطلاعات {$columns} قبلا ثبت شده است.";
+            $statusCode = 422;
+
             throw new CustomValidationException($message, $endUserMessage, $statusCode);
         }
     }

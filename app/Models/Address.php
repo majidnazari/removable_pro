@@ -28,7 +28,6 @@ use Eloquent;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Area|null $Area
  * @property-read \App\Models\City|null $City
  * @property-read \App\Models\Country|null $Country
  * @property-read \App\Models\User $Creator
@@ -98,7 +97,7 @@ class Address extends Eloquent
         return $this->belongsTo(Person::class, self::COLUMN_PERSON_ID);
     }
 
-    
+
     public function City()
     {
         return $this->belongsTo(City::class, self::COLUMN_CITY_ID);
@@ -116,7 +115,7 @@ class Address extends Eloquent
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

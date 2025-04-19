@@ -35,39 +35,8 @@ final class DeleteAddress
     {
 
         $this->userId = $this->getUserId();
-        //  $this->userAccessibility(Address::class, AuthAction::Delete, $args);
-
-        //try {
-//           Log::info("inside try");
-            $AddressResult = $this->userAccessibility(Address::class, AuthAction::Delete, $args);
-//           Log::info("inside try afteruserAccessibility");
-
-
-        // } catch (CustomValidationException $e) {
-        //     Log::error("DeleteAddress: " . json_encode($e));
-
-        //     throw new Exception($e->getMessage());
-
-        //     //throw new CustomValidationException($e->getMessage, "");
-        // } catch (Exception $e) {
-//           Log::info("inside catch error occured ");
-
-        //     throw new Exception($e->getMessage());
-
-        // }
-
+        $AddressResult = $this->userAccessibility(Address::class, AuthAction::Delete, $args);
         return $this->updateAndDeleteModel($AddressResult, $args, $this->userId);
-        //$AddressResult = Address::find($args['id']);             
-
-        // if(!$AddressResult)
-        // {
-        //     return Error::createLocatedError("Address-DELETE-RECORD_NOT_FOUND");
-        // }
-        // $AddressResult->editor_id = $this->userId;
-        // $AddressResult->save();
-        // $AddressResult_filled = $AddressResult->delete();
-        // return $AddressResult;
-
 
     }
 }

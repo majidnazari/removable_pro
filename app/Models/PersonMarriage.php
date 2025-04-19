@@ -64,7 +64,7 @@ class PersonMarriage extends Eloquent
     public const COLUMN_WOMAN_ID = 'woman_id';
     public const COLUMN_PERSON_MARRIAGE_ID = 'person_marriage_id';
     public const COLUMN_CHILD_ID = 'child_id';
-  
+
 
 
     public function Creator()
@@ -79,7 +79,7 @@ class PersonMarriage extends Eloquent
 
     public function Man()
     {
-        return $this->belongsTo(Person::class, self::COLUMN_MAN_ID,);
+        return $this->belongsTo(Person::class, self::COLUMN_MAN_ID, );
     }
 
     public function Woman()
@@ -107,7 +107,7 @@ class PersonMarriage extends Eloquent
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 

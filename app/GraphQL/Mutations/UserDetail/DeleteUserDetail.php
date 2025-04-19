@@ -33,19 +33,6 @@ final class DeleteUserDetail
     public function resolveUserDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
-        // $this->userAccessibility(UserDetail::class, AuthAction::Delete, $args);
-
-        // $UserDetailResult = UserDetail::find($args['id']);
-
-        // if (!$UserDetailResult) {
-        //     return Error::createLocatedError("UserDetail-DELETE-RECORD_NOT_FOUND");
-        // }
-        // $UserDetailResult->editor_id = $this->userId;
-        // $UserDetailResult->save();
-
-
-        // $UserDetailResult_filled = $UserDetailResult->delete();
-        // return $UserDetailResult;
 
         try {
 
@@ -61,9 +48,6 @@ final class DeleteUserDetail
         }
 
         return $this->updateAndDeleteModel($UserDetailResult, $args, $this->userId);
-
-
-
 
     }
 }

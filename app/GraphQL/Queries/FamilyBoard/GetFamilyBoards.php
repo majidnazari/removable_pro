@@ -25,11 +25,6 @@ final class GetFamilyBoards
     }
     function resolveFamilyBoard($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $FamilyBoards = FamilyBoard::where('deleted_at', null);
-        // return $FamilyBoards;
-
         $query = $this->getModelByAuthorization(FamilyBoard::class, $args, true);
         $query = $this->applySearchFilters( $query, $args);
         return  $query;

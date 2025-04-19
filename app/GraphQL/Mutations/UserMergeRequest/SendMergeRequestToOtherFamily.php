@@ -55,7 +55,6 @@ final class SendMergeRequestToOtherFamily
         if (!$userMergeRequest) {
             throw new CustomValidationException("USERMERGEREQUEST-SEND-MERGE-RECORD_NOT_FOUND", "درخواست ادغام کاربر. ارسال درخواست. رکورد یافت نشد", 404);
 
-            //return Error::createLocatedError("UserMergeRequest-USER_MERGE_REQUEST_NOT_FOUND!");
         }
 
         $this->checkDuplicate(

@@ -17,7 +17,7 @@ class SenderNodeAndReceiverNodeSameGender implements Rule
     public function __construct($user_sender_id)
     {
         // No need to store nodeSenderId here
-        $this->userSenderId=$user_sender_id;
+        $this->userSenderId = $user_sender_id;
     }
 
     /**
@@ -42,7 +42,7 @@ class SenderNodeAndReceiverNodeSameGender implements Rule
             return $this->failValidation('SameGender:Sender does not have a mobile number.');
         }
 
-//       Log::info("The sender person is: ". json_encode($senderPerson));
+        //       Log::info("The sender person is: ". json_encode($senderPerson));
 
         $senderMobile = $senderPerson->country_code . $senderPerson->mobile;
 
@@ -52,7 +52,7 @@ class SenderNodeAndReceiverNodeSameGender implements Rule
             return $this->failValidation('SameGender:Receiver user not found.');
         }
 
-//      Log::info("The receiver person is: ". json_encode($receiverUser));
+        //      Log::info("The receiver person is: ". json_encode($receiverUser));
 
         $receiverPerson = Person::where('creator_id', $receiverUser->id)
             ->where('is_owner', true)

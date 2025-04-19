@@ -24,13 +24,7 @@ final class GetUserMergeRequest
     }
     function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-
         $userMergeRequest = $this->getModelByAuthorization(UserMergeRequest::class, $args);
-
         return $userMergeRequest->first();
-        // $this->userId = $this->getUserId();
-
-        // $UserMergeRequest = UserMergeRequest::where('id', $args['id']);       
-        // return $UserMergeRequest->first();
     }
 }

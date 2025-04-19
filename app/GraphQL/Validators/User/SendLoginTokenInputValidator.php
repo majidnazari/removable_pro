@@ -27,7 +27,6 @@ class SendLoginTokenInputValidator extends Validator
         if (!$user) {
             throw new CustomValidationException("Authentication required. No user is currently logged in.", "احراز هویت لازم است. هیچ کاربری در حال حاضر وارد نشده است.", 403);
 
-            //throw new Exception("Authentication required. No user is currently logged in.");
         }
 
         $this->userId = $user->id;
@@ -44,13 +43,10 @@ class SendLoginTokenInputValidator extends Validator
         if (!$authorizationHeader) {
             throw new CustomValidationException("Authorization header is missing.", "سرصفحه مجوز وجود ندارد.", 400);
 
-            //throw new Exception("Authorization header is missing.");
         }
 
-        // Remove the 'Bearer ' prefix to get the actual token
         $token = str_replace('Bearer ', '', $authorizationHeader);
 
-        //LOG::INFO("THE LOG IS :" . JSON_ENCODE($token));
         $finalToken = $token;
 
         return [
@@ -60,11 +56,7 @@ class SendLoginTokenInputValidator extends Validator
             "mobile" => [
                 'required'
             ],
-            // "input.token" => [
-            //     new JwtTokenIsValid($finalToken),
-            //     new JwtTokenIsNotExpired($finalToken),
-            //     new JwtTokenHasValidFormat($finalToken),
-            // ],
+
         ];
     }
 }

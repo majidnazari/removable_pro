@@ -25,10 +25,6 @@ final class GetCategoryContents
     }
     function resolveCategoryContent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $CategoryContents = CategoryContent::where('deleted_at', null);
-        // return $CategoryContents;
         $query = $this->getModelByAuthorization(CategoryContent::class, $args, true);
         $query = $this->applySearchFilters( $query, $args);
         return  $query;

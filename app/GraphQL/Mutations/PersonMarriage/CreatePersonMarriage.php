@@ -49,17 +49,6 @@ final class CreatePersonMarriage
             "divorce_date" => $args['divorce_date'] ?? null
         ];
 
-        // Check if a similar record exists based on unique constraints or business logic
-        //     $is_exist = PersonMarriage::where('man_id', $args['man_id'])
-        //     ->where('woman_id', $args['woman_id'])
-        //     ->where('marriage_status', $args['marriage_status'] ?? MarriageStatus::None)
-        //    // ->where('spouse_status', $args['spouse_status'] ?? 'None')
-        //     ->first();
-
-        //     if ($is_exist) {
-        //         return Error::createLocatedError("PersonMarriage-CREATE-RECORD_IS_EXIST");
-        //     }
-
         $this->checkDuplicate(new PersonMarriage(), $PersonMarriageModel);
         $PersonMarriageResult = PersonMarriage::create($PersonMarriageModel);
         return $PersonMarriageResult;

@@ -26,15 +26,10 @@ final class GetPersons
     }
     function resolvePerson($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-         $this->userId = $this->getUserId();
-
-        // $Persons = Person::where('deleted_at', null);
-        // return $Persons;
+        $this->userId = $this->getUserId();
 
         $query = $this->getModelByAuthorization(Person::class, $args, true);
-//       Log::info("the user id is:".  $this->userId);
-
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

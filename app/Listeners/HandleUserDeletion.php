@@ -26,12 +26,21 @@ class HandleUserDeletion
     {
         $userId = $event->userId;
         $timestamp = Carbon::now();
-        
+
         $tables = [
-            'addresses', 'memories', 'user_details', 'family_boards',
-            'family_events', 'favorites', 'groups', 'group_categories',
-            'group_category_details', 'group_details', 'talent_details',
-            'talent_detail_scores', 'talent_headers',
+            'addresses',
+            'memories',
+            'user_details',
+            'family_boards',
+            'family_events',
+            'favorites',
+            'groups',
+            'group_categories',
+            'group_category_details',
+            'group_details',
+            'talent_details',
+            'talent_detail_scores',
+            'talent_headers',
         ];
 
         foreach ($tables as $table) {
@@ -39,7 +48,7 @@ class HandleUserDeletion
                 ->where('creator_id', $userId)
                 ->update(['deleted_at' => $timestamp]);
 
-//           Log::info("Soft deleted $count records from $table for creator_id = $userId. for table {$table}");
+            //           Log::info("Soft deleted $count records from $table for creator_id = $userId. for table {$table}");
         }
 
         // Soft delete group_details separately for user_id
@@ -47,7 +56,7 @@ class HandleUserDeletion
             ->where('user_id', $userId)
             ->update(['deleted_at' => $timestamp]);
 
-//       Log::info("Soft deleted $groupDetailsCount records from group_details for user_id = $userId.");
-    
+        //       Log::info("Soft deleted $groupDetailsCount records from group_details for user_id = $userId.");
+
     }
 }

@@ -51,13 +51,13 @@ class GroupCategory extends Eloquent
     }
     public function GroupCategoryDetails()
     {
-        return $this->hasMany(GroupCategoryDetail::class,self::COLUMN_GROUP_CATEGORY_ID);
+        return $this->hasMany(GroupCategoryDetail::class, self::COLUMN_GROUP_CATEGORY_ID);
     }
 
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

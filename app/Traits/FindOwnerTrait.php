@@ -25,35 +25,35 @@ trait FindOwnerTrait
             ->where('is_owner', 1)
             ->first();
     }
-    public function personSpousesOwner( $person)
+    public function personSpousesOwner($person)
     {
-//       Log::info("personSpousesOwner person is :" . json_encode($person));
-        $genderColumn=$person->gender == 1 ? 'man_id' : 'woman_id';
-       
+        //       Log::info("personSpousesOwner person is :" . json_encode($person));
+        $genderColumn = $person->gender == 1 ? 'man_id' : 'woman_id';
+
         // Get all spouse relationships based on gender
         $spouseIds = PersonMarriage::where($genderColumn, $person->id)
-        ->pluck(($person->gender == 1) ? 'woman_id' : 'man_id');
+            ->pluck(($person->gender == 1) ? 'woman_id' : 'man_id');
 
-//       Log::info("the all spouses spouseOwner :" . $spouseIds);
+        //       Log::info("the all spouses spouseOwner :" . $spouseIds);
 
         if ($spouseIds->isEmpty()) {
-//           Log::info("No spouses found for person ID: " . $person->id);
+            //           Log::info("No spouses found for person ID: " . $person->id);
             return false;
         }
-        
+
         // Check if any of the retrieved spouse IDs belong to an owner in Person table
         $spouseOwnerExists = Person::whereIn('id', $spouseIds)
             ->where('is_owner', 1)
             ->exists(); // Correctly checks if at least one spouse is an owner
-        
-//       Log::info("Spouse owner exists: " . json_encode($spouseOwnerExists));
+
+        //       Log::info("Spouse owner exists: " . json_encode($spouseOwnerExists));
         return $spouseOwnerExists;
     }
 
-    public function checkPersonSpousesOwner( $person): bool
+    public function checkPersonSpousesOwner($person): bool
     {
         $spouseOwners = $this->personSpousesOwner($person);
-        return  $spouseOwners ;
+        return $spouseOwners;
     }
 
 

@@ -25,13 +25,8 @@ final class GetGroupCategories
     }
     function resolveGroupCategory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $GroupCategorys = GroupCategory::where('deleted_at', null);
-        // return $GroupCategorys;
-
         $query = $this->getModelByAuthorization(GroupCategory::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

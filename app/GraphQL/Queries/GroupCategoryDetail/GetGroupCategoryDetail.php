@@ -24,10 +24,6 @@ final class GetGroupCategoryDetail
     }
     function resolveGroupCategoryDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $GroupCategoryDetail = GroupCategoryDetail::where('id', $args['id']);       
-        // return $GroupCategoryDetail->first();
 
         $GroupCategoryDetail = $this->getModelByAuthorization(GroupCategoryDetail::class, $args);
         return $GroupCategoryDetail->first();

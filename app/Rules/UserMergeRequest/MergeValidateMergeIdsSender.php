@@ -35,9 +35,9 @@ class MergeValidateMergeIdsSender implements Rule
             return 'No valid IDs are available for your complete or active relationships.';
         }
 
-        return 'The input.merge_ids_sender contains invalid IDs: ' 
-            . implode(', ', $this->invalidIds) 
-            . '. Only the following IDs are allowed: ' 
+        return 'The input.merge_ids_sender contains invalid IDs: '
+            . implode(', ', $this->invalidIds)
+            . '. Only the following IDs are allowed: '
             . implode(', ', $this->allowedPersonIds) . '.';
     }
 

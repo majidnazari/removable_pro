@@ -17,11 +17,6 @@ class CustomValidationException extends Exception
        // $this->message = $message;
         $this->statusCode = $statusCode;
     }
-
-    // public function getsMessage(): string
-    // {
-    //     return $this->message;
-    // }
     public function getEndUserMessage(): string
     {
         return $this->endUserMessage;

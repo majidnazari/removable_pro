@@ -25,12 +25,8 @@ final class GetEvents
     }
     function resolveEvent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $Events = Event::where('deleted_at', null);
-        // return $Events;
         $query = $this->getModelByAuthorization(Event::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

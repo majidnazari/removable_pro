@@ -59,40 +59,6 @@ final class UpdatePerson
 
         return $this->updateModel($GroupDetailResult, $args, $this->userId);
 
-        // $this->userAccessibility(Person::class, AuthAction::Update, $args);
-
-        // //args["user_id_creator"]=$user_id;
-
-        // $id = $args['id'];
-        // $firstName = $args['first_name'];
-        // $lastName = $args['last_name'];
-        // $birthDate = $args['birth_date'];
-
-        // // Instantiate the UniquePerson rule
-        // $uniquePersonRule = new UniquePerson($firstName, $lastName, $birthDate, $id);
-
-        // // Check if the rule passes
-        // if (!$uniquePersonRule->passes('first_name', $firstName)) {
-        //     return Error::createLocatedError($uniquePersonRule->message());
-        // }
-
-        // $PersonResult=Person::find($args['id']);
-
-        // if(!$PersonResult)
-        // {
-        //     return Error::createLocatedError("Person-UPDATE-RECORD_NOT_FOUND");
-        // }
-        // $this->checkDuplicate(
-        //     new Person(),
-        //     $args,
-        //     ['id','editor_id','created_at', 'updated_at'],
-        //     $args['id']
-        // );
-        // $args['editor_id']=$this->userId ;
-        // $PersonResult_filled= $PersonResult->fill($args);
-        // $PersonResult->save();       
-
-        // return $PersonResult;
 
 
     }

@@ -24,11 +24,6 @@ final class GetTalentHeader
     }
     function resolveTalentHeader($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $TalentHeader = TalentHeader::where('id', $args['id']);       
-        // return $TalentHeader->first();
-
         $TalentHeader = $this->getModelByAuthorization(TalentHeader::class, $args);
         return $TalentHeader->first();
     }

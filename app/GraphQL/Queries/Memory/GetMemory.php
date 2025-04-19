@@ -25,11 +25,7 @@ final class GetMemory
     }
     function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
 
-        // $Memory = Memory::where('id', $args['id']);       
-        // return $Memory->first();
-//      Log::info("the all MR are:" . json_encode($this->getRelatedUserIds()));
         $Memory = $this->getModelByAuthorization(Memory::class, $args);
         return $Memory->first();
     }

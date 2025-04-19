@@ -59,8 +59,6 @@ final class UpdatePersonDetails
             ['id', 'editor_id', 'created_at', 'updated_at'],
             $args['id']
         );
-        // Fetch existing record if it exists
-        //$personDetail = PersonDetail::find($args['id']); // Assuming you pass `id` to identify the record
 
         // Validate and handle the file upload
         if (isset($args['profile_picture'])) {
@@ -85,14 +83,12 @@ final class UpdatePersonDetails
             if (!in_array(strtolower($extension), $allowedFileTypes)) {
                 throw new CustomValidationException("Invalid file type. Allowed types: " . implode(', ', $allowedFileTypes), "نوع فایل نامعتبر است. انواع مجاز: " . implode(', ', $allowedFileTypes), 400);
 
-                //throw new Error('Invalid file type. Allowed types: ' . implode(', ', $allowedFileTypes));
             }
 
             // Check file size
             if ($fileSize > $maxFileSize) {
                 throw new CustomValidationException("File size exceeds the maximum limit of 1 MB.", "اندازه فایل از حداکثر 1 مگابایت بیشتر است.", 400);
 
-                //throw new Error('File size exceeds the maximum limit of 1 MB.');
             }
 
             // Get the person ID
@@ -102,16 +98,12 @@ final class UpdatePersonDetails
             $fileName = "{$personId}.{$extension}"; // or use a unique identifier as mentioned before
             $storagePath = 'profile_pictures/' . $fileName;
 
-//           Log::info("the old pic is:" . $personDetail['profile_picture'] );
             // Delete the old image if it exists
             if ($personDetail && $personDetail['profile_picture'] != null) {
                 $oldImagePath = public_path('storage/profile_pictures/' . $personDetail['profile_picture']); // Use `public_path` to get the full path
-//               Log::info("the old image in updateis: ". $oldImagePath );
 
                 if (file_exists($oldImagePath)) {
-//                   Log::info("it should unlink it");
                     unlink($oldImagePath); // Delete the old image
-//                   Log::info("Deleted old image: " . $oldImagePath);
                 }
             }
 
@@ -124,9 +116,6 @@ final class UpdatePersonDetails
 
         $PersonDetailsModel = [
             "editor_id" => $this->userId,
-            // "person_id" => $args['person_id'],
-            // "profile_picture" =>  $path ?? null,
-            //"gender" => $args['gender'] ?? 'None',
             "physical_condition" => $args['physical_condition'] ?? PhysicalCondition::Healthy // 'Healthy'
         ];
 

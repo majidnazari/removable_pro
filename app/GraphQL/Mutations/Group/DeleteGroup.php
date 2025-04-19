@@ -49,29 +49,5 @@ final class DeleteGroup
 
         return $this->updateAndDeleteModel($GroupResult, $args, $this->userId);
 
-        // $this->userAccessibility(Group::class, AuthAction::Delete, $args);
-
-
-        // $GroupResult = Group::find($args['id']);
-
-        // if (!$GroupResult) {
-        //     return Error::createLocatedError("Group-DELETE-RECORD_NOT_FOUND");
-        // }
-
-        // try {
-
-        //     $GroupResult = $this->userAccessibility(Group::class, AuthAction::Delete, $args);
-
-        // } catch (Exception $e) {
-        //     throw new Exception($e->getMessage());
-        // }
-
-        // $GroupResult->editor_id = $this->userId;
-        // $GroupResult->save();
-
-        // $GroupResult_filled = $GroupResult->delete();
-        // return $GroupResult;
-
-
     }
 }

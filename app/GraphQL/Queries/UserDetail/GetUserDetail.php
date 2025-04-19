@@ -23,11 +23,6 @@ final class GetUserDetail
     }
     function resolveUserDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $UserDetail = UserDetail::where('id', $args['id']);       
-        // return $UserDetail->first();
-
         $user = $this->getModelByAuthorization(UserDetail::class, $args);
         return $user->first();
     }

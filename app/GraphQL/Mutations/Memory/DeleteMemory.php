@@ -47,20 +47,7 @@ final class DeleteMemory
 
         return $this->updateAndDeleteModel($GroupDetailResult, $args, $this->userId);
 
-        // $this->userAccessibility(Memory::class, AuthAction::Update, $args);
-
-
-        // $MemoryResult = Memory::find($args['id']);
-
-        // if (!$MemoryResult) {
-        //     return Error::createLocatedError("Memory-DELETE-RECORD_NOT_FOUND");
-        // }
-        // $MemoryResult->editor_id = $this->userId;
-        // $MemoryResult->save();
-
-        // $MemoryResult_filled = $MemoryResult->delete();
-        // return $MemoryResult;
-
+       
 
     }
 }

@@ -36,33 +36,7 @@ final class DeletePersonDetails
     {
 
         $this->userId = $this->getUserId();
-        //    $this->userAccessibility(PersonDetail::class, AuthAction::Delete, $args);
 
-
-        //     $PersonDetailResult=PersonDetail::find($args['id']);
-
-        //     if(!$PersonDetailResult)
-        //     {
-        //         return Error::createLocatedError("PersonDetail-DELETE-RECORD_NOT_FOUND");
-        //     }
-
-        //     if ($PersonDetailResult && $PersonDetailResult['profile_picture'] !=null ) {
-        //         $oldImagePath = public_path('storage/profile_pictures/' . $PersonDetailResult['profile_picture'] ); // Use `public_path` to get the full path
-
-        //         //Log::info("the old image is:". $oldImagePath );
-        //         if (file_exists($oldImagePath)) {
-        //             //Log::info("it should unlink it");
-
-        //             unlink($oldImagePath); // Delete the old image
-        //             //Log::info("Deleted old image: " . $oldImagePath);
-        //         }
-        //     }
-
-        //     $PersonDetailResult->editor_id= $this->userId;
-        //     $PersonDetailResult->save(); 
-
-        //     $PersonDetailResult_filled= $PersonDetailResult->delete();  
-        //     return $PersonDetailResult;
 
         try {
 

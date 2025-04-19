@@ -37,35 +37,12 @@ final class UpdatePersonMarriage
     {
 
         $this->userId = $this->getUserId();
-        //    $this->userAccessibility(PersonMarriage::class, AuthAction::Update, $args);
-
-
-        //     //args["user_id_creator"]=$this->userId;
-        //     $PersonMarriageResult=PersonMarriage::find($args['id']);
-        //     $PersonMarriagemodel=$args;
-        //     $PersonMarriagemodel['editor_id']=$this->userId;
-
-        //     if(!$PersonMarriageResult)
-        //     {
-        //         return Error::createLocatedError("PersonMarriage-UPDATE-RECORD_NOT_FOUND");
-        //     }
-        //     $this->checkDuplicate(
-        //         new PersonMarriage(),
-        //         $args,
-        //         ['id','editor_id','created_at', 'updated_at'],
-        //         $args['id']
-        //     );
-        //     $args['editor_id']=$this->userId;
-        //     $PersonMarriageResult_filled= $PersonMarriageResult->fill($PersonMarriagemodel);
-        //     $PersonMarriageResult->save();       
-
-        //     return $PersonMarriageResult;
 
         try {
 
             $PersonMarriageResult = $this->userAccessibility(PersonMarriage::class, AuthAction::Update, $args);
 
-        
+
         } catch (CustomValidationException $e) {
 
             throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
@@ -81,7 +58,6 @@ final class UpdatePersonMarriage
         );
 
         return $this->updateModel($PersonMarriageResult, $args, $this->userId);
-
 
     }
 }

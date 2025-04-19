@@ -27,21 +27,21 @@ final class CreateMiddleField
     {
         // TODO implement the resolver
     }
-    public function resolveMiddleField($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    { 
+    public function resolveMiddleField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
 
         $this->userId = $this->getUserId();
 
-        $MiddleFieldModel=[
-           
+        $MiddleFieldModel = [
+
             "major_field_id" => $args['major_field_id'],
             "title" => $args['title'],
-            "creator_id" =>  $this->userId,   
+            "creator_id" => $this->userId,
         ];
-       
+
 
         $this->checkDuplicate(new MiddleField(), $MiddleFieldModel);
-        $MiddleFieldResult=MiddleField::create($MiddleFieldModel);
+        $MiddleFieldResult = MiddleField::create($MiddleFieldModel);
         return $MiddleFieldResult;
     }
 }

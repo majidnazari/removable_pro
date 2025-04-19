@@ -26,14 +26,8 @@ final class GetUserDetails
     }
     function resolveUserDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $UserDetails = UserDetail::where('deleted_at', null);
-
-        // //log::info("the UserDetails is:" . json_encode($UserDetails));
-        // return $UserDetails;
         $query = $this->getModelByAuthorization(UserDetail::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

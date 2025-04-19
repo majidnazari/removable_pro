@@ -34,8 +34,6 @@ final class DeletePersonWithAllTraces
     use PersonAncestryWithCompleteMerge;
     use AuthorizesMutation;
 
-
-
     public function resolveDeletePersonWithAllTraces($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
@@ -48,21 +46,14 @@ final class DeletePersonWithAllTraces
             $PersonResult = $this->userAccessibility(Person::class, AuthAction::Delete, $args);
 
             DB::transaction(function () use ($PersonResult) {
-                // $person = Person::find($personId);
-
-                // if (!$person) {
-                //     throw new Exception("Person not found");
-                // }
-
-                // $person->delete();
-
+                
                 // Fire the event to handle other related deletions
                 event(new PersonDeletedEvent($PersonResult->id));
             });
 
         } catch (CustomValidationException $e) {
 
-            Log::error("Failed  resolveDeletePersonWithAllTraces: " . $e->getMessage());
+           // Log::error("Failed  resolveDeletePersonWithAllTraces: " . $e->getMessage());
 
             throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);
         } catch (Exception $e) {

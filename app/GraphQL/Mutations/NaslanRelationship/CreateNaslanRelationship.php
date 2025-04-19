@@ -24,19 +24,18 @@ final class CreateNaslanRelationship
         // TODO implement the resolver
     }
     public function resolveNaslanRelationship($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {        
+    {
         $this->userId = $this->getUserId();
 
-        $NaslanRelationResult=[
-            "status" => $args['status'] ?? Status::Active,           
+        $NaslanRelationResult = [
+            "status" => $args['status'] ?? Status::Active,
             "title" => $args['title'],
         ];
-        $is_exist= NaslanRelationship::where('title',$args['title'])->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("NaslanRelation-CREATE-RECORD_IS_EXIST");
-         }
-        $NaslanRelationResult_result=NaslanRelationship::create($NaslanRelationResult);
+        $is_exist = NaslanRelationship::where('title', $args['title'])->first();
+        if ($is_exist) {
+            return Error::createLocatedError("NaslanRelation-CREATE-RECORD_IS_EXIST");
+        }
+        $NaslanRelationResult_result = NaslanRelationship::create($NaslanRelationResult);
         return $NaslanRelationResult_result;
     }
 }

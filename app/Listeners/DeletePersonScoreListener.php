@@ -32,7 +32,7 @@ class DeletePersonScoreListener
         if ($deletedCount === 0) {
             Log::warning("No PersonScore records found for person ID: $personId");
         } else {
-//           Log::info("Soft deleted {$deletedCount} PersonScore records for person ID: $personId");
+            //           Log::info("Soft deleted {$deletedCount} PersonScore records for person ID: $personId");
         }
     }
 }

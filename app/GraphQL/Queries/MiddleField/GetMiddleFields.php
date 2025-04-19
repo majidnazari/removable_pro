@@ -25,13 +25,8 @@ final class GetMiddleFields
     }
     function resolveMiddleField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $MiddleFields = MiddleField::where('deleted_at', null);
-        // return $MiddleFields;
-
         $query = $this->getModelByAuthorization(MiddleField::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

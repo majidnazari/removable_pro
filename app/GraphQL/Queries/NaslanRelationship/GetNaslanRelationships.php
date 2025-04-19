@@ -26,8 +26,6 @@ final class GetNaslanRelationships
         $this->userId = $this->getUserId();
 
         $NaslanRelationships = NaslanRelationship::where('deleted_at', null);
-
-        //log::info("the NaslanRelationships is:" . json_encode($NaslanRelationships));
         return $NaslanRelationships;
     }
 }

@@ -11,31 +11,15 @@ class UserObserver
 {
     // Define per-table columns to check for user references
     protected $userRelatedColumns = [
-        //'user_merge_requests' => ['user_sender_id'], // ONLY check these columns in this table
-        //'notifications' => ['notifiable_id'],
-        //'audits' => ['editor_id'], // Only include editor_id (creator_id excluded)
-       // 'addresses' => ['creator_id', 'editor_id'],
-        //'events' => ['creator_id'],
-        //'family_boards' => ['creator_id'],
-        //'family_events' => ['creator_id'],
-        //'favorites' => ['creator_id'],
         'groups' => ['creator_id'],
         'group_categories' => ['creator_id'],
         'group_category_details' => ['creator_id'],
-        'group_details' => ['creator_id','user_id'],
-        //'memories' => ['creator_id'],
-        //'people' => ['creator_id'],
-        //'person_children' => ['creator_id'],
-        //'person_marriages' => ['creator_id'],
-        //'person_scores' => ['creator_id'],
+        'group_details' => ['creator_id', 'user_id'],
         'talent_details' => ['creator_id'],
-        //'talent_detail_scores' => ['creator_id'],
         'talent_headers' => ['creator_id'],
         'user_details' => ['creator_id'],
-        'user_relations' => ['creator_id','related_with_user_id'],
+        'user_relations' => ['creator_id', 'related_with_user_id'],
         'user_merge_requests' => ['creator_id', 'user_receiver_id'],
-        //'tasks' => ['creator_id', 'user_id'],
-        // Add more tables here as needed
     ];
 
     // Excluded tables entirely (won’t be checked at all)
@@ -44,17 +28,25 @@ class UserObserver
         'failed_jobs',
     ];
 
-    public function created(User $user): void {}
-    public function updated(User $user): void {}
-    public function restored(User $user): void {}
-    public function forceDeleted(User $user): void {}
+    public function created(User $user): void
+    {
+    }
+    public function updated(User $user): void
+    {
+    }
+    public function restored(User $user): void
+    {
+    }
+    public function forceDeleted(User $user): void
+    {
+    }
 
     public function deleted(User $user): void
     {
         $tables = $this->getAllTablesWithUserColumns();
 
         foreach ($tables as $table => $columns) {
-//           Log::info("UserObserver: Processing table '{$table}' with columns: " . implode(', ', $columns));
+            //           Log::info("UserObserver: Processing table '{$table}' with columns: " . implode(', ', $columns));
 
             foreach ($columns as $column) {
                 if (!Schema::hasColumn($table, $column)) {
@@ -66,12 +58,12 @@ class UserObserver
                     DB::table($table)
                         ->where($column, $user->id)
                         ->update(['deleted_at' => now()]);
-//                   Log::info("UserObserver: Soft deleted from '{$table}' where '{$column}' = {$user->id}");
+                    //                   Log::info("UserObserver: Soft deleted from '{$table}' where '{$column}' = {$user->id}");
                 } else {
                     DB::table($table)
                         ->where($column, $user->id)
                         ->delete();
-//                   Log::info("UserObserver: Hard deleted from '{$table}' where '{$column}' = {$user->id}");
+                    //                   Log::info("UserObserver: Hard deleted from '{$table}' where '{$column}' = {$user->id}");
                 }
             }
         }
@@ -87,7 +79,7 @@ class UserObserver
             $tableName = $table->$dbKey;
 
             if (in_array($tableName, $this->exceptTables)) {
-//               Log::info("UserObserver: Skipping excluded table '{$tableName}'.");
+                //               Log::info("UserObserver: Skipping excluded table '{$tableName}'.");
                 continue;
             }
 
@@ -104,7 +96,7 @@ class UserObserver
             }
         }
 
-//       Log::info("UserObserver: Final matched table/column list => " . json_encode($tablesWithUserColumns));
+        //       Log::info("UserObserver: Final matched table/column list => " . json_encode($tablesWithUserColumns));
         return $tablesWithUserColumns;
     }
 }

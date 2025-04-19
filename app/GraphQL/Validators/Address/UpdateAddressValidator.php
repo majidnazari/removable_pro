@@ -16,27 +16,15 @@ class UpdateAddressValidator extends Validator
 
     public function rules(): array
     {
-        // Get the authenticated user
-        // $user = Auth::guard('api')->user();
-
-        // if (!$user) {
-        //     throw new Exception("Authentication required. No user is currently logged in.");
-        // }
-
-        // $this->userId = $user->id;
-
-        // // Get the arguments passed to the GraphQL mutation
         $personId = $this->arg('person_id');
         $addressId = $this->arg('id');  // Assuming the address ID is passed for updates
 
-//      Log::info("the person is:" . $personId);
-
         return [
-            
+
             'person_id' => [
                 'required',
                 'exists:people,id', // Ensure the person exists in the database
-                new AllUsersCanAccessPerson( $personId), // Custom rule to check if user is the creator
+                new AllUsersCanAccessPerson($personId), // Custom rule to check if user is the creator
             ],
             'country_id' => [
                 'nullable',
@@ -93,7 +81,7 @@ class UpdateAddressValidator extends Validator
             'id.exists' => 'The specified address does not exist.',
             'person_id.required' => 'The person ID is required.',
             'person_id.exists' => 'The specified person does not exist.',
-           
+
             'country_id.exists' => 'The specified country does not exist.',
             'province_id.exists' => 'The specified province does not exist.',
             'city_id.required' => 'The city ID is required.',

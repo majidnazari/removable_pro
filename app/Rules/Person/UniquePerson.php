@@ -31,8 +31,8 @@ class UniquePerson implements Rule
         $this->lastName = $lastName;
         $this->birthDate = $birthDate;
         $this->id = $id;
-        $this->userId =$this->getUserId();
-//      Log::info("the args of rule constructor are  :" . json_encode($this) );
+        $this->userId = $this->getUserId();
+        //      Log::info("the args of rule constructor are  :" . json_encode($this) );
 
     }
 
@@ -48,9 +48,9 @@ class UniquePerson implements Rule
         $query = Person::where('first_name', $this->firstName)
             ->where('last_name', $this->lastName)
             ->where('birth_date', $this->birthDate)
-            ->where('creator_id', $this->userId );
+            ->where('creator_id', $this->userId);
 
-//          Log::info("the args of rule passes are  :" . json_encode($this) );
+        //          Log::info("the args of rule passes are  :" . json_encode($this) );
 
         // Exclude the current person from the check if updating
         if ($this->id) {

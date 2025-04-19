@@ -32,7 +32,7 @@ class CreateChildInputValidator extends GraphQLValidator
         $divorceDate = $marriage->divorce_date ?? null;
 
         // Extract child birth date
-        $childBirthDate = $childData['birth_date'] ;
+        $childBirthDate = $childData['birth_date'];
 
         return [
             // Validate father and mother exist
@@ -43,7 +43,7 @@ class CreateChildInputValidator extends GraphQLValidator
             'child.birth_date' => [
                 'required',
                 'date',
-                function ($attribute, $value, $fail) use ($childBirthDate,$father, $mother, $marriageDate, $divorceDate) {
+                function ($attribute, $value, $fail) use ($childBirthDate, $father, $mother, $marriageDate, $divorceDate) {
 
                     // Ensure child birth date is at most 10 months after parent's birth date
                     $maxFatherDeathLimit = Carbon::parse($father['death_date'])->copy()->addMonths(10);

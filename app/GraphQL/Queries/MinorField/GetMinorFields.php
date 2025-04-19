@@ -25,13 +25,9 @@ final class GetMinorFields
     }
     function resolveMinorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $MinorFields = MinorField::where('deleted_at', null);
-        // return $MinorFields;
 
         $query = $this->getModelByAuthorization(MinorField::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

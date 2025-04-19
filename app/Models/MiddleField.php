@@ -42,7 +42,7 @@ class MiddleField extends Eloquent
     public const COLUMN_ID = 'id';
     public const COLUMN_MAJOR_FIELD_ID = 'major_field_id';
     public const COLUMN_MINOR_FIELD_ID = 'middle_field_id';
-    
+
 
     public function MajorField()
     {
@@ -60,7 +60,7 @@ class MiddleField extends Eloquent
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

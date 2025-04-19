@@ -25,13 +25,8 @@ final class GetMajorFields
     }
     function resolveMajorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $MajorFields = MajorField::where('deleted_at', null);
-        // return $MajorFields;
-
         $query = $this->getModelByAuthorization(MajorField::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

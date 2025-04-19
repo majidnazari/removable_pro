@@ -27,12 +27,9 @@ final class GetFamilyAddresses
     }
     function resolveFamilyAddress($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-        // $Addresss = Address::where('deleted_at', null)->with("City");
-        // return $Addresss;
 
-        $query = $this->getModelByAuthorization(Address::class, $args, true,true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->getModelByAuthorization(Address::class, $args, true, true);
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

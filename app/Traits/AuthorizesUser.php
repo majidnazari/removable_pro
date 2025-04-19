@@ -20,7 +20,6 @@ trait AuthorizesUser
 
     public function __construct()
     {
-        //$this->user = $this->getUser();
     }
 
     /**
@@ -33,24 +32,13 @@ trait AuthorizesUser
     protected function getModelByAuthorization(string $modelClass, array $args, bool $fetchAll = false, $seeAllClan = false)
     {
         $this->user = $this->getUser();
-        //$allusers = $this->getAllowedUserIds();
 
-//       Log::info("the method getModelByAuthorization ar running");
 
-        $allusers=$this->getAllUsersInClanFromHeads($this->user->id);
+        $allusers = $this->getAllUsersInClanFromHeads($this->user->id);
 
-//       Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $allusers));
-
-        //$allusers= $this->calculateUserRelationInClan();
-
-//       Log::info("the seeAllClan is : " . $seeAllClan);
-//       Log::info("the  allusers is : " . json_encode( $allusers));
-        // Define configurable table-column mappings for special handling
         $specialRules = [
             'favorites' => ['creator_id'],
             'addresses' => ['creator_id'],
-            // Add other tables and columns as needed
-            // 'another_table' => ['some_column'],
         ];
 
         if ($this->user->isAdmin() || $this->user->isSupporter()) {
@@ -62,27 +50,15 @@ trait AuthorizesUser
                 $table = (new $modelClass)->getTable();
 
                 foreach ($columns as $column) {
-                    // Check if the column exists on the model's table
                     if (Schema::hasColumn((new $modelClass)->getTable(), $column)) {
-//                       Log::info("the users are:" . json_encode($seeAllClan). " column is :" .$column . " and  specialRulestable]" . json_encode($specialRules[$table])  );
                         if ($seeAllClan && isset($specialRules[$table]) && in_array($column, $specialRules[$table])) {
-//                           Log::info("the users are:" .json_encode($allusers ));
-                            // Apply special rule for this table and column
                             $q->whereIn($column, $allusers);
                         } else {
                             // Default behavior
                             $q->where($column, $this->user->{$column} ?? $this->user->id);
                         }
-//                       Log::info("Column exists on model table: " . $column);
-                        //$q->where($column, $this->user->id);
-                        //$q->where($column, $this->user->{$column});
-                        // $q->where($column, $this->user->{$column} ?? $this->user->id);
-
                     }
-                    //else {
-                    // Log a warning if the column doesn't exist
-                    //Log::warning("Column does NOT exist on model table: " . $column);
-                    //}
+
                 }
             });
         }
@@ -90,19 +66,6 @@ trait AuthorizesUser
         if (!$fetchAll) {
             $query->where('id', $args['id']);
         }
-
-        // $querylog = $query->toBase(); // Get the base query builder (which contains the bindings)
-
-        // $sql = $querylog->toSql(); // Get the SQL query with placeholders (?)
-
-        // $bindings = $querylog->getBindings(); // Get the bindings (parameters)
-
-        // $fullQuery = vsprintf(str_replace('?', '%s', $sql), $bindings); // Replace placeholders with actual values
-
-//       Log::info("The query is: " . $fullQuery);
-
-
-        //return $fetchAll ? $query : $query->first();
         return $query;
     }
 }

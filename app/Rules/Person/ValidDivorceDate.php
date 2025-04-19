@@ -27,8 +27,8 @@ class ValidDivorceDate implements Rule
         }
 
         return $divorceDate->greaterThanOrEqualTo(Carbon::parse($this->marriageDate)) &&
-               $divorceDate->greaterThanOrEqualTo(Carbon::parse($this->manBirthDate)) &&
-               $divorceDate->greaterThanOrEqualTo(Carbon::parse($this->womanBirthDate));
+            $divorceDate->greaterThanOrEqualTo(Carbon::parse($this->manBirthDate)) &&
+            $divorceDate->greaterThanOrEqualTo(Carbon::parse($this->womanBirthDate));
     }
 
     public function message()

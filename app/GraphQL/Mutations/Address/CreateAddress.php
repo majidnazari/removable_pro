@@ -28,18 +28,15 @@ final class CreateAddress
     {
         // TODO implement the resolver
     }
-    public function resolveAddress($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {        
-        
-//      Log::info("the status is:". $statusValue );
-//      Log::info("the status is:". $statusValue );
+    public function resolveAddress($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
 
-        $AddressResult=[
-            "creator_id"=>  $this->getUserId(),
-            "person_id"=> $args['person_id'],
-            "country_id"=> $args['country_id'] ?? null ,
-            "province_id"=> $args['province_id'] ?? null,
-            "city_id"=> $args['city_id'] ?? null,
+        $AddressResult = [
+            "creator_id" => $this->getUserId(),
+            "person_id" => $args['person_id'],
+            "country_id" => $args['country_id'] ?? null,
+            "province_id" => $args['province_id'] ?? null,
+            "city_id" => $args['city_id'] ?? null,
             "location_title" => $args['location_title'],
             "street_name" => $args['street_name'] ?? null,
             "builder_no" => $args['builder_no'] ?? null,
@@ -47,16 +44,12 @@ final class CreateAddress
             "unit_no" => $args['unit_no'] ?? null,
             "lat" => $args['lat'] ?? null,
             "lon" => $args['lon'] ?? null,
-            "status" =>  $args['status'] ?? status::Active,
-                
+            "status" => $args['status'] ?? status::Active,
+
         ];
-        // $is_exist= Address::where($AddressResult)->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("Address-CREATE-RECORD_IS_EXIST");
-        //  }
-        $this->checkDuplicate(new Address(),  [ "creator_id"=>  $this->getUserId(),"person_id"=> $args['person_id']]);
-        $AddressResult_result=Address::create($AddressResult);
+
+        $this->checkDuplicate(new Address(), ["creator_id" => $this->getUserId(), "person_id" => $args['person_id']]);
+        $AddressResult_result = Address::create($AddressResult);
         return $AddressResult_result;
     }
 }

@@ -26,21 +26,18 @@ class CreateSpouseInputValidator extends GraphQLValidator
         $divorceDate = $this->arg('divorce_date');
         $userId = $this->getUserId();
 
-//       Log::info("the spouse is :" . json_encode($spouseData));
         // Fetch existing person from DB
         $person = Person::find($personId);
 
         if (!$person) {
             throw new CustomValidationException("Person not found", "شخص پیدا نشد", 404);
 
-            //throw new \Exception("Person not found");
         }
         // Extract spouse data (not saved in DB yet)
         $spouseBirthDate = $spouseData['birth_date'] ?? null;
 
         $manBirthdate = $person->gender == 1 ? $person->birth_date : $spouseBirthDate;
         $womanBirthdate = $person->gender == 1 ? $spouseBirthDate : $person->birth_date;
-        //$spouseId = $spouseData['id'] ?? null; // Spouse is not saved, so we check input directly
 
         return [
             // Ensure person is not marrying themselves
@@ -75,9 +72,6 @@ class CreateSpouseInputValidator extends GraphQLValidator
                 new ValidDivorceDate($marriageDate, $manBirthdate, $womanBirthdate),
             ],
 
-
-            // Ensure unique marriage
-            // new UniqueMarriage($personId, null), // Check if person already has an active marriage
         ];
     }
 

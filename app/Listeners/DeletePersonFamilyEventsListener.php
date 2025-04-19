@@ -25,13 +25,13 @@ class DeletePersonFamilyEventsListener
     public function handle(PersonDeletedEvent $event)
     {
         $personId = $event->personId;
-        
+
         $deletedCount = FamilyEvent::where('person_id', $personId)->update(['deleted_at' => now()]);
 
         if ($deletedCount === 0) {
             Log::warning("No FamilyEvent records found for person ID: $personId");
         } else {
-//           Log::info("Soft deleted {$deletedCount} FamilyEvent records for person ID: $personId");
+            //           Log::info("Soft deleted {$deletedCount} FamilyEvent records for person ID: $personId");
         }
     }
 }

@@ -40,14 +40,10 @@ final class SendRequestToOtherFamily
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
-        //$this->AuthorizesMutation(UserMergeRequest::class, AuthAction::Create, $args);
+        $this->user_sender_id = $this->getUserId();
 
-        $this->user_sender_id= $this->getUserId();
-
-        // Fetch the sender person
         $person = Person::find($args['node_sender_id']);
 
-        // Fetch the receiver user by mobile
         $user_receiver = User::where('mobile', $person->country_code . $person->mobile)
             ->where('status', Status::Active)
             ->first();
@@ -74,7 +70,6 @@ final class SendRequestToOtherFamily
             new UserMergeRequest(),
             $UserMergeRequestResult
         );
-        // Create the UserMergeRequest
         return UserMergeRequest::create($UserMergeRequestResult);
     }
 }

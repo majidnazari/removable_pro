@@ -132,64 +132,23 @@ class Person extends Eloquent
         return $this->hasMany(Score::class, self::COLUMN_SCORE_ID);
     }
 
-
-    // public function Children()
-    // {
-    //     return $this->hasMany(Person::class, 'id');
-    // }
-    // public function Children()
-    // {
-    //     return $this->hasManyThrough(
-    //         Person::class,              // Final model we want to access (child Person)
-    //         PersonChild::class,         // Intermediate model (PersonChild)
-    //         'person_marriage_id',         // Foreign key on PersonChild table
-    //         'id',                       // Foreign key on Person table (child's ID)
-    //         'id',                       // Local key on PersonMarriage table (parent's ID)
-    //         'child_id'                  // Local key on PersonChild table (child's ID)
-    //     )->whereHas('PersonMarriages', function($query) {
-    //         $query->where('person_id', $this->id)
-    //               ->orWhere('spouse_id', $this->id);
-    //     })->whereHas('PersonChild', function($query) {
-    //         $query->where('person_marriage_id', $this->id);
-
-    //     });
-    // }
-
-    // public function Children()
-    // {
-    //     return $this->hasManyThrough(
-    //         Person::class,             // Final model to access (the child Person)
-    //         PersonChild::class,        // Intermediate model (PersonChild)
-    //         'person_marriage_id',        // Foreign key on PersonChild table
-    //         'id',                       // Foreign key on Person table (child's ID)
-    //         'id',                       // Local key on PersonMarriage table (parent's ID)
-    //         'child_id'                 // Local key on PersonChild table (child's ID)
-    //     );
-    // }
-
     public function findRootFatherOfFather()
     {
-        // Log current person ID to track recursion
-//       Log::info("Checking root ancestor for person ID: " . $this->id);
 
         // Find any parent marriage where this person is a child
         $parentMarriage = PersonMarriage::whereHas(self::COLUMN_PERSONCHILD, function ($query) {
             $query->where(self::COLUMN_CHILD_ID, $this->id);
         })->first();
 
-//       Log::info("Parent marriage found for person ID {$this->id}: " . json_encode($parentMarriage));
 
         // If no parent marriage is found, this person is the root ancestor
         if (!$parentMarriage) {
-//           Log::info("Root ancestor found: person ID " . $this->id);
             return $this;  // Return the current person as the root ancestor
         }
 
         // Identify the parent (using the father if available, otherwise the mother)
         $parentId = $parentMarriage->man_id ? $parentMarriage->man_id : $parentMarriage->woman_id;
         $parent = Person::find($parentId);
-
-//       Log::info("Moving up to parent ID: " . ($parent ? $parent->id : 'null'));
 
         // Recursive call to move up the lineage
         return $parent ? $parent->findRootFatherOfFather() : $this;
@@ -201,7 +160,7 @@ class Person extends Eloquent
         })->first();
 
         if (!$parentMarriage) {
-//           Log::info("Root ancestor found: person ID " . $this->id);
+            //           Log::info("Root ancestor found: person ID " . $this->id);
             return $this;  // Return the current person as the root ancestor
         }
 
@@ -217,7 +176,7 @@ class Person extends Eloquent
             $query->where(self::COLUMN_CHILD_ID, $this->id);
         })->get();
 
-//       Log::info("ancestry method is :" . json_encode($parentMarriages));
+        //       Log::info("ancestry method is :" . json_encode($parentMarriages));
 
         $ancestors = collect();
 
@@ -241,54 +200,26 @@ class Person extends Eloquent
     // Recursive ancestry methods
     public function getFullBinaryAncestry($depth = 3)
     {
-//       Log::info("Starting ancestry crawl for Person ID: " . $this->id . " with depth: " . $depth);
-        // return $this->crawlAncestors($this, $depth);
 
         $result = $this->crawlAncestors($this, $depth);
-
-        // Map $this->rootAncestors to extract only id, first_name, and last_name
-        // $heads = array_map(function ($ancestor) {
-        //     return [
-        //         'id' => $ancestor['person_id'],
-        //         'first_name' => $ancestor['first_name'],
-        //         'last_name' => $ancestor['last_name']
-        //     ];
-        // }, $this->rootAncestors);
 
         // Add 'order' field to each ancestor in $this->rootAncestors
         foreach ($this->rootAncestors as $index => &$ancestor) {
             $ancestor['order'] = $index + 1; // Add order starting from 1
         }
-
-        // Log the simplified heads array
-//       Log::info("All top-level ancestors: " . json_encode($this->rootAncestors));
 
         return [$result, $this->rootAncestors];
     }
 
     public function getFullBinaryAncestryheads($depth = 3)
     {
-//       Log::info("Starting ancestry crawl for Person ID: " . $this->id . " with depth: " . $depth);
-        // return $this->crawlAncestors($this, $depth);
 
         $result = $this->crawlAncestors($this, $depth);
-
-        // Map $this->rootAncestors to extract only id, first_name, and last_name
-        // $heads = array_map(function ($ancestor) {
-        //     return [
-        //         'id' => $ancestor['person_id'],
-        //         'first_name' => $ancestor['first_name'],
-        //         'last_name' => $ancestor['last_name']
-        //     ];
-        // }, $this->rootAncestors);
 
         // Add 'order' field to each ancestor in $this->rootAncestors
         foreach ($this->rootAncestors as $index => &$ancestor) {
             $ancestor['order'] = $index + 1; // Add order starting from 1
         }
-
-        // Log the simplified heads array
-//       Log::info("All top-level ancestors: " . json_encode($this->rootAncestors));
 
         return $this->rootAncestors;
     }
@@ -299,15 +230,13 @@ class Person extends Eloquent
             return null;
         }
 
-//       Log::info("Fetching ancestors for Person ID: " . $person->id . " at depth: $depth");
-
         // Find the parent marriage relations using the PersonChild intermediate model
         $parentMarriage = PersonMarriage::whereHas(self::COLUMN_PERSONCHILD, function ($query) use ($person) {
             $query->where(self::COLUMN_CHILD_ID, $person->id);
         })->first();
 
         if (!$parentMarriage) {
-//           Log::info("No parent marriage found; Person ID: " . $person->id . " is likely a root ancestor.");
+            //           Log::info("No parent marriage found; Person ID: " . $person->id . " is likely a root ancestor.");
             $rootAncestor = [
                 'person_id' => $person->id,
                 'first_name' => $person->first_name,
@@ -327,12 +256,9 @@ class Person extends Eloquent
         $father = Person::find($parentMarriage->man_id);
         $mother = Person::find($parentMarriage->woman_id);
 
-//       Log::info("Person ID: " . $person->id . " -> Father ID: " . ($father ? $father->id : 'null') . ", Mother ID: " . ($mother ? $mother->id : 'null'));
-
         // Recursive calls for both father and mother, reducing the depth for each level
         $fatherAncestry = $father ? $this->crawlAncestors($father, $depth - 1) : null;
         $motherAncestry = $mother ? $this->crawlAncestors($mother, $depth - 1) : null;
-
 
         // Build and return the binary ancestry tree for the current person
         return [
@@ -361,22 +287,19 @@ class Person extends Eloquent
     public function getParents($personId)
     {
         $personChild = \App\Models\PersonChild::where('child_id', $personId)->first();
-    
+
         if (!$personChild) {
             return null;
         }
-    
+
         $marriage = $personChild->PersonMarriage; // assuming relationship is defined
 
-//       Log::info("the father of getParents of person {$personId} is :" . json_encode($marriage?->Man));
-//       Log::info("the mother of getParents of person {$personId} is :" . json_encode($marriage?->Woman));
-    
         return [
             'father' => $marriage?->Man, // if relation: man() or father() → belongsTo(Person::class, 'man_id')
             'mother' => $marriage?->Woman, // if relation: woman() or mother() → belongsTo(Person::class, 'woman_id')
         ];
     }
-    
+
 
     public static function getAuthorizationColumns()
     {

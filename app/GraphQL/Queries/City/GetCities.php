@@ -25,12 +25,8 @@ final class GetCities
     }
     function resolveCity($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $Cities = City::where('deleted_at', null);
-        // return $Cities;
         $query = $this->getModelByAuthorization(City::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }

@@ -21,7 +21,7 @@ final class CreateUserMergeRequest
     use AuthorizesMutation;
 
     protected $userId;
-   
+
     /**
      * @param  null  $_
      * @param  array{}  $args
@@ -31,21 +31,8 @@ final class CreateUserMergeRequest
         // TODO implement the resolver
     }
     public function resolveUserMergeRequest($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {        
+    {
         $this->user = $this->getUser();
-        //$this->AuthorizesMutation(UserMergeRequest::class, AuthAction::Create, $args);
 
-        // $UserMergeRequestResult=[
-        //     "status" => $args[' '] ?? Status::Active,
-        //     "title" => $args['title'],
-        //     "description" => $args['description']   ?? ""          
-        // ];
-        // $is_exist= UserMergeRequest::where('title',$args['title'])->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("UserMergeRequest-CREATE-RECORD_IS_EXIST");
-        //  }
-        // $UserMergeRequestResult_result=UserMergeRequest::create($UserMergeRequestResult);
-        // return $UserMergeRequestResult_result;
     }
 }

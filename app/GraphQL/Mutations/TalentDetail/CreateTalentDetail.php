@@ -28,24 +28,20 @@ final class CreateTalentDetail
         // TODO implement the resolver
     }
     public function resolveTalentDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    { 
+    {
 
         $this->userId = $this->getUserId();
 
-        $TalentDetailModel=[
-            "creator_id" =>  $this->userId,
+        $TalentDetailModel = [
+            "creator_id" => $this->userId,
             "talent_header_id" => $args['talent_header_id'],
             "minor_field_id" => $args['minor_field_id'],
-            "status" => $args['status']  ?? Status::Active       
+            "status" => $args['status'] ?? Status::Active
         ];
-        // $is_exist= TalentDetail::where($TalentDetailModel)->first();
-        // if($is_exist)
-        //  {
-        //          return Error::createLocatedError("TalentDetail-CREATE-RECORD_IS_EXIST");
-        //  }
+
 
         $this->checkDuplicate(new TalentDetail(), $TalentDetailModel);
-        $TalentDetailResult=TalentDetail::create($TalentDetailModel);
+        $TalentDetailResult = TalentDetail::create($TalentDetailModel);
         return $TalentDetailResult;
     }
 }

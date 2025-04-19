@@ -23,22 +23,21 @@ final class UpdateNaslanRelationship
         // TODO implement the resolver
     }
     public function resolveNaslanRelationship($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {  
+    {
         $this->userId = $this->getUserId();
 
         //args["user_id_creator"]=$user_id;
-        $NaslanRelationshipResult=NaslanRelationship::find($args['id']);
-        
-        if(!$NaslanRelationshipResult)
-        {
+        $NaslanRelationshipResult = NaslanRelationship::find($args['id']);
+
+        if (!$NaslanRelationshipResult) {
             return Error::createLocatedError("NaslanRelationship-UPDATE-RECORD_NOT_FOUND");
         }
-        $args['editor_id']=$this->userId;
-        $NaslanRelationshipResult_filled= $NaslanRelationshipResult->fill($args);
-        $NaslanRelationshipResult->save();       
-       
+        $args['editor_id'] = $this->userId;
+        $NaslanRelationshipResult_filled = $NaslanRelationshipResult->fill($args);
+        $NaslanRelationshipResult->save();
+
         return $NaslanRelationshipResult;
 
-        
+
     }
 }

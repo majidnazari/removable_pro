@@ -29,26 +29,11 @@ final class UpdateCountry
     {
         // TODO implement the resolver
     }
-    public function resolveCountry($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveCountry($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
 
         $this->userId = $this->getUserId();
-        //    $this->userAccessibility(Country::class, AuthAction::Delete, $args);
 
-
-        //     //args["user_id_creator"]=$user_id;
-        //     $CountryResult=Country::find($args['id']);
-
-        //     if(!$CountryResult)
-        //     {
-        //         return Error::createLocatedError("Country-UPDATE-RECORD_NOT_FOUND");
-        //     }
-        //     $args['editor_id']=$this->userId;
-
-        //     $CountryResult_filled= $CountryResult->fill($args);
-        //     $CountryResult->save();       
-
-        //     return $CountryResult;
 
         try {
 

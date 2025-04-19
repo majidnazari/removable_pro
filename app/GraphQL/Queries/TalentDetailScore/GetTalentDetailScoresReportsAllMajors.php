@@ -43,18 +43,9 @@ final class GetTalentDetailScoresReportsAllMajors
             ->where('talent_details.creator_id', $this->userId)
             ->groupBy('major_fields.id', 'major_fields.title');
 
-//           Log::info("the major log is :" . $query->ToSql());
+        //           Log::info("the major log is :" . $query->ToSql());
 
         return $query; // Return query builder for pagination
-
-        // $this->userId = $this->getUserId();
-
-        // $majorField = MajorField::with('MiddleFields.MinorFields.TalentDetails.TalentDetailScores')->find(1);
-        // // $minorFields = $majorField->MiddleFields->flatMap->MinorFields;
-
-
-//       Log::info(" the result major is :" .
-//           json_encode($majorField));
 
     }
 }

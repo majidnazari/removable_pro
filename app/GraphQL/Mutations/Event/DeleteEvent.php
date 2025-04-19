@@ -28,8 +28,8 @@ final class DeleteEvent
     {
         // TODO implement the resolver
     }
-    public function resolveEvent($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {  
+    public function resolveEvent($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
         $this->userId = $this->getUserId();
 
         try {
@@ -42,21 +42,7 @@ final class DeleteEvent
         }
 
         return $this->updateAndDeleteModel($EventResult, $args, $this->userId);
-    //    $this->userAccessibility(Event::class, AuthAction::Delete, $args);
 
-  
-    //     $EventResult=Event::find($args['id']);
-        
-    //     if(!$EventResult)
-    //     {
-    //         return Error::createLocatedError("Event-DELETE-RECORD_NOT_FOUND");
-    //     }
-    //     //$args['editor_id']=$user_id;
-    //     $EventResult->editor_id=  $this->userId;
-    //     $EventResult->save();
-    //     $EventResult_filled= $EventResult->delete();  
-    //     return $EventResult;
 
-        
     }
 }

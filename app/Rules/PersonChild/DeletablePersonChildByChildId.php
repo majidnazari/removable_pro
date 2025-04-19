@@ -17,16 +17,13 @@ class DeletablePersonChildByChildId implements Rule
 
     public function passes($attribute, $value)
     {
-         // Check if the child is involved in any active marriage
-         $isInMarriage = PersonMarriage::where('man_id', $this->childId)
-         ->orWhere('woman_id', $this->childId);
-         //->exists();
+        // Check if the child is involved in any active marriage
+        $isInMarriage = PersonMarriage::where('man_id', $this->childId)
+            ->orWhere('woman_id', $this->childId);
+        //->exists();
 
         // Find all marriage IDs where this person is either the man or woman
-        $marriages =  $isInMarriage->pluck('id');
-        //PersonMarriage::where('man_id', $this->childId)
-           // ->orWhere('woman_id', $this->childId)
-            //->pluck('id');
+        $marriages = $isInMarriage->pluck('id');
 
         // Check if there are any PersonChild records linked to the marriages
         $hasChildren = PersonChildModel::whereIn('person_marriage_id', $marriages)->exists();

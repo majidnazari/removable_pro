@@ -41,7 +41,7 @@ class TalentDetail extends Eloquent
         'talent_header_id',
         'minor_field_id',
         'status',
-       
+
     ];
     use HasFactory;
     use SoftDeletes;
@@ -55,7 +55,7 @@ class TalentDetail extends Eloquent
     public const COLUMN_TALENT_HEADER_ID = 'talent_header_id';
     public const COLUMN_MINOR_FIELD_ID = 'minor_field_id';
     public const COLUMN_TALENT_DETAIL_ID = 'talent_detail_id';
-   
+
 
     public function Creator()
     {
@@ -81,7 +81,7 @@ class TalentDetail extends Eloquent
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

@@ -34,32 +34,12 @@ final class DeletePersonMarriage
     {
 
         $this->userId = $this->getUserId();
-        //    $this->userAccessibility(PersonMarriage::class, AuthAction::Delete, $args);
-
-
-        //     $PersonMarriageResult=PersonMarriage::find($args['id']);
-
-        //     if(!$PersonMarriageResult)
-        //     {
-        //         return Error::createLocatedError("PersonMarriage-DELETE-RECORD_NOT_FOUND");
-        //     }
-        //     if ($PersonMarriageResult->PersonChild()->exists()) 
-        //     {
-        //         return Error::createLocatedError("PersonMarriage-HAS_CHILDREN!");
-
-        //     }
-
-        //     $PersonMarriageResult->editor_id= $this->userId;
-        //     $PersonMarriageResult->save(); 
-
-        //     $PersonMarriageResult_filled= $PersonMarriageResult->delete();  
-        //     return $PersonMarriageResult;
 
         try {
 
             $PersonMarriageResult = $this->userAccessibility(PersonMarriage::class, AuthAction::Delete, $args);
 
-        
+
         } catch (CustomValidationException $e) {
 
             throw new CustomValidationException($e->getMessage(), $e->getMessage(), 500);

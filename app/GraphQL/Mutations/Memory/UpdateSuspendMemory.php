@@ -33,14 +33,10 @@ final class UpdateSuspendMemory
     {
         // TODO implement the resolver
     }
-    public function resolveMemory($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveMemory($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
-        //$this->userAccessibility(Memory::class, AuthAction::Update, $args);
-
-
-        //args["user_id_creator"]=$user_id;
         $MemoryResult = Memory::find($args['id']);
 
         if (!$MemoryResult) {
@@ -50,35 +46,15 @@ final class UpdateSuspendMemory
         }
 
 
-//       Log::info("the memory is:". json_encode($MemoryResult));
-//       Log::info("the owner of this user is: is:".$this->findOwner()->id);
-
         if ($MemoryResult->person_id !== $this->findOwner()->id) {
             // If person_id doesn't match, throw an exception
             throw new CustomValidationException("This is not your own memory.", "این خاطره خودتان نیست.", 403);
-
-            ///return Error::createLocatedError("This is not your own memory.");
         }
-
-
-//       Log::info("the memory is:" . json_encode($MemoryResult));
-       // $this->checkDuplicate(new Memory(), $MemoryResult->toArray());
-
-        // // Ignore 'created_at' and 'updated_at' columns
-        // $this->checkDuplicate(
-        //     new Memory(),
-        //     $args,
-        //     ['id','editor_id','created_at', 'updated_at'],
-        //     $args['id']
-        // );
-
 
         $args['editor_id'] = $this->userId;
         $MemoryResult_filled = $MemoryResult->fill($args);
         $MemoryResult->save();
 
         return $MemoryResult;
-
-
     }
 }

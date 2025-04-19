@@ -37,14 +37,6 @@ class MemoryInputValidator extends Validator
                 'integer',
                 'exists:group_categories,id', // Replace 'group_categories' with the actual table name
             ],
-            // 'confirm_status' => [
-            //     'nullable',
-            //     Rule::in([
-            //         ConfirmMemoryStatus::Reject->value,
-            //         ConfirmMemoryStatus::Suspend->value,
-            //         ConfirmMemoryStatus::Accept->value,
-            //     ]),
-            // ],
             'title' => [
                 'required',
                 'string',

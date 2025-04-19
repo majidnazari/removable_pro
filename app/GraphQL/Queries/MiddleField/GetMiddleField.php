@@ -24,11 +24,6 @@ final class GetMiddleField
     }
     function resolveMiddleField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $MiddleField = MiddleField::where('id', $args['id']);       
-        // return $MiddleField->first();
-
         $MiddleField = $this->getModelByAuthorization(MiddleField::class, $args);
         return $MiddleField->first();
     }

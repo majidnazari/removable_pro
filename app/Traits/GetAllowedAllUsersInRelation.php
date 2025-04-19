@@ -21,10 +21,10 @@ trait GetAllowedAllUsersInRelation
         if ($userId === null) {
             $userId = $this->getUserId();
         }
-        
+
         // Fetch all user IDs that share the user relation
         $userIds = DB::table('user_relations')
-            ->where('creator_id',  $userId)
+            ->where('creator_id', $userId)
             //->where('status', Status::Active->value) // Status must be Active
             ->whereNull('deleted_at') // Exclude soft-deleted records
             ->pluck('related_with_user_id')

@@ -14,7 +14,7 @@ trait SearchQueryBuilder
      * @param array $args
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function applySearchFilters($query, array $args,$extraConditions=null)
+    public function applySearchFilters($query, array $args, $extraConditions = null)
     {
         $table = $query->getModel()->getTable();
         $columns = Schema::getColumnListing($table); // Get all columns of the table
@@ -26,7 +26,7 @@ trait SearchQueryBuilder
                 $columnType = Schema::getColumnType($table, $key);
                 // If the column is a string, apply a LIKE query
                 if ($columnType == 'varchar' || $columnType == 'text') {
-//              Log::info("the column name is:" . $key . " and the type of column is :" .  $columnType);
+                    //              Log::info("the column name is:" . $key . " and the type of column is :" .  $columnType);
 
                     $query->where($key, 'LIKE', '%' . $value . '%'); // Use LIKE for string columns
                 } else {
@@ -43,14 +43,6 @@ trait SearchQueryBuilder
                 }
             }
         }
-
-        // // Apply ordering if 'orderBy' is provided
-        // if (isset($args['orderBy']) && is_array($args['orderBy'])) {
-        //     foreach ($args['orderBy'] as $order) {
-        //         $query->orderBy($order['column'], $order['order']);
-        //     }
-        // }
-
         return $query;
     }
 }

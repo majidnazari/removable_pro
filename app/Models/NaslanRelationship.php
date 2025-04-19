@@ -26,7 +26,7 @@ use Eloquent;
  
  * @mixin \Eloquent
  */
-class NaslanRelationship extends  Eloquent
+class NaslanRelationship extends Eloquent
 {
     use HasFactory;
     use SoftDeletes;
@@ -34,7 +34,7 @@ class NaslanRelationship extends  Eloquent
         "title",
         "priority",
         "status",
-    ] ;
+    ];
 
     public const TABLE_NAME = 'naslan_relations';
     protected $table = self::TABLE_NAME;
@@ -42,13 +42,13 @@ class NaslanRelationship extends  Eloquent
     public const COLUMN_ID = 'id';
     public const COLUMN_CREATOR_ID = 'creator_id';
     public const COLUMN_EDITOR_ID = 'editor_id';
-  
+
     public const COLUMN_CATEGORY_CONTENT_ID = 'category_content_id';
 
     public static function getAuthorizationColumns()
     {
         return [
-            "creator_id", 
+            "creator_id",
         ];
     }
 }

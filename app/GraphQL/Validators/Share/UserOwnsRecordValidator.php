@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Log;
 use App\Traits\AuthUserTrait;
 use App\Traits\GetAllowedAllUsersInClan;
- use App\Traits\GetAllUsersRelationInClanFromHeads;
+use App\Traits\GetAllUsersRelationInClanFromHeads;
 use App\Traits\UpdateUserRelationTrait;
 use App\GraphQL\Enums\MergeStatus;
 use Log;
@@ -39,7 +39,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
     protected array $excludedFields = [
         'category_content_id', // Example: no creator_id validation for this field
         'user_id',
-       
+
     ];
     protected array $justCheckCurrentUserLoggedIn = [
         'event_id',
@@ -69,7 +69,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
                 return [$key => $argument->value];
             });
 
-//       Log::info("Fields detected for validation: " . json_encode($fields));
+        //       Log::info("Fields detected for validation: " . json_encode($fields));
 
         // Get all allowed `creator_id` values: the logged-in user and users connected via `user_merge_requests`
         // $allowedCreatorIds = $this->getAllowedCreatorIds($user->id);
@@ -77,11 +77,11 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
         //$allowedCreatorIds=$this->getAllUsersInClanFromHeads($user->id);
 
-//       Log::info("the method UserOwnsRecordValidator are running");
+        //       Log::info("the method UserOwnsRecordValidator are running");
 
 
-        $allowedCreatorIds=$this->getAllUsersInClanFromHeads($user->id);
-//       Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $allowedCreatorIds));
+        $allowedCreatorIds = $this->getAllUsersInClanFromHeads($user->id);
+        //       Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $allowedCreatorIds));
 
         //$allowedCreatorIds= $this->calculateUserRelationInClan();
 
@@ -111,7 +111,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
 
             // Check if the field is in the $newItems list (i.e., should only check creator_id against logged-in user)
             if (in_array($fieldName, $this->justCheckCurrentUserLoggedIn)) {
-//               Log::info("if is running!".$fieldName);
+                //               Log::info("if is running!".$fieldName);
 
                 // Only check creator_id with the logged-in user
                 $rules[$fieldName][] = function ($attribute, $value, $fail) use ($tableName, $user) {
@@ -126,7 +126,7 @@ class UserOwnsRecordValidator extends GraphQLValidator
                     }
                 };
             } else {
-//               Log::info("else is running!".$fieldName);
+                //               Log::info("else is running!".$fieldName);
 
                 // Skip creator_id check for excluded fields
                 if (!in_array($fieldName, $this->excludedFields)) {

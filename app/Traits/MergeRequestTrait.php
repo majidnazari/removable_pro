@@ -36,15 +36,6 @@ trait MergeRequestTrait
             return [$item->user_sender_id, $item->user_receiver_id];
         })->unique()->values()->toArray(); // Flatten, remove duplicates, and convert to array
 
-        // // Ensure the logged-in user (user_id) is included
-        //     // If the logged-in user isn't already included, you can manually add it
-        // if (!in_array($user->id, $relatedUserIds)) {
-        //     $relatedUserIds[] = $user->id;
-        // }
-
-        // Log the related user IDs for debugging
-//      Log::info("The user MR are: " . json_encode($relatedUserIds));
-
         // Return the final list of related user IDs
         return $relatedUserIds;
 

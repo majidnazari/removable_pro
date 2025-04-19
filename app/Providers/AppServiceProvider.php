@@ -24,16 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // if ($this->app->environment('local')) {
-        //     // Register local-only services
-//          Log::info("reister some of services in local");
-        // }
 
-        // if ($this->app->environment('production')) {
-        //     // Register local-only services
-//          Log::info("reister some of services in production");
-        // }  
-    }  
+    }
 
     /**
      * Bootstrap any application services.
@@ -59,13 +51,6 @@ class AppServiceProvider extends ServiceProvider
         Person::observe(PersonObserver::class);
         User::observe(UserObserver::class);
 
-        // if ($this->app->environment('production')) {
-//           Log::info("the production just running!.");
-        // }
-        // if ($this->app->environment('local')) {
-//           Log::info("the local just running!.");
-        // }
 
-        //Gate::policy(UserMergeRequest::class, UserMergeRequestPolicy::class);
     }
 }

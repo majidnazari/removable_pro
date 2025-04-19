@@ -16,11 +16,7 @@ use App\Models\LoginAttempt;
 use App\GraphQL\Enums\UserStatus;
 use App\Traits\AuthUserTrait;
 use App\Exceptions\CustomValidationException;
-
-
-
 use GraphQL\Error\Error;
-
 use Log;
 use function Safe\json_encode;
 
@@ -64,7 +60,7 @@ class RegisterMobile extends BaseAuthResolver
 
             // Ensure the user hasn't requested a code within the past 5 minutes
             if ($user->last_attempt_at && Carbon::parse($user->last_attempt_at)->gt($cooldownPeriod)) {
-            throw new CustomValidationException("You can only request a new code every 5 minutes. Please wait.", "شما فقط می توانید هر 5 دقیقه یک کد جدید درخواست کنید. لطفا صبر کنید." ,429);
+                throw new CustomValidationException("You can only request a new code every 5 minutes. Please wait.", "شما فقط می توانید هر 5 دقیقه یک کد جدید درخواست کنید. لطفا صبر کنید.", 429);
 
                 //return Error::createLocatedError("You can only request a new code every 5 minutes. Please wait.");
             }
@@ -103,11 +99,6 @@ class RegisterMobile extends BaseAuthResolver
     {
         $user = User::find($args['user_id']);
 
-//       Log::info('VerifyMobile args: '.json_encode($args));
-//       Log::info('Database used:', [
-//          'connection' => \DB::connection()->getDatabaseName(),
-//       ]);
-
         if (!$user) {
             throw new CustomValidationException("User not found", "کاربر پیدا نشد", 404);
 
@@ -119,14 +110,12 @@ class RegisterMobile extends BaseAuthResolver
             throw new CustomValidationException("This mobile number is already verified.", "این شماره موبایل قبلا تایید شده است.", 409);
 
 
-            //return Error::createLocatedError("This mobile number is already verified.");
         }
 
         // Verify the code and check if it’s expired
         if ($user->sent_code != $args['code'] || Carbon::now()->gt($user->code_expired_at)) {
             throw new CustomValidationException("User not found", "کد نامعتبر یا منقضی شده.", 410);
 
-            //return Error::createLocatedError("Invalid or expired code.");
         }
 
         // Mark mobile as verified
@@ -143,14 +132,7 @@ class RegisterMobile extends BaseAuthResolver
             'password' => $args['password'],
         ]);
 
-//       Log::info("cred is:".  json_encode($credentials));
-
         $response = $this->makeRequest($credentials);
-
-        // return [
-        //     "Code" => 200,
-        //     "Message" => "USER MOBILE IS VERIFIED"
-        // ];
 
         return [
             'tokens' => $response,

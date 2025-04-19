@@ -23,11 +23,6 @@ final class GetNotif
     }
     function resolveNotif($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $Notif = Notif::where('id', $args['id']);       
-        // return $Notif->first();
-
         $user = $this->getModelByAuthorization(Notif::class, $args);
         return $user->first();
     }

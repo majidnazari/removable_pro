@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             GroupCategoryDetailSeeder::class,
             MemorySeeder::class,
             PersonChildSeeder::class,
-            // FamilyEventSeeder::class,
+                // FamilyEventSeeder::class,
             ScoreSeeder::class,
             PersonScoreSeeder::class,
 
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             CitySeeder::class,
             AddressSeeder::class,
-            //FamilyBoardSeeder::class,
+                //FamilyBoardSeeder::class,
             UserMergeRequestSeeder::class,
             MajorFieldSeeder::class,
             MiddleFieldSeeder::class,

@@ -28,23 +28,22 @@ final class CreateCity
     {
         // TODO implement the resolver
     }
-    public function resolveCity($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {        
+    public function resolveCity($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
 
         $this->userId = $this->getUserId();
 
 
-        $CityResult=[
+        $CityResult = [
             "province_id" => $args['province_id'],
             "title" => $args['title'],
-            "code" => $args['code']            
+            "code" => $args['code']
         ];
-        $is_exist= City::where('title',$args['title'])->where('code',$args['code'])->first();
-        if($is_exist)
-         {
-                 return Error::createLocatedError("City-CREATE-RECORD_IS_EXIST");
-         }
-        $CityResult_result=City::create($CityResult);
+        $is_exist = City::where('title', $args['title'])->where('code', $args['code'])->first();
+        if ($is_exist) {
+            return Error::createLocatedError("City-CREATE-RECORD_IS_EXIST");
+        }
+        $CityResult_result = City::create($CityResult);
         return $CityResult_result;
     }
 }

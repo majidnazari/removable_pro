@@ -18,23 +18,23 @@ class FamilyBoardSeeder extends Seeder
         //
         $data = [
             [
-                "creator_id"=>1,
+                "creator_id" => 1,
                 "category_content_id" => 1,
                 "title" => "سالگرد ازدواج محمد و زهرا",
-                "content"=> "voice1.mp3",
+                "content" => "voice1.mp3",
                 "selected_date" => Carbon::now()->format("Y-m-d"),
                 "description" => "it is the best event that happend",
-                "status" =>1,
+                "status" => 1,
                 'created_at' => now(),
             ],
             [
-                "creator_id"=>1,
+                "creator_id" => 1,
                 "category_content_id" => 1,
                 "title" => " شب یلدا",
-                "content"=> "voice۲.mp3",
+                "content" => "voice۲.mp3",
                 "selected_date" => Carbon::now()->addMonths(3)->format("Y-m-d"),
                 "description" => "it longest night during in the year",
-                "status" =>1,
+                "status" => 1,
                 'created_at' => now(),
             ],
         ];

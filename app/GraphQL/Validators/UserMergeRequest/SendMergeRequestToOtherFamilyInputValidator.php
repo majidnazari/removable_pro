@@ -24,7 +24,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
 {
     protected $userId;
 
-    public function __construct() 
+    public function __construct()
     {
         // Ensure a user is authenticated
         $user = Auth::guard('api')->user();
@@ -32,11 +32,9 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
         if (!$user) {
             throw new CustomValidationException("Authentication required. No user is currently logged in.", "احراز هویت لازم است. هیچ کاربری در حال حاضر وارد نشده است.", 403);
 
-            //throw new Exception("Authentication required. No user is currently logged in.");
         }
 
         $this->userId = $user->id;
-//      Log::info("the user id is:". $this->userId );
     }
 
     /**
@@ -50,7 +48,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
         return [
             'id' => [
                 'required',
-                new MergeRequestIdExists(), 
+                new MergeRequestIdExists(),
                 new MergeValidateNodeIdsInMergeIds($userMergeRequestId, $mergeIdsSender, $mergeIdsReceiver), // Validate sender and receiver node IDs
                 new PreventChangeCompleteStatus($this->arg('id')),
             ],
@@ -68,7 +66,7 @@ class SendMergeRequestToOtherFamilyInputValidator extends Validator
                 'string',
                 new MergeNoDuplicateIds(),
                 // new MergeValidateMergeIdsWithinActiveRelations($this->userId),
-                new MergeValidateMergeIdReceiver($this->userId,$userMergeRequestId),
+                new MergeValidateMergeIdReceiver($this->userId, $userMergeRequestId),
 
             ],
 

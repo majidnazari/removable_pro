@@ -24,10 +24,6 @@ final class GetCity
     }
     function resolveCity($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $City = City::where('id', $args['id']);       
-        // return $City->first();
         $City = $this->getModelByAuthorization(City::class, $args);
         return $City->first();
     }

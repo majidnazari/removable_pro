@@ -28,7 +28,7 @@ class MergePersonsValidator extends Validator
                 new MergePersonsRule($primaryPersonId, $secondaryPersonId),
                 new CheckClanMatchRule($primaryPersonId, $secondaryPersonId),
                 new OwnerMergeRule($primaryPersonId, $secondaryPersonId),
-                
+
             ]
         ];
     }

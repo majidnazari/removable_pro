@@ -33,19 +33,8 @@ class AllUsersCanAccessPerson implements Rule
 
     public function passes($attribute, $value)
     {
-    
-//       Log::info(" person_id: " . $this->personId);
 
-       // $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
-//      Log::info("the method AllUsersCanAccessPerson are running");
-
-
-        $allowedCreatorIds=$this->getAllUsersInClanFromHeads($this->getUserId());
-//       Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $allowedCreatorIds));
-
-        //$allowedCreatorIds= $this->calculateUserRelationInClan();
-
-//       Log::info("  allowedCreatorIds: " . json_encode( $allowedCreatorIds));
+        $allowedCreatorIds = $this->getAllUsersInClanFromHeads($this->getUserId());
 
         $person = Person::where('id', $this->personId)->whereIn('creator_id', $allowedCreatorIds)->first();
 
@@ -53,7 +42,6 @@ class AllUsersCanAccessPerson implements Rule
             $this->errorMessage = "this person is owner and you cannot chnage it!";
             return false;
         }
-
         return true;
 
     }

@@ -29,9 +29,9 @@ final class DeleteMajorField
     {
         // TODO implement the resolver
     }
-    public function resolveMajorField($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
-    {  
-        
+    public function resolveMajorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    {
+
         $this->userId = $this->getUserId();
 
         try {
@@ -47,7 +47,7 @@ final class DeleteMajorField
         }
 
         return $this->updateAndDeleteModel($MajorFieldResult, $args, $this->userId);
-       
-        
+
+
     }
 }

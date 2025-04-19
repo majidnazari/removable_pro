@@ -26,8 +26,8 @@ class TalentHeaderSeeder extends Seeder
             //             (empty($person['editor_id']) || in_array($person['editor_id'], $validUsers));
             // });
 
-            if (!empty( $jsonData )) {
-                DB::table('talent_headers')->insert( $jsonData );
+            if (!empty($jsonData)) {
+                DB::table('talent_headers')->insert($jsonData);
             } else {
                 $this->command->info("No valid records to insert.");
             }

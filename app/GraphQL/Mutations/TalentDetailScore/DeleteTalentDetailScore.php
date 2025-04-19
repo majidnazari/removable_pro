@@ -30,8 +30,8 @@ final class DeleteTalentDetailScore
         // TODO implement the resolver
     }
     public function resolveTalentDetailScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
-    {  
-        
+    {
+
         $this->userId = $this->getUserId();
 
         try {
@@ -48,7 +48,7 @@ final class DeleteTalentDetailScore
         }
 
         return $this->updateAndDeleteModel($TalentDetailScoreResult, $args, $this->userId);
-        
-        
+
+
     }
 }

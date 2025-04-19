@@ -32,7 +32,7 @@ final class UpdateMajorField
     {
         // TODO implement the resolver
     }
-    public function resolveMajorField($rootValue, array $args, GraphQLContext $context , ResolveInfo $resolveInfo)
+    public function resolveMajorField($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $this->userId = $this->getUserId();
 
@@ -54,6 +54,6 @@ final class UpdateMajorField
         );
 
         return $this->updateModel($MajorFieldResult, $args, $this->userId);
-       
+
     }
 }

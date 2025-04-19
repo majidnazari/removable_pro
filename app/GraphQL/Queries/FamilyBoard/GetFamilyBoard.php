@@ -24,10 +24,6 @@ final class GetFamilyBoard
     }
     function resolveFamilyBoard($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $FamilyBoard = FamilyBoard::where('id', $args['id']);       
-        // return $FamilyBoard->first();
 
         $FamilyBoard = $this->getModelByAuthorization(FamilyBoard::class, $args);
         return $FamilyBoard->first();

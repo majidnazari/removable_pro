@@ -113,13 +113,11 @@ final class CreateParent
         if ($fatherBirthDate->diffInYears($childBirthDate) < 12) {
             throw new CustomValidationException("Child's birth date must be at least 12 years after the father's birth date.", "تاریخ تولد کودک باید حداقل 12 سال پس از تاریخ تولد پدر باشد.", 400);
 
-            //throw new Exception("Child's birth date must be at least 12 years after the father's birth date.");
         }
 
         if ($motherBirthDate->diffInYears($childBirthDate) < 9) {
             throw new CustomValidationException("Child's birth date must be at least 9 years after the mother's birth date.", "تاریخ تولد کودک باید حداقل 9 سال پس از تاریخ تولد مادر باشد.", 400);
 
-            //throw new Exception("Child's birth date must be at least 9 years after the mother's birth date.");
         }
     }
 
@@ -161,24 +159,13 @@ final class CreateParent
 
     private function validatePersonAncestry(int $personId)
     {
-        // $result = $this->getPersonAncestryWithCompleteMerge($this->userId,10);
-//       Log::info("theuser logggd in is :" . $this->userId . "the result of active complete is :" . json_encode( $result['heads']));
-        // $headsIds = collect($result['heads'])->pluck("person_id")->toArray();
-
         $result = $this->getPersonAncestryHeads($this->userId, 10);
         $heads = collect($result['heads'])->pluck('person_id')->toArray();
-//       Log::info("heads found: " . json_encode($heads));
+        //       Log::info("heads found: " . json_encode($heads));
 
         if (!in_array($personId, $heads)) {
             throw new CustomValidationException("Person with ID {$personId} not found in the list of heads.", "شخص با شناسه {$personId} در لیست سرها یافت نشد.", 400);
-
-            //throw new Exception("Person with ID {$personId} not found in the list of heads.");
         }
-
-        // $usersInSmallClan = $this->getAllUserIdsSmallClan($personId);
-        // if (!in_array($this->userId, $usersInSmallClan)) {
-        //     throw new Exception("User does not have permission to modify this person.");
-        // }
 
         $getAllusersInSmallClan = $this->getAllUserIdsSmallClan($personId);
 

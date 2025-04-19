@@ -35,8 +35,8 @@ class UniquePersonChild implements Rule
     {
         // Check if a PersonChild relationship with the same marriage and child IDs already exists
         return !PersonChild::where('child_id', $this->childId)
-       //->where('person_marriage_id', $this->personMarriageId)            
-        ->exists();
+            //->where('person_marriage_id', $this->personMarriageId)            
+            ->exists();
     }
 
     /**
@@ -56,7 +56,7 @@ class UniquePersonChild implements Rule
 
         // Retrieve the parent names from the existing marriage
         $marriage = PersonMarriage::with(['Man', 'Woman'])->find($existingMarriage->person_marriage_id);
-        
+
         // Construct the parent names
         $parentNames = [];
         if ($marriage && $marriage->Man) {

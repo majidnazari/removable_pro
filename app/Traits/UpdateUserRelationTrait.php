@@ -29,7 +29,7 @@ trait UpdateUserRelationTrait
             $updatedRelations = $this->getAllUsersRelatedToCreator($user->id);
 
             DB::commit();
-//           Log::info("User {$user->id} blood relations updated successfully.");
+            //           Log::info("User {$user->id} blood relations updated successfully.");
 
             return $updatedRelations;
 
@@ -52,24 +52,16 @@ trait UpdateUserRelationTrait
             ->pluck('related_with_user_id')
             ->toArray();
 
-        // Determine users to add and remove
-        // $usersToAdd = array_diff($allUserIds, $existingRelations);
-        // $usersToRemove = array_diff($existingRelations, [$allUserIds]);
-
         $usersToAdd = array_diff($allUserIds, $existingRelations);
         $usersToRemove = array_diff($existingRelations, $allUserIds);
 
-//       Log::info("Users to add for user {$creatorId}: " . json_encode($usersToAdd));
-//       Log::info("Users to remove for user {$creatorId}: " .   json_encode($usersToRemove));
-
-        // Delete extra relations
         if (!empty($usersToRemove)) {
-           
-           
+
+
             UserRelation::where('creator_id', $creatorId)
                 ->whereIn('related_with_user_id', $usersToRemove)
                 ->delete();
-          
+
         }
 
         // Add new relations
@@ -85,21 +77,21 @@ trait UpdateUserRelationTrait
         if (empty($related_user_ids)) {
             return;
         }
-    
+
         // Get existing relations to avoid duplicates
         $existingRelations = DB::table('user_relations')
             ->where('creator_id', $user_id)
             ->whereIn('related_with_user_id', $related_user_ids)
             ->pluck('related_with_user_id')
             ->toArray();
-    
+
         // Filter out duplicates
-        $newRelations = array_filter($related_user_ids, function($id) use ($existingRelations) {
+        $newRelations = array_filter($related_user_ids, function ($id) use ($existingRelations) {
             return !in_array($id, $existingRelations);
         });
-    
+
         // Prepare new relations for insertion
-        $relations = array_map(function($id) use ($user_id) {
+        $relations = array_map(function ($id) use ($user_id) {
             return [
                 'creator_id' => $user_id,
                 'related_with_user_id' => $id,
@@ -107,9 +99,9 @@ trait UpdateUserRelationTrait
                 'updated_at' => now(),
             ];
         }, $newRelations);
-    
-//       Log::info("The user relations to be created: " . json_encode($relations));
-    
+
+        //       Log::info("The user relations to be created: " . json_encode($relations));
+
         if (!empty($relations)) {
             DB::table('user_relations')->insertOrIgnore($relations);
         }
@@ -117,26 +109,26 @@ trait UpdateUserRelationTrait
 
     private function getAllUsersRelatedToCreator($creatorId)
     {
-        $userRelated=UserRelation::where('creator_id', $creatorId)->pluck('related_with_user_id')->toArray();
+        $userRelated = UserRelation::where('creator_id', $creatorId)->pluck('related_with_user_id')->toArray();
 
-//       Log::info("getAllUsersRelatedToCreator for user {$creatorId}.".json_encode($userRelated));
+        //       Log::info("getAllUsersRelatedToCreator for user {$creatorId}.".json_encode($userRelated));
 
-        return  $userRelated;
+        return $userRelated;
     }
     private function getAllCreatorExistIn($creatorId)
     {
-        $userRelated=UserRelation::where('related_with_user_id', $creatorId)->pluck('creator_id')->toArray();
+        $userRelated = UserRelation::where('related_with_user_id', $creatorId)->pluck('creator_id')->toArray();
 
-//       Log::info("getAllCreatorExistIn for user {$creatorId}.".json_encode($userRelated));
+        //       Log::info("getAllCreatorExistIn for user {$creatorId}.".json_encode($userRelated));
 
-        return  $userRelated;
+        return $userRelated;
     }
     protected function updateUserFlag($userId)
     {
         // Check if these users have family ties (e.g., shared parents/children)
-        User::where('id', $userId)->update(['blood_user_relation_calculated'=>true]);
-//       Log::info("Updated user  for creator_id: {$userId}");
-     
+        User::where('id', $userId)->update(['blood_user_relation_calculated' => true]);
+        //       Log::info("Updated user  for creator_id: {$userId}");
+
     }
 
 

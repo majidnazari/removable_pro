@@ -19,7 +19,7 @@ class PersonSeeder extends Seeder
     //     //
     //     $data=
     //     [
-            
+
     //         [
     //             'creator_id' => 1,
     //             'node_code' => 'N001',
@@ -37,9 +37,9 @@ class PersonSeeder extends Seeder
     //             // 'node_level' => 2,
     //             // 'naslan_id' => 'NAS001',
     //             // 'referal_code' => 'REF001',
-                
+
     //             //'mobile' => '09372120890',
-               
+
     //             //'family_title' => 'نظری',
     //             //'father_first_name' => 'محمد تقی',
     //             //'mother_first_name' => 'فریده',
@@ -51,7 +51,7 @@ class PersonSeeder extends Seeder
     //             // 'lon' => -74.00,
     //             // 'gender' => 'Male',
     //             // 'physical_condition' => 'Healthy',
-               
+
     //         ]
     //         ,
     //         [
@@ -80,7 +80,7 @@ class PersonSeeder extends Seeder
     //             //'lon' => -118.24,
     //             //'gender' => 'Female',
     //             //'physical_condition' => 'Handicapped',
-                
+
     //         ],
     //         [
     //             'creator_id' => 1,
@@ -108,7 +108,7 @@ class PersonSeeder extends Seeder
     //             //'lon' => -87.62,
     //             //gender' => 'Male',
     //             //'physical_condition' => 'Healthy',
-                
+
     //         ],
     //         [
     //             'creator_id' => 1,
@@ -136,7 +136,7 @@ class PersonSeeder extends Seeder
     //             //'lon' => -87.62,
     //             //'gender' => 'Female',
     //             //'physical_condition' => 'Healthy',
-                
+
     //         ],
     //         [
     //             'creator_id' => 1,
@@ -164,7 +164,7 @@ class PersonSeeder extends Seeder
     //             //'lon' => -87.62,
     //             //'gender' => 'Male',
     //             //'physical_condition' => 'Healthy',
-                
+
     //         ],
     //         [
     //             'creator_id' => 1,
@@ -192,7 +192,7 @@ class PersonSeeder extends Seeder
     //             //'lon' => -87.62,
     //             //'gender' => 'Female',
     //             //'physical_condition' => 'Healthy',
-               
+
     //         ]
     //     ];
 
@@ -250,14 +250,14 @@ class PersonSeeder extends Seeder
         //     ["id" => 43, "creator_id" => 1, "editor_id" => null, "node_code" => "۲", "node_level_x" => 1, "node_level_y" => 1, "first_name" => "فاطمه", "last_name" => "توکلی", "birth_date" => null, "death_date" => null, "is_owner" => 0, "gender" => 1, "status" => "None", "created_at" => null, "updated_at" => null, "deleted_at" => null],
         //     ["id" => 44, "creator_id" => 1, "editor_id" => null, "node_code" => "3", "node_level_x" => 1, "node_level_y" => 1, "first_name" => "آیه", "last_name" => "یونسی", "birth_date" => null, "death_date" => null, "is_owner" => 0, "gender" => 1, "status" => "None", "created_at" => null, "updated_at" => null, "deleted_at" => null]
         // ];
-        
+
 
         // foreach ($data as $person) {
         //     Person::create($person);
         // }
 
-      
-    
+
+
         $jsonPath = database_path('datasample/people.json');
 
         if (File::exists($jsonPath)) {
@@ -266,8 +266,8 @@ class PersonSeeder extends Seeder
             // Filter records to ensure `creator_id` and `editor_id` exist in the `users` table
             $validUsers = User::pluck('id')->toArray();
             $filteredData = array_filter($jsonData, function ($person) use ($validUsers) {
-                return in_array($person['creator_id'], $validUsers) && 
-                        (empty($person['editor_id']) || in_array($person['editor_id'], $validUsers));
+                return in_array($person['creator_id'], $validUsers) &&
+                    (empty($person['editor_id']) || in_array($person['editor_id'], $validUsers));
             });
 
             if (!empty($filteredData)) {
@@ -278,7 +278,7 @@ class PersonSeeder extends Seeder
         } else {
             $this->command->info("JSON file not found at {$jsonPath}");
         }
-            
-        
+
+
     }
 }

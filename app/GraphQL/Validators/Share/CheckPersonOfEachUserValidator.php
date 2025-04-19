@@ -22,17 +22,17 @@ class CheckPersonOfEachUserValidator extends GraphQLValidator
     {
         // Apply the custom rule 'CheckPersonOwner' to the 'person_id' field
         return [
-            'person_id' => ['required',  new CheckPersonOfEachUser($this->arg('person_id'))],
+            'person_id' => ['required', new CheckPersonOfEachUser($this->arg('person_id'))],
         ];
     }
-     /**
+    /**
      * Optionally, you can define custom validation error messages here
      */
     public function messages(): array
     {
         return [
             'person_id.required' => 'The person_id field is required.',
-           // 'person_id.integer' => 'The person_id must be an integer.',
+            // 'person_id.integer' => 'The person_id must be an integer.',
         ];
     }
 }

@@ -42,9 +42,9 @@ class CreatePersonChildInputValidator extends GraphQLValidator
                 new ParentsAliveAtChildBirth($personMarriageId), // Ensures parents were alive at birth
                 new RealisticParentChildAgeGap($personMarriageId), // Ensures realistic age gap between parent and child
                 new UniquePersonChild($this->arg('person_marriage_id'), $this->arg('child_id')), // Prevents duplicates
-                new MatchCreator(PersonMarriage::class,[$personMarriageId]), // Apply the custom rule to check all IDs
-                new MatchCreator(Person::class,[$childId]), // Apply the custom rule to check all IDs
-                new DateNotInFuture(Person::class, 'birth_date',$childId),
+                new MatchCreator(PersonMarriage::class, [$personMarriageId]), // Apply the custom rule to check all IDs
+                new MatchCreator(Person::class, [$childId]), // Apply the custom rule to check all IDs
+                new DateNotInFuture(Person::class, 'birth_date', $childId),
 
             ],
         ];

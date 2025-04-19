@@ -42,7 +42,6 @@ final class CancelSenderRequest
         if (!$UserMergeRequestResult) {
             throw new CustomValidationException("USERMERGEREQUEST-CANCEL-SENDER-RECORD_NOT_FOUND", "درخواست ادغام کاربر. لغو رکورد ارسال کننده. رکورد یافت نشد", 404);
 
-            //return Error::createLocatedError("UserSendeRequest-UPDATE-RECORD_NOT_FOUND");
         }
         $UserMergeRequestResult->editor_id = $this->user->id;
 

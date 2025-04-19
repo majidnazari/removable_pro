@@ -32,25 +32,24 @@ final class CreateMarriageChild
 
         if (($args['relationship_type'] === "Son") || ($args['relationship_type'] === "Daughter")) //it is Marriage relation and should check first with second and also check inverse relation too 
         {
-            $NaslanRelationModel= [
+            $NaslanRelationModel = [
                 "creator_id" => $this->userId,
                 "person_marriage_id" => $args['person_marriage_id'],
                 //"relationship_id" => $args['relationship_id'] ,           
                 "child_id" => $args['child_id'],
                 "child_kind" => $args['child_kind'] ?? ChildKind::DirectChild,
-                "child_status" => $args['child_status']  ?? ChildStatus::WithFamily,
+                "child_status" => $args['child_status'] ?? ChildStatus::WithFamily,
                 "status" => $args["status"] ?? Status::Active
-    
+
             ];
-            
+
+        } else {
+            //return Error::createLocatedError("Relationship-ISNOT_VALID");
+            throw new Error("Relationship-ISNOT_VALID");
         }
-        else{
-                //return Error::createLocatedError("Relationship-ISNOT_VALID");
-                throw new Error("Relationship-ISNOT_VALID");
-        }
-       // return PersonChild::where('deleted_at',null);
-      
-        $is_exist_builder = PersonChild::where('person_marriage_id', $args['person_marriage_id'])->where('child_id', $args['child_id']);    
+        // return PersonChild::where('deleted_at',null);
+
+        $is_exist_builder = PersonChild::where('person_marriage_id', $args['person_marriage_id'])->where('child_id', $args['child_id']);
 
         // If the specific relationship already exists, find all marriages involving the person
         if ($is_exist_builder->exists()) {

@@ -38,26 +38,7 @@ final class UpdateProvince
     {
 
         $this->userId = $this->getUserId();
-        // $this->userAccessibility(Province::class, AuthAction::Delete, $args);
 
-        // //args["user_id_creator"]=$this->userId;
-        // $ProvinceResult=Province::find($args['id']);
-
-        // if(!$ProvinceResult)
-        // {
-        //     return Error::createLocatedError("Province-UPDATE-RECORD_NOT_FOUND");
-        // }
-
-        // $this->checkDuplicate(
-        //     new Province(),
-        //     $args,
-        //     ['id','editor_id','created_at', 'updated_at'],
-        //     $args['id']
-        // );
-        // $args['editor_id']=$this->userId;
-
-        // $ProvinceResult_filled= $ProvinceResult->fill($args);
-        // $ProvinceResult->save();       
 
         // return $ProvinceResult;
         try {
@@ -79,8 +60,6 @@ final class UpdateProvince
         );
 
         return $this->updateModel($ProvinceResult, $args, $this->userId);
-
-
 
     }
 }

@@ -42,14 +42,10 @@ class SendRequestToOtherFamilyInputValidator extends Validator
         if (!$user) {
             throw new CustomValidationException("Authentication required. No user is currently logged in.", "احراز هویت لازم است. هیچ کاربری در حال حاضر وارد نشده است.", 403);
 
-            //throw new Exception("Authentication required. No user is currently logged in.");
         }
 
         $this->user_sender_id = $user->id;
-        // $this->node_id = $this->arg('node_sender_id');
-        //$this->args = request()->input();
 
-//       Log::info("the args are " . json_encode($this->args));
     }
 
     /**
@@ -73,10 +69,8 @@ class SendRequestToOtherFamilyInputValidator extends Validator
                 new SenderNodeAndReceiverNodeSameGender($this->user_sender_id),
                 new UserSenderReceiverStatusCompleteOnce($this->user_sender_id),
                 function ($attribute, $value, $fail) {
-//                   Log::info("the person must to check the in clan is :".$value);
-                    $allowedPersons = $this->getAllBloodPersonsWithSpousesInClanFromHeads( $this->user_sender_id);
+                    $allowedPersons = $this->getAllBloodPersonsWithSpousesInClanFromHeads($this->user_sender_id);
 
-//                   Log::info("Allowed persons for sender {$this->user_sender_id}: " . json_encode($allowedPersons));
 
                     if (!in_array($value, $allowedPersons)) {
                         return $fail("The selected sender node is not part of the sender's bloodline in the clan.");

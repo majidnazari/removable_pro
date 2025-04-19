@@ -36,7 +36,6 @@ final class UpdateTalentDetailScore
     }
     public function resolveTalentDetailScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-//       Log::info("the args rae:" . json_encode($args));
         $this->userId = $this->getUserId();
 
         try {
@@ -55,22 +54,11 @@ final class UpdateTalentDetailScore
         if (isset($talentDetailsScore->Creator_id) && ($talentDetailsScore->Creator_id != $this->userId)) {
             throw new CustomValidationException("You Can Just Your Own Score.", "شما فقط می توانید امتیاز خود را دریافت کنید.", 403);
 
-            //throw new Exception("You Can Just Your Own Score.");
         }
         if (isset($talentDetailsScore->TalentDetail->TalentHeader->end_date) && ($talentDetailsScore->TalentDetail->TalentHeader->end_date < Carbon::now()->format("Y-m-d"))) {
             throw new CustomValidationException("This Talent Time Finished To Score!", "این زمان استعداد به امتیاز پایان رسید!", 403);
 
-            //throw new Exception("This Talent Time Finished To Score!");
         }
-
-//       Log::info("the talentDetailsScore rae:" . json_encode($talentDetailsScore->TalentDetail->TalentHeader->end_date));
-
-        // $this->checkDuplicate(
-        //     new TalentDetailScore(),
-        //     $args,
-        //     ['id', 'editor_id', 'created_at', 'updated_at','score','status'],
-        //     excludeId: $args['id']
-        // );
 
         return $this->updateModel($TalentDetailScoreResult, $args, $this->userId);
 

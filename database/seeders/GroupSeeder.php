@@ -33,7 +33,7 @@ class GroupSeeder extends Seeder
                     'creator_id' => $record['creator_id'],
                     'editor_id' => $record['editor_id'],
                     'title' => $record['title'],
-                   
+
                     'status' => $record['status'],
                     'created_at' => now(),
                     'updated_at' => now(),

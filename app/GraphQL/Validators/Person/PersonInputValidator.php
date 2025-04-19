@@ -16,7 +16,7 @@ class PersonInputValidator extends Validator
         return [
             'id' => [
                 'required',
-                'exists:people,id',               
+                'exists:people,id',
             ]
         ];
     }

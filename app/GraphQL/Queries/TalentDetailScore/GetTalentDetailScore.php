@@ -24,11 +24,6 @@ final class GetTalentDetailScore
     }
     function resolveTalentDetailScore($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $TalentDetailScore = TalentDetailScore::where('id', $args['id']);       
-        // return $TalentDetailScore->first();
-
         $TalentDetailScore = $this->getModelByAuthorization(TalentDetailScore::class, $args);
         return $TalentDetailScore->first();
     }

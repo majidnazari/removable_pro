@@ -53,24 +53,19 @@ final class DeleteJustPersonWithFamilyTreeRelation
         if ($owner->id != $personId) {
             throw new CustomValidationException("You are not allowed to use this method for others!", "شما مجاز به استفاده از این روش برای دیگران نیستید!", 403);
 
-            //throw new Exception("You are not allowed to use this method for others!");
         }
 
         try {
 
             $allBloodUserIds = $this->getAllBloodUsersInClanFromHeads($this->userId);
-//           Log::info("The allBloodUserIds is: " . json_encode($allBloodUserIds));
 
             // Remove the user themselves from the result array
             $allBloodUserIdsWithoutItself = array_filter($allBloodUserIds, fn($id) => $id != $this->userId);
-//           Log::info("The allBloodUserIds without itself  is : " . json_encode($allBloodUserIdsWithoutItself));
 
 
             if (empty($allBloodUserIdsWithoutItself) || !is_array($allBloodUserIdsWithoutItself) || count($allBloodUserIdsWithoutItself) === 0) {
-//               Log::info("The allBloodUserIdsWithoutItself is empty or null.");
                 throw new CustomValidationException("You must use the delete relation person method instead.", "شما باید از روش حذف شخص رابطه استفاده کنید.", 400);
 
-                //throw new Exception("You must use the delete relation person method instead.");
             }
 
             DB::transaction(function () use ($personId) {
@@ -83,7 +78,6 @@ final class DeleteJustPersonWithFamilyTreeRelation
                 if (!$person) {
                     throw new CustomValidationException("Person not found", "شخص پیدا نشد", 400);
 
-                    //throw new Exception("Person not found");
                 }
 
                 $person->update(['is_owner' => 0]);
@@ -92,22 +86,8 @@ final class DeleteJustPersonWithFamilyTreeRelation
                 $user->delete();
 
 
-//               Log::info("Updated person {$personId} -> isowner = 0");
             });
 
-
-            // DB::transaction(function () use ($PersonResult) {
-            //     $person = Person::find( $personId);
-
-            //     if (!$person) {
-            //         throw new Exception("Person not found");
-            //     }
-
-            //     $person->delete();
-
-            //     // Fire the event to handle other related deletions
-            //     event(new PersonDeletedEvent($PersonResult->id));
-            // });
 
         } catch (CustomValidationException $e) {
 

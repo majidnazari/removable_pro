@@ -24,11 +24,6 @@ final class GetTalentDetail
     }
     function resolveTalentDetail($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $TalentDetail = TalentDetail::where('id', $args['id']);       
-        // return $TalentDetail->first();
-
         $TalentDetail = $this->getModelByAuthorization(TalentDetail::class, $args);
         return $TalentDetail->first();
     }

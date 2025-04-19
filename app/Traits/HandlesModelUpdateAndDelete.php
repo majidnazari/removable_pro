@@ -43,16 +43,16 @@ trait HandlesModelUpdateAndDelete
     {
         // Update the model first
         $this->updateModel($modelInstance, $updateData, $editorId);
-    
+
         // Check if the table has an editor_id column
         if ($editorId && Schema::hasColumn($modelInstance->getTable(), 'editor_id')) {
             $modelInstance->editor_id = $editorId;
             $modelInstance->save();
         }
-    
+
         // Delete the model
         $modelInstance->delete();
-    
+
         // Return the deleted model instance
         return $modelInstance;
     }

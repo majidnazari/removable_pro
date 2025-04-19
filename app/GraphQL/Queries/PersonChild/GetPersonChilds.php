@@ -25,13 +25,9 @@ final class GetPersonChilds
     }
     function resolvePersonChild($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // $this->userId = $this->getUserId();
-
-        // $PersonChilds = PersonChild::where('deleted_at', null);
-        // return $PersonChilds;
 
         $query = $this->getModelByAuthorization(PersonChild::class, $args, true);
-        $query = $this->applySearchFilters( $query, $args);
-        return  $query;
+        $query = $this->applySearchFilters($query, $args);
+        return $query;
     }
 }
