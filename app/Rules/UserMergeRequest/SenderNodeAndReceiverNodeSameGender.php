@@ -11,6 +11,7 @@ class SenderNodeAndReceiverNodeSameGender implements Rule
 {
     protected $nodeSenderId;
     protected $userSenderId;
+    protected $message;
 
     // Constructor is no longer needed to accept arguments, as it gets the value directly from the input.
     public function __construct($user_sender_id)

@@ -15,11 +15,13 @@ class MergeEnsureNotEmpty implements Rule
 
     public function passes($attribute, $value)
     {
-        if (is_null($value) || trim($value) === '' || empty(explode(',', $value))) {
+        if ($value === null || trim($value) === '') {
             return false;
         }
 
-        return true;
+        // Ensure at least one valid (non-empty) ID
+        $ids = array_filter(explode(',', $value), fn($id) => trim($id) !== '');
+        return count($ids) > 0;
     }
 
     public function message()

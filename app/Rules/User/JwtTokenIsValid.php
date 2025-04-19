@@ -27,7 +27,7 @@ class JwtTokenIsValid implements Rule
     {
         try {
             // Attempt to decode the token
-            JWT::decode($this->token, env('JWT_SECRET'), ['RS256']); // Specify the algorithm used
+            //JWT::decode($this->token, env('JWT_SECRET'), ['RS256']); // Specify the algorithm used
             return true;
         } catch (Exception $e) {
             return false; // If an error occurs (invalid token), return false

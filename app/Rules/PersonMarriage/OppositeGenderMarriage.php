@@ -14,6 +14,7 @@ class OppositeGenderMarriage implements Rule
 
     protected $manId;
     protected $womanId;
+    protected $errorMessage;
 
     /**
      * Create a new rule instance.
@@ -49,7 +50,7 @@ class OppositeGenderMarriage implements Rule
        // Log::info("the is is :". $userId);
 
         // If either manId or womanId is null, the rule passes (considered valid if only one ID is provided)
-        if (is_null($this->manId) || is_null($this->womanId)) {
+        if (isset($this->manId) || isset($this->womanId)) {
             return true;
         }
 
@@ -65,7 +66,7 @@ class OppositeGenderMarriage implements Rule
         }
 
         // Ensure both people exist and have a defined gender
-        if (!$man || !$woman || is_null($man->gender) || is_null($woman->gender)||($man->gender===$woman->gender)) {
+        if (!$man || !$woman || isset($man->gender) || isset( $woman->gender)||($man->gender===$woman->gender)) {
             $this->errorMessage = 'Two people of the same gender cannot marry each other.';
             return false;
         }

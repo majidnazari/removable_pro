@@ -38,7 +38,7 @@ trait UpdateUserFlagTrait
             Log::error("UpdateUserFlagTrait : relatedUserIds" . json_encode($relatedUserIds));
 
             // 3. Update all related users (if any exist)
-            if (!empty($relatedUserIds)) {
+            if ($relatedUserIds->isNotEmpty()) {
                 User::whereIn('id', $relatedUserIds)
                     ->update(['blood_user_relation_calculated' => $flag]);
             }

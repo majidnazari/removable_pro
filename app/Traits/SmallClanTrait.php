@@ -21,7 +21,7 @@ trait SmallClanTrait
 
     public function getAllPeopleIdsSmallClan($personId)
     {
-        $person = Person::where('id', $personId)->where('status', Status::Active)->first();
+        $person = Person::where('id', $personId)->where('status', Status::Active->value)->first();
         if (!$person)
             //throw new \Exception("Person with ID {$personId} not found in the clan.");
             throw new CustomValidationException("Person with ID {$personId} not found in the clan.", "شخص با شناسه {$personId} در خانواده یافت نشد.", 400);

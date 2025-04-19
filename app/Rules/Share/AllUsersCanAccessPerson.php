@@ -34,7 +34,6 @@ class AllUsersCanAccessPerson implements Rule
     public function passes($attribute, $value)
     {
     
-        $this->personId ;
         //Log::info(" person_id: " . $this->personId);
 
        // $allowedCreatorIds = $this->getAllowedUserIds($this->getUserId());
@@ -44,9 +43,7 @@ class AllUsersCanAccessPerson implements Rule
         $allowedCreatorIds=$this->getAllUsersInClanFromHeads($this->getUserId());
         Log::info("the result of getAllUsersInClanFromHeads are ".json_encode( $allowedCreatorIds));
 
-
         //$allowedCreatorIds= $this->calculateUserRelationInClan();
-
 
         //Log::info("  allowedCreatorIds: " . json_encode( $allowedCreatorIds));
 

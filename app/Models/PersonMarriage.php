@@ -79,7 +79,7 @@ class PersonMarriage extends Eloquent
 
     public function Man()
     {
-        return $this->belongsTo(Person::class, self::COLUMN_MAN_ID);
+        return $this->belongsTo(Person::class, self::COLUMN_MAN_ID,);
     }
 
     public function Woman()
