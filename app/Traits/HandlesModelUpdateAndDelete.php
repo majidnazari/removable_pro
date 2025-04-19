@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 trait HandlesModelUpdateAndDelete
 {
@@ -42,16 +43,16 @@ trait HandlesModelUpdateAndDelete
     {
         // Update the model first
         $this->updateModel($modelInstance, $updateData, $editorId);
-
-        // Optionally add an editor ID before deletion
-        if ($editorId) {
+    
+        // Check if the table has an editor_id column
+        if ($editorId && Schema::hasColumn($modelInstance->getTable(), 'editor_id')) {
             $modelInstance->editor_id = $editorId;
             $modelInstance->save();
         }
-
+    
         // Delete the model
         $modelInstance->delete();
-
+    
         // Return the deleted model instance
         return $modelInstance;
     }

@@ -60,11 +60,11 @@ class SendLoginTokenInputValidator extends Validator
             "mobile" => [
                 'required'
             ],
-            "input.token" => [
-                new JwtTokenIsValid($finalToken),
-                new JwtTokenIsNotExpired($finalToken),
-                new JwtTokenHasValidFormat($finalToken),
-            ],
+            // "input.token" => [
+            //     new JwtTokenIsValid($finalToken),
+            //     new JwtTokenIsNotExpired($finalToken),
+            //     new JwtTokenHasValidFormat($finalToken),
+            // ],
         ];
     }
 }

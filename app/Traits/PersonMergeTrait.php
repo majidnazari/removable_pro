@@ -81,10 +81,10 @@ trait PersonMergeTrait
             DB::commit();
 
         } catch (CustomValidationException $e) {
-            Log::error("Failed to merge persons: " . $e->message);
+            Log::error("Failed to merge persons: " . $e->getMessage());
             DB::rollBack();
 
-            throw new CustomValidationException($e->message, $e->endUserMessage, $e->statusCode);
+            throw new CustomValidationException($e->getMessage(), $e->getMessage(), $e->getStatusCode());
         } catch (Exception $e) {
             DB::rollback();
             throw new Error("Failed to merge persons: " . $e->getMessage());

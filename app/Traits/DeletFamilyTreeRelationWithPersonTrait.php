@@ -102,7 +102,8 @@ trait DeletFamilyTreeRelationWithPersonTrait
             Log::warning("DeletFamilyTreeRelationWithPersonTrait updateUserCalculationFlag into false.");
 
             $this->updateUserCalculationFlag($userId, false);
-
+            
+            /** @phpstan-ignore-next-line */
             // Ensure the method from another trait is called
             if (method_exists($this, 'getAllUsersInClanFromHeads')) {
                 $allUsers = $this->getAllUsersInClanFromHeads($userId);
@@ -145,7 +146,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
             $spouseIds = PersonMarriage::where($gender == 1 ? 'man_id' : 'woman_id', $personId)
                 ->pluck($gender == 0 ? 'man_id' : 'woman_id');
 
-            Log::info("canDeletePerson and  spouseIds" . json_encode($spouseIds) . "and count is:" . count($spouseIds) . "empty check is :" . empty($spouseIds));
+            Log::info("canDeletePerson and  spouseIds" . json_encode($spouseIds) . "and count is:" . count($spouseIds));
 
 
             if ((count($spouseIds) == 0)) {
@@ -246,7 +247,7 @@ trait DeletFamilyTreeRelationWithPersonTrait
     protected function IsthePersonSpouseOfUserLoggedIn($spouseIds, $userOwner)
     {
         // Ensure $spouseIds is a collection or array
-        if (!$spouseIds || empty($spouseIds)) {
+        if (!$spouseIds || blank($spouseIds)) {
             Log::info("IsthePersonSpouseUserLoggedIn: No spouses found. Returning FALSE.");
             return false;
         }

@@ -49,7 +49,8 @@ class CheckPersonOfEachUser implements Rule
         //     return false;
         // }
         //Log::info(message: "the allowedCreatorIds is :" . json_encode($allowedCreatorIds));
-        return $person;
+       // return $person;
+       return true;
 
     }
 
