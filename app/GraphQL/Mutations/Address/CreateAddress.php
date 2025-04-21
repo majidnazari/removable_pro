@@ -47,7 +47,7 @@ final class CreateAddress
             "status" => $args['status'] ?? status::Active,
 
         ];
-
+        Log::info("add tets logs");
         $this->checkDuplicate(new Address(), ["creator_id" => $this->getUserId(), "person_id" => $args['person_id']]);
         $AddressResult_result = Address::create($AddressResult);
         return $AddressResult_result;
