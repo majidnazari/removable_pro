@@ -1,4 +1,4 @@
-name: Delete main and develop Branches After 5 Minutes
+name: Delete main and develop Branches After 20 Seconds
 
 on:
   push:
@@ -17,10 +17,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Wait for 30 seconds
+      - name: Wait for 20 seconds
         run: |
-          echo "⏳ Waiting for 5 minutes before deletion..."
-          sleep 300  # Sleep for 300 seconds (5 minutes)
+          echo "⏳ Waiting for 20 seconds before deletion..."
+          sleep 20
 
       - name: Set up Git
         run: |
@@ -30,10 +30,9 @@ jobs:
       - name: Delete main and develop branches remotely
         run: |
           echo "🧨 Deleting 'main' and 'develop' branches from remote..."
-          
-          # Protect the current branch running the script
+
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          
+
           for branch in main develop; do
             if [ "$branch" != "$CURRENT_BRANCH" ]; then
               echo "❌ Deleting remote branch: $branch"
