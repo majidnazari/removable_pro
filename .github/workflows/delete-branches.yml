@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Wait for 5 minutes
+      - name: Wait for 30 seconds
         run: |
           echo "⏳ Waiting for 5 minutes before deletion..."
           sleep 300  # Sleep for 300 seconds (5 minutes)
