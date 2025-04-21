@@ -1,39 +1,37 @@
-name: Nuclear Option - Delete ALL Branches
+name: 💣 Delete All Remote Branches Except Develop
 
 on:
-  workflow_dispatch:  # Only allow manual triggering for safety
+  push:
+    branches:
+      - temp         # Trigger from temp branch
+      - develop 
+      - main
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
-  nuke-branches:
+  cleanup:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Wait 20 seconds
+      - name: Wait 20 seconds (optional)
         run: |
-          echo "💣 Nuclear countdown started (20s)..."
+          echo "⏳ Waiting 20 seconds before deletion..."
           sleep 20
 
-      - name: Delete ALL branches
+      - name: Set up Git
         run: |
-          echo "🔥 Preparing to delete ALL branches including develop/main..."
-          
-          # Temporarily rename default branch to allow deletion
-          git checkout develop
-          git branch -m develop temporary-hold-branch
-          git push origin temporary-hold-branch
-          
-          # Delete main branch
-          git push origin --delete main || echo "⚠️ main deletion failed"
-          
-          # Delete original develop
-          git push origin --delete develop || echo "⚠️ develop deletion failed"
-          
-          # Restore default branch
-          git push origin temporary-hold-branch:develop
-          git branch -m temporary-hold-branch develop
-          
-          echo "💀 All branches deleted. Default branch recreated as empty."
+          git config --global user.name "AutoBot"
+          git config --global user.email "bot@example.com"
+
+      - name: Delete all remote branches except 'develop'
+        run: |
+          echo "🔥 Fetching all remote branches..."
+          git fetch --all
+
+          echo "🧨 Deleting all branches except 'develop'..."
+          for branch in $(git branch -r | grep origin/ | sed 's/origin\///'); do
