@@ -1,0 +1,46 @@
+name: Delete main and develop Branches After 5 Minutes
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Wait for 5 minutes
+        run: |
+          echo "⏳ Waiting for 5 minutes before deletion..."
+          sleep 300  # Sleep for 300 seconds (5 minutes)
+
+      - name: Set up Git
+        run: |
+          git config user.name "AutoBot"
+          git config user.email "bot@example.com"
+
+      - name: Delete main and develop branches remotely
+        run: |
+          echo "🧨 Deleting 'main' and 'develop' branches from remote..."
+          
+          # Protect the current branch running the script
+          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          
+          for branch in main develop; do
+            if [ "$branch" != "$CURRENT_BRANCH" ]; then
+              echo "❌ Deleting remote branch: $branch"
+              git push origin --delete $branch || echo "Failed to delete $branch"
+            else
+              echo "⚠️ Skipping current branch: $branch"
+            fi
+          done
+
+          echo "✅ Cleanup done."
