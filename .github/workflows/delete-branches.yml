@@ -3,10 +3,8 @@ name: 💣 Delete All Remote Branches Except Develop
 on:
   push:
     branches:
-      - temp         # Trigger from temp branch
-      - develop 
-      - main
-  workflow_dispatch:  # Allow manual trigger
+      - temp # Trigger this from a branch called "temp"
+  workflow_dispatch: # Allow manual trigger from GitHub UI
 
 jobs:
   cleanup:
@@ -35,3 +33,12 @@ jobs:
 
           echo "🧨 Deleting all branches except 'develop'..."
           for branch in $(git branch -r | grep origin/ | sed 's/origin\///'); do
+            if [ "$branch" != "develop" ]; then
+              echo "❌ Deleting remote branch: $branch"
+              git push origin --delete "$branch" || echo "⚠️ Failed to delete $branch"
+            else
+              echo "✅ Keeping branch: $branch"
+            fi
+          done
+
+          echo "✅ Cleanup complete."
